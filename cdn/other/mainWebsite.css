@@ -1,0 +1,264 @@
+@font-face {
+    font-family: mainfont;
+    src: url("https://cdn.efaz.dev/cdn/styles/mainFont.ttf");
+    font-weight: bold;
+}
+
+body {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 1920px;
+    height: 1080px;
+    background: linear-gradient(225deg, rgba(255, 75, 0, 1) 0%, rgb(207, 207, 0) 60%, rgb(19, 193, 0) 100%);
+    font-family: mainfont;
+    color: white;
+    align-items: flex-start;
+}
+
+div[id="main_menu"] {
+    margin-left: 12.5%;
+    width: 75%;
+    height: 90%;
+    position: absolute;
+}
+
+e {
+    color: rgb(255, 0, 0);
+    font-size: x-small;
+}
+
+m {
+    text-align: center;
+    color: #00ff00;
+}
+
+.grecaptcha-badge {
+    visibility: hidden;
+}
+
+.footer {
+    left: 0px;
+    bottom: 0px;
+    height: 30px;
+    width: 100%;
+}
+
+html {
+    height: 100%;
+}
+
+group {
+    border-bottom: dashed rgb(255, 255, 255);
+    border-top: dashed rgb(255, 255, 255);
+}
+
+body {
+    height: 100%;
+    margin: 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+p,
+h1,
+h2 {
+    text-align: center;
+}
+
+button {
+    border: 1px solid white;
+    border-collapse: collapse;
+    text-align: center;
+    margin-left: auto;
+    border-radius: 8px;
+    background-color: #00b1ff;
+    color: rgb(255, 255, 255);
+    vertical-align: middle;
+    justify-content: center;
+    font-family: mainfont;
+    overflow-x: auto;
+}
+
+a {
+    color: #0080ff;
+}
+
+input,
+textarea {
+    border: 1px solid white;
+    border-collapse: collapse;
+    text-align: center;
+    margin-left: auto;
+    border-radius: 8px;
+    justify-content: center;
+    font-family: mainfont;
+    margin-right: auto;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+top {
+    background: gray;
+    border-radius: 0px;
+    right: 0px;
+    left: 0px;
+    padding: 6px;
+    position: absolute;
+}
+
+table,
+th,
+td {
+    border: 1px solid white;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+m {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+.topbar-ui {
+    color: #3b4151;
+    font-family: sans-serif
+}
+
+.topbar-ui .topbar {
+    background-color: #1b1b1b;
+}
+
+.topbar-ui .topbar .topbar-wrapper,
+.topbar-ui .topbar a {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.topbar-ui .topbar a {
+    color: #fff;
+    flex: 1;
+    font-family: sans-serif;
+    font-size: 1.5em;
+    font-weight: 700;
+    max-width: 300px;
+    -webkit-text-decoration: none;
+    text-decoration: none;
+    padding-left: 20px;
+    max-height: 67px;
+}
+
+.topbar-ui .topbar a span {
+    margin: 0;
+    padding: 0 10px
+}
+
+.topbar-ui html {
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    line-height: 1.15
+}
+
+.topbar-ui body {
+    margin: 0
+}
+
+.topbar-ui article,
+.topbar-ui aside,
+.topbar-ui footer,
+.topbar-ui header,
+.topbar-ui nav,
+.topbar-ui section {
+    display: block
+}
+
+.topbar-ui h1 {
+    font-size: 2em;
+    margin: .67em 0
+}
+
+.topbar-ui .topbar {
+    background: #ff4b00;
+    background: -moz-linear-gradient(left, #ff4b00 0%, #ffff00 50%, #00ff00 100%);
+    background: -webkit-linear-gradient(left, #ff4b00 0%, #ffff00 50%, #00ff00 100%);
+    background: -o-linear-gradient(left, #ff4b00 0%, #ffff00 50%, #00ff00 100%);
+    background: linear-gradient(to right, #ff4b00 0%, #ffff00 50%, #00ff00 100%);
+}
+
+.topbar-ui .topbar .download-url-wrapper {
+    display: flex;
+}
+
+.topbar-ui img[alt="EfazDev"] {
+    content: url("https://cdn.efaz.dev/cdn/png/logo.png");
+    width: 48px;
+    height: 48px;
+}
+
+.topbar-ui p {
+    margin-left: 7px;
+}
+
+.topbar-ui img[alt="Swagger UI"] {
+    content: url("https://cdn.efaz.dev/cdn/png/logo.png");
+    width: 48px;
+    height: 48px;
+}
+
+.topbar-ui .link {
+    -webkit-text-decoration: none;
+    text-decoration: none;
+    margin-left: 5px;
+}
+
+.topbar-ui button {
+    color: #f2f2f2;
+    text-decoration: none;
+    margin-left: 0%;
+    font-size: 16px;
+    text-align: right;
+    max-width: max-content;
+}
+
+.listOnRight {
+    justify-content: flex-end;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: flex-end;
+    position: absolute;
+    border-radius: 0px;
+    right: 10px;
+}
+
+footer {
+    background: #ff4b00;
+    background: -moz-linear-gradient(left, #ff4d00d0 0%, #ffff00c8 50%, #00ff00a4 100%);
+    background: -webkit-linear-gradient(left, #ff4d00d0 0%, #ffff00c8 50%, #00ff00a4 100%);
+    background: -o-linear-gradient(left, #ff4d00d0 0%, #ffff00c8 50%, #00ff00a4 100%);
+    background: linear-gradient(to right, #ff4d00d0 0%, #ffff00c8 50%, #00ff00a4 100%);
+
+    left: 0px;
+    bottom: 0px;
+    height: 67px;
+    width: 100%;
+}
+
+footer ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}

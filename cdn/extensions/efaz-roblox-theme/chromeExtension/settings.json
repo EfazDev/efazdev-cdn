@@ -1,0 +1,15 @@
+{
+    "name": "efazRobloxTheme",
+    "settings": {
+        "enabled": {
+            "text": "Enable Extension",
+            "type": "checkbox",
+            "default": true
+        },
+        "remoteStyles": {
+            "text": "Use Remote Stylesheets (Imported from https://cdn.efaz.dev)",
+            "type": "checkbox",
+            "default": false
+        }
+    }
+}

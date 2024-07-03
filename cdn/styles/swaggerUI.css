@@ -1,0 +1,51 @@
+.swagger-ui .topbar {
+    background: #ff4b00;
+    background: -moz-linear-gradient(left, #ff4b00 0%, #ffff00 50%, #00ff00 100%);
+    background: -webkit-linear-gradient(left, #ff4b00 0%, #ffff00 50%, #00ff00 100%);
+    background: -o-linear-gradient(left, #ff4b00 0%, #ffff00 50%, #00ff00 100%);
+    background: linear-gradient(to right, #ff4b00 0%, #ffff00 50%,  #00ff00 100%);
+}
+
+.swagger-ui .topbar .download-url-wrapper {
+    display: flex;
+}
+
+.swagger-ui img[alt="EfazDev"] {
+    content: url("https://cdn.efaz.dev/cdn/png/logo.png");
+    width: 48px;
+    height: 48px;
+}
+
+.swagger-ui img[alt="Swagger UI"] {
+    content: url("https://cdn.efaz.dev/cdn/png/logo.png");
+    width: 48px;
+    height: 48px;
+}
+
+/* Copied Warning Message CSS from https://catalog.roblox.com/docs/resources/Docs.css */
+
+#doc-warning {
+    display: flex;
+    font-family: "Droid Sans", sans-serif;
+    background-color: #ffdddd;
+    border: 1px solid #ee9999;
+    min-height: 45px;
+    color: #8f1d1d;
+}
+
+#doc-warning .warning-description {
+    margin: auto;
+}
+
+#doc-warning .warning-close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 32px;
+    width: 32px;
+    font-size: 32px;
+    text-align: center;
+    cursor: pointer;
+}
+
+/* Copied Warning Message CSS from https://catalog.roblox.com/docs/resources/Docs.css */

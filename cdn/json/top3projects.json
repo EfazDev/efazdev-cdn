@@ -1,0 +1,32 @@
+[
+    {
+        "name": "Item Moderation Scanner",
+        "url": "https://www.efaz.dev/itemmoderation",
+        "download_url": "https://item-moderation.efaz.dev",
+        "discontinued": false,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "Discord Server", "ProjectPage": "Join Server Now!"},
+        "dateDiscontinued": "None",
+        "description": "Scan items that recently went into Roblox Moderation and be notified when they got approved or declined!"
+    },
+    {
+        "name": "EfazDev API v1",
+        "url": "https://www.efaz.dev/api",
+        "download_url": "https://api.efaz.dev/api/docs",
+        "discontinued": false,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "How to use", "ProjectPage": "Try it now!"},
+        "dateDiscontinued": "None",
+        "description": "An API that can help with using Roblox or selected platform APIs!"
+    },
+    {
+        "name": "Efaz's Builder Font Remover",
+        "url": "https://www.efaz.dev/remove-builder-font",
+        "download_url": "https://chromewebstore.google.com/detail/efazs-builder-font-remove/hapbigglmmihgdmpficddjdmfgikalcp",
+        "discontinued": false,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
+        "dateDiscontinued": "None",
+        "description": "Chrome extension that removes the Builder font on the Roblox website and replaces it with the old font again!"
+    }
+]

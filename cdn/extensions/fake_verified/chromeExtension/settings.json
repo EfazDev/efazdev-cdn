@@ -1,0 +1,35 @@
+{
+    "name": "verified_checkmark_settings",
+    "settings": {
+        "enabled": {
+            "text": "Enable Extension",
+            "type": "checkbox",
+            "default": true
+        },
+        "allowAlertMessages": {
+            "text": "Allow Alerts by Extension",
+            "type": "checkbox",
+            "default": false
+        },
+        "color": {
+            "text": "Custom Color Checkmark (HEX)",
+            "type": "color",
+            "default": "#0066FF"
+        },
+        "groupsIncluded": {
+            "text": "Include Groups Owned by You",
+            "type": "checkbox",
+            "default": false
+        },
+        "verifiedPrompt": {
+            "text": "Enable Verified Badge Prompt",
+            "type": "checkbox",
+            "default": true
+        },
+        "defaultPrompt": {
+            "text": "Use Default Roblox Verified Prompt (Enable Verified Prompt Required)",
+            "type": "checkbox",
+            "default": false
+        }
+    }
+}

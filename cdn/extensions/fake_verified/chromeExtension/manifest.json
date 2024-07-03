@@ -1,0 +1,32 @@
+{
+  "name": "Efaz's Roblox Verified Badge Add-on",
+  "description": "A extension that adds the verified badge next to your name! (This will only affect on the Roblox Website and won't show to other users and in-game!)",
+  "version": "1.3.0",
+  "manifest_version": 3,
+  "author": "EfazDev",
+  "homepage_url": "https://www.efaz.dev/fake-roblox-verified-badge",
+  "icons": {
+    "16": "verified_badge16.png",
+    "32": "verified_badge32.png",
+    "48": "verified_badge48.png",
+    "128": "verified_badge128.png"
+  },
+  "background": {
+    "service_worker": "main.js"
+  },
+  "action": {
+    "default_popup": "settings.html",
+    "default_title": "Efaz's Roblox Verified Badge Add-on",
+    "default_icon": "verified_badge.png"
+  },
+  "content_security_policy": {
+    "sandbox": "sandbox allow-scripts; script-src * 'wasm-unsafe-eval';"
+  },
+  "sandbox": {
+    "pages": []
+  },
+  "permissions": ["storage", "scripting", "webNavigation"],
+  "host_permissions": [
+    "https://www.roblox.com/*"
+  ]
+}
