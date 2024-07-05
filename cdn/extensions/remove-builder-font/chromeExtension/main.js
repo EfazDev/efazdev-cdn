@@ -307,6 +307,8 @@ main.js:
                                             if (selector.sheet.cssRules[7].cssText.includes("font-face")) {
                                                 if (selector.innerHTML == "") {
                                                     selector.innerHTML = css
+                                                } else if (selector.innerHTML.includes("/fonts/builder-sans/")) {
+                                                    selector.innerHTML = css
                                                 }
                                             } else {
                                                 setTimeout(() => { injectCSS(css, new_tries + 1) }, 100)
@@ -318,6 +320,9 @@ main.js:
                                                 var selector = selectors[q]
                                                 if (selector.getAttribute("data-emotion") == "web-blox-css-mui-global" && sheetToString(selector.sheet).includes("@font-face")) {
                                                     if (selector.innerHTML == "") {
+                                                        selector.innerHTML = css
+                                                        found = true
+                                                    } else if (selector.innerHTML.includes("/fonts/builder-sans/")) {
                                                         selector.innerHTML = css
                                                         found = true
                                                     }
