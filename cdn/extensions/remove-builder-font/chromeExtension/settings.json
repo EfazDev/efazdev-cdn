@@ -34,9 +34,12 @@
         "resourcesUrl": {
             "text": "Font Resources URL (Make sure custom source is trusted and safe!)",
             "type": "text",
-            "default": "https://cdn2.efaz.dev/cdn/remove-builder-font/",
+            "default": "https://oldfont.efaz.dev/",
             "reset": true
         }
     },
-    "chromeWebstoreLinkEnabled": true
+    "chromeWebstoreLinkEnabled": true,
+    "uploadedChromeExtensionID": "hapbigglmmihgdmpficddjdmfgikalcp",
+    "scanForManifestUpdates": true,
+    "onlineManifestFile": "https://cdn.efaz.dev/cdn/extensions/remove-builder-font/chromeExtension/manifest.json"
 }

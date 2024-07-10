@@ -89,6 +89,12 @@ body { font-family: "Builder Sans", Arial, san-serif; font-weight: 325; font-sty
 .web-blox-css-tss-1h50r65-Typography-chip-chip {
     font-weight: 400 !important;
 }
+.web-blox-css-tss-s6bmpn-Typography-chip {
+    font-weight: 500 !important;
+}
+.web-blox-css-tss-829mim-Typography-h6-Typography-root-overlayLabel-overlayTitle {
+    font-weight: 500 !important;
+}
 .web-blox-css-tss-1uayfe9-Typography-buttonLarge-Typography-root {
     font-weight: 500 !important;
 }
@@ -105,5 +111,40 @@ body { font-family: "Builder Sans", Arial, san-serif; font-weight: 325; font-sty
     font-size: 18px !important;
 }
 .web-blox-css-tss-3xxkgt-Typography-tooltip {
+    font-weight: 500 !important;
+}
+.highcharts-root {
+    font-weight: 500 !important;
+    font-family: "Builder Sans";
+    font-size: 12px;
+}
+.web-blox-css-tss-1aszub1-Typography-buttonMedium {
+    font-weight: 500 !important;
+}
+.web-blox-css-tss-18hudwy-Typography-buttonLarge {
+    font-weight: 500 !important;
+}
+.web-blox-css-tss-dkq98-Typography-largeLabel2-Typography-root-name-dropdownOptionColor {
+    font-weight: 500 !important;
+}
+.web-blox-css-tss-1e4cgwb-Typography-largeLabel2-Typography-colorSecondary-Typography-root {
+    font-weight: 500 !important;
+}
+.web-blox-css-tss-to5xo2-Typography-buttonSmall {
+    font-weight: 500 !important;
+}
+.web-blox-css-tss-17k663t-Typography-buttonSmall-backButton {
+    font-weight: 500 !important;
+}
+.web-blox-css-tss-4h147w-Typography-buttonSmall {
+    font-weight: 500 !important;
+}
+.web-blox-css-tss-19ogk1j-Typography-smallLabel2-Typography-root {
+    font-weight: 500 !important;
+}
+.web-blox-css-tss-4dh4w4-Typography-smallLabel2-Typography-colorSecondary-Typography-root-distributionText {
+    font-weight: 500 !important;
+}
+.web-blox-css-tss-pci0ex-Typography-buttonLarge {
     font-weight: 500 !important;
 }

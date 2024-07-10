@@ -1,0 +1,106 @@
+{
+    "Main": {
+        "Light": {
+            "woff": "https://",
+            "woff2": "https://"
+        },
+        "Book": {
+            "woff": "https://",
+            "woff2": "https://"
+        },
+        "Medium": {
+            "woff": "https://",
+            "woff2": "https://"
+        },
+        "Bold": {
+            "woff": "https://",
+            "woff2": "https://"
+        },
+        "Black": {
+            "woff": "https://",
+            "woff2": "https://"
+        },
+        "Mono": {
+            "woff": "https://",
+            "woff2": "https://"
+        }
+    },
+    "DevForum": {
+        "Light": {
+            "woff": "https://",
+            "woff2": "https://"
+        },
+        "Book": {
+            "woff": "https://",
+            "woff2": "https://"
+        },
+        "Medium": {
+            "woff": "https://",
+            "woff2": "https://"
+        },
+        "Bold": {
+            "woff": "https://",
+            "woff2": "https://"
+        },
+        "Black": {
+            "woff": "https://",
+            "woff2": "https://"
+        },
+        "Mono": {
+            "woff": "https://",
+            "woff2": "https://"
+        }
+    },
+    "CreatorDashboard": {
+        "Light": {
+            "woff": "https://",
+            "woff2": "https://"
+        },
+        "Book": {
+            "woff": "https://",
+            "woff2": "https://"
+        },
+        "Medium": {
+            "woff": "https://",
+            "woff2": "https://"
+        },
+        "Bold": {
+            "woff": "https://",
+            "woff2": "https://"
+        },
+        "Black": {
+            "woff": "https://",
+            "woff2": "https://"
+        },
+        "Mono": {
+            "woff": "https://",
+            "woff2": "https://"
+        }
+    },
+    "OtherSub": {
+        "Light": {
+            "woff": "https://",
+            "woff2": "https://"
+        },
+        "Book": {
+            "woff": "https://",
+            "woff2": "https://"
+        },
+        "Medium": {
+            "woff": "https://",
+            "woff2": "https://"
+        },
+        "Bold": {
+            "woff": "https://",
+            "woff2": "https://"
+        },
+        "Black": {
+            "woff": "https://",
+            "woff2": "https://"
+        },
+        "Mono": {
+            "woff": "https://",
+            "woff2": "https://"
+        }
+    }
+}
