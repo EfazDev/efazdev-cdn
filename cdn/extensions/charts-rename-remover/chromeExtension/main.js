@@ -1,0 +1,107 @@
+/* 
+
+Efaz's Roblox Charts Renamer
+By: EfazDev
+Page: https://www.efaz.dev/charts-rename-remover
+
+main.js:
+    - Backup script incase of an error or timeout inside inject.js
+    - Launches a Thank You page if first time use: [thank-you.html]
+
+*/
+
+(function () { // Prevent changes made using the Inspect console.
+    const storage = chrome.storage.sync;
+    chrome.tabs.onUpdated.addListener(function (tabId, details, tab) {
+        try {
+            storage.get(["chartsRename"], function (items) {
+                var enabled = true;
+                var renameText = "Discover";
+                var replaceURLwithDiscoverURL = true;
+                var changeTitleHtml = true;
+
+                if (items["chartsRename"]) {
+                    if (typeof (items["chartsRename"]["enabled"]) == "boolean") { enabled = items["chartsRename"]["enabled"] };
+                    if (typeof (items["chartsRename"]["newName"]) == "string") { renameText = items["chartsRename"]["newName"] };
+                    if (typeof (items["chartsRename"]["replaceURLwithDiscoverURL"]) == "boolean") { replaceURLwithDiscoverURL = items["chartsRename"]["replaceURLwithDiscoverURL"] };
+                    if (typeof (items["chartsRename"]["changeTitleHtml"]) == "boolean") { changeTitleHtml = items["chartsRename"]["changeTitleHtml"] };
+                }
+                if (enabled == true) {
+                    if (tab.url) {
+                        if (tab.url.startsWith("https://www.roblox.com")) {
+                            function injectRename(renameTextt, settings) {
+                                var topbar_headers = document.getElementsByClassName("font-header-2 nav-menu-title text-header charts-rename-exp-treatment")
+                                for (let i = 0; i < topbar_headers.length; i++) {
+                                    var header = topbar_headers[i]
+                                    if (!(header.innerText.includes(renameTextt))) {
+                                        header.href = "/discover"
+                                        header.innerText = renameTextt
+                                    }
+                                }
+
+                                if (settings["replaceURLwithDiscoverURL"] == true) {
+                                    if (window.location.pathname == "/charts") {
+                                        window.history.pushState({ id: "100" }, renameTextt, `/discover#/`);
+                                    }
+                                }
+
+                                if (window.location.pathname == `/discover` || window.location.pathname == `/charts`) {
+                                    var page_headers = document.getElementsByClassName("games-list-header")
+                                    for (let i = 0; i < page_headers.length; i++) {
+                                        var header = page_headers[i]
+                                        if (!(header.innerHTML.includes(renameTextt))) {
+                                            header.innerHTML = `<h1>${renameTextt}</h1>`
+                                        }
+                                    }
+
+                                    if (settings["changeTitleHtml"]) {
+                                        var titles = document.getElementsByTagName("title")
+                                        for (let i = 0; i < titles.length; i++) {
+                                            var header = titles[i]
+                                            if (!(header.innerHTML.includes(renameTextt))) {
+                                                header.innerHTML = header.innerHTML.replaceAll("Charts", renameTextt)
+                                            }
+                                        }
+                                    }
+                                }
+
+                                setTimeout(() => { injectRename(renameTextt, settings) }, 20)
+                            }
+                            chrome.scripting.executeScript({
+                                target: { tabId: tabId, allFrames: true },
+                                func: injectRename,
+                                args: [renameText, items["chartsRename"]]
+                            })
+                        }
+                    }
+                }
+            });
+        } catch (err) {
+            console.warn(`Failed to insert font styles into this tab. Error Message: ${err.message}`)
+        }
+    });
+
+    chrome.runtime.onInstalled.addListener(() => {
+        console.log("Chrome detects extension refresh.")
+        fetch("settings.json").then(setting_res => {
+            return setting_res.json()
+        }).then(settings => {
+            var name = settings["name"]
+            storage.get([name], async function (items) {
+                if (items[name]) {
+                    if (items[name]["thanks"] == true) {
+                        console.log("The extension might have updated!")
+                        return
+                    } else {
+                        console.log("The extension has detected a new user!")
+                        items[name]["thanks"] = true
+                        chrome.tabs.create({
+                            url: chrome.runtime.getURL("thank_you.html")
+                        })
+                        await storage.set(items);
+                    }
+                }
+            });
+        })
+    })
+}())
