@@ -130,6 +130,16 @@
         "description": "Twitter Verification System helps users to create Twitter Verification Systems using a webserver."
     },
     {
+        "name": "Efaz's Roblox Charts Renamer",
+        "url": "https://www.efaz.dev/charts-rename-remover",
+        "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-charts-renamer/eghkpfdncgmcaifihhfgihcenboakjck",
+        "discontinued": false,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
+        "dateDiscontinued": "None",
+        "description": "Chrome extension that simply renames the Roblox Charts page back to Discover!"
+    },
+    {
         "name": "Logger Detector",
         "url": "https://www.efaz.dev/logger-detector",
         "download_url": "https://cdn.efaz.dev/cdn/py/download?fileName=LoggerDetector.py",
