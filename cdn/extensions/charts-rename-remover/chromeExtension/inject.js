@@ -5,7 +5,7 @@ By: EfazDev
 Page: https://www.efaz.dev/charts-rename-remover
 
 inject.js:
-    - Content script that injects a stylesheet to remove the builder font
+    - Content script that replaces Charts with Discover/Games
 
 */
 
