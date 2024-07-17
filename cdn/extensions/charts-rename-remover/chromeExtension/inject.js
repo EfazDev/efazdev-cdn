@@ -34,18 +34,40 @@ inject.js:
                             for (let i = 0; i < topbar_headers.length; i++) {
                                 var header = topbar_headers[i]
                                 if (!(header.innerText.includes(renameTextt))) {
-                                    header.href = "/discover"
+                                    if (renameTextt.toLowerCase() == "games") {
+                                        header.href = header.href.replace("charts", "games")
+                                        header.href = header.href.replace("discover", "games")
+                                    } else {
+                                        header.href = header.href.replace("charts", "discover")
+                                    }
                                     header.innerText = renameTextt
+                                }
+                            }
+
+                            var chart_links = document.getElementsByClassName("btn-secondary-xs see-all-link-icon btn-more")
+                            for (let i = 0; i < chart_links.length; i++) {
+                                var header = chart_links[i]
+                                if (!(header.innerText.includes(renameTextt))) {
+                                    if (renameTextt.toLowerCase() == "games") {
+                                        header.href = header.href.replace("charts", "games")
+                                        header.href = header.href.replace("discover", "games")
+                                    } else {
+                                        header.href = header.href.replace("charts", "discover")
+                                    }
                                 }
                             }
 
                             if (settings["replaceURLwithDiscoverURL"] == true) {
                                 if (window.location.pathname == "/charts") {
-                                    window.history.pushState({ id: "100" }, renameTextt, `/discover#/`);
+                                    if (renameTextt == "Games") {
+                                        window.history.pushState({ id: "100" }, renameTextt, window.location.href.replace("/charts#/", "/games#/"));
+                                    } else {
+                                        window.history.pushState({ id: "100" }, renameTextt, window.location.href.replace("/charts#/", "/discover#/"));
+                                    }
                                 }
                             }
 
-                            if (window.location.pathname == `/discover` || window.location.pathname == `/charts`) {
+                            if (window.location.pathname == `/discover` || window.location.pathname == `/charts` || window.location.pathname == `/games`) {
                                 var page_headers = document.getElementsByClassName("games-list-header")
                                 for (let i = 0; i < page_headers.length; i++) {
                                     var header = page_headers[i]
