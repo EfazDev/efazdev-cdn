@@ -6,7 +6,7 @@ Page: https://www.efaz.dev/charts-rename-remover
 
 settings.js:
     - Handle setting configurations in settings.html
-    - Save data to Chrome Storage API
+    - Save data to Storage API
 
 */
 
@@ -136,7 +136,7 @@ async function loadChanges() {
             /* Fulfill basic manifest details */
             var extension_name = man_json["name"]
             var extension_version = man_json["version"]
-            var extension_icon = man_json["icons"]["16"]
+            var extension_icon = man_json["icons"]["128"]
 
             document.getElementById("extens_name").innerHTML = `Extension Name: ${extension_name} ${`<img src="${extension_icon}" height="16" width="16" style="vertical-align: middle;">`}`
             document.getElementById("extens_vers").innerHTML = `v${extension_version}`

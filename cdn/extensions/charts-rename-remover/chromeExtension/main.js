@@ -16,53 +16,54 @@ main.js:
         try {
             storage.get(["chartsRename"], function (items) {
                 var enabled = true;
-                var renameText = "Discover";
-                var replaceURLwithDiscoverURL = true;
-                var changeTitleHtml = true;
-
                 if (items["chartsRename"]) {
                     if (typeof (items["chartsRename"]["enabled"]) == "boolean") { enabled = items["chartsRename"]["enabled"] };
-                    if (typeof (items["chartsRename"]["newName"]) == "string") { renameText = items["chartsRename"]["newName"] };
-                    if (typeof (items["chartsRename"]["replaceURLwithDiscoverURL"]) == "boolean") { replaceURLwithDiscoverURL = items["chartsRename"]["replaceURLwithDiscoverURL"] };
-                    if (typeof (items["chartsRename"]["changeTitleHtml"]) == "boolean") { changeTitleHtml = items["chartsRename"]["changeTitleHtml"] };
                 }
                 if (enabled == true) {
                     if (tab.url) {
                         if (tab.url.startsWith("https://www.roblox.com")) {
-                            function injectRename(renameTextt, settings) {
+                            function injectRename(settings) {
+                                var newName = settings["newName"];
+                                var isGames = newName.toLowerCase() == "games";
+                                var isCharts = newName.toLowerCase() == "charts";
+
                                 var topbar_headers = document.getElementsByClassName("font-header-2 nav-menu-title text-header charts-rename-exp-treatment")
                                 for (let i = 0; i < topbar_headers.length; i++) {
                                     var header = topbar_headers[i]
-                                    if (!(header.innerText.includes(renameTextt))) {
-                                        if (renameTextt.toLowerCase() == "games") {
+                                    if (!(header.innerText.includes(newName))) {
+                                        if (isGames == true) {
                                             header.href = header.href.replace("charts", "games")
                                             header.href = header.href.replace("discover", "games")
                                         } else {
                                             header.href = header.href.replace("charts", "discover")
+                                            header.href = header.href.replace("games", "discover")
                                         }
-                                        header.innerText = renameTextt
+                                        header.innerText = newName
                                     }
                                 }
 
                                 var chart_links = document.getElementsByClassName("btn-secondary-xs see-all-link-icon btn-more")
                                 for (let i = 0; i < chart_links.length; i++) {
                                     var header = chart_links[i]
-                                    if (!(header.innerText.includes(renameTextt))) {
-                                        if (renameTextt.toLowerCase() == "games") {
+                                    if (!(header.innerText.includes(newName))) {
+                                        if (isGames == true) {
                                             header.href = header.href.replace("charts", "games")
                                             header.href = header.href.replace("discover", "games")
                                         } else {
                                             header.href = header.href.replace("charts", "discover")
+                                            header.href = header.href.replace("games", "discover")
                                         }
                                     }
                                 }
 
                                 if (settings["replaceURLwithDiscoverURL"] == true) {
                                     if (window.location.pathname == "/charts") {
-                                        if (renameTextt == "Games") {
-                                            window.history.pushState({ id: "100" }, renameTextt, window.location.href.replace("/charts#/", "/games#/"));
-                                        } else {
-                                            window.history.pushState({ id: "100" }, renameTextt, window.location.href.replace("/charts#/", "/discover#/"));
+                                        if (isCharts == false) {
+                                            if (isGames == true) {
+                                                window.history.pushState({ id: "100" }, newName, window.location.href.replace("/charts#/", "/games#/"));
+                                            } else {
+                                                window.history.pushState({ id: "100" }, newName, window.location.href.replace("/charts#/", "/discover#/"));
+                                            }
                                         }
                                     }
                                 }
@@ -71,28 +72,28 @@ main.js:
                                     var page_headers = document.getElementsByClassName("games-list-header")
                                     for (let i = 0; i < page_headers.length; i++) {
                                         var header = page_headers[i]
-                                        if (!(header.innerHTML.includes(renameTextt))) {
-                                            header.innerHTML = `<h1>${renameTextt}</h1>`
+                                        if (!(header.innerHTML.includes(newName))) {
+                                            header.innerHTML = `<h1>${newName}</h1>`
                                         }
                                     }
 
-                                    if (settings["changeTitleHtml"]) {
+                                    if (settings["changeTitleHtml"] == true) {
                                         var titles = document.getElementsByTagName("title")
                                         for (let i = 0; i < titles.length; i++) {
                                             var header = titles[i]
-                                            if (!(header.innerHTML.includes(renameTextt))) {
-                                                header.innerHTML = header.innerHTML.replaceAll("Charts", renameTextt)
+                                            if (!(header.innerHTML.includes(newName))) {
+                                                header.innerHTML = header.innerHTML.replaceAll("Charts", newName)
                                             }
                                         }
                                     }
                                 }
 
-                                setTimeout(() => { injectRename(renameTextt, settings) }, 20)
+                                setTimeout(() => { injectRename(settings) }, 10)
                             }
                             chrome.scripting.executeScript({
                                 target: { tabId: tabId, allFrames: true },
                                 func: injectRename,
-                                args: [renameText, items["chartsRename"]]
+                                args: [items["chartsRename"]]
                             })
                         }
                     }

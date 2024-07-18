@@ -13,12 +13,12 @@
             "reset": true
         },
         "replaceURLwithDiscoverURL": {
-            "text": "Replace /charts URL with /discover",
+            "text": "Replace /charts URL with /discover or /games",
             "type": "checkbox",
             "default": true
         },
         "changeTitleHtml": {
-            "text": "Replace Tab Name with Discover",
+            "text": "Replace Tab Name with New Name",
             "type": "checkbox",
             "default": true
         }
