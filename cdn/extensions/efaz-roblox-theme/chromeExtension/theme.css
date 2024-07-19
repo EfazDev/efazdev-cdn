@@ -1,5 +1,6 @@
 body {
-    --background-image: url("https://tr.rbxcdn.com/10750d1bfea40d0363ebf599b258db2b/150/150/Image/Webp") !important;
+    --background:rgb(255, 75, 0);
+    --background-image: url("https://tr.rbxcdn.com/10750d1bfea40d0363ebf599b258db2b/420/420/Image/Png") !important;
     --background-repeat: repeat !important; 
     --background-blend-mode: normal !important; 
     --background-size: cover !important;

@@ -27,6 +27,12 @@ main.js:
                                 var isGames = newName.toLowerCase() == "games";
                                 var isCharts = newName.toLowerCase() == "charts";
 
+                                /* Clean New Name to prevent crashes */
+                                var div = document.createElement("div");
+                                div.innerHTML = newName;
+                                newName = div.innerText.replace(/<\/[^>]+(>|$)/g, "");
+                                /* Clean New Name to prevent crashes */
+
                                 var topbar_headers = document.getElementsByClassName("font-header-2 nav-menu-title text-header charts-rename-exp-treatment")
                                 for (let i = 0; i < topbar_headers.length; i++) {
                                     var header = topbar_headers[i]
@@ -73,7 +79,12 @@ main.js:
                                     for (let i = 0; i < page_headers.length; i++) {
                                         var header = page_headers[i]
                                         if (!(header.innerHTML.includes(newName))) {
-                                            header.innerHTML = `<h1>${newName}</h1>`
+                                            for (let e = 0; e < header.children.length; e++) {
+                                                var child = header.children[e]
+                                                if (!(child.innerText.includes(newName))) {
+                                                    child.innerText = `${newName}`
+                                                }
+                                            }
                                         }
                                     }
 
@@ -81,8 +92,8 @@ main.js:
                                         var titles = document.getElementsByTagName("title")
                                         for (let i = 0; i < titles.length; i++) {
                                             var header = titles[i]
-                                            if (!(header.innerHTML.includes(newName))) {
-                                                header.innerHTML = header.innerHTML.replaceAll("Charts", newName)
+                                            if (!(header.innerText.includes(newName))) {
+                                                header.innerText = header.innerText.replaceAll("Charts", newName)
                                             }
                                         }
                                     }
