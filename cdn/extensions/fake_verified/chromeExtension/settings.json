@@ -20,7 +20,7 @@
         "startTime": {
             "text": "Start Time (ms)",
             "type": "number",
-            "default": 1000
+            "default": 100
         },
         "groupsIncluded": {
             "text": "Include Groups Owned by You",
