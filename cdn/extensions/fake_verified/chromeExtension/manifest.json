@@ -1,32 +1,52 @@
 {
-  "name": "Efaz's Roblox Verified Badge Add-on",
-  "description": "A extension that adds the verified badge next to your name! (This will only affect on the Roblox Website and won't show to other users and in-game!)",
-  "version": "1.3.0",
-  "manifest_version": 3,
-  "author": "EfazDev",
-  "homepage_url": "https://www.efaz.dev/fake-roblox-verified-badge",
-  "icons": {
-    "16": "verified_badge16.png",
-    "32": "verified_badge32.png",
-    "48": "verified_badge48.png",
-    "128": "verified_badge128.png"
-  },
-  "background": {
-    "service_worker": "main.js"
-  },
-  "action": {
-    "default_popup": "settings.html",
-    "default_title": "Efaz's Roblox Verified Badge Add-on",
-    "default_icon": "verified_badge.png"
-  },
-  "content_security_policy": {
-    "sandbox": "sandbox allow-scripts; script-src * 'wasm-unsafe-eval';"
-  },
-  "sandbox": {
-    "pages": []
-  },
-  "permissions": ["storage", "scripting", "webNavigation"],
-  "host_permissions": [
-    "https://www.roblox.com/*"
-  ]
+    "name": "Efaz's Roblox Verified Badge Add-on",
+    "description": "An extension that adds the Roblox Verification Checkmark next to your name or group in the website! (Only affects you!)",
+    "version": "1.4.0",
+    "manifest_version": 3,
+    "author": "EfazDev",
+    "homepage_url": "https://www.efaz.dev/fake-roblox-verified-badge",
+    "icons": {
+        "16": "icon16.png",
+        "32": "icon32.png",
+        "48": "icon48.png",
+        "128": "icon128.png"
+    },
+    "externally_connectable": {
+        "matches": [
+            "https://cdn.efaz.dev/*"
+        ]
+    },
+    "content_scripts": [
+        {
+            "all_frames": true,
+            "js": [
+                "fake_verified_loader.js"
+            ],
+            "matches": [
+                "*://www.roblox.com/*"
+            ],
+            "run_at": "document_start"
+        }
+    ],
+    "background": {
+        "service_worker": "main.js"
+    },
+    "action": {
+        "default_popup": "settings.html",
+        "default_title": "Efaz's Roblox Verified Badge Add-on",
+        "default_icon": "icon128.png"
+    },
+    "content_security_policy": {
+        "sandbox": "sandbox allow-scripts; script-src * 'wasm-unsafe-eval';"
+    },
+    "sandbox": {
+        "pages": []
+    },
+    "permissions": [
+        "storage",
+        "scripting"
+    ],
+    "host_permissions": [
+        "https://www.roblox.com/*"
+    ]
 }

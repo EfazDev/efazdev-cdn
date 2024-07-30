@@ -1,8 +1,8 @@
 /* 
 
-Efaz's Roblox Charts Renamer
+Efaz's Roblox Discover Renamer
 By: EfazDev
-Page: https://www.efaz.dev/charts-rename-remover
+Page: https://www.efaz.dev/roblox-discover-rename
 
 thank_you.js:
     - Autofill extension details in the thank_you.html file

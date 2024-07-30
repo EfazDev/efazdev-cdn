@@ -1,10 +1,10 @@
 {
-  "name": "Efaz's Roblox Charts Renamer",
-  "description": "An extension that replaces Charts on Roblox back to Discover or Games!",
-  "version": "1.1.2",
+  "name": "Efaz's Roblox Discover Renamer",
+  "description": "An extension that replaces Charts or Discover on Roblox back to Games or another name!",
+  "version": "1.2.0",
   "manifest_version": 3,
   "author": "EfazDev",
-  "homepage_url": "https://www.efaz.dev/charts-rename-remover",
+  "homepage_url": "https://www.efaz.dev/roblox-discover-rename",
   "icons": {
     "16": "icon16.png",
     "32": "icon32.png",
@@ -33,7 +33,7 @@
   ],
   "action": {
     "default_popup": "settings.html",
-    "default_title": "Efaz's Roblox Charts Renamer",
+    "default_title": "Efaz's Roblox Discover Renamer",
     "default_icon": "icon128.png"
   },
   "content_security_policy": {

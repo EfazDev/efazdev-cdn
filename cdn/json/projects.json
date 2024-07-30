@@ -130,9 +130,9 @@
         "description": "Twitter Verification System helps users to create Twitter Verification Systems using a webserver."
     },
     {
-        "name": "Efaz's Roblox Charts Renamer",
-        "url": "https://www.efaz.dev/charts-rename-remover",
-        "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-charts-renamer/eghkpfdncgmcaifihhfgihcenboakjck",
+        "name": "Efaz's Roblox Discover Renamer",
+        "url": "https://www.efaz.dev/roblox-discover-rename",
+        "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-discover-renamer/eghkpfdncgmcaifihhfgihcenboakjck",
         "discontinued": false,
         "showInProjectsPage": true,
         "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},

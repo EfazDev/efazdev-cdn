@@ -1,8 +1,8 @@
 /* 
 
-Efaz's Roblox Charts Renamer
+Efaz's Roblox Discover Renamer
 By: EfazDev
-Page: https://www.efaz.dev/charts-rename-remover
+Page: https://www.efaz.dev/roblox-discover-rename
 
 settings.js:
     - Handle setting configurations in settings.html

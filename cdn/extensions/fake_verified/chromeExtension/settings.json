@@ -14,7 +14,13 @@
         "color": {
             "text": "Custom Color Checkmark (HEX)",
             "type": "color",
-            "default": "#0066FF"
+            "default": "#0066FF",
+            "reset": true
+        },
+        "startTime": {
+            "text": "Start Time (ms)",
+            "type": "number",
+            "default": 1000
         },
         "groupsIncluded": {
             "text": "Include Groups Owned by You",
@@ -31,5 +37,9 @@
             "type": "checkbox",
             "default": false
         }
-    }
+    },
+    "chromeWebstoreLinkEnabled": false,
+    "uploadedChromeExtensionID": "",
+    "scanForManifestUpdates": true,
+    "onlineManifestFile": "https://cdn.efaz.dev/cdn/extensions/fake_verified/chromeExtension/manifest.json"
 }

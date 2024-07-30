@@ -1,8 +1,8 @@
 /* 
 
-Efaz's Roblox Charts Renamer
+Efaz's Roblox Discover Renamer
 By: EfazDev
-Page: https://www.efaz.dev/charts-rename-remover
+Page: https://www.efaz.dev/roblox-discover-rename
 
 inject.js:
     - Content script that replaces Charts with Discover/Games
@@ -26,6 +26,7 @@ inject.js:
                             var newName = settings["newName"];
                             var isGames = newName.toLowerCase() == "games";
                             var isCharts = newName.toLowerCase() == "charts";
+                            var isDiscover = newName.toLowerCase() == "discover";
 
                             /* Clean New Name to prevent crashes */
                             var div = document.createElement("div");
@@ -36,6 +37,21 @@ inject.js:
                             var topbar_headers = document.getElementsByClassName("font-header-2 nav-menu-title text-header charts-rename-exp-treatment")
                             for (let i = 0; i < topbar_headers.length; i++) {
                                 var header = topbar_headers[i]
+                                if (!(header.innerText.includes(newName))) {
+                                    if (isGames == true) {
+                                        header.href = header.href.replace("charts", "games")
+                                        header.href = header.href.replace("discover", "games")
+                                    } else {
+                                        header.href = header.href.replace("charts", "discover")
+                                        header.href = header.href.replace("games", "discover")
+                                    }
+                                    header.innerText = newName
+                                }
+                            }
+
+                            var topbar_headers_v2 = document.getElementsByClassName("font-header-2 nav-menu-title text-header charts-rename-exp-control")
+                            for (let i = 0; i < topbar_headers_v2.length; i++) {
+                                var header = topbar_headers_v2[i]
                                 if (!(header.innerText.includes(newName))) {
                                     if (isGames == true) {
                                         header.href = header.href.replace("charts", "games")
@@ -71,6 +87,10 @@ inject.js:
                                             window.history.pushState({ id: "100" }, newName, window.location.href.replace("/charts#/", "/discover#/"));
                                         }
                                     }
+                                } else if (window.location.pathname == "/discover") {
+                                    if ((isDiscover == false) && (isGames == true)) {
+                                        window.history.pushState({ id: "100" }, newName, window.location.href.replace("/discover#/", "/games#/"));
+                                    }
                                 }
                             }
 
@@ -94,6 +114,7 @@ inject.js:
                                         var header = titles[i]
                                         if (!(header.innerText.includes(newName))) {
                                             header.innerText = header.innerText.replaceAll("Charts", newName)
+                                            header.innerText = header.innerText.replaceAll("Discover", newName)
                                         }
                                     }
                                 }

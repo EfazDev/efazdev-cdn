@@ -1,9 +1,10 @@
 body {
-    --background:rgb(255, 75, 0);
-    --background-image: url("https://tr.rbxcdn.com/10750d1bfea40d0363ebf599b258db2b/420/420/Image/Png") !important;
-    --background-repeat: repeat !important; 
-    --background-blend-mode: normal !important; 
-    --background-size: cover !important;
+    background:rgb(255, 75, 0);
+    background-image: url("https://tr.rbxcdn.com/10750d1bfea40d0363ebf599b258db2b/420/420/Image/Png") !important;
+    background-repeat: repeat-y !important; 
+    background-blend-mode: normal !important; 
+    background-size: 100vw 100vh;
+    min-height: 100vh;
 }
 
 #roproThemeFrame {
@@ -26,6 +27,14 @@ body * {
 }
 
 /* Dark Theme Transparency */
+.container-main {
+    background:rgb(255, 75, 0);
+    background-image: url("https://tr.rbxcdn.com/10750d1bfea40d0363ebf599b258db2b/420/420/Image/Png") !important;
+    background-repeat: repeat-y !important; 
+    background-blend-mode: normal !important; 
+    background-size: 100vw 100vh;
+    min-height: 100vh;
+}
 .dark-theme {
     background-color: #23252700;
 }
