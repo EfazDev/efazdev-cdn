@@ -1,8 +1,9 @@
 var enabled = true;
 var allow_messages = false;
-var start_time = 100;
 var stored_user_data = null;
-var stop_loop = false
+var stored_group_data = null;
+var start_time = 100;
+var stop_loop = false;
 
 function load() {
     load2()
@@ -34,23 +35,23 @@ function start() {
     }
 
     function verifiedBadgePlacedAlready(html) {
-        return html.includes("data-rblx-badge-icon") || html.includes("secured-apples-verified-badge-button") || html.includes("Verified Badge Icon")
+        return (html.includes("data-rblx-badge-icon") || html.includes("secured-apples-verified-badge-button") || html.includes("Verified Badge Icon"))
     }
 
     if (enabled) {
-        /* The following HTML is encoded in Base64 since javascript may recognize a syntax error due to use of ' or " or brackets. */
-        var profile_html = atob("PHNwYW4gcm9sZT0iYnV0dG9uIiB0YWJpbmRleD0iMCIgZGF0YS1yYmx4LXZlcmlmaWVkLWJhZGdlLWljb249IiIgZGF0YS1yYmx4LWJhZGdlLWljb249InRydWUiIGNsYXNzPSJqc3MxNiI+PGltZyBjbGFzcz0icHJvZmlsZS12ZXJpZmllZC1iYWRnZS1pY29uIiBzcmM9ImRhdGE6aW1hZ2Uvc3ZnK3htbDtjaGFyc2V0PXV0Zi04LCUzQ3N2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyOCcgaGVpZ2h0PScyOCcgdmlld0JveD0nMCAwIDI4IDI4JyBmaWxsPSdub25lJyUzRSUzQ2cgY2xpcC1wYXRoPSd1cmwoJTIzY2xpcDBfOF80NiknJTNFJTNDcmVjdCB4PSc1Ljg4ODE4JyB3aWR0aD0nMjIuODknIGhlaWdodD0nMjIuODknIHRyYW5zZm9ybT0ncm90YXRlKDE1IDUuODg4MTggMCknIGZpbGw9JyUyMzAwNjZGRicvJTNFJTNDcGF0aCBmaWxsLXJ1bGU9J2V2ZW5vZGQnIGNsaXAtcnVsZT0nZXZlbm9kZCcgZD0nTTIwLjU0MyA4Ljc1MDhMMjAuNTQ5IDguNzU2OEMyMS4xNSA5LjM1NzggMjEuMTUgMTAuMzMxOCAyMC41NDkgMTAuOTMyOEwxMS44MTcgMTkuNjY0OEw3LjQ1IDE1LjI5NjhDNi44NSAxNC42OTU4IDYuODUgMTMuNzIxOCA3LjQ1IDEzLjEyMThMNy40NTcgMTMuMTE0OEM4LjA1OCAxMi41MTM4IDkuMDMxIDEyLjUxMzggOS42MzMgMTMuMTE0OEwxMS44MTcgMTUuMjk5OEwxOC4zNjcgOC43NTA4QzE4Ljk2OCA4LjE0OTggMTkuOTQyIDguMTQ5OCAyMC41NDMgOC43NTA4WicgZmlsbD0nd2hpdGUnLyUzRSUzQy9nJTNFJTNDZGVmcyUzRSUzQ2NsaXBQYXRoIGlkPSdjbGlwMF84XzQ2JyUzRSUzQ3JlY3Qgd2lkdGg9JzI4JyBoZWlnaHQ9JzI4JyBmaWxsPSd3aGl0ZScvJTNFJTNDL2NsaXBQYXRoJTNFJTNDL2RlZnMlM0UlM0Mvc3ZnJTNFIiB0aXRsZT0iW2lucHV0X2lkXSIgYWx0PSJbaW5wdXRfaWRdIj48L3NwYW4+");
-        var name_html = atob("PGltZyBjbGFzcz0idmVyaWZpZWQtYmFkZ2UtaWNvbi1jYXRhbG9nLWl0ZW0tcmVuZGVyZWQiIHNyYz0iZGF0YTppbWFnZS9zdmcreG1sO2NoYXJzZXQ9dXRmLTgsJTNDc3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgd2lkdGg9JzI4JyBoZWlnaHQ9JzI4JyB2aWV3Qm94PScwIDAgMjggMjgnIGZpbGw9J25vbmUnJTNFJTNDZyBjbGlwLXBhdGg9J3VybCglMjNjbGlwMF84XzQ2KSclM0UlM0NyZWN0IHg9JzUuODg4MTgnIHdpZHRoPScyMi44OScgaGVpZ2h0PScyMi44OScgdHJhbnNmb3JtPSdyb3RhdGUoMTUgNS44ODgxOCAwKScgZmlsbD0nJTIzMDA2NkZGJy8lM0UlM0NwYXRoIGZpbGwtcnVsZT0nZXZlbm9kZCcgY2xpcC1ydWxlPSdldmVub2RkJyBkPSdNMjAuNTQzIDguNzUwOEwyMC41NDkgOC43NTY4QzIxLjE1IDkuMzU3OCAyMS4xNSAxMC4zMzE4IDIwLjU0OSAxMC45MzI4TDExLjgxNyAxOS42NjQ4TDcuNDUgMTUuMjk2OEM2Ljg1IDE0LjY5NTggNi44NSAxMy43MjE4IDcuNDUgMTMuMTIxOEw3LjQ1NyAxMy4xMTQ4QzguMDU4IDEyLjUxMzggOS4wMzEgMTIuNTEzOCA5LjYzMyAxMy4xMTQ4TDExLjgxNyAxNS4yOTk4TDE4LjM2NyA4Ljc1MDhDMTguOTY4IDguMTQ5OCAxOS45NDIgOC4xNDk4IDIwLjU0MyA4Ljc1MDhaJyBmaWxsPSd3aGl0ZScvJTNFJTNDL2clM0UlM0NkZWZzJTNFJTNDY2xpcFBhdGggaWQ9J2NsaXAwXzhfNDYnJTNFJTNDcmVjdCB3aWR0aD0nMjgnIGhlaWdodD0nMjgnIGZpbGw9J3doaXRlJy8lM0UlM0MvY2xpcFBhdGglM0UlM0MvZGVmcyUzRSUzQy9zdmclM0UiIHRpdGxlPSJWZXJpZmllZCBCYWRnZSBJY29uIiBhbHQ9IlZlcmlmaWVkIEJhZGdlIEljb24iPg==");
-        var name_html_larger = atob("PHNwYW4gcm9sZT0iYnV0dG9uIiB0YWJpbmRleD0iMCIgc2VjdXJlZC1hcHBsZXMtdmVyaWZpZWQtYmFkZ2UtYnV0dG9uPSJ5ZXNzc3MiIGRhdGEtcmJseC12ZXJpZmllZC1iYWRnZS1pY29uPSIiIGRhdGEtcmJseC1iYWRnZS1pY29uPSJ0cnVlIiBjbGFzcz0ianNzMjkyIj48aW1nIGNsYXNzPSJ2ZXJpZmllZC1iYWRnZS1pY29uLWdyb3VwLXNob3V0LXJlbmRlcmVkIiBzcmM9ImRhdGE6aW1hZ2Uvc3ZnK3htbDtjaGFyc2V0PXV0Zi04LCUzQ3N2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyOCcgaGVpZ2h0PScyOCcgdmlld0JveD0nMCAwIDI4IDI4JyBmaWxsPSdub25lJyUzRSUzQ2cgY2xpcC1wYXRoPSd1cmwoJTIzY2xpcDBfOF80NiknJTNFJTNDcmVjdCB4PSc1Ljg4ODE4JyB3aWR0aD0nMjIuODknIGhlaWdodD0nMjIuODknIHRyYW5zZm9ybT0ncm90YXRlKDE1IDUuODg4MTggMCknIGZpbGw9JyUyMzAwNjZGRicvJTNFJTNDcGF0aCBmaWxsLXJ1bGU9J2V2ZW5vZGQnIGNsaXAtcnVsZT0nZXZlbm9kZCcgZD0nTTIwLjU0MyA4Ljc1MDhMMjAuNTQ5IDguNzU2OEMyMS4xNSA5LjM1NzggMjEuMTUgMTAuMzMxOCAyMC41NDkgMTAuOTMyOEwxMS44MTcgMTkuNjY0OEw3LjQ1IDE1LjI5NjhDNi44NSAxNC42OTU4IDYuODUgMTMuNzIxOCA3LjQ1IDEzLjEyMThMNy40NTcgMTMuMTE0OEM4LjA1OCAxMi41MTM4IDkuMDMxIDEyLjUxMzggOS42MzMgMTMuMTE0OEwxMS44MTcgMTUuMjk5OEwxOC4zNjcgOC43NTA4QzE4Ljk2OCA4LjE0OTggMTkuOTQyIDguMTQ5OCAyMC41NDMgOC43NTA4WicgZmlsbD0nd2hpdGUnLyUzRSUzQy9nJTNFJTNDZGVmcyUzRSUzQ2NsaXBQYXRoIGlkPSdjbGlwMF84XzQ2JyUzRSUzQ3JlY3Qgd2lkdGg9JzI4JyBoZWlnaHQ9JzI4JyBmaWxsPSd3aGl0ZScvJTNFJTNDL2NsaXBQYXRoJTNFJTNDL2RlZnMlM0UlM0Mvc3ZnJTNFIiB0aXRsZT0iVmVyaWZpZWQgQmFkZ2UgSWNvbiIgYWx0PSJWZXJpZmllZCBCYWRnZSBJY29uIj48L3NwYW4+");
-        var name_side_html = atob("PGltZyBzcmM9ImRhdGE6aW1hZ2Uvc3ZnK3htbDtjaGFyc2V0PXV0Zi04LCUzQ3N2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyOCcgaGVpZ2h0PScyOCcgdmlld0JveD0nMCAwIDI4IDI4JyBmaWxsPSdub25lJyUzRSUzQ2cgY2xpcC1wYXRoPSd1cmwoJTIzY2xpcDBfOF80NiknJTNFJTNDcmVjdCB4PSc1Ljg4ODE4JyB3aWR0aD0nMjIuODknIGhlaWdodD0nMjIuODknIHRyYW5zZm9ybT0ncm90YXRlKDE1IDUuODg4MTggMCknIGZpbGw9JyUyMzAwNjZGRicvJTNFJTNDcGF0aCBmaWxsLXJ1bGU9J2V2ZW5vZGQnIGNsaXAtcnVsZT0nZXZlbm9kZCcgZD0nTTIwLjU0MyA4Ljc1MDhMMjAuNTQ5IDguNzU2OEMyMS4xNSA5LjM1NzggMjEuMTUgMTAuMzMxOCAyMC41NDkgMTAuOTMyOEwxMS44MTcgMTkuNjY0OEw3LjQ1IDE1LjI5NjhDNi44NSAxNC42OTU4IDYuODUgMTMuNzIxOCA3LjQ1IDEzLjEyMThMNy40NTcgMTMuMTE0OEM4LjA1OCAxMi41MTM4IDkuMDMxIDEyLjUxMzggOS42MzMgMTMuMTE0OEwxMS44MTcgMTUuMjk5OEwxOC4zNjcgOC43NTA4QzE4Ljk2OCA4LjE0OTggMTkuOTQyIDguMTQ5OCAyMC41NDMgOC43NTA4WicgZmlsbD0nd2hpdGUnLyUzRSUzQy9nJTNFJTNDZGVmcyUzRSUzQ2NsaXBQYXRoIGlkPSdjbGlwMF84XzQ2JyUzRSUzQ3JlY3Qgd2lkdGg9JzI4JyBoZWlnaHQ9JzI4JyBmaWxsPSd3aGl0ZScvJTNFJTNDL2NsaXBQYXRoJTNFJTNDL2RlZnMlM0UlM0Mvc3ZnJTNFIiB0aXRsZT0iVmVyaWZpZWQgQmFkZ2UgSWNvbiIgYWx0PSJWZXJpZmllZCBCYWRnZSBJY29uIiBzdHlsZT0ibWFyZ2luLWxlZnQ6IDJweDt3aWR0aDogMTJweDtoZWlnaHQ6IDEycHg7IGJhY2tncm91bmQ6IG5vbmUgIWltcG9ydGFudDsiPg==");
-        var name_side_real_html = atob("PGltZyBzcmM9ImRhdGE6aW1hZ2Uvc3ZnK3htbDtjaGFyc2V0PXV0Zi04LCUzQ3N2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyOCcgaGVpZ2h0PScyOCcgdmlld0JveD0nMCAwIDI4IDI4JyBmaWxsPSdub25lJyUzRSUzQ2cgY2xpcC1wYXRoPSd1cmwoJTIzY2xpcDBfOF80NiknJTNFJTNDcmVjdCB4PSc1Ljg4ODE4JyB3aWR0aD0nMjIuODknIGhlaWdodD0nMjIuODknIHRyYW5zZm9ybT0ncm90YXRlKDE1IDUuODg4MTggMCknIGZpbGw9JyUyMzAwNjZGRicvJTNFJTNDcGF0aCBmaWxsLXJ1bGU9J2V2ZW5vZGQnIGNsaXAtcnVsZT0nZXZlbm9kZCcgZD0nTTIwLjU0MyA4Ljc1MDhMMjAuNTQ5IDguNzU2OEMyMS4xNSA5LjM1NzggMjEuMTUgMTAuMzMxOCAyMC41NDkgMTAuOTMyOEwxMS44MTcgMTkuNjY0OEw3LjQ1IDE1LjI5NjhDNi44NSAxNC42OTU4IDYuODUgMTMuNzIxOCA3LjQ1IDEzLjEyMThMNy40NTcgMTMuMTE0OEM4LjA1OCAxMi41MTM4IDkuMDMxIDEyLjUxMzggOS42MzMgMTMuMTE0OEwxMS44MTcgMTUuMjk5OEwxOC4zNjcgOC43NTA4QzE4Ljk2OCA4LjE0OTggMTkuOTQyIDguMTQ5OCAyMC41NDMgOC43NTA4WicgZmlsbD0nd2hpdGUnLyUzRSUzQy9nJTNFJTNDZGVmcyUzRSUzQ2NsaXBQYXRoIGlkPSdjbGlwMF84XzQ2JyUzRSUzQ3JlY3Qgd2lkdGg9JzI4JyBoZWlnaHQ9JzI4JyBmaWxsPSd3aGl0ZScvJTNFJTNDL2NsaXBQYXRoJTNFJTNDL2RlZnMlM0UlM0Mvc3ZnJTNFIiB0aXRsZT0iVmVyaWZpZWQgQmFkZ2UgSWNvbiIgYWx0PSJWZXJpZmllZCBCYWRnZSBJY29uIiBzdHlsZT0ibWFyZ2luLWxlZnQ6IDJweDt3aWR0aDogMThweDtoZWlnaHQ6IDE4cHg7IGJhY2tncm91bmQ6IG5vbmUgIWltcG9ydGFudDsiPg==");
-        var prompt_html = atob("PGRpdiByb2xlPSJkaWFsb2ciIGlkPSJmYWtlX3ZlcmlmaWVkX2JhZGdlIj48ZGl2IGNsYXNzPSJtb2RhbC1iYWNrZHJvcCBpbiI+PC9kaXY+PGRpdiByb2xlPSJkaWFsb2ciIHRhYmluZGV4PSItMSIgY2xhc3M9ImluIG1vZGFsIiBzdHlsZT0iZGlzcGxheTogYmxvY2s7Ij48ZGl2IGNsYXNzPSJtb2RhbC13aW5kb3cgbW9kYWwtc20gbW9kYWwtZGlhbG9nIj48ZGl2IGNsYXNzPSJtb2RhbC1jb250ZW50IiByb2xlPSJkb2N1bWVudCI+PGRpdiBjbGFzcz0ibW9kYWwtaGVhZGVyIj48YnV0dG9uIHR5cGU9ImJ1dHRvbiIgY2xhc3M9ImNsb3NlIiB0aXRsZT0iY2xvc2UiIG9uY2xpY2s9ImRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdmYWtlX3ZlcmlmaWVkX2JhZGdlJykucmVtb3ZlKCkiPjxzcGFuIGNsYXNzPSJpY29uLWNsb3NlIj48L3NwYW4+PC9idXR0b24+PGg0IGNsYXNzPSJtb2RhbC10aXRsZSI+VmVyaWZpZWQgQmFkZ2U8L2g0PjwvZGl2PjxkaXYgY2xhc3M9Im1vZGFsLWJvZHkiPjxkaXY+PGRpdj48c3BhbiByb2xlPSJidXR0b24iIHRhYmluZGV4PSIwIiBkYXRhLXJibHgtdmVyaWZpZWQtYmFkZ2UtaWNvbj0iIiBkYXRhLXJibHgtYmFkZ2UtaWNvbj0idHJ1ZSIgY2xhc3M9Imh6LWNlbnRlcmVkLWJhZGdlLWNvbnRhaW5lciI+PGltZyBjbGFzcz0iIGpzczI3MiIgc3JjPSJkYXRhOmltYWdlL3N2Zyt4bWw7Y2hhcnNldD11dGYtOCwlM0NzdmcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB3aWR0aD0nMjgnIGhlaWdodD0nMjgnIHZpZXdCb3g9JzAgMCAyOCAyOCcgZmlsbD0nbm9uZSclM0UlM0NnIGNsaXAtcGF0aD0ndXJsKCUyM2NsaXAwXzhfNDYpJyUzRSUzQ3JlY3QgeD0nNS44ODgxOCcgd2lkdGg9JzIyLjg5JyBoZWlnaHQ9JzIyLjg5JyB0cmFuc2Zvcm09J3JvdGF0ZSgxNSA1Ljg4ODE4IDApJyBmaWxsPSclMjMwMDY2RkYnLyUzRSUzQ3BhdGggZmlsbC1ydWxlPSdldmVub2RkJyBjbGlwLXJ1bGU9J2V2ZW5vZGQnIGQ9J00yMC41NDMgOC43NTA4TDIwLjU0OSA4Ljc1NjhDMjEuMTUgOS4zNTc4IDIxLjE1IDEwLjMzMTggMjAuNTQ5IDEwLjkzMjhMMTEuODE3IDE5LjY2NDhMNy40NSAxNS4yOTY4QzYuODUgMTQuNjk1OCA2Ljg1IDEzLjcyMTggNy40NSAxMy4xMjE4TDcuNDU3IDEzLjExNDhDOC4wNTggMTIuNTEzOCA5LjAzMSAxMi41MTM4IDkuNjMzIDEzLjExNDhMMTEuODE3IDE1LjI5OThMMTguMzY3IDguNzUwOEMxOC45NjggOC4xNDk4IDE5Ljk0MiA4LjE0OTggMjAuNTQzIDguNzUwOFonIGZpbGw9J3doaXRlJy8lM0UlM0MvZyUzRSUzQ2RlZnMlM0UlM0NjbGlwUGF0aCBpZD0nY2xpcDBfOF80NiclM0UlM0NyZWN0IHdpZHRoPScyOCcgaGVpZ2h0PScyOCcgZmlsbD0nd2hpdGUnLyUzRSUzQy9jbGlwUGF0aCUzRSUzQy9kZWZzJTNFJTNDL3N2ZyUzRSIgdGl0bGU9IlZlcmlmaWVkIEJhZGdlIiBhbHQ9IlZlcmlmaWVkIEJhZGdlIj48L3NwYW4+PC9kaXY+PGRpdj5UaGlzIGJhZGdlIGlkZW50aWZpZXMgdGhhdCB0aGUgdXNlciBpcyB1c2luZyBFZmF6J3MgUm9ibG94IFZlcmlmaWVkIEJhZGdlIEFkZC1vbiEgUGxlYXNlIGtub3cgdGhhdCB0aGF0IHRoZSB2ZXJpZmllZCBiYWRnZSBpcyBub3QgcmVhbCBhbmQgaXMgdmlzdWFsbHkgYWRkZWQuPC9kaXY+PC9kaXY+PC9kaXY+PGRpdiBjbGFzcz0ibW9kYWwtZm9vdGVyIj48ZGl2IGNsYXNzPSJsb2FkaW5nIj48L2Rpdj48ZGl2IGNsYXNzPSJtb2RhbC1idXR0b25zIj48YnV0dG9uIHR5cGU9ImJ1dHRvbiIgY2xhc3M9Im1vZGFsLWJ1dHRvbiBidG4tcHJpbWFyeS1tZCBidG4tbWluLXdpZHRoIiBvbmNsaWNrPSJ3aW5kb3cubG9jYXRpb24ucmVwbGFjZSgnaHR0cHM6Ly9lbi5oZWxwLnJvYmxveC5jb20vaGMvZW4tdXMvYXJ0aWNsZXMvNzk5NzIwNzI1OTE1NicpIj5MZWFybiBNb3JlPC9idXR0b24+PGJ1dHRvbiB0eXBlPSJidXR0b24iIGNsYXNzPSJtb2RhbC1idXR0b24gYnRuLWNvbnRyb2wtbWQgYnRuLW1pbi13aWR0aCIgb25jbGljaz0iZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2Zha2VfdmVyaWZpZWRfYmFkZ2UnKS5yZW1vdmUoKSI+Q2xvc2U8L2J1dHRvbj48L2Rpdj48L2Rpdj48L2Rpdj48L2Rpdj48L2Rpdj48L2Rpdj4=");
-        var game_html = atob("PHNwYW4gcm9sZT0iYnV0dG9uIiB0YWJpbmRleD0iMCIgc2VjdXJlZC1hcHBsZXMtdmVyaWZpZWQtYmFkZ2UtYnV0dG9uPSJ5ZXNzc3MiIGRhdGEtcmJseC12ZXJpZmllZC1iYWRnZS1pY29uPSIiIGRhdGEtcmJseC1iYWRnZS1pY29uPSJ0cnVlIiBjbGFzcz0ianNzNCI+PGltZyBjbGFzcz0idmVyaWZpZWQtYmFkZ2UtaWNvbi1leHBlcmllbmNlLWNyZWF0b3IiIHN0eWxlPSJtYXJnaW4tbGVmdDogNHB4O3dpZHRoOiAxNnB4O2hlaWdodDogMTZweDsiIHNyYz0iZGF0YTppbWFnZS9zdmcreG1sO2NoYXJzZXQ9dXRmLTgsJTNDc3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgd2lkdGg9JzI4JyBoZWlnaHQ9JzI4JyB2aWV3Qm94PScwIDAgMjggMjgnIGZpbGw9J25vbmUnJTNFJTNDZyBjbGlwLXBhdGg9J3VybCglMjNjbGlwMF84XzQ2KSclM0UlM0NyZWN0IHg9JzUuODg4MTgnIHdpZHRoPScyMi44OScgaGVpZ2h0PScyMi44OScgdHJhbnNmb3JtPSdyb3RhdGUoMTUgNS44ODgxOCAwKScgZmlsbD0nJTIzMDA2NkZGJy8lM0UlM0NwYXRoIGZpbGwtcnVsZT0nZXZlbm9kZCcgY2xpcC1ydWxlPSdldmVub2RkJyBkPSdNMjAuNTQzIDguNzUwOEwyMC41NDkgOC43NTY4QzIxLjE1IDkuMzU3OCAyMS4xNSAxMC4zMzE4IDIwLjU0OSAxMC45MzI4TDExLjgxNyAxOS42NjQ4TDcuNDUgMTUuMjk2OEM2Ljg1IDE0LjY5NTggNi44NSAxMy43MjE4IDcuNDUgMTMuMTIxOEw3LjQ1NyAxMy4xMTQ4QzguMDU4IDEyLjUxMzggOS4wMzEgMTIuNTEzOCA5LjYzMyAxMy4xMTQ4TDExLjgxNyAxNS4yOTk4TDE4LjM2NyA4Ljc1MDhDMTguOTY4IDguMTQ5OCAxOS45NDIgOC4xNDk4IDIwLjU0MyA4Ljc1MDhaJyBmaWxsPSd3aGl0ZScvJTNFJTNDL2clM0UlM0NkZWZzJTNFJTNDY2xpcFBhdGggaWQ9J2NsaXAwXzhfNDYnJTNFJTNDcmVjdCB3aWR0aD0nMjgnIGhlaWdodD0nMjgnIGZpbGw9J3doaXRlJy8lM0UlM0MvY2xpcFBhdGglM0UlM0MvZGVmcyUzRSUzQy9zdmclM0UiIHRpdGxlPSJWZXJpZmllZCBCYWRnZSBJY29uIiBhbHQ9IlZlcmlmaWVkIEJhZGdlIEljb24iPjwvc3Bhbj4=");
-        var name_small_html = atob("PHNwYW4+PHNwYW4gcm9sZT0iYnV0dG9uIiB0YWJpbmRleD0iMCIgZGF0YS1yYmx4LXZlcmlmaWVkLWJhZGdlLWljb249IiIgc2VjdXJlZC1hcHBsZXMtdmVyaWZpZWQtYmFkZ2UtYnV0dG9uPSJ5ZXNz c3MiIGRhdGEtcmJseC1iYWRnZS1pY29uPSJ0cnVlIiBjbGFzcz0ianNzMjIiPjxpbWcgY2xhc3M9 InZlcmlmaWVkLWJhZGdlLWljb24tbWVtYmVyLWNhcmQtcmVuZGVyZWQiIHNyYz0iZGF0YTppbWFn ZS9zdmcreG1sO2NoYXJzZXQ9dXRmLTgsJTNDc3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8y MDAwL3N2Zycgd2lkdGg9JzI4JyBoZWlnaHQ9JzI4JyB2aWV3Qm94PScwIDAgMjggMjgnIGZpbGw9 J25vbmUnJTNFJTNDZyBjbGlwLXBhdGg9J3VybCglMjNjbGlwMF84XzQ2KSclM0UlM0NyZWN0IHg9 JzUuODg4MTgnIHdpZHRoPScyMi44OScgaGVpZ2h0PScyMi44OScgdHJhbnNmb3JtPSdyb3RhdGUo MTUgNS44ODgxOCAwKScgZmlsbD0nJTIzMDA2NkZGJy8lM0UlM0NwYXRoIGZpbGwtcnVsZT0nZXZl bm9kZCcgY2xpcC1ydWxlPSdldmVub2RkJyBkPSdNMjAuNTQzIDguNzUwOEwyMC41NDkgOC43NTY4 QzIxLjE1IDkuMzU3OCAyMS4xNSAxMC4zMzE4IDIwLjU0OSAxMC45MzI4TDExLjgxNyAxOS42NjQ4 TDcuNDUgMTUuMjk2OEM2Ljg1IDE0LjY5NTggNi44NSAxMy43MjE4IDcuNDUgMTMuMTIxOEw3LjQ1 NyAxMy4xMTQ4QzguMDU4IDEyLjUxMzggOS4wMzEgMTIuNTEzOCA5LjYzMyAxMy4xMTQ4TDExLjgx NyAxNS4yOTk4TDE4LjM2NyA4Ljc1MDhDMTguOTY4IDguMTQ5OCAxOS45NDIgOC4xNDk4IDIwLjU0 MyA4Ljc1MDhaJyBmaWxsPSd3aGl0ZScvJTNFJTNDL2clM0UlM0NkZWZzJTNFJTNDY2xpcFBhdGgg aWQ9J2NsaXAwXzhfNDYnJTNFJTNDcmVjdCB3aWR0aD0nMjgnIGhlaWdodD0nMjgnIGZpbGw9J3do aXRlJy8lM0UlM0MvY2xpcFBhdGglM0UlM0MvZGVmcyUzRSUzQy9zdmclM0UiIHRpdGxlPSJWZXJp ZmllZCBCYWRnZSBJY29uIiBhbHQ9IlZlcmlmaWVkIEJhZGdlIEljb24iPjwvc3Bhbj48L3NwYW4+");
-        var group_name_verified_html = atob("PHNwYW4gcm9sZT0iYnV0dG9uIiB0YWJpbmRleD0iMCIgZGF0YS1yYmx4LXZlcmlmaWVkLWJhZGdlLWljb249IiIgc2VjdXJlZC1hcHBsZXMtdmVyaWZpZWQtYmFkZ2UtYnV0dG9uPSJ5ZXNzc3MiIGRhdGEtcmJseC1iYWRnZS1pY29uPSJ0cnVlIiBjbGFzcz0ianNzMjUwIj48aW1nIGNsYXNzPSJ2ZXJpZmllZC1iYWRnZS1pY29uLWdyb3VwLW5hbWUtcmVuZGVyZWQiIHNyYz0iZGF0YTppbWFnZS9zdmcreG1sO2NoYXJzZXQ9dXRmLTgsJTNDc3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgd2lkdGg9JzI4JyBoZWlnaHQ9JzI4JyB2aWV3Qm94PScwIDAgMjggMjgnIGZpbGw9J25vbmUnJTNFJTNDZyBjbGlwLXBhdGg9J3VybCglMjNjbGlwMF84XzQ2KSclM0UlM0NyZWN0IHg9JzUuODg4MTgnIHdpZHRoPScyMi44OScgaGVpZ2h0PScyMi44OScgdHJhbnNmb3JtPSdyb3RhdGUoMTUgNS44ODgxOCAwKScgZmlsbD0nJTIzMDA2NkZGJy8lM0UlM0NwYXRoIGZpbGwtcnVsZT0nZXZlbm9kZCcgY2xpcC1ydWxlPSdldmVub2RkJyBkPSdNMjAuNTQzIDguNzUwOEwyMC41NDkgOC43NTY4QzIxLjE1IDkuMzU3OCAyMS4xNSAxMC4zMzE4IDIwLjU0OSAxMC45MzI4TDExLjgxNyAxOS42NjQ4TDcuNDUgMTUuMjk2OEM2Ljg1IDE0LjY5NTggNi44NSAxMy43MjE4IDcuNDUgMTMuMTIxOEw3LjQ1NyAxMy4xMTQ4QzguMDU4IDEyLjUxMzggOS4wMzEgMTIuNTEzOCA5LjYzMyAxMy4xMTQ4TDExLjgxNyAxNS4yOTk4TDE4LjM2NyA4Ljc1MDhDMTguOTY4IDguMTQ5OCAxOS45NDIgOC4xNDk4IDIwLjU0MyA4Ljc1MDhaJyBmaWxsPSd3aGl0ZScvJTNFJTNDL2clM0UlM0NkZWZzJTNFJTNDY2xpcFBhdGggaWQ9J2NsaXAwXzhfNDYnJTNFJTNDcmVjdCB3aWR0aD0nMjgnIGhlaWdodD0nMjgnIGZpbGw9J3doaXRlJy8lM0UlM0MvY2xpcFBhdGglM0UlM0MvZGVmcyUzRSUzQy9zdmclM0UiIHRpdGxlPSJWZXJpZmllZCBCYWRnZSBJY29uIiBhbHQ9IlZlcmlmaWVkIEJhZGdlIEljb24iPjwvc3Bhbj4=");
-        var group_owner_name_html = atob("PHNwYW4+PHNwYW4gcm9sZT0iYnV0dG9uIiB0YWJpbmRleD0iMCIgZGF0YS1yYmx4LXZlcmlmaWVkLWJhZGdlLWljb249IiIgc2VjdXJlZC1hcHBsZXMtdmVyaWZpZWQtYmFkZ2UtYnV0dG9uPSJ5ZXNzc3MiIGRhdGEtcmJseC1iYWRnZS1pY29uPSJ0cnVlIiBjbGFzcz0idmVyaWZpZWQtYmFkZ2UtaWNvbi1ncm91cC1vd25lci1jb250YWluZXIiPjxpbWcgY2xhc3M9InZlcmlmaWVkLWJhZGdlLWljb24tZ3JvdXAtb3duZXItcmVuZGVyZWQiIHN0eWxlPSJtYXJnaW4tbGVmdDogNHB4OyIgc3JjPSJkYXRhOmltYWdlL3N2Zyt4bWw7Y2hhcnNldD11dGYtOCwlM0NzdmcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB3aWR0aD0nMjgnIGhlaWdodD0nMjgnIHZpZXdCb3g9JzAgMCAyOCAyOCcgZmlsbD0nbm9uZSclM0UlM0NnIGNsaXAtcGF0aD0ndXJsKCUyM2NsaXAwXzhfNDYpJyUzRSUzQ3JlY3QgeD0nNS44ODgxOCcgd2lkdGg9JzIyLjg5JyBoZWlnaHQ9JzIyLjg5JyB0cmFuc2Zvcm09J3JvdGF0ZSgxNSA1Ljg4ODE4IDApJyBmaWxsPSclMjMwMDY2RkYnLyUzRSUzQ3BhdGggZmlsbC1ydWxlPSdldmVub2RkJyBjbGlwLXJ1bGU9J2V2ZW5vZGQnIGQ9J00yMC41NDMgOC43NTA4TDIwLjU0OSA4Ljc1NjhDMjEuMTUgOS4zNTc4IDIxLjE1IDEwLjMzMTggMjAuNTQ5IDEwLjkzMjhMMTEuODE3IDE5LjY2NDhMNy40NSAxNS4yOTY4QzYuODUgMTQuNjk1OCA2Ljg1IDEzLjcyMTggNy40NSAxMy4xMjE4TDcuNDU3IDEzLjExNDhDOC4wNTggMTIuNTEzOCA5LjAzMSAxMi41MTM4IDkuNjMzIDEzLjExNDhMMTEuODE3IDE1LjI5OThMMTguMzY3IDguNzUwOEMxOC45NjggOC4xNDk4IDE5Ljk0MiA4LjE0OTggMjAuNTQzIDguNzUwOFonIGZpbGw9J3doaXRlJy8lM0UlM0MvZyUzRSUzQ2RlZnMlM0UlM0NjbGlwUGF0aCBpZD0nY2xpcDBfOF80NiclM0UlM0NyZWN0IHdpZHRoPScyOCcgaGVpZ2h0PScyOCcgZmlsbD0nd2hpdGUnLyUzRSUzQy9jbGlwUGF0aCUzRSUzQy9kZWZzJTNFJTNDL3N2ZyUzRSIgdGl0bGU9IlZlcmlmaWVkIEJhZGdlIEljb24iIGFsdD0iVmVyaWZpZWQgQmFkZ2UgSWNvbiI+PC9zcGFuPjwvc3Bhbj4=");
-        var reseller_html = atob("PHNwYW4+PHNwYW4gcm9sZT0iYnV0dG9uIiB0YWJpbmRleD0iMCIgZGF0YS1yYmx4LXZlcmlmaWVkLWJhZGdlLWljb249IiIgc2VjdXJlZC1hcHBsZXMtdmVyaWZpZWQtYmFkZ2UtYnV0dG9uPSJ5ZXNzc3MiIGRhdGEtcmJseC1iYWRnZS1pY29uPSJ0cnVlIiBjbGFzcz0ianNzMjIiPjxpbWcgY2xhc3M9InZlcmlmaWVkLWJhZGdlLWljb24taXRlbS1yZXNlbGxlcnMtcmVuZGVyZWQiIHNyYz0iZGF0YTppbWFnZS9zdmcreG1sO2NoYXJzZXQ9dXRmLTgsJTNDc3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgd2lkdGg9JzI4JyBoZWlnaHQ9JzI4JyB2aWV3Qm94PScwIDAgMjggMjgnIGZpbGw9J25vbmUnJTNFJTNDZyBjbGlwLXBhdGg9J3VybCglMjNjbGlwMF84XzQ2KSclM0UlM0NyZWN0IHg9JzUuODg4MTgnIHdpZHRoPScyMi44OScgaGVpZ2h0PScyMi44OScgdHJhbnNmb3JtPSdyb3RhdGUoMTUgNS44ODgxOCAwKScgZmlsbD0nJTIzMDA2NkZGJy8lM0UlM0NwYXRoIGZpbGwtcnVsZT0nZXZlbm9kZCcgY2xpcC1ydWxlPSdldmVub2RkJyBkPSdNMjAuNTQzIDguNzUwOEwyMC41NDkgOC43NTY4QzIxLjE1IDkuMzU3OCAyMS4xNSAxMC4zMzE4IDIwLjU0OSAxMC45MzI4TDExLjgxNyAxOS42NjQ4TDcuNDUgMTUuMjk2OEM2Ljg1IDE0LjY5NTggNi44NSAxMy43MjE4IDcuNDUgMTMuMTIxOEw3LjQ1NyAxMy4xMTQ4QzguMDU4IDEyLjUxMzggOS4wMzEgMTIuNTEzOCA5LjYzMyAxMy4xMTQ4TDExLjgxNyAxNS4yOTk4TDE4LjM2NyA4Ljc1MDhDMTguOTY4IDguMTQ5OCAxOS45NDIgOC4xNDk4IDIwLjU0MyA4Ljc1MDhaJyBmaWxsPSd3aGl0ZScvJTNFJTNDL2clM0UlM0NkZWZzJTNFJTNDY2xpcFBhdGggaWQ9J2NsaXAwXzhfNDYnJTNFJTNDcmVjdCB3aWR0aD0nMjgnIGhlaWdodD0nMjgnIGZpbGw9J3doaXRlJy8lM0UlM0MvY2xpcFBhdGglM0UlM0MvZGVmcyUzRSUzQy9zdmclM0UiIHRpdGxlPSJWZXJpZmllZCBCYWRnZSBJY29uIiBhbHQ9IlZlcmlmaWVkIEJhZGdlIEljb24iPjwvc3Bhbj48L3NwYW4+");
-        /* The following HTML is encoded in Base64 since javascript may recognize a syntax error due to use of ' or " or brackets. */
+        /* All of these HTML variables are extracted from the Roblox Website and modified to be functioned like the actual badge. */
+        var profile_html = `<span role="button" tabindex="0" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="jss16"><img class="profile-verified-badge-icon" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="[input_id]" alt="[input_id]"></span>`;
+        var name_html = `<img class="verified-badge-icon-catalog-item-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon">`;
+        var name_html_larger = `<span role="button" tabindex="0" secured-apples-verified-badge-button="yessss" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="jss292"><img class="verified-badge-icon-group-shout-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span>`;
+        var name_side_html = `<img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon" style="margin-left: 2px;width: 12px;height: 12px; background: none !important;">`;
+        var name_side_real_html = `<img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon" style="margin-left: 2px;width: 18px;height: 18px; background: none !important;">`;
+        var prompt_html = `<div role="dialog" id="fake_verified_badge"><div class="modal-backdrop in"></div><div role="dialog" tabindex="-1" class="in modal" style="display: block;"><div class="modal-window modal-sm modal-dialog"><div class="modal-content" role="document"><div class="modal-header"><button type="button" class="close" title="close" onclick="document.getElementById('fake_verified_badge').remove()"><span class="icon-close"></span></button><h4 class="modal-title">Verified Badge Add-on</h4></div><div class="modal-body"><div><div><span role="button" tabindex="0" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="hz-centered-badge-container"><img class=" jss272" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%23FF4B00'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge" alt="Verified Badge"></span></div><div>This badge identifies that the user is using Efaz's Roblox Verified Badge Add-on! Please know that that the verified badge is not real and is visually added.</div></div></div><div class="modal-footer"><div class="loading"></div><div class="modal-buttons"><button type="button" class="modal-button btn-primary-md btn-min-width" onclick="window.location.replace('https://en.help.roblox.com/hc/en-us/articles/7997207259156')">Learn More</button><button type="button" class="modal-button btn-control-md btn-min-width" onclick="document.getElementById('fake_verified_badge').remove()">Close</button></div></div></div></div></div></div>`;
+        var game_html = `<span role="button" tabindex="0" secured-apples-verified-badge-button="yessss" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="jss4"><img class="verified-badge-icon-experience-creator" style="margin-left: 4px;width: 16px;height: 16px;" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span>`;
+        var name_small_html = `<span><span role="button" tabindex="0" data-rblx-verified-badge-icon="" secured-apples-verified-badge-button="yessss" data-rblx-badge-icon="true" class="jss22"><img class="verified-badge-icon-member-card-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span></span>`;
+        var group_name_verified_html = `<span role="button" tabindex="0" data-rblx-verified-badge-icon="" secured-apples-verified-badge-button="yessss" data-rblx-badge-icon="true" class="jss250"><img class="verified-badge-icon-group-name-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span>`;
+        var group_owner_name_html = `<span><span role="button" tabindex="0" data-rblx-verified-badge-icon="" secured-apples-verified-badge-button="yessss" data-rblx-badge-icon="true" class="verified-badge-icon-group-owner-container"><img class="verified-badge-icon-group-owner-rendered" style="margin-left: 4px;" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span></span>`;
+        var reseller_html = `<span><span role="button" tabindex="0" data-rblx-verified-badge-icon="" secured-apples-verified-badge-button="yessss" data-rblx-badge-icon="true" class="jss22"><img class="verified-badge-icon-item-resellers-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span></span>`;
+        /* All of these HTML variables are extracted from the Roblox Website and modified to be functioned like the actual badge. */
 
         /* Apply color changes to HTML above */
         if (window.verifiedCheckmarkSettings) {
@@ -62,7 +63,6 @@ function start() {
                 name_html_larger = name_html_larger.replace("%230066FF", custom_checkmark_color);
                 name_side_real_html = name_side_real_html.replace("%230066FF", custom_checkmark_color);
                 name_side_html = name_side_html.replace("%230066FF", custom_checkmark_color);
-                prompt_html = prompt_html.replace("%230066FF", custom_checkmark_color);
                 game_html = game_html.replace("%230066FF", custom_checkmark_color);
                 name_small_html = name_small_html.replace("%230066FF", custom_checkmark_color);
                 group_name_verified_html = group_name_verified_html.replace("%230066FF", custom_checkmark_color);
@@ -81,17 +81,8 @@ function start() {
                         "accept": "application/json",
                         "accept-language": "en-US,en;q=0.9",
                         "cache-control": "no-cache",
-                        "pragma": "no-cache",
-                        "sec-ch-ua": "\"Not_A Brand\";v=\"8\", \"Chromium\";v=\"120\", \"Google Chrome\";v=\"120\"",
-                        "sec-ch-ua-mobile": "?0",
-                        "sec-ch-ua-platform": "\"macOS\"",
-                        "sec-fetch-dest": "empty",
-                        "sec-fetch-mode": "cors",
-                        "sec-fetch-site": "same-origin"
+                        "pragma": "no-cache"
                     },
-                    "referrer": "https://users.roblox.com/docs/index.html",
-                    "referrerPolicy": "strict-origin-when-cross-origin",
-                    "body": null,
                     "method": "GET",
                     "mode": "cors",
                     "credentials": "include"
@@ -115,6 +106,7 @@ function start() {
                 if (json["id"]) {
                     var userId = json["id"];
                     var include_groups = false;
+                    var group_scan = false;
 
                     if (window.verifiedCheckmarkSettings) {
                         if (window.verifiedCheckmarkSettings["groupsIncluded"] == true) {
@@ -122,49 +114,133 @@ function start() {
                         }
                     }
 
-                    async function approvedGroup(id) {
-                        return chrome.storage.sync.get("group_ownership").then((allowed_groups) => {
-                            if (!(typeof (allowed_groups["group_ownership"]) == "object")) {
-                                allowed_groups["group_ownership"] = {}
+                    async function approvedGroup(id, onlycached) {
+                        if (typeof chrome !== 'undefined' && typeof chrome.storage !== 'undefined') {
+                            try {
+                                return chrome.storage.sync.get("group_ownership").then((allowed_groups) => {
+                                    if (!(typeof (allowed_groups["group_ownership"]) == "object")) {
+                                        allowed_groups["group_ownership"] = {}
+                                    }
+
+                                    if (typeof (allowed_groups["group_ownership"][id]) == "object") {
+                                        return allowed_groups["group_ownership"][id]
+                                    } else if (allowed_groups["group_ownership"][id] == false) {
+                                        return { "accepted": false }
+                                    } else {
+                                        if (onlycached == true) {
+                                            return { "accepted": false }
+                                        } else {
+                                            if (group_scan == true) {
+                                                return { "accepted": false }
+                                            }
+                                            group_scan = true
+                                            return fetch(`https://groups.roblox.com/v1/users/${userId}/groups/roles?includeLocked=true&includeNotificationPreferences=true`, { "mode": "cors", "credentials": "include" }).then(grou_res => {
+                                                if (grou_res.ok) {
+                                                    return grou_res.json();
+                                                } else {
+                                                    return null
+                                                }
+                                            }).then(grou_resjson => {
+                                                if (grou_resjson) {
+                                                    if (grou_resjson["data"]) {
+                                                        grou_resjson["data"].forEach((grou_json) => {
+                                                            grou_json = grou_json["group"]
+                                                            if (grou_json["owner"]["userId"] == userId) {
+                                                                grou_json["accepted"] = true
+                                                                allowed_groups["group_ownership"][grou_json["id"]] = grou_json
+                                                            } else {
+                                                                allowed_groups["group_ownership"][grou_json["id"]] = false
+                                                            }
+                                                        })
+                                                        if (allowed_groups["group_ownership"][id]) {
+                                                            return chrome.storage.sync.set(allowed_groups).then(() => {
+                                                                logMessage("Saved to chrome storage!")
+                                                                group_scan = false
+                                                                if (allowed_groups["group_ownership"][id] == false) {
+                                                                    return { "accepted": false }
+                                                                } else {
+                                                                    return allowed_groups["group_ownership"][id]
+                                                                }
+                                                            })
+                                                        } else {
+                                                            return { "accepted": false }
+                                                        }
+                                                    } else {
+                                                        return { "accepted": false }
+                                                    }
+                                                } else {
+                                                    return { "accepted": false }
+                                                }
+                                            });
+                                        }
+                                    }
+                                })
+                            } catch (err) {
+                                if (err.toString().includes("Extension context")) {
+                                    return { "accepted": false }
+                                } else {
+                                    console.warn(`Error with getting approved group: ${err}`)
+                                    return { "accepted": false }
+                                }
+                            }
+                        } else {
+                            if (!(typeof (stored_group_data["group_ownership"]) == "object")) {
+                                stored_group_data["group_ownership"] = {}
                             }
 
-                            if (typeof (allowed_groups["group_ownership"][id]) == "object") {
-                                return allowed_groups["group_ownership"][id]
-                            } else if (allowed_groups["group_ownership"][id] == false) {
+                            if (typeof (stored_group_data["group_ownership"][id]) == "object") {
+                                return stored_group_data["group_ownership"][id]
+                            } else if (stored_group_data["group_ownership"][id] == false) {
                                 return { "accepted": false }
                             } else {
-                                return fetch(`https://groups.roblox.com/v1/groups/${id}`, { "mode": "cors", "credentials": "include" }).then(grou_res => {
-                                    if (grou_res.ok) {
-                                        return grou_res.json();
-                                    } else {
-                                        return null
+                                if (onlycached == true) {
+                                    return { "accepted": false }
+                                } else {
+                                    if (group_scan == true) {
+                                        return { "accepted": false }
                                     }
-                                }).then(grou_json => {
-                                    if (grou_json) {
-                                        if (grou_json["owner"]) {
-                                            if (grou_json["owner"]["userId"] == userId) {
-                                                grou_json["accepted"] = true
-                                                allowed_groups["group_ownership"][id] = grou_json
-                                                return chrome.storage.sync.set(allowed_groups).then(() => {
-                                                    logMessage("Saved to chrome storage!")
-                                                    return allowed_groups["group_ownership"][id]
+                                    group_scan = true
+                                    return fetch(`https://groups.roblox.com/v1/users/${userId}/groups/roles?includeLocked=true&includeNotificationPreferences=true`, { "mode": "cors", "credentials": "include" }).then(grou_res => {
+                                        if (grou_res.ok) {
+                                            return grou_res.json();
+                                        } else {
+                                            return null
+                                        }
+                                    }).then(grou_resjson => {
+                                        if (grou_resjson) {
+                                            if (grou_resjson["data"]) {
+                                                grou_resjson["data"].forEach((grou_json) => {
+                                                    grou_json = grou_json["group"]
+                                                    if (grou_json["owner"]["userId"] == userId) {
+                                                        grou_json["accepted"] = true
+                                                        allowed_groups["group_ownership"][grou_json["id"]] = grou_json
+                                                    } else {
+                                                        allowed_groups["group_ownership"][grou_json["id"]] = false
+                                                    }
                                                 })
-                                            } else {
-                                                allowed_groups["group_ownership"][id] = false
-                                                return chrome.storage.sync.set(allowed_groups).then(() => {
-                                                    logMessage("Saved to chrome storage!")
+                                                if (allowed_groups["group_ownership"][id]) {
+                                                    return chrome.storage.sync.set(allowed_groups).then(() => {
+                                                        logMessage("Saved to chrome storage!")
+                                                        group_scan = false
+                                                        if (allowed_groups["group_ownership"][id] == false) {
+                                                            return { "accepted": false }
+                                                        } else {
+                                                            return allowed_groups["group_ownership"][id]
+                                                        }
+                                                    })
+                                                } else {
                                                     return { "accepted": false }
-                                                })
+                                                }
+                                            } else {
+                                                return { "accepted": false }
                                             }
                                         } else {
                                             return { "accepted": false }
                                         }
-                                    } else {
-                                        return { "accepted": false }
-                                    }
-                                });
+                                    });
+                                }
                             }
-                        })
+                        }
                     }
 
                     function promptMessage() {
@@ -268,6 +344,19 @@ function start() {
                                     }
                                 });
 
+                                var group_payouts_auto = document.getElementsByClassName("avatar-card-name text-lead text-overflow ng-binding ng-scope");
+                                group_payouts_auto = Array.prototype.slice.call(group_payouts_auto);
+                                if (group_payouts_auto.length > 0) {
+                                    group_payouts_auto.forEach((main_name_on_group) => {
+                                        if (main_name_on_group.innerHTML.includes(json["displayName"]) && main_name_on_group.href.includes(`${userId}`)) {
+                                            if (verifiedBadgePlacedAlready(main_name_on_group.parentElement.innerHTML)) {
+                                                return
+                                            }
+                                            main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${generateVerifiedIcon(name_side_html, 2, 12, 12, -1, 16, 16)}`;
+                                        }
+                                    });
+                                }
+
                                 var name_in_group = document.getElementsByClassName("text-overflow font-caption-header member-name ng-binding ng-scope");
                                 name_in_group = Array.prototype.slice.call(name_in_group);
                                 if (name_in_group.length > 0) {
@@ -323,19 +412,6 @@ function start() {
                                             });
                                         }
                                     }
-                                }
-
-                                var group_payouts_auto = document.getElementsByClassName("avatar-card-name text-lead text-overflow ng-binding ng-scope");
-                                group_payouts_auto = Array.prototype.slice.call(group_payouts_auto);
-                                if (group_payouts_auto.length > 0) {
-                                    group_payouts_auto.forEach((main_name_on_group) => {
-                                        if (main_name_on_group.innerHTML.includes(json["displayName"]) && main_name_on_group.href == `https://www.roblox.com/users/${userId}/profile`) {
-                                            if (verifiedBadgePlacedAlready(main_name_on_group.parentElement.innerHTML)) {
-                                                return
-                                            }
-                                            main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${generateVerifiedIcon(name_side_html, 2, 12, 12, -1, 16, 16)}`;
-                                        }
-                                    });
                                 }
 
                                 setTimeout(() => {
@@ -473,11 +549,11 @@ function start() {
                             group_payouts_auto = Array.prototype.slice.call(group_payouts_auto);
                             if (group_payouts_auto.length > 0) {
                                 group_payouts_auto.forEach((main_name_on_group) => {
-                                    if (main_name_on_group.innerHTML.includes(json["displayName"]) && main_name_on_group.href == `https://www.roblox.com/users/${userId}/profile`) {
-                                        if (verifiedBadgePlacedAlready(main_name_on_group.parentElement.outerHTML)) {
-                                            return;
+                                    if (main_name_on_group.innerHTML.includes(json["displayName"]) && main_name_on_group.href.includes(`${userId}`)) {
+                                        if (verifiedBadgePlacedAlready(main_name_on_group.parentElement.innerHTML)) {
+                                            return
                                         }
-                                        main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${generateVerifiedIcon(name_side_html, 2, 12, 12, -1, 15, 15)}`;
+                                        main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${generateVerifiedIcon(name_side_html, 2, 12, 12, -1, 16, 16)}`;
                                     }
                                 });
                             }
@@ -794,6 +870,80 @@ function start() {
                             }, start_time);
                         }
 
+                        function applyAutoChangeFunctionG() {
+                            setTimeout(function () {
+                                var username_containers_12 = document.getElementsByClassName("text-overflow game-card-name ng-binding");
+                                username_containers_12 = Array.prototype.slice.call(username_containers_12);
+                                if (username_containers_12.length > 0) {
+                                    username_containers_12.forEach((user_container) => {
+                                        if (include_groups == true) {
+                                            if (user_container.className == "text-overflow game-card-name ng-binding") {
+                                                if (user_container.parentElement.parentElement.href && user_container.parentElement.parentElement.href.includes("/groups/")) {
+                                                    var group_id = user_container.parentElement.parentElement.href.match(/[0-9]+/)[0];
+                                                    approvedGroup(group_id, true).then((info) => {
+                                                        if (info["accepted"] == true) {
+                                                            if (user_container.className == "text-overflow game-card-name ng-binding") {
+                                                                if (user_container.outerHTML.includes(info["name"])) {
+                                                                    if (!(user_container.parentElement)) {
+                                                                        return;
+                                                                    }
+                                                                    if (verifiedBadgePlacedAlready(user_container.parentElement.outerHTML)) {
+                                                                        return;
+                                                                    }
+                                                                    user_container.outerHTML = `${user_container.outerHTML} ${generateVerifiedIcon(name_side_html, 2, 12, 12, 4, 16, 16)}`;
+                                                                }
+                                                            }
+                                                        }
+                                                    })
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+
+                                var username_containers_13 = document.getElementsByClassName("ng-binding slide-item-name text-overflow groups font-title");
+                                username_containers_13 = Array.prototype.slice.call(username_containers_13);
+                                if (username_containers_13.length > 0) {
+                                    username_containers_13.forEach((user_container) => {
+                                        if (include_groups == true) {
+                                            if (user_container.className == "ng-binding slide-item-name text-overflow groups font-title") {
+                                                if (user_container.parentElement.href && user_container.parentElement.href.includes("/groups/")) {
+                                                    var group_id = user_container.parentElement.href.match(/[0-9]+/)[0];
+                                                    approvedGroup(group_id, true).then((info) => {
+                                                        if (info["accepted"] == true) {
+                                                            if (user_container.className == "ng-binding slide-item-name text-overflow groups font-title") {
+                                                                if (user_container.innerHTML.includes(info["name"])) {
+                                                                    if (verifiedBadgePlacedAlready(user_container.parentElement.outerHTML)) {
+                                                                        return;
+                                                                    }
+                                                                    user_container.innerHTML = `${user_container.innerHTML} ${generateVerifiedIcon(name_side_html, 2, 12, 12, 0, 28, 28)}`;
+                                                                }
+                                                            }
+                                                        }
+                                                    })
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+
+                                var list_item = document.getElementsByTagName("groups-showcase-grid");
+                                list_item = Array.prototype.slice.call(list_item);
+                                if (list_item.length > 0) {
+                                    var catalog_list_header = list_item[0];
+                                    var observer = new MutationObserver(applyAutoChangeFunctionG);
+                                    observer.observe(catalog_list_header, { childList: true });
+                                }
+
+                                var list_item = document.getElementById("groups-switcher");
+                                if (list_item) {
+                                    var catalog_list_header = list_item;
+                                    var observer = new MutationObserver(applyAutoChangeFunctionG);
+                                    observer.observe(catalog_list_header, { childList: true });
+                                }
+                            }, start_time);
+                        }
+
                         var username_containers_2 = document.getElementsByClassName("creator-name text-link");
                         username_containers_2 = Array.prototype.slice.call(username_containers_2);
                         if (username_containers_2.length > 0) {
@@ -861,7 +1011,7 @@ function start() {
                                     if (verifiedBadgePlacedAlready(user_container.parentElement.parentElement.outerHTML)) {
                                         return;
                                     }
-                                    user_container.parentElement.outerHTML = `${user_container.parentElement.outerHTML}${generateVerifiedIcon(game_html, 4, null, null, 0)}`;
+                                    user_container.parentElement.outerHTML = `${user_container.parentElement.outerHTML}${generateVerifiedIcon(game_html, 4,null,null, 2,null,null)}`;
                                 } else if (include_groups == true) {
                                     if (user_container.href && user_container.href.includes("/groups/")) {
                                         var group_id = user_container.href.match(/[0-9]+/)[0];
@@ -870,11 +1020,14 @@ function start() {
                                                 if (!(user_container.parentElement)) {
                                                     return;
                                                 }
+                                                if (!(user_container.parentElement.parentElement)) {
+                                                    return;
+                                                }
                                                 if (user_container.parentElement.outerHTML.includes(info["name"])) {
                                                     if (verifiedBadgePlacedAlready(user_container.parentElement.parentElement.outerHTML)) {
                                                         return;
                                                     }
-                                                    user_container.parentElement.outerHTML = `${user_container.parentElement.outerHTML}${generateVerifiedIcon(game_html, 4, null, null, 0)}`;
+                                                    user_container.parentElement.outerHTML = `${user_container.parentElement.outerHTML}${generateVerifiedIcon(game_html, 4,null,null, 2,null,null)}`;
                                                 }
                                             }
                                         })
@@ -1010,6 +1163,7 @@ function start() {
                             }
                         }, start_time);
                         applyAutoChangeFunctionF()
+                        applyAutoChangeFunctionG()
 
                         setTimeout(addPromptButtonInput, start_time)
 
@@ -1030,20 +1184,30 @@ function start() {
 }
 
 function loader() { // Script Loader
-    if (typeof chrome !== 'undefined') {
+    if (typeof chrome !== 'undefined' && typeof chrome.storage !== 'undefined') {
         chrome.storage.sync.get(["verified_checkmark_settings"], function (items) {
-            if (items["verified_checkmark_settings"]) {
+            if (items["verified_checkmark_settings"] && items["verified_checkmark_settings"]["color"]) {
                 window.verifiedCheckmarkSettings = items["verified_checkmark_settings"]
-                if (typeof (window.verifiedCheckmarkSettings["enabled"]) == "boolean") {
-                    enabled = window.verifiedCheckmarkSettings["enabled"];
+            } else {
+                window.verifiedCheckmarkSettings = {
+                    "allowAlertMessages": false,
+                    "color": "#0066ff",
+                    "enabled": true,
+                    "groupsIncluded": true,
+                    "startTime": "100",
+                    "thanks": true,
+                    "verifiedPrompt": true,
                 }
-                if (typeof (window.verifiedCheckmarkSettings["allowedAlerts"]) == "boolean") {
-                    allow_messages = window.verifiedCheckmarkSettings["allowedAlerts"];
-                }
-                if (typeof (window.verifiedCheckmarkSettings["startTime"]) == "string") {
-                    if (Number(window.verifiedCheckmarkSettings["startTime"])) {
-                        start_time = Number(window.verifiedCheckmarkSettings["startTime"]);
-                    }
+            }
+            if (typeof (window.verifiedCheckmarkSettings["enabled"]) == "boolean") {
+                enabled = window.verifiedCheckmarkSettings["enabled"];
+            }
+            if (typeof (window.verifiedCheckmarkSettings["allowedAlerts"]) == "boolean") {
+                allow_messages = window.verifiedCheckmarkSettings["allowedAlerts"];
+            }
+            if (typeof (window.verifiedCheckmarkSettings["startTime"]) == "string") {
+                if (Number(window.verifiedCheckmarkSettings["startTime"])) {
+                    start_time = Number(window.verifiedCheckmarkSettings["startTime"]);
                 }
             }
             window.addEventListener("DOMContentLoaded", load)
@@ -1066,6 +1230,23 @@ function loader() { // Script Loader
         console.log("Starting Verified Badge Loader: Settings Configuration v2")
         setTimeout(() => { stop_loop = true; }, 30000)
     } else {
+        window.verifiedCheckmarkSettings = {
+            "allowAlertMessages": false,
+            "color": "#0066ff",
+            "enabled": true,
+            "groupsIncluded": true,
+            "startTime": "100",
+            "thanks": true,
+            "verifiedPrompt": true,
+        }
+        if (typeof (window.verifiedCheckmarkSettings["allowedAlerts"]) == "boolean") {
+            allow_messages = window.verifiedCheckmarkSettings["allowedAlerts"];
+        }
+        if (typeof (window.verifiedCheckmarkSettings["startTime"]) == "string") {
+            if (Number(window.verifiedCheckmarkSettings["startTime"])) {
+                start_time = Number(window.verifiedCheckmarkSettings["startTime"]);
+            }
+        }
         window.addEventListener("DOMContentLoaded", load)
         console.log("Starting Verified Badge Loader: Settings Configuration v1")
         setTimeout(() => { stop_loop = true; }, 30000)
