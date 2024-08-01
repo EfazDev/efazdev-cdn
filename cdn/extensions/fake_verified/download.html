@@ -8,16 +8,13 @@
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
 
-            var defaultt = "https://api.efaz.dev/api/projects/fakeVerified/link"
+            var defaultt = "https://api.efaz.dev/api/projects/fakeVerified/packed/chrome"
             var listOfDownloads = {
                 "packed": {
                     "chrome": "https://api.efaz.dev/api/projects/fakeVerified/packed/chrome"
                 },
                 "open-source": {
                     "chrome": "https://api.efaz.dev/api/projects/fakeVerified/open-source/chrome"
-                },
-                "link": {
-                    "all": defaultt
                 }
             }
             if (urlParams.get("type") && urlParams.get("browser")) {

@@ -2,7 +2,7 @@
     "name": "verified_checkmark_settings",
     "settings": {
         "enabled": {
-            "text": "Enable Extension",
+            "text": "Enable Checkmark",
             "type": "checkbox",
             "default": true
         },
@@ -25,7 +25,7 @@
         "groupsIncluded": {
             "text": "Include Groups Owned by You",
             "type": "checkbox",
-            "default": false
+            "default": true
         },
         "verifiedPrompt": {
             "text": "Enable Verified Badge Prompt",
@@ -38,8 +38,8 @@
             "default": false
         }
     },
-    "chromeWebstoreLinkEnabled": false,
-    "uploadedChromeExtensionID": "",
+    "chromeWebstoreLinkEnabled": true,
+    "uploadedChromeExtensionID": "kediboibmfffkllcmgemojpkphmokaea",
     "scanForManifestUpdates": true,
     "onlineManifestFile": "https://cdn.efaz.dev/cdn/extensions/fake_verified/chromeExtension/manifest.json"
 }
