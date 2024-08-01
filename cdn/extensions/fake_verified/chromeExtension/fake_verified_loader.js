@@ -295,6 +295,36 @@ function start() {
                                     }
                                 }
 
+                                if (window.verifiedCheckmarkSettings) {
+                                    if (window.verifiedCheckmarkSettings["groupsIncluded"] == true) {
+                                        var group_list_verified_logo = document.getElementsByTagName("groups-list-item");
+                                        group_list_verified_logo = Array.prototype.slice.call(group_list_verified_logo);
+                                        if (group_list_verified_logo.length > 0) {
+                                            group_list_verified_logo.forEach((main_name_on_group) => {
+                                                if (main_name_on_group.parentElement.getAttribute("ng-repeat")) {
+                                                    if (main_name_on_group.parentElement.getAttribute("ng-repeat").includes("filter: { isOwner: true }")) {
+                                                        if (main_name_on_group.children[0] && main_name_on_group.children[0].children[0] && main_name_on_group.children[0].children[0].children[1]) {
+                                                            main_name_on_group = main_name_on_group.children[0].children[0].children[1];
+                                                            if (verifiedBadgePlacedAlready(main_name_on_group.innerHTML)) {
+                                                                return;
+                                                            }
+                                                            main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${name_side_html}`;
+                                                        }
+                                                    }
+                                                } else if (main_name_on_group.parentElement.className.includes("primary-group")) {
+                                                    if (main_name_on_group.children[0] && main_name_on_group.children[0].children[0] && main_name_on_group.children[0].children[0].children[1]) {
+                                                        main_name_on_group = main_name_on_group.children[0].children[0].children[1];
+                                                        if (verifiedBadgePlacedAlready(main_name_on_group.innerHTML)) {
+                                                            return;
+                                                        }
+                                                        main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${name_side_html}`;
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    }
+                                }
+
                                 var group_payouts_auto = document.getElementsByClassName("avatar-card-name text-lead text-overflow ng-binding ng-scope");
                                 group_payouts_auto = Array.prototype.slice.call(group_payouts_auto);
                                 if (group_payouts_auto.length > 0) {
