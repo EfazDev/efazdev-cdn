@@ -10,7 +10,12 @@ body {
     background-size: cover;
     width: 1920px;
     height: 1080px;
-    background: linear-gradient(225deg, rgba(255, 75, 0, 1) 0%, rgb(207, 207, 0) 60%, rgb(19, 193, 0) 100%);
+    background:rgb(255, 75, 0);
+    background-image: url("https://cdn.efaz.dev/cdn/png/gradient.png") !important;
+    background-repeat: repeat-y !important; 
+    background-blend-mode: normal !important; 
+    background-size: 100vw 100vh;
+    min-height: 100vh;
     font-family: mainfont;
     color: white;
     overflow: hidden;
