@@ -26,5 +26,6 @@
     "chromeWebstoreLinkEnabled": true,
     "uploadedChromeExtensionID": "eghkpfdncgmcaifihhfgihcenboakjck",
     "scanForManifestUpdates": true,
-    "onlineManifestFile": "https://cdn.efaz.dev/cdn/extensions/charts-rename-remover/chromeExtension/manifest.json"
+    "isVersionServer": true,
+    "onlineManifestFile": "https://cdn.efaz.dev/cdn/extensions/versions/public.json"
 }

@@ -1,8 +1,7 @@
 /* 
 
-Efaz's Builder Font Remover
+Efaz's Extension Settings Handler
 By: EfazDev
-Page: https://www.efaz.dev/remove-builder-font
 
 settings.js:
     - Handle setting configurations in settings.html

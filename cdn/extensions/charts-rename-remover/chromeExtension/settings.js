@@ -1,12 +1,11 @@
 /* 
 
-Efaz's Roblox Discover Renamer
+Efaz's Extension Settings Handler
 By: EfazDev
-Page: https://www.efaz.dev/roblox-discover-rename
 
 settings.js:
     - Handle setting configurations in settings.html
-    - Save data to Storage API
+    - Save data to Chrome Storage API
 
 */
 
@@ -136,7 +135,7 @@ async function loadChanges() {
             /* Fulfill basic manifest details */
             var extension_name = man_json["name"]
             var extension_version = man_json["version"]
-            var extension_icon = man_json["icons"]["128"]
+            var extension_icon = man_json["icons"]["16"]
 
             document.getElementById("extens_name").innerHTML = `Extension Name: ${extension_name} ${`<img src="${extension_icon}" height="16" width="16" style="vertical-align: middle;">`}`
             document.getElementById("extens_vers").innerHTML = `v${extension_version}`
@@ -228,7 +227,7 @@ async function loadChanges() {
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
-            background: linear-gradient(225deg, rgba(255, 75, 0, 1) 0%, rgb(207, 207, 0) 60%, rgb(19, 193, 0) 100%);
+            background: linear-gradient(90deg, #ff4b00 0%, #dddd00 33.33%,  #00db00 66.66%, #00d0ff 100%);
             font-family: arial !important;
             color: white;
             overflow: hidden;
@@ -262,8 +261,8 @@ async function loadChanges() {
             margin-right: auto;
         }
         html {
-            width: 500px;
-            height: 460px;
+            width: 100%;
+            height: 100%
         }
         div {
             top: 50%;
@@ -318,21 +317,40 @@ async function loadChanges() {
                         }
                     }).then(j => {
                         if (j) {
-                            var compared = compareVersions(man_json["version"], j["version"])
-                            if (j["version"] == man_json["version"]) {
-                                /* User is running the latest non-beta version. */
-                                console.log("This user is currently at the latest version!")
-                            } else if (compared == -1) {
-                                /* User has an update available */
-                                document.getElementById("extens_vers").innerHTML = `${document.getElementById("extens_vers").innerHTML} | <button id="openChromeExtensionSettings">Update Available to v${j["version"]}!</button>`
-                                document.getElementById("openChromeExtensionSettings").addEventListener("click", () => {
-                                    chrome.tabs.create({url : "chrome://extensions/"}); 
-                                });
-                                console.log(`New version found! v${man_json["version"]} > v${j["version"]}`)
+                            if (settings["isVersionServer"] == true) {
+                                var compared = compareVersions(man_json["version"], j[settings["name"]])
+                                if (j[settings["name"]] == man_json["version"]) {
+                                    /* User is running the latest non-beta version. */
+                                    console.log("This user is currently at the latest version!")
+                                } else if (compared == -1) {
+                                    /* User has an update available */
+                                    document.getElementById("extens_vers").innerHTML = `${document.getElementById("extens_vers").innerHTML} | <button id="openChromeExtensionSettings">Update Available to v${j[settings["name"]]}!</button>`
+                                    document.getElementById("openChromeExtensionSettings").addEventListener("click", () => {
+                                        chrome.tabs.create({ url: "chrome://extensions/" });
+                                    });
+                                    console.log(`New version found! v${man_json["version"]} > v${j[settings["name"]]}`)
+                                } else {
+                                    /* User is running beta version of the extension */
+                                    document.getElementById("extens_vers").innerHTML = `v${extension_version} Beta`
+                                    console.log(`User is in beta version of the extension!`)
+                                }
                             } else {
-                                /* User is running beta version of the extension */
-                                document.getElementById("extens_vers").innerHTML = `v${extension_version} Beta`
-                                console.log(`User is in beta version of the extension!`)
+                                var compared = compareVersions(man_json["version"], j["version"])
+                                if (j["version"] == man_json["version"]) {
+                                    /* User is running the latest non-beta version. */
+                                    console.log("This user is currently at the latest version!")
+                                } else if (compared == -1) {
+                                    /* User has an update available */
+                                    document.getElementById("extens_vers").innerHTML = `${document.getElementById("extens_vers").innerHTML} | <button id="openChromeExtensionSettings">Update Available to v${j["version"]}!</button>`
+                                    document.getElementById("openChromeExtensionSettings").addEventListener("click", () => {
+                                        chrome.tabs.create({ url: "chrome://extensions/" });
+                                    });
+                                    console.log(`New version found! v${man_json["version"]} > v${j["version"]}`)
+                                } else {
+                                    /* User is running beta version of the extension */
+                                    document.getElementById("extens_vers").innerHTML = `v${extension_version} Beta`
+                                    console.log(`User is in beta version of the extension!`)
+                                }
                             }
                         }
                     })

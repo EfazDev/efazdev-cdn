@@ -1,15 +1,14 @@
 /* 
 
-Efaz's Roblox Discover Renamer
+Efaz's Extension Settings Handler
 By: EfazDev
-Page: https://www.efaz.dev/roblox-discover-rename
 
 thank_you.js:
     - Autofill extension details in the thank_you.html file
 
 */
 
-window.onload = function () {
+document.addEventListener("DOMContentLoaded", () => {
     fetch("manifest.json").then(man_res => {
         return man_res.json()
     }).then(man_json => {
@@ -21,4 +20,4 @@ window.onload = function () {
         document.getElementById("extens_name").innerHTML = `Thank you for installing ${extension_name}!`
         document.getElementById("extens_vers").innerHTML = `Version Number: v${extension_version}`
     })
-}
+})

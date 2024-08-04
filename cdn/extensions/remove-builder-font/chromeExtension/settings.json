@@ -41,5 +41,6 @@
     "chromeWebstoreLinkEnabled": true,
     "uploadedChromeExtensionID": "hapbigglmmihgdmpficddjdmfgikalcp",
     "scanForManifestUpdates": true,
-    "onlineManifestFile": "https://cdn.efaz.dev/cdn/extensions/remove-builder-font/chromeExtension/manifest.json"
+    "isVersionServer": true,
+    "onlineManifestFile": "https://cdn.efaz.dev/cdn/extensions/versions/public.json"
 }

@@ -2,7 +2,7 @@ var enabled = true;
 var allow_messages = false;
 var stored_user_data = null;
 var stored_group_data = null;
-var start_time = 100;
+var start_time = 75;
 var stop_loop = false;
 
 function load() {
@@ -213,21 +213,19 @@ function start() {
                                                     grou_json = grou_json["group"]
                                                     if (grou_json["owner"]["userId"] == userId) {
                                                         grou_json["accepted"] = true
-                                                        allowed_groups["group_ownership"][grou_json["id"]] = grou_json
+                                                        stored_group_data["group_ownership"][grou_json["id"]] = grou_json
                                                     } else {
-                                                        allowed_groups["group_ownership"][grou_json["id"]] = false
+                                                        stored_group_data["group_ownership"][grou_json["id"]] = false
                                                     }
                                                 })
-                                                if (allowed_groups["group_ownership"][id]) {
-                                                    return chrome.storage.sync.set(allowed_groups).then(() => {
-                                                        logMessage("Saved to chrome storage!")
-                                                        group_scan = false
-                                                        if (allowed_groups["group_ownership"][id] == false) {
-                                                            return { "accepted": false }
-                                                        } else {
-                                                            return allowed_groups["group_ownership"][id]
-                                                        }
-                                                    })
+                                                if (stored_group_data["group_ownership"][id]) {
+                                                    logMessage("Saved to local storage!")
+                                                    group_scan = false
+                                                    if (stored_group_data["group_ownership"][id] == false) {
+                                                        return { "accepted": false }
+                                                    } else {
+                                                        return stored_group_data["group_ownership"][id]
+                                                    }
                                                 } else {
                                                     return { "accepted": false }
                                                 }
@@ -980,7 +978,7 @@ function start() {
                         username_containers_3 = Array.prototype.slice.call(username_containers_3);
                         if (username_containers_3.length > 0) {
                             username_containers_3.forEach((user_container) => {
-                                if (user_container.outerHTML.includes(`@${json["name"]}`)) {
+                                if (user_container.outerHTML.includes(`@${json["name"]}`) && user_container.className == "text-name text-overflow") {
                                     if (verifiedBadgePlacedAlready(user_container.parentElement.outerHTML)) {
                                         return;
                                     }
@@ -989,7 +987,7 @@ function start() {
                                     if (user_container.href && user_container.href.includes("/groups/")) {
                                         var group_id = user_container.href.match(/[0-9]+/)[0];
                                         approvedGroup(group_id).then((info) => {
-                                            if (info["accepted"] == true) {
+                                            if (info["accepted"] == true && user_container.className == "text-name text-overflow") {
                                                 if (user_container.outerHTML.includes(info["name"])) {
                                                     if (verifiedBadgePlacedAlready(user_container.parentElement.outerHTML)) {
                                                         return;
@@ -1007,7 +1005,7 @@ function start() {
                         username_containers_4 = Array.prototype.slice.call(username_containers_4);
                         if (username_containers_4.length > 0) {
                             username_containers_4.forEach((user_container) => {
-                                if (user_container.parentElement.outerHTML.includes(`@${json["name"]}`)) {
+                                if (user_container.parentElement.outerHTML.includes(`@${json["name"]}`) && user_container.className == "text-name") {
                                     if (verifiedBadgePlacedAlready(user_container.parentElement.parentElement.outerHTML)) {
                                         return;
                                     }
@@ -1016,7 +1014,7 @@ function start() {
                                     if (user_container.href && user_container.href.includes("/groups/")) {
                                         var group_id = user_container.href.match(/[0-9]+/)[0];
                                         approvedGroup(group_id).then((info) => {
-                                            if (info["accepted"] == true) {
+                                            if (info["accepted"] == true && user_container.className == "text-name") {
                                                 if (!(user_container.parentElement)) {
                                                     return;
                                                 }
@@ -1184,7 +1182,7 @@ function start() {
 }
 
 function loader() { // Script Loader
-    if (typeof chrome !== 'undefined' && typeof chrome.storage !== 'undefined') {
+    if (typeof chrome !== 'undefined' && typeof chrome.storage !== 'undefined') { // Chrome Extension >= v1.4.0
         chrome.storage.sync.get(["verified_checkmark_settings"], function (items) {
             if (items["verified_checkmark_settings"] && items["verified_checkmark_settings"]["color"]) {
                 window.verifiedCheckmarkSettings = items["verified_checkmark_settings"]
@@ -1194,7 +1192,7 @@ function loader() { // Script Loader
                     "color": "#0066ff",
                     "enabled": true,
                     "groupsIncluded": true,
-                    "startTime": "100",
+                    "startTime": "75",
                     "thanks": true,
                     "verifiedPrompt": true,
                 }
@@ -1214,7 +1212,7 @@ function loader() { // Script Loader
             console.log("Starting Verified Badge Loader: Settings Configuration v3")
             setTimeout(() => { stop_loop = true; }, 30000)
         })
-    } else if (window.verifiedCheckmarkSettings) {
+    } else if (window.verifiedCheckmarkSettings) { // Chrome Extension < v1.4.0
         if (typeof (window.verifiedCheckmarkSettings["enabled"]) == "boolean") {
             enabled = window.verifiedCheckmarkSettings["enabled"];
         }
@@ -1229,13 +1227,13 @@ function loader() { // Script Loader
         window.addEventListener("DOMContentLoaded", load)
         console.log("Starting Verified Badge Loader: Settings Configuration v2")
         setTimeout(() => { stop_loop = true; }, 30000)
-    } else {
+    } else {  // Javascript URL / Chrome Console
         window.verifiedCheckmarkSettings = {
             "allowAlertMessages": false,
             "color": "#0066ff",
             "enabled": true,
             "groupsIncluded": true,
-            "startTime": "100",
+            "startTime": "75",
             "thanks": true,
             "verifiedPrompt": true,
         }
@@ -1247,9 +1245,10 @@ function loader() { // Script Loader
                 start_time = Number(window.verifiedCheckmarkSettings["startTime"]);
             }
         }
-        window.addEventListener("DOMContentLoaded", load)
+        setTimeout(() => {load()}, start_time)
         console.log("Starting Verified Badge Loader: Settings Configuration v1")
         setTimeout(() => { stop_loop = true; }, 30000)
     }
 }
-loader()
+
+loader() // Start Loader

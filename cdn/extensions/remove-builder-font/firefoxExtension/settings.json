@@ -1,5 +1,5 @@
 {
-    "name": "removeBuilderFont",
+    "name": "removeBuilderFontFirefox",
     "settings": {
         "enabled": {
             "text": "Enable Extension",
@@ -31,5 +31,6 @@
     "chromeWebstoreLinkEnabled": false,
     "uploadedChromeExtensionID": "hapbigglmmihgdmpficddjdmfgikalcp",
     "scanForManifestUpdates": true,
-    "onlineManifestFile": "https://cdn.efaz.dev/cdn/extensions/remove-builder-font/firefoxExtension/manifest.json"
+    "isVersionServer": true,
+    "onlineManifestFile": "https://cdn.efaz.dev/cdn/extensions/versions/public.json"
 }

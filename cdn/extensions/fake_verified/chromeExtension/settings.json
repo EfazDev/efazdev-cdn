@@ -20,7 +20,7 @@
         "startTime": {
             "text": "Start Time (ms)",
             "type": "number",
-            "default": 100
+            "default": 75
         },
         "groupsIncluded": {
             "text": "Include Groups Owned by You",
@@ -36,5 +36,6 @@
     "chromeWebstoreLinkEnabled": true,
     "uploadedChromeExtensionID": "kediboibmfffkllcmgemojpkphmokaea",
     "scanForManifestUpdates": true,
-    "onlineManifestFile": "https://cdn.efaz.dev/cdn/extensions/fake_verified/chromeExtension/manifest.json"
+    "isVersionServer": true,
+    "onlineManifestFile": "https://cdn.efaz.dev/cdn/extensions/versions/public.json"
 }
