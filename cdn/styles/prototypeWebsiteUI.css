@@ -5,8 +5,7 @@
 }
 
 body {
-    background: rgb(255, 75, 0);
-    background-image: url("https://cdn.efaz.dev/cdn/png/gradient.png") !important;
+    background: linear-gradient(90deg, #ff4b00 0%, #dbdb00 40%, #00ce00 60%, #00aad0 100%);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
