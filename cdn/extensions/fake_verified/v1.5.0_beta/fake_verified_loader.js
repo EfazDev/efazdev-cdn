@@ -167,9 +167,6 @@ function start() {
                         /* All of these HTML variables are extracted from the Roblox Website and modified to be functioned like the actual badge. */
 
                         /* Apply color changes to HTML above */
-                        if (user_checkmark_color == "%23FF4B00" || user_checkmark_color == "%23ff4b00") {
-                            user_checkmark_color = "%230066FF" // User tries to impersonate the EfazDev Approved Badge
-                        }
                         if (!(user_checkmark_color == "%230066ff" || user_checkmark_color == "%230066FF")) {  // User's selected color
                             profile_html = profile_html.replace("%230066FF", user_checkmark_color);
                             name_html = name_html.replace("%230066FF", user_checkmark_color);
@@ -181,19 +178,6 @@ function start() {
                             group_name_verified_html = group_name_verified_html.replace("%230066FF", user_checkmark_color);
                             group_owner_name_html = group_owner_name_html.replace("%230066FF", user_checkmark_color);
                             reseller_html = reseller_html.replace("%230066FF", user_checkmark_color);
-                        } else if (approved_efazdev_users[json["id"]]) {
-                            var efazdev_approved_color = "%23FF4B00" // This represents that the user is actually a person who was approved by EfazDev instead of Roblox Moderation.
-                            // However, the verified badge is disabled on default for the user's permission.
-                            profile_html = profile_html.replace("%230066FF", efazdev_approved_color);
-                            name_html = name_html.replace("%230066FF", efazdev_approved_color);
-                            name_html_larger = name_html_larger.replace("%230066FF", efazdev_approved_color);
-                            name_side_real_html = name_side_real_html.replace("%230066FF", efazdev_approved_color);
-                            name_side_html = name_side_html.replace("%230066FF", efazdev_approved_color);
-                            game_html = game_html.replace("%230066FF", efazdev_approved_color);
-                            name_small_html = name_small_html.replace("%230066FF", efazdev_approved_color);
-                            group_name_verified_html = group_name_verified_html.replace("%230066FF", efazdev_approved_color);
-                            group_owner_name_html = group_owner_name_html.replace("%230066FF", efazdev_approved_color);
-                            reseller_html = reseller_html.replace("%230066FF", efazdev_approved_color);
                         }
                         /* Apply color changes to HTML above */
 
