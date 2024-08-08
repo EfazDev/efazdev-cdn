@@ -36,6 +36,11 @@
             "text": "Enable Verified Badge Between Accounts",
             "type": "checkbox",
             "default": true
+        },
+        "allowEfazDevApprovedBadges": {
+            "text": "Allow EfazDev Approved Badges on Users",
+            "type": "checkbox",
+            "default": false
         }
     },
     "chromeWebstoreLinkEnabled": true,

@@ -4,6 +4,7 @@ var stored_group_data = null;
 var temp_stored_user_data = null;
 var start_time = 75;
 var stop_loop = false;
+var approved_efazdev_users = {};
 
 function start() {
     var main_user_id = null
@@ -38,21 +39,17 @@ function start() {
             }
         }
 
-        function loop(id, check) {
-            setTimeout(function () {
-                try { scanUser(id, check) } catch (err) { console.warn(err) }
-            }, start_time)
-        }
-
         async function getUserData(id) {
             if (typeof chrome !== 'undefined' && typeof chrome.storage !== 'undefined') {
-                return chrome.storage.sync.get("user_verification").then((stored_user_data) => {
+                return chrome.storage.local.get("user_verification").then((stored_user_data) => {
                     if (!(typeof (stored_user_data["user_verification"]) == "object")) {
                         stored_user_data["user_verification"] = {}
                     }
 
                     if (stored_user_data["user_verification"][id.toString()]) {
                         return stored_user_data["user_verification"][id.toString()]
+                    } else if (approved_efazdev_users[id.toString()]) {
+                        return approved_efazdev_users[id.toString()]
                     } else {
                         if (id == "*") {
                             return fetch("https://users.roblox.com/v1/users/authenticated", {
@@ -76,7 +73,7 @@ function start() {
                                 if (json) {
                                     stored_user_data["user_verification"][json["id"].toString()] = json
                                     main_user_id = json["id"]
-                                    return chrome.storage.sync.set(stored_user_data).then(() => {
+                                    return chrome.storage.local.set(stored_user_data).then(() => {
                                         return json
                                     })
                                 } else {
@@ -104,8 +101,8 @@ function start() {
                     }
                 });
             } else {
-                if (temp_stored_user_data[id.toString()]) {
-                    return temp_stored_user_data[id.toString()]
+                if (temp_stored_user_data[id]) {
+                    return temp_stored_user_data[id]
                 } else {
                     return fetch("https://users.roblox.com/v1/users/authenticated", {
                         "headers": {
@@ -127,7 +124,7 @@ function start() {
                     }).then(json => {
                         if (json) {
                             if (id == "*") {
-                                temp_stored_user_data[json["id"].toString()] = json
+                                temp_stored_user_data[json["id"]] = json
                                 main_user_id = json["id"]
                                 return json
                             } else {
@@ -144,7 +141,7 @@ function start() {
             }
         }
 
-        async function scanUser(id, custom_checkmark_color) {
+        function scanUser(id) {
             getUserData(id)
                 .then(res => {
                     if (res) {
@@ -156,31 +153,47 @@ function start() {
                 .then(json => {
                     if (json["id"]) {
                         /* All of these HTML variables are extracted from the Roblox Website and modified to be functioned like the actual badge. */
-                        var profile_html = `<span role="button" tabindex="0" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="jss16"><img class="profile-verified-badge-icon" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="[input_id]" alt="[input_id]"></span>`;
-                        var name_html = `<img class="verified-badge-icon-catalog-item-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon">`;
-                        var name_html_larger = `<span role="button" tabindex="0" replicate-badge-addon-prompt="true" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="jss292"><img class="verified-badge-icon-group-shout-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span>`;
-                        var name_side_html = `<img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon" style="margin-left: 2px;width: 12px;height: 12px; background: none !important;">`;
-                        var name_side_real_html = `<img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon" style="margin-left: 2px;width: 18px;height: 18px; background: none !important;">`;
-                        var prompt_html = `<div role="dialog" id="fake_verified_badge"><div class="modal-backdrop in"></div><div role="dialog" tabindex="-1" class="in modal" style="display: block;"><div class="modal-window modal-sm modal-dialog"><div class="modal-content" role="document"><div class="modal-header"><button type="button" class="close" title="close" onclick="document.getElementById('fake_verified_badge').remove()"><span class="icon-close"></span></button><h4 class="modal-title">Verified Badge Add-on</h4></div><div class="modal-body"><div><div><span role="button" tabindex="0" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="hz-centered-badge-container"><img class=" jss272" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%23FF4B00'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge" alt="Verified Badge"></span></div><div>This badge identifies that the user is using Efaz's Roblox Verified Badge Add-on! Please know that that the verified badge is not real and is visually added.</div></div></div><div class="modal-footer"><div class="loading"></div><div class="modal-buttons"><button type="button" class="modal-button btn-primary-md btn-min-width" onclick="window.location.replace('https://en.help.roblox.com/hc/en-us/articles/7997207259156')">Learn More</button><button type="button" class="modal-button btn-control-md btn-min-width" onclick="document.getElementById('fake_verified_badge').remove()">Close</button></div></div></div></div></div></div>`;
-                        var game_html = `<span role="button" tabindex="0" replicate-badge-addon-prompt="true" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="jss4"><img class="verified-badge-icon-experience-creator" style="margin-left: 4px;width: 16px;height: 16px;" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span>`;
-                        var name_small_html = `<span><span role="button" tabindex="0" data-rblx-verified-badge-icon="" replicate-badge-addon-prompt="true" data-rblx-badge-icon="true" class="jss22"><img class="verified-badge-icon-member-card-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span></span>`;
-                        var group_name_verified_html = `<span role="button" tabindex="0" data-rblx-verified-badge-icon="" replicate-badge-addon-prompt="true" data-rblx-badge-icon="true" class="jss250"><img class="verified-badge-icon-group-name-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span>`;
-                        var group_owner_name_html = `<span><span role="button" tabindex="0" data-rblx-verified-badge-icon="" replicate-badge-addon-prompt="true" data-rblx-badge-icon="true" class="verified-badge-icon-group-owner-container"><img class="verified-badge-icon-group-owner-rendered" style="margin-left: 4px;" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span></span>`;
-                        var reseller_html = `<span><span role="button" tabindex="0" data-rblx-verified-badge-icon="" replicate-badge-addon-prompt="true" data-rblx-badge-icon="true" class="jss22"><img class="verified-badge-icon-item-resellers-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span></span>`;
+                        var profile_html = `<span efaz-verified-badge-addon="true" role="button" tabindex="0" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="jss16"><img class="profile-verified-badge-icon" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="[input_id]" alt="[input_id]"></span>`;
+                        var name_html = `<img efaz-verified-badge-addon="true" class="verified-badge-icon-catalog-item-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon">`;
+                        var name_html_larger = `<span efaz-verified-badge-addon="true" role="button" tabindex="0" replicate-badge-addon-prompt="true" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="jss292"><img class="verified-badge-icon-group-shout-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span>`;
+                        var name_side_html = `<img efaz-verified-badge-addon="true" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon" style="margin-left: 2px;width: 12px;height: 12px; background: none !important;">`;
+                        var name_side_real_html = `<img efaz-verified-badge-addon="true" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon" style="margin-left: 2px;width: 18px;height: 18px; background: none !important;">`;
+                        var prompt_html = `<div efaz-verified-badge-addon="true" role="dialog" id="fake_verified_badge"><div class="modal-backdrop in"></div><div role="dialog" tabindex="-1" class="in modal" style="display: block;"><div class="modal-window modal-sm modal-dialog"><div class="modal-content" role="document"><div class="modal-header"><button type="button" class="close" title="close" onclick="document.getElementById('fake_verified_badge').remove()"><span class="icon-close"></span></button><h4 class="modal-title">Verified Badge Add-on</h4></div><div class="modal-body"><div><div><span role="button" tabindex="0" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="hz-centered-badge-container"><img class=" jss272" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%23FF4B00'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge" alt="Verified Badge"></span></div><div>This badge identifies that the user is using Efaz's Roblox Verified Badge Add-on! Please know that that the verified badge is not real and is visually added.</div></div></div><div class="modal-footer"><div class="loading"></div><div class="modal-buttons"><button type="button" class="modal-button btn-primary-md btn-min-width" onclick="window.location.replace('https://en.help.roblox.com/hc/en-us/articles/7997207259156')">Learn More</button><button type="button" class="modal-button btn-control-md btn-min-width" onclick="document.getElementById('fake_verified_badge').remove()">Close</button></div></div></div></div></div></div>`;
+                        var game_html = `<span efaz-verified-badge-addon="true" role="button" tabindex="0" replicate-badge-addon-prompt="true" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="jss4"><img class="verified-badge-icon-experience-creator" style="margin-left: 4px;width: 16px;height: 16px;" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span>`;
+                        var name_small_html = `<span><span efaz-verified-badge-addon="true" role="button" tabindex="0" data-rblx-verified-badge-icon="" replicate-badge-addon-prompt="true" data-rblx-badge-icon="true" class="jss22"><img class="verified-badge-icon-member-card-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span></span>`;
+                        var group_name_verified_html = `<span efaz-verified-badge-addon="true" role="button" tabindex="0" data-rblx-verified-badge-icon="" replicate-badge-addon-prompt="true" data-rblx-badge-icon="true" class="jss250"><img class="verified-badge-icon-group-name-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span>`;
+                        var group_owner_name_html = `<span><span efaz-verified-badge-addon="true" role="button" tabindex="0" data-rblx-verified-badge-icon="" replicate-badge-addon-prompt="true" data-rblx-badge-icon="true" class="verified-badge-icon-group-owner-container"><img class="verified-badge-icon-group-owner-rendered" style="margin-left: 4px;" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span></span>`;
+                        var reseller_html = `<span><span efaz-verified-badge-addon="true" role="button" tabindex="0" data-rblx-verified-badge-icon="" replicate-badge-addon-prompt="true" data-rblx-badge-icon="true" class="jss22"><img class="verified-badge-icon-item-resellers-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span></span>`;
                         /* All of these HTML variables are extracted from the Roblox Website and modified to be functioned like the actual badge. */
 
                         /* Apply color changes to HTML above */
-                        if (custom_checkmark_color) {
-                            profile_html = profile_html.replace("%230066FF", custom_checkmark_color);
-                            name_html = name_html.replace("%230066FF", custom_checkmark_color);
-                            name_html_larger = name_html_larger.replace("%230066FF", custom_checkmark_color);
-                            name_side_real_html = name_side_real_html.replace("%230066FF", custom_checkmark_color);
-                            name_side_html = name_side_html.replace("%230066FF", custom_checkmark_color);
-                            game_html = game_html.replace("%230066FF", custom_checkmark_color);
-                            name_small_html = name_small_html.replace("%230066FF", custom_checkmark_color);
-                            group_name_verified_html = group_name_verified_html.replace("%230066FF", custom_checkmark_color);
-                            group_owner_name_html = group_owner_name_html.replace("%230066FF", custom_checkmark_color);
-                            reseller_html = reseller_html.replace("%230066FF", custom_checkmark_color);
+                        if (user_checkmark_color == "%23FF4B00" || user_checkmark_color == "%23ff4b00") {
+                            user_checkmark_color = "%230066FF" // User tries to impersonate the EfazDev Approved Badge
+                        }
+                        if (!(user_checkmark_color == "%230066ff" || user_checkmark_color == "%230066FF")) {  // User's selected color
+                            profile_html = profile_html.replace("%230066FF", user_checkmark_color);
+                            name_html = name_html.replace("%230066FF", user_checkmark_color);
+                            name_html_larger = name_html_larger.replace("%230066FF", user_checkmark_color);
+                            name_side_real_html = name_side_real_html.replace("%230066FF", user_checkmark_color);
+                            name_side_html = name_side_html.replace("%230066FF", user_checkmark_color);
+                            game_html = game_html.replace("%230066FF", user_checkmark_color);
+                            name_small_html = name_small_html.replace("%230066FF", user_checkmark_color);
+                            group_name_verified_html = group_name_verified_html.replace("%230066FF", user_checkmark_color);
+                            group_owner_name_html = group_owner_name_html.replace("%230066FF", user_checkmark_color);
+                            reseller_html = reseller_html.replace("%230066FF", user_checkmark_color);
+                        } else if (approved_efazdev_users[json["id"]]) {
+                            var efazdev_approved_color = "%23FF4B00" // This represents that the user is actually a person who was approved by EfazDev instead of Roblox Moderation.
+                            // However, the verified badge is disabled on default for the user's permission.
+                            profile_html = profile_html.replace("%230066FF", efazdev_approved_color);
+                            name_html = name_html.replace("%230066FF", efazdev_approved_color);
+                            name_html_larger = name_html_larger.replace("%230066FF", efazdev_approved_color);
+                            name_side_real_html = name_side_real_html.replace("%230066FF", efazdev_approved_color);
+                            name_side_html = name_side_html.replace("%230066FF", efazdev_approved_color);
+                            game_html = game_html.replace("%230066FF", efazdev_approved_color);
+                            name_small_html = name_small_html.replace("%230066FF", efazdev_approved_color);
+                            group_name_verified_html = group_name_verified_html.replace("%230066FF", efazdev_approved_color);
+                            group_owner_name_html = group_owner_name_html.replace("%230066FF", efazdev_approved_color);
+                            reseller_html = reseller_html.replace("%230066FF", efazdev_approved_color);
                         }
                         /* Apply color changes to HTML above */
 
@@ -203,7 +216,7 @@ function start() {
                                         }
 
                                         if (typeof (allowed_groups["group_ownership"][id]) == "object") {
-                                            if (allowed_groups["group_ownership"][id]["owner"] == id) {
+                                            if (allowed_groups["group_ownership"][id]["owner"] == userId) {
                                                 allowed_groups["group_ownership"][id]["accepted"] = true
                                                 return chrome.storage.local.set(allowed_groups).then(() => {
                                                     logMessage("Saved to chrome storage!")
@@ -355,6 +368,12 @@ function start() {
                             }
                         }
 
+                        function generateDOMElement(html) {
+                            var div = document.createElement("div");
+                            div.innerHTML = html.trim();
+                            return div.firstChild;
+                        }
+
                         function addPromptButtonInput() {
                             var list_item = document.getElementsByTagName("span");
                             list_item = Array.prototype.slice.call(list_item);
@@ -375,21 +394,42 @@ function start() {
                             profile_html = profile_html.replace("[input_id]", userId).replace("[input_id]", userId).replace("[input_id]", userId).replace("[input_id]", userId);
 
                             if (window.location.pathname == `/users/${userId}/profile` || window.location.pathname == `/users/${userId}/profile/`) {
-                                var main_headers = document.getElementsByClassName("header-title");
+                                var main_headers = document.getElementsByClassName("profile-name text-overflow");
                                 main_headers = Array.prototype.slice.call(main_headers);
                                 if (main_headers.length > 0) {
-                                    var premium_logos = document.getElementsByClassName("premium-badge-right-aligned");
-                                    premium_logos = Array.prototype.slice.call(premium_logos);
-                                    if (premium_logos.length > 0) {
-                                        premium_logos.forEach((premium) => {
-                                            premium.remove();
-                                        });
-                                    }
                                     main_headers.forEach((main_header) => {
-                                        if (verifiedBadgePlacedAlready(main_header.innerHTML)) {
-                                            return;
+                                        if (main_header.offsetParent && main_header.offsetParent.className == "header-title") {
+                                            if (verifiedBadgePlacedAlready(main_header.offsetParent.innerHTML)) {
+                                                return;
+                                            }
+                                            if (main_header.offsetParent.innerHTML.includes(json["displayName"])) {
+                                                main_header.offsetParent.appendChild(generateDOMElement(profile_html))
+                                            }
+                                        } else if (main_header.parentElement && main_header.parentElement.className == "header-title") {
+                                            if (verifiedBadgePlacedAlready(main_header.parentElement.innerHTML)) {
+                                                return;
+                                            }
+                                            if (main_header.parentElement.innerHTML.includes(json["displayName"])) {
+                                                main_header.parentElement.appendChild(generateDOMElement(profile_html))
+                                            }
+                                        } else if (main_header.parentElement && main_header.parentElement.parentElement && main_header.parentElement.parentElement.className == "header-title") {
+                                            if (verifiedBadgePlacedAlready(main_header.parentElement.parentElement.innerHTML)) {
+                                                return;
+                                            }
+                                            if (main_header.parentElement.parentElement.innerHTML.includes(json["displayName"])) {
+                                                main_header.parentElement.parentElement.appendChild(generateDOMElement(profile_html))
+                                            }
                                         }
-                                        main_header.innerHTML = main_header.innerHTML + profile_html;
+                                    });
+                                }
+
+                                var premium_logos = document.getElementsByClassName("premium-badge-right-aligned");
+                                premium_logos = Array.prototype.slice.call(premium_logos);
+                                if (premium_logos.length > 0) {
+                                    premium_logos.forEach((premium) => {
+                                        if (premium && premium.className == "premium-badge-right-aligned") {
+                                            premium.remove();
+                                        }
                                     });
                                 }
                             }
@@ -490,6 +530,21 @@ function start() {
                                                                     return;
                                                                 }
                                                                 main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${name_side_html}`;
+                                                            } else {
+                                                                if (main_name_on_group.children[0] && main_name_on_group.children[0].children[0] && main_name_on_group.children[0].children[0].children[1]) {
+                                                                    if (main_name_on_group.children[0].href) {
+                                                                        var group_id = main_name_on_group.children[0].href.match(/[0-9]+/)[0];
+                                                                        approvedGroup(group_id).then((info) => {
+                                                                            if (info["accepted"] == true) {
+                                                                                main_name_on_group = main_name_on_group.children[0].children[0].children[1];
+                                                                                if (verifiedBadgePlacedAlready(main_name_on_group.innerHTML)) {
+                                                                                    return;
+                                                                                }
+                                                                                main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${name_side_html}`;
+                                                                            }
+                                                                        })
+                                                                    }
+                                                                }
                                                             }
                                                         } else {
                                                             if (main_name_on_group.children[0] && main_name_on_group.children[0].children[0] && main_name_on_group.children[0].children[0].children[1]) {
@@ -632,6 +687,21 @@ function start() {
                                                             }
                                                             main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${name_side_html}`;
                                                         }
+                                                    } else {
+                                                        if (main_name_on_group.children[0] && main_name_on_group.children[0].children[0] && main_name_on_group.children[0].children[0].children[1]) {
+                                                            if (main_name_on_group.children[0].href) {
+                                                                var group_id = main_name_on_group.children[0].href.match(/[0-9]+/)[0];
+                                                                approvedGroup(group_id).then((info) => {
+                                                                    if (info["accepted"] == true) {
+                                                                        main_name_on_group = main_name_on_group.children[0].children[0].children[1];
+                                                                        if (verifiedBadgePlacedAlready(main_name_on_group.innerHTML)) {
+                                                                            return;
+                                                                        }
+                                                                        main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${name_side_html}`;
+                                                                    }
+                                                                })
+                                                            }
+                                                        }
                                                     }
                                                 } else {
                                                     if (main_name_on_group.children[0] && main_name_on_group.children[0].children[0] && main_name_on_group.children[0].children[0].children[1]) {
@@ -689,8 +759,7 @@ function start() {
                                                     if (verifiedBadgePlacedAlready(main_name_on_group.innerHTML)) {
                                                         return;
                                                     }
-                                                    main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${name_side_html}`;
-
+                                                    main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${generateVerifiedIcon(name_side_html, 2, 12, 12, 0, 16, 16)}`
                                                 }
                                             }
                                         });
@@ -1065,6 +1134,47 @@ function start() {
                                 }, start_time);
                             }
 
+                            function applyAutoChangeFunctionH() {
+                                setTimeout(function () {
+                                    var username_containers_12 = document.getElementsByClassName("paired-name message-summary-username positionAboveLink font-header-2 ng-scope");
+                                    username_containers_12 = Array.prototype.slice.call(username_containers_12);
+                                    if (username_containers_12.length > 0) {
+                                        username_containers_12.forEach((user_container) => {
+                                            if (user_container.children[0] && user_container.className == "paired-name message-summary-username positionAboveLink font-header-2 ng-scope") {
+                                                if (verifiedBadgePlacedAlready(user_container.children[0].outerHTML)) {
+                                                    return;
+                                                }
+                                                if (user_container.innerHTML.includes(`@${json["name"]}`)) {
+                                                    user_container.children[0].innerHTML = `${user_container.children[0].innerHTML}${game_html}`;
+                                                }
+                                            }
+                                        });
+                                    }
+
+                                    var username_containers_13 = document.getElementsByClassName("paired-name text-name username-container font-header-2");
+                                    username_containers_13 = Array.prototype.slice.call(username_containers_13);
+                                    if (username_containers_13.length > 0) {
+                                        username_containers_13.forEach((user_container) => {
+                                            if (user_container.children[0] && user_container.className == "paired-name text-name username-container font-header-2") {
+                                                if (verifiedBadgePlacedAlready(user_container.children[0].outerHTML)) {
+                                                    return;
+                                                }
+                                                if (user_container.innerHTML.includes(`@${json["name"]}`)) {
+                                                    user_container.children[0].innerHTML = `${user_container.children[0].innerHTML}${game_html}`;
+                                                }
+                                            }
+                                        });
+                                    }
+
+                                    var list_item = document.getElementById("rbx-tabs-horizontal rbx-scrollable-tabs-horizontal roblox-messages-container ng-scope");
+                                    if (list_item) {
+                                        var catalog_list_header = list_item;
+                                        var observer = new MutationObserver(applyAutoChangeFunctionH);
+                                        observer.observe(catalog_list_header, { childList: true });
+                                    }
+                                }, start_time);
+                            }
+
                             var username_containers_2 = document.getElementsByClassName("creator-name text-link");
                             username_containers_2 = Array.prototype.slice.call(username_containers_2);
                             if (username_containers_2.length > 0) {
@@ -1128,7 +1238,7 @@ function start() {
                             username_containers_4 = Array.prototype.slice.call(username_containers_4);
                             if (username_containers_4.length > 0) {
                                 username_containers_4.forEach((user_container) => {
-                                    if (user_container.parentElement.outerHTML.includes(`@${json["name"]}`) && user_container.className == "text-name") {
+                                    if (user_container.parentElement.outerHTML.includes(`${json["name"]}`) && user_container.parentElement.outerHTML.includes(json["id"]) && user_container.className == "text-name") {
                                         if (verifiedBadgePlacedAlready(user_container.parentElement.parentElement.outerHTML)) {
                                             return;
                                         }
@@ -1221,6 +1331,21 @@ function start() {
                                         }
                                     });
                                 }
+
+                                var friends_username_containers = document.getElementsByClassName("text-link friend-link ng-isolate-scope");
+                                friends_username_containers = Array.prototype.slice.call(friends_username_containers);
+                                if (friends_username_containers.length > 0) {
+                                    friends_username_containers.forEach((user_container) => {
+                                        if (user_container.href && user_container.className == "text-link friend-link ng-isolate-scope") {
+                                            var userIdd = user_container.href.match(/[0-9]+/)[0];
+                                            if (userId == userIdd) {
+                                                if (user_container.innerHTML.includes(`class="hide"`) && user_container.innerHTML.includes(json["displayName"])) {
+                                                    user_container.innerHTML = user_container.innerHTML.replaceAll(`class="hide"`, "")
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
                             }, start_time);
 
                             setTimeout(function () {
@@ -1285,15 +1410,13 @@ function start() {
                             }, start_time);
                             applyAutoChangeFunctionF()
                             applyAutoChangeFunctionG()
+                            applyAutoChangeFunctionH()
 
                             setTimeout(addPromptButtonInput, start_time)
 
                             window.set_verified = true
                         }
                         logMessage("Successfully loaded verified badge system!")
-                        if (stop_loop == false) {
-                            loop(userId, custom_checkmark_color)
-                        }
                     } else {
                         if (allow_messages == true) alert("Fake Verified Badge couldn't be applied since we couldn't figure what your User ID is.");
                     }
@@ -1302,24 +1425,59 @@ function start() {
                     if (allow_messages == true) alert("We couldn't apply the verified badge due to an error! Sorry!");
                 })
         }
-        scanUser("*", user_checkmark_color).then(() => {
+
+        function loop(id) {
+            if (stop_loop == false) {
+                if (!(id == null)) {
+                    try { scanUser(id) } catch (err) { console.warn(err) }
+                }
+                if (id == null) {
+                    setTimeout(function () {
+                        loop(main_user_id)
+                    }, start_time)
+                } else if (id == "*") {
+                    setTimeout(function () {
+                        loop(main_user_id)
+                    }, start_time)
+                } else {
+                    setTimeout(function () {
+                        loop(id)
+                    }, start_time)
+                }
+            }
+        }
+
+        loop("*")
+        setTimeout(function () {
             if (typeof chrome !== 'undefined' && typeof chrome.storage !== 'undefined') {
                 if (window.verifiedCheckmarkSettings) {
                     var allow_cross_accounts = window.verifiedCheckmarkSettings["verifiedBadgeBetweenAccounts"]
                     if (allow_cross_accounts) {
-                        chrome.storage.sync.get("user_verification").then((stored_user_data) => {
-                            var ids = Object.keys(stored_user_data)
-                            var set_user_id = main_user_id
-                            ids.forEach((user_id) => {
-                                if (!(user_id == set_user_id)) {
-                                    scanUser(user_id, user_checkmark_color)
-                                }
-                            })
+                        getUserData("*").then(json => {
+                            if (json["id"]) {
+                                chrome.storage.local.get("user_verification").then((stored_user_data) => {
+                                    if (stored_user_data["user_verification"]) {
+                                        var ids = Object.keys(stored_user_data["user_verification"])
+                                        ids.forEach((user_id) => {
+                                            if (!(user_id == json["id"])) {
+                                                loop(user_id)
+                                            }
+                                        })
+                                    }
+                                })
+                            }
+                        })
+                    }
+                    if (window.verifiedCheckmarkSettings["allowEfazDevApprovedBadges"] == true) {
+                        var ids = Object.keys(approved_efazdev_users)
+                        ids.forEach((user_id) => {
+                            var approved_user_info = approved_efazdev_users[user_id]
+                            loop(approved_user_info["id"])
                         })
                     }
                 }
             }
-        })
+        }, start_time * 5)
     }
 }
 
@@ -1337,7 +1495,8 @@ function loader() { // Script Loader
                     "startTime": "75",
                     "thanks": true,
                     "verifiedPrompt": true,
-                    "verifiedBadgeBetweenAccounts": true
+                    "verifiedBadgeBetweenAccounts": true,
+                    "allowEfazDevApprovedBadges": false
                 }
             }
             if (typeof (window.verifiedCheckmarkSettings["enabled"]) == "boolean") {
@@ -1351,9 +1510,29 @@ function loader() { // Script Loader
                     start_time = Number(window.verifiedCheckmarkSettings["startTime"]);
                 }
             }
-            window.addEventListener("DOMContentLoaded", start)
-            console.log("Starting Verified Badge Loader: Settings Configuration v3")
-            setTimeout(() => { stop_loop = true; }, 30000)
+            if (window.verifiedCheckmarkSettings["allowEfazDevApprovedBadges"] == true) {
+                fetch("https://cdn.efaz.dev/cdn/extensions/fake_verified/approved_users.json").then(appr_res => {
+                    if (appr_res.ok) {
+                        return appr_res.json()
+                    } else {
+                        return {}
+                    }
+                }).then(appr_json => {
+                    approved_efazdev_users = appr_json
+                    window.addEventListener("DOMContentLoaded", start)
+                    console.log("Starting Verified Badge Loader: Settings Configuration v3")
+                    setTimeout(() => { stop_loop = true; }, 30000)
+                }).catch(err => {
+                    console.warn(err)
+                    window.addEventListener("DOMContentLoaded", start)
+                    console.log("Starting Verified Badge Loader: Settings Configuration v3")
+                    setTimeout(() => { stop_loop = true; }, 30000)
+                })
+            } else {
+                window.addEventListener("DOMContentLoaded", start)
+                console.log("Starting Verified Badge Loader: Settings Configuration v3")
+                setTimeout(() => { stop_loop = true; }, 30000)
+            }
         })
     } else if (window.verifiedCheckmarkSettings) { // Chrome Extension < v1.4.0
         if (typeof (window.verifiedCheckmarkSettings["enabled"]) == "boolean") {
@@ -1367,6 +1546,7 @@ function loader() { // Script Loader
                 start_time = Number(window.verifiedCheckmarkSettings["startTime"]);
             }
         }
+
         window.addEventListener("DOMContentLoaded", start)
         console.log("Starting Verified Badge Loader: Settings Configuration v2")
         setTimeout(() => { stop_loop = true; }, 30000)
@@ -1379,7 +1559,8 @@ function loader() { // Script Loader
             "startTime": "75",
             "thanks": true,
             "verifiedPrompt": true,
-            "verifiedBadgeBetweenAccounts": true
+            "verifiedBadgeBetweenAccounts": true,
+            "allowEfazDevApprovedBadges": false
         }
         if (typeof (window.verifiedCheckmarkSettings["allowedAlerts"]) == "boolean") {
             allow_messages = window.verifiedCheckmarkSettings["allowedAlerts"];

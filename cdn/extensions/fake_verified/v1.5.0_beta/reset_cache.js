@@ -8,7 +8,7 @@ window.addEventListener("load", () => {
 
     var r = document.getElementById("reset_user_cache")
     r.addEventListener("click", () => {
-        chrome.storage.sync.set({ "user_verification": {} }, () => {
+        chrome.storage.local.set({ "user_verification": {} }, () => {
             alert("Successfully cleared all user cache!")
         });
     })
