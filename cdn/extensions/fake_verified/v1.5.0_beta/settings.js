@@ -223,14 +223,36 @@ async function loadChanges() {
                 document.getElementById("css").innerHTML = `${document.getElementById("css").innerHTML}
         /* This stylesheet is exported for when your computer has no internet. */
 
-        body {
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-            background: linear-gradient(90deg, #ff4b00 0%, #dddd00 33.33%,  #00db00 66.66%, #00d0ff 100%);
-            font-family: arial !important;
-            color: white;
-            overflow: hidden;
+        @media (prefers-color-scheme: light) {
+            body {
+                min-height: 100%;
+                min-width: 100%;
+                background: linear-gradient(60deg, #ff4b00 0%, #dbdb00 40%, #00ce00 60%, #00aad0 100%);
+                background-repeat: repeat-y !important;
+                background-blend-mode: normal !important;
+                background-size: 100vw 100vh;
+                min-height: 100vh;
+                font-family: mainfont;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                color: white;
+            }
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                min-height: 100%;
+                min-width: 100%;
+                background: linear-gradient(60deg, #4e1700 0%, #4e4e00 40%, #004200 60%, #003d4b 100%);
+                background-repeat: repeat-y !important;
+                background-blend-mode: normal !important;
+                background-size: 100vw 100vh;
+                min-height: 100vh;
+                font-family: mainfont;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                color: white;
+            }
         }
         p,
         h1,

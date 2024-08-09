@@ -2,7 +2,7 @@ var enabled = true;
 var allow_messages = false;
 var stored_group_data = {};
 var temp_stored_user_data = {};
-var start_time = 75;
+var start_time = 200;
 var stop_loop = false;
 var approved_efazdev_users = {};
 var group_scan = false;
@@ -192,6 +192,7 @@ function start() {
                                 group_name_verified_html = group_name_verified_html.replace("%230066FF", hex_color);
                                 group_owner_name_html = group_owner_name_html.replace("%230066FF", hex_color);
                                 reseller_html = reseller_html.replace("%230066FF", hex_color);
+                                efaz_approved_prompt_html  = efaz_approved_prompt_html.replace("%23FF4B00", hex_color);
                             }
                             /* Apply color changes to HTML above */
                             var include_groups = false;
@@ -455,7 +456,7 @@ function start() {
                                 }
 
                                 function applyCallback() {
-                                    
+
                                     if (window.location.pathname.startsWith("/groups/")) {
                                         var identified_id = window.location.pathname.match(/[0-9]+/)[0];
                                         var group_owners = document.getElementsByClassName("text-link ng-binding ng-scope");
@@ -575,10 +576,10 @@ function start() {
                                             if (group_wall.length > 0) {
                                                 group_wall.forEach((main_name_on_group) => {
                                                     if (main_name_on_group.outerHTML.includes(json["displayName"]) && main_name_on_group.className == "text-name ng-binding ng-scope" && main_name_on_group.href == `https://www.roblox.com/users/${json["id"]}/profile`) {
-                                                        if (verifiedBadgePlacedAlready(main_name_on_group.parentElement.outerHTML)) {
+                                                        if (verifiedBadgePlacedAlready(main_name_on_group.innerHTML)) {
                                                             return;
                                                         }
-                                                        main_name_on_group.outerHTML = `${main_name_on_group.outerHTML} ${generateVerifiedIcon(name_side_html, 2, 14, 14, 0, 16, 16)}`;
+                                                        main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${generateVerifiedIcon(name_side_html, 2, 12, 12, 0, 16, 16)}`;
                                                     }
                                                 });
                                             }
@@ -681,7 +682,7 @@ function start() {
                                 }
 
                                 function applyAutoChangeFunctionB() {
-                                    
+
                                     setTimeout(function () {
                                         var username_containers_2 = document.getElementsByClassName("creator-name text-link");
                                         username_containers_2 = Array.prototype.slice.call(username_containers_2);
@@ -766,7 +767,7 @@ function start() {
                                 }
 
                                 function applyAutoChangeFunctionC() {
-                                    
+
                                     setTimeout(function () {
                                         var username_containers_7 = document.getElementsByClassName("avatar-name text-overflow ng-binding");
                                         username_containers_7 = Array.prototype.slice.call(username_containers_7);
@@ -796,7 +797,7 @@ function start() {
                                 }
 
                                 function applyAutoChangeFunctionD() { // Unused since inventory doesn't show verified badges.
-                                    
+
                                     setTimeout(function () {
                                         var username_containers_9 = document.getElementsByClassName("creator-name text-overflow text-link ng-binding");
                                         username_containers_9 = Array.prototype.slice.call(username_containers_9);
@@ -840,7 +841,7 @@ function start() {
                                 }
 
                                 function applyAutoChangeFunctionE() {
-                                    
+
                                     setTimeout(function () {
                                         var username_containers_10 = document.getElementsByClassName("text-name username ng-binding");
                                         username_containers_10 = Array.prototype.slice.call(username_containers_10);
@@ -866,7 +867,7 @@ function start() {
                                 }
 
                                 function applyAutoChangeFunctionF() {
-                                    
+
                                     setTimeout(function () {
                                         var username_containers_11 = document.getElementsByClassName("text-overflow avatar-name");
                                         username_containers_11 = Array.prototype.slice.call(username_containers_11);
@@ -892,7 +893,7 @@ function start() {
                                 }
 
                                 function applyAutoChangeFunctionG() {
-                                    
+
                                     setTimeout(function () {
                                         var username_containers_12 = document.getElementsByClassName("text-overflow game-card-name ng-binding");
                                         username_containers_12 = Array.prototype.slice.call(username_containers_12);
@@ -967,7 +968,7 @@ function start() {
                                 }
 
                                 function applyAutoChangeFunctionH() {
-                                    
+
                                     setTimeout(function () {
                                         var username_containers_12 = document.getElementsByClassName("paired-name message-summary-username positionAboveLink font-header-2 ng-scope");
                                         username_containers_12 = Array.prototype.slice.call(username_containers_12);
@@ -1009,7 +1010,7 @@ function start() {
                                 }
 
                                 function applyAutoChangeFunctionI() {
-                                    
+
                                     setTimeout(function () {
                                         var username_containers_4 = document.getElementsByClassName("text-name");
                                         username_containers_4 = Array.prototype.slice.call(username_containers_4);
@@ -1373,7 +1374,7 @@ function loader() { // Script Loader
                     "color": "#0066ff",
                     "enabled": true,
                     "groupsIncluded": true,
-                    "startTime": "75",
+                    "startTime": "200",
                     "thanks": true,
                     "verifiedPrompt": true,
                     "verifiedBadgeBetweenAccounts": true,
@@ -1400,17 +1401,29 @@ function loader() { // Script Loader
                     }
                 }).then(appr_json => {
                     approved_efazdev_users = appr_json
-                    window.addEventListener("DOMContentLoaded", start)
+                    if (document.readyState === "complete") {
+                        setTimeout(() => { start() }, start_time)
+                    } else {
+                        window.addEventListener("DOMContentLoaded", start)
+                    }
                     console.log("Starting Verified Badge Loader: Settings Configuration v3")
                     setTimeout(() => { stop_loop = true; }, 10000)
                 }).catch(err => {
                     console.warn(err)
-                    window.addEventListener("DOMContentLoaded", start)
+                    if (document.readyState === "complete") {
+                        setTimeout(() => { start() }, start_time)
+                    } else {
+                        window.addEventListener("DOMContentLoaded", start)
+                    }
                     console.log("Starting Verified Badge Loader: Settings Configuration v3")
                     setTimeout(() => { stop_loop = true; }, 30000)
                 })
             } else {
-                window.addEventListener("DOMContentLoaded", start)
+                if (document.readyState === "complete") {
+                    setTimeout(() => { start() }, start_time)
+                } else {
+                    window.addEventListener("DOMContentLoaded", start)
+                }
                 console.log("Starting Verified Badge Loader: Settings Configuration v3")
                 setTimeout(() => { stop_loop = true; }, 30000)
             }
@@ -1428,7 +1441,11 @@ function loader() { // Script Loader
             }
         }
 
-        window.addEventListener("DOMContentLoaded", start)
+        if (document.readyState === "complete") {
+            setTimeout(() => { start() }, start_time)
+        } else {
+            window.addEventListener("DOMContentLoaded", start)
+        }
         console.log("Starting Verified Badge Loader: Settings Configuration v2")
         setTimeout(() => { stop_loop = true; }, 30000)
     } else {  // Javascript URL / Chrome Console
@@ -1437,7 +1454,7 @@ function loader() { // Script Loader
             "color": "#0066ff",
             "enabled": true,
             "groupsIncluded": true,
-            "startTime": "75",
+            "startTime": "200",
             "thanks": true,
             "verifiedPrompt": true,
             "verifiedBadgeBetweenAccounts": true,
@@ -1451,7 +1468,11 @@ function loader() { // Script Loader
                 start_time = Number(window.verifiedCheckmarkSettings["startTime"]);
             }
         }
-        setTimeout(() => { start() }, start_time)
+        if (document.readyState === "complete") {
+            setTimeout(() => { start() }, start_time)
+        } else {
+            window.addEventListener("DOMContentLoaded", start)
+        }
         console.log("Starting Verified Badge Loader: Settings Configuration v1")
         setTimeout(() => { stop_loop = true; }, 30000)
     }
