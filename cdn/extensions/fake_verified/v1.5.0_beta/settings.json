@@ -38,7 +38,7 @@
             "default": true
         },
         "allowEfazDevApprovedBadges": {
-            "text": "Allow EfazDev Approved Badges on Users",
+            "text": "Approve Verified Badges on Approved Users by EfazDev",
             "type": "checkbox",
             "default": false
         }
