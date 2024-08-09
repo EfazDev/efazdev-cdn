@@ -271,12 +271,14 @@ function start() {
                                                                                 "owner": grou_json["owner"]["userId"],
                                                                             }
                                                                         } else {
-                                                                            grou_json["accepted"] = false
-                                                                            allowed_groups["group_ownership"][grou_json["id"]] = {
-                                                                                "accepted": grou_json["accepted"],
-                                                                                "name": grou_json["name"],
-                                                                                "id": grou_json["id"],
-                                                                                "owner": grou_json["owner"]["userId"],
+                                                                            if (grou_json["owner"]) {
+                                                                                grou_json["accepted"] = false
+                                                                                allowed_groups["group_ownership"][grou_json["id"]] = {
+                                                                                    "accepted": grou_json["accepted"],
+                                                                                    "name": grou_json["name"],
+                                                                                    "id": grou_json["id"],
+                                                                                    "owner": grou_json["owner"]["userId"],
+                                                                                }
                                                                             }
                                                                         }
                                                                         stored_group_data["temp_group_info"][grou_json["id"]] = allowed_groups["group_ownership"][grou_json["id"]]
