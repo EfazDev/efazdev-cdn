@@ -457,208 +457,6 @@ function start() {
                                     }
                                 }
 
-                                function applyCallback() {
-
-                                    if (window.location.pathname.startsWith("/groups/")) {
-                                        var identified_id = window.location.pathname.match(/[0-9]+/)[0];
-                                        var group_owners = document.getElementsByClassName("text-link ng-binding ng-scope");
-                                        group_owners = Array.prototype.slice.call(group_owners);
-                                        if (group_owners.length > 0) {
-                                            group_owners.forEach((group_owner_name) => {
-                                                if (group_owner_name.innerHTML.includes(json["displayName"]) && group_owner_name.href == `https://www.roblox.com/users/${json["id"]}/profile`) {
-                                                    if (!(verifiedBadgePlacedAlready(group_owner_name.parentElement.innerHTML))) {
-                                                        group_owner_name.outerHTML = `${group_owner_name.outerHTML}${group_owner_name_html}`;
-                                                    }
-
-                                                    if (window.verifiedCheckmarkSettings) {
-                                                        if (window.verifiedCheckmarkSettings["groupsIncluded"] == true) {
-                                                            approvedGroup(identified_id).then(info => {
-                                                                if (info["accepted"] == true) {
-                                                                    var group_name = document.getElementsByClassName("group-name text-overflow ng-binding ng-scope");
-                                                                    group_name = Array.prototype.slice.call(group_name);
-                                                                    if (group_name.length > 0) {
-                                                                        group_name.forEach((main_name_on_group) => {
-                                                                            if (verifiedBadgePlacedAlready(main_name_on_group.innerHTML)) {
-                                                                                return;
-                                                                            }
-                                                                            main_name_on_group.innerHTML = `${main_name_on_group.innerHTML}${group_name_verified_html}`;
-                                                                        });
-                                                                    }
-                                                                }
-                                                            })
-                                                        }
-                                                    }
-
-                                                    if (applied_updating == false) {
-                                                        if (false) {
-                                                            var group_headers = document.getElementsByClassName("group-title");
-                                                            group_headers = Array.prototype.slice.call(group_headers);
-                                                            if (group_headers.length > 0) {
-                                                                var group_header = group_headers[1];
-                                                                applied_updating = true;
-                                                                var observer = new MutationObserver(applyCallback);
-                                                                observer.observe(group_header, { attributes: true, childList: true });
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            });
-                                            var applied_updating = false;
-                                            var applied_updating_v2 = false;
-
-                                            if (window.verifiedCheckmarkSettings) {
-                                                if (window.verifiedCheckmarkSettings["groupsIncluded"] == true) {
-                                                    var group_list_verified_logo = document.getElementsByTagName("groups-list-item");
-                                                    group_list_verified_logo = Array.prototype.slice.call(group_list_verified_logo);
-                                                    if (group_list_verified_logo.length > 0) {
-                                                        group_list_verified_logo.forEach((main_name_on_group) => {
-                                                            if (main_name_on_group.children[0] && main_name_on_group.children[0].children[0] && main_name_on_group.children[0].children[0].children[1]) {
-                                                                if (main_name_on_group.children[0].href) {
-                                                                    var group_id = main_name_on_group.children[0].href.match(/[0-9]+/)[0];
-                                                                    approvedGroup(group_id).then((info) => {
-                                                                        if (info["accepted"] == true) {
-                                                                            main_name_on_group = main_name_on_group.children[0].children[0].children[1];
-                                                                            if (verifiedBadgePlacedAlready(main_name_on_group.innerHTML)) {
-                                                                                return;
-                                                                            }
-                                                                            main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${name_side_html}`;
-                                                                        }
-                                                                    })
-                                                                }
-                                                            }
-                                                        });
-                                                    }
-                                                }
-                                            }
-
-                                            var group_shouts = document.getElementsByClassName("text-name name ng-binding ng-scope");
-                                            group_shouts = Array.prototype.slice.call(group_shouts);
-                                            if (group_shouts.length > 0) {
-                                                var shout = group_shouts[0];
-                                                if (shout.outerHTML.includes(json["displayName"]) && shout.href == `https://www.roblox.com/users/${json["id"]}/profile`) {
-                                                    if (verifiedBadgePlacedAlready(shout.parentElement.outerHTML)) {
-                                                        return;
-                                                    }
-                                                    shout.outerHTML = `${shout.outerHTML} ${name_html_larger}`;
-                                                }
-                                            }
-
-                                            var group_payouts_auto = document.getElementsByClassName("avatar-card-name text-lead text-overflow ng-binding ng-scope");
-                                            group_payouts_auto = Array.prototype.slice.call(group_payouts_auto);
-                                            if (group_payouts_auto.length > 0) {
-                                                group_payouts_auto.forEach((main_name_on_group) => {
-                                                    if (main_name_on_group.innerHTML.includes(json["displayName"]) && main_name_on_group.href.includes(`${json["id"]}`)) {
-                                                        if (verifiedBadgePlacedAlready(main_name_on_group.parentElement.innerHTML)) {
-                                                            return
-                                                        }
-                                                        main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${generateVerifiedIcon(name_side_html, 2, 12, 12, -1, 16, 16)}`;
-                                                    }
-                                                });
-                                            }
-
-                                            setTimeout(() => {
-                                                var name_in_group = document.getElementsByClassName("text-overflow font-caption-header member-name ng-binding ng-scope");
-                                                name_in_group = Array.prototype.slice.call(name_in_group);
-                                                if (name_in_group.length > 0) {
-                                                    name_in_group.forEach((main_name_on_group) => {
-                                                        if (main_name_on_group.innerHTML.includes(json["displayName"])) {
-                                                            if (main_name_on_group.offsetParent && main_name_on_group.offsetParent.offsetParent) {
-                                                                if (main_name_on_group.offsetParent.offsetParent.id.includes(json["id"])) {
-                                                                    if (verifiedBadgePlacedAlready(main_name_on_group.innerHTML)) {
-                                                                        return;
-                                                                    }
-                                                                    main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${generateVerifiedIcon(name_side_html, 2, 12, 12, 0, 16, 16)}`
-                                                                }
-                                                            }
-                                                        }
-                                                    });
-                                                }
-                                            }, start_time)
-
-                                            var group_wall = document.getElementsByClassName("text-name ng-binding ng-scope");
-                                            group_wall = Array.prototype.slice.call(group_wall);
-                                            if (group_wall.length > 0) {
-                                                group_wall.forEach((main_name_on_group) => {
-                                                    if (main_name_on_group.outerHTML.includes(json["displayName"]) && main_name_on_group.className == "text-name ng-binding ng-scope" && main_name_on_group.href == `https://www.roblox.com/users/${json["id"]}/profile`) {
-                                                        if (verifiedBadgePlacedAlready(main_name_on_group.innerHTML)) {
-                                                            return;
-                                                        }
-                                                        main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${generateVerifiedIcon(name_side_html, 2, 12, 12, 0, 16, 16)}`;
-                                                    }
-                                                });
-                                            }
-
-                                            setTimeout(() => {
-                                                var member_list = document.getElementsByClassName("hlist");
-                                                member_list = Array.prototype.slice.call(member_list);
-                                                if (member_list.length > 1) {
-                                                    var group_list_comments = member_list[1];
-                                                    applied_updating_v2 = true;
-                                                    var observer = new MutationObserver(applyCallback);
-                                                    observer.observe(group_list_comments, { attributes: true, childList: true });
-                                                    logMessage("Installed observer: hlist-v2")
-                                                }
-                                            }, start_time);
-
-                                            setTimeout(() => {
-                                                var list_item = document.getElementsByClassName("group-comments vlist");
-                                                list_item = Array.prototype.slice.call(list_item);
-                                                if (list_item.length > 0) {
-                                                    var group_list_comments = list_item[0];
-                                                    applied_updating_v2 = true;
-                                                    var observer = new MutationObserver(() => {
-                                                        var group_wall = document.getElementsByClassName("text-name ng-binding ng-scope");
-                                                        group_wall = Array.prototype.slice.call(group_wall);
-                                                        if (group_wall.length > 0) {
-                                                            group_wall.forEach((main_name_on_group) => {
-                                                                if (main_name_on_group.outerHTML.includes(json["displayName"]) && main_name_on_group.className == "text-name ng-binding ng-scope" && main_name_on_group.href == `https://www.roblox.com/users/${json["id"]}/profile`) {
-                                                                    if (verifiedBadgePlacedAlready(main_name_on_group.innerHTML)) {
-                                                                        return;
-                                                                    }
-                                                                    main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${generateVerifiedIcon(name_side_html, 2, 12, 12, 0, 16, 16)}`;
-                                                                }
-                                                            });
-                                                        }
-                                                    });
-                                                    observer.observe(group_list_comments, { attributes: true, childList: true });
-                                                    logMessage("Installed observer: text-name")
-                                                }
-
-                                                setTimeout(() => {
-                                                    var group_div = document.getElementsByClassName("ng-scope");
-                                                    group_div = Array.prototype.slice.call(group_div);
-                                                    if (group_div.length > 0) {
-                                                        group_div.forEach((user_container) => {
-                                                            if ((user_container.className == "ng-scope" || user_container.className == "btr-group-container ng-scope btr-hasGames btr-hasPayouts") && user_container.getAttribute("ng-if") == "!isLockedGroup() && !isGroupRestrictedByPolicy() && !layout.loadGroupMetadataError") {
-                                                                var observer = new MutationObserver(applyCallback);
-                                                                observer.observe(user_container, { attributes: true, childList: true });
-                                                            }
-                                                        });
-                                                    }
-                                                }, start_time);
-                                            }, start_time);
-
-                                            if (applied_updating_v2 == false) {
-                                                var list_item = document.getElementsByClassName("tab-content rbx-tab-content col-xs-12");
-                                                list_item = Array.prototype.slice.call(list_item);
-                                                if (list_item.length > 0) {
-                                                    var group_list_header = list_item[0];
-                                                    applied_updating_v2 = true;
-                                                    var observer = new MutationObserver(applyCallback);
-                                                    observer.observe(group_list_header, { attributes: true, childList: true });
-                                                }
-                                            }
-                                        }
-                                        if (group_owners.length == 0) {
-                                            setTimeout(() => {
-                                                if (stop_loop == false) {
-                                                    applyCallback()
-                                                }
-                                            }, start_time)
-                                        }
-                                    }
-                                }
-
                                 var name_on_side = document.getElementsByClassName("font-header-2 dynamic-ellipsis-item");
                                 name_on_side = Array.prototype.slice.call(name_on_side);
                                 if (name_on_side.length > 0) {
@@ -685,8 +483,188 @@ function start() {
                                     });
                                 }
 
-                                function applyAutoChangeFunctionB() {
+                                function applyAutoChangeFunctionA() { // Roblox Groups Main Handler
+                                    function attachToRobloxSelectTab() {
+                                        var list_item = document.getElementsByClassName("tab-content rbx-tab-content col-xs-12");
+                                        list_item = Array.prototype.slice.call(list_item);
+                                        if (list_item.length > 0) {
+                                            var group_list_header = list_item[0];
+                                            if (group_list_header) {
+                                                var observer = new MutationObserver(refresh);
+                                                observer.observe(group_list_header, { attributes: true });
+                                            }
+                                        } else {
+                                            setTimeout(() => { attachToRobloxSelectTab(); }, 3000)
+                                        }
+                                    }
 
+                                    function refresh() {
+                                        if (window.location.pathname.startsWith("/groups/")) {
+                                            var identified_id = window.location.pathname.match(/[0-9]+/)[0];
+                                            var group_owners = document.getElementsByClassName("text-link ng-binding ng-scope");
+                                            group_owners = Array.prototype.slice.call(group_owners);
+                                            if (group_owners.length > 0) {
+                                                if (window.verifiedCheckmarkSettings) {
+                                                    if (window.verifiedCheckmarkSettings["groupsIncluded"] == true) {
+                                                        var group_list_verified_logo = document.getElementsByTagName("groups-list-item");
+                                                        group_list_verified_logo = Array.prototype.slice.call(group_list_verified_logo);
+                                                        if (group_list_verified_logo.length > 0) {
+                                                            group_list_verified_logo.forEach((main_name_on_group) => {
+                                                                if (main_name_on_group.children[0] && main_name_on_group.children[0].children[0] && main_name_on_group.children[0].children[0].children[1]) {
+                                                                    if (main_name_on_group.children[0].href) {
+                                                                        var group_id = main_name_on_group.children[0].href.match(/[0-9]+/)[0];
+                                                                        if (group_id) {
+                                                                            approvedGroup(group_id).then((info) => {
+                                                                                if (info["accepted"] == true) {
+                                                                                    main_name_on_group = main_name_on_group.children[0].children[0].children[1];
+                                                                                    if (verifiedBadgePlacedAlready(main_name_on_group.innerHTML)) {
+                                                                                        return;
+                                                                                    }
+                                                                                    main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${name_side_html}`;
+                                                                                }
+                                                                            })
+                                                                        }
+                                                                    }
+                                                                }
+                                                            });
+                                                        }
+
+                                                        approvedGroup(identified_id).then(info => {
+                                                            if (info["accepted"] == true) {
+                                                                group_owners.forEach((group_owner_name) => {
+                                                                    if (group_owner_name.innerHTML.includes(json["displayName"]) && group_owner_name.href == `https://www.roblox.com/users/${json["id"]}/profile`) {
+                                                                        if (!(group_owner_name.parentElement)) {
+                                                                            return;
+                                                                        }
+
+                                                                        if (!(verifiedBadgePlacedAlready(group_owner_name.parentElement.innerHTML))) {
+                                                                            group_owner_name.outerHTML = `${group_owner_name.outerHTML}${group_owner_name_html}`;
+                                                                        }
+
+                                                                        if (window.verifiedCheckmarkSettings) {
+                                                                            if (window.verifiedCheckmarkSettings["groupsIncluded"] == true) {
+                                                                                var group_name = document.getElementsByClassName("group-name text-overflow ng-binding ng-scope");
+                                                                                group_name = Array.prototype.slice.call(group_name);
+                                                                                if (group_name.length > 0) {
+                                                                                    group_name.forEach((main_name_on_group) => {
+                                                                                        if (verifiedBadgePlacedAlready(main_name_on_group.innerHTML)) {
+                                                                                            return;
+                                                                                        }
+                                                                                        main_name_on_group.innerHTML = `${main_name_on_group.innerHTML}${group_name_verified_html}`;
+                                                                                    });
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                });
+
+                                                                var group_shouts = document.getElementsByClassName("text-name name ng-binding ng-scope");
+                                                                group_shouts = Array.prototype.slice.call(group_shouts);
+                                                                if (group_shouts.length > 0) {
+                                                                    var shout = group_shouts[0];
+                                                                    if (shout.outerHTML.includes(json["displayName"]) && shout.href == `https://www.roblox.com/users/${json["id"]}/profile`) {
+                                                                        if (verifiedBadgePlacedAlready(shout.parentElement.outerHTML)) {
+                                                                            return;
+                                                                        }
+                                                                        shout.outerHTML = `${shout.outerHTML} ${name_html_larger}`;
+                                                                    }
+                                                                }
+
+                                                                var group_payouts_auto = document.getElementsByClassName("avatar-card-name text-lead text-overflow ng-binding ng-scope");
+                                                                group_payouts_auto = Array.prototype.slice.call(group_payouts_auto);
+                                                                if (group_payouts_auto.length > 0) {
+                                                                    group_payouts_auto.forEach((main_name_on_group) => {
+                                                                        if (main_name_on_group.innerHTML.includes(json["displayName"]) && main_name_on_group.href.includes(`${json["id"]}`)) {
+                                                                            if (verifiedBadgePlacedAlready(main_name_on_group.parentElement.innerHTML)) {
+                                                                                return
+                                                                            }
+                                                                            main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${generateVerifiedIcon(name_side_html, 2, 12, 12, -1, 16, 16)}`;
+                                                                        }
+                                                                    });
+                                                                }
+
+                                                                setTimeout(() => {
+                                                                    var name_in_group = document.getElementsByClassName("text-overflow font-caption-header member-name ng-binding ng-scope");
+                                                                    name_in_group = Array.prototype.slice.call(name_in_group);
+                                                                    if (name_in_group.length > 0) {
+                                                                        name_in_group.forEach((main_name_on_group) => {
+                                                                            if (main_name_on_group.innerHTML.includes(json["displayName"])) {
+                                                                                if (main_name_on_group.offsetParent && main_name_on_group.offsetParent.offsetParent) {
+                                                                                    if (main_name_on_group.offsetParent.offsetParent.id.includes(json["id"])) {
+                                                                                        if (verifiedBadgePlacedAlready(main_name_on_group.innerHTML)) {
+                                                                                            return;
+                                                                                        }
+                                                                                        main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${generateVerifiedIcon(name_side_html, 2, 12, 12, 0, 16, 16)}`
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        });
+                                                                    }
+                                                                }, start_time)
+
+                                                                var group_wall = document.getElementsByClassName("text-name ng-binding ng-scope");
+                                                                group_wall = Array.prototype.slice.call(group_wall);
+                                                                if (group_wall.length > 0) {
+                                                                    group_wall.forEach((main_name_on_group) => {
+                                                                        if (main_name_on_group.outerHTML.includes(json["displayName"]) && main_name_on_group.className == "text-name ng-binding ng-scope" && main_name_on_group.href == `https://www.roblox.com/users/${json["id"]}/profile`) {
+                                                                            if (verifiedBadgePlacedAlready(main_name_on_group.innerHTML)) {
+                                                                                return;
+                                                                            }
+                                                                            main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${generateVerifiedIcon(name_side_html, 2, 12, 12, 0, 16, 16)}`;
+                                                                        }
+                                                                    });
+                                                                }
+
+                                                                setTimeout(() => {
+                                                                    var member_list = document.getElementsByClassName("hlist");
+                                                                    member_list = Array.prototype.slice.call(member_list);
+                                                                    if (member_list.length > 1) {
+                                                                        var group_list_comments = member_list[1];
+                                                                        var observer = new MutationObserver(refresh);
+                                                                        observer.observe(group_list_comments, { attributes: true, childList: true });
+                                                                        logMessage("Installed observer: hlist-v2")
+                                                                    }
+                                                                }, start_time);
+
+                                                                setTimeout(() => {
+                                                                    var list_item = document.getElementsByClassName("group-comments vlist");
+                                                                    list_item = Array.prototype.slice.call(list_item);
+                                                                    if (list_item.length > 0) {
+                                                                        var group_list_comments = list_item[0];
+                                                                        var observer = new MutationObserver(refresh);
+                                                                        observer.observe(group_list_comments, { attributes: true, childList: true });
+                                                                        logMessage("Installed observer: text-name")
+                                                                    }
+
+                                                                    setTimeout(() => {
+                                                                        var group_div = document.getElementsByClassName("ng-scope");
+                                                                        group_div = Array.prototype.slice.call(group_div);
+                                                                        if (group_div.length > 0) {
+                                                                            group_div.forEach((user_container) => {
+                                                                                if ((user_container.className == "ng-scope" || user_container.className == "btr-group-container ng-scope btr-hasGames btr-hasPayouts") && user_container.getAttribute("ng-if") == "!isLockedGroup() && !isGroupRestrictedByPolicy() && !layout.loadGroupMetadataError") {
+                                                                                    var observer = new MutationObserver(refresh);
+                                                                                    observer.observe(user_container, { attributes: true, childList: true });
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    }, start_time);
+                                                                }, start_time);
+                                                            }
+                                                        })
+                                                    }
+                                                }
+                                            } else {
+                                                setTimeout(() => {
+                                                    refresh()
+                                                }, 3000)
+                                            }
+                                        }
+                                    }
+                                    refresh()
+                                    attachToRobloxSelectTab()
+                                }
+
+                                function applyAutoChangeFunctionB() { // Creator Name
                                     setTimeout(function () {
                                         var username_containers_2 = document.getElementsByClassName("creator-name text-link");
                                         username_containers_2 = Array.prototype.slice.call(username_containers_2);
@@ -770,8 +748,7 @@ function start() {
                                     }, start_time);
                                 }
 
-                                function applyAutoChangeFunctionC() {
-
+                                function applyAutoChangeFunctionC() { // Roblox Avatar Cards
                                     setTimeout(function () {
                                         var username_containers_7 = document.getElementsByClassName("avatar-name text-overflow ng-binding");
                                         username_containers_7 = Array.prototype.slice.call(username_containers_7);
@@ -801,7 +778,6 @@ function start() {
                                 }
 
                                 function applyAutoChangeFunctionD() { // Unused since inventory doesn't show verified badges.
-
                                     setTimeout(function () {
                                         var username_containers_9 = document.getElementsByClassName("creator-name text-overflow text-link ng-binding");
                                         username_containers_9 = Array.prototype.slice.call(username_containers_9);
@@ -844,8 +820,7 @@ function start() {
                                     }, start_time);
                                 }
 
-                                function applyAutoChangeFunctionE() {
-
+                                function applyAutoChangeFunctionE() { // Resellers
                                     setTimeout(function () {
                                         var username_containers_10 = document.getElementsByClassName("text-name username ng-binding");
                                         username_containers_10 = Array.prototype.slice.call(username_containers_10);
@@ -870,8 +845,7 @@ function start() {
                                     }, start_time);
                                 }
 
-                                function applyAutoChangeFunctionF() {
-
+                                function applyAutoChangeFunctionF() { // More Avatar Cards
                                     setTimeout(function () {
                                         var username_containers_11 = document.getElementsByClassName("text-overflow avatar-name");
                                         username_containers_11 = Array.prototype.slice.call(username_containers_11);
@@ -896,8 +870,7 @@ function start() {
                                     }, start_time);
                                 }
 
-                                function applyAutoChangeFunctionG() {
-
+                                function applyAutoChangeFunctionG() { // Game Cards
                                     setTimeout(function () {
                                         var username_containers_12 = document.getElementsByClassName("text-overflow game-card-name ng-binding");
                                         username_containers_12 = Array.prototype.slice.call(username_containers_12);
@@ -971,8 +944,7 @@ function start() {
                                     }, start_time);
                                 }
 
-                                function applyAutoChangeFunctionH() {
-
+                                function applyAutoChangeFunctionH() { // Messages
                                     setTimeout(function () {
                                         var username_containers_12 = document.getElementsByClassName("paired-name message-summary-username positionAboveLink font-header-2 ng-scope");
                                         username_containers_12 = Array.prototype.slice.call(username_containers_12);
@@ -1013,8 +985,7 @@ function start() {
                                     }, start_time);
                                 }
 
-                                function applyAutoChangeFunctionI() {
-
+                                function applyAutoChangeFunctionI() { // More Names
                                     setTimeout(function () {
                                         var username_containers_4 = document.getElementsByClassName("text-name");
                                         username_containers_4 = Array.prototype.slice.call(username_containers_4);
@@ -1263,15 +1234,6 @@ function start() {
                                     logMessage("Installed observer: group-detail")
                                 }
 
-                                var list_item = document.getElementsByClassName("hlist avatar-cards");
-                                list_item = Array.prototype.slice.call(list_item);
-                                if (list_item.length > 0) {
-                                    var catalog_list_header = list_item[0];
-                                    var observer = new MutationObserver(applyAutoChangeFunctionB);
-                                    observer.observe(catalog_list_header, { childList: true });
-                                    logMessage("Installed observer: hlist-avatar")
-                                }
-
                                 setTimeout(function () {
                                     var list_item = document.getElementsByClassName("content");
                                     list_item = Array.prototype.slice.call(list_item);
@@ -1283,28 +1245,27 @@ function start() {
                                     }
                                 }, start_time);
 
-                                setTimeout(function () {
-                                    var list_item = document.getElementsByClassName("resellers");
-                                    list_item = Array.prototype.slice.call(list_item);
-                                    if (list_item.length > 0) {
-                                        var catalog_list_header = list_item[0];
-                                        var observer = new MutationObserver(applyAutoChangeFunctionE);
-                                        observer.observe(catalog_list_header, { childList: true });
-                                        applyAutoChangeFunctionE()
-                                        logMessage("Installed observer: resellers")
-                                    }
-                                }, start_time);
-                                applyCallback()
-                                applyAutoChangeFunctionF()
-                                applyAutoChangeFunctionG()
-                                applyAutoChangeFunctionH()
-                                applyAutoChangeFunctionI()
+                                /* Start all automatic changes and observers */
+                                applyAutoChangeFunctionA();
+                                applyAutoChangeFunctionC();
+                                applyAutoChangeFunctionE();
+                                applyAutoChangeFunctionF();
+                                applyAutoChangeFunctionG();
+                                applyAutoChangeFunctionH();
+                                applyAutoChangeFunctionI();
+                                /* Start all automatic changes and observers */
+
+                                /* Add prompt popup for verified checkmarks with the ability to be clicked */
                                 setTimeout(addPromptButtonInput, start_time)
+                                /* Add prompt popup for verified checkmarks with the ability to be clicked */
+
+                                /* Loop entire function again */
                                 if (stop_loop == false) {
                                     setTimeout(function () {
                                         scanUser(json["id"])
                                     }, start_time)
                                 }
+                                /* Loop entire function again */
                             }
                             logMessage("Successfully loaded verified badge system!")
                         } else {

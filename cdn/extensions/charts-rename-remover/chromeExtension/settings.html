@@ -13,33 +13,36 @@
             font-weight: bold;
         }
 
-        body {
-            min-height: 100%;
-            min-width: 100%;
-            background: linear-gradient(60deg, #ff4b00 0%, #dbdb00 40%, #00ce00 60%, #00aad0 100%);
-            background-repeat: repeat-y !important; 
-            background-blend-mode: normal !important; 
-            background-size: 100vw 100vh;
-            min-height: 100vh;
-            font-family: mainfont;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            color: white;
+        @media (prefers-color-scheme: light) {
+            body {
+                min-height: 100%;
+                min-width: 100%;
+                background: linear-gradient(60deg, #ff4b00 0%, #dbdb00 40%, #00ce00 60%, #00aad0 100%);
+                background-repeat: repeat-y !important;
+                background-blend-mode: normal !important;
+                background-size: 100vw 100vh;
+                min-height: 100vh;
+                font-family: mainfont;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                color: white;
+            }
         }
 
-        html {
-            width: 500px;
-            height: 460px;
-        }
-
-        e {
-            color: rgb(255, 0, 0);
-            font-size: x-small;
-        }
-
-        li {
-            display: inline-block;
-            padding: 2px;
+        @media (prefers-color-scheme: dark) {
+            body {
+                min-height: 100%;
+                min-width: 100%;
+                background: linear-gradient(60deg, #4e1700 0%, #4e4e00 40%, #004200 60%, #003d4b 100%);
+                background-repeat: repeat-y !important;
+                background-blend-mode: normal !important;
+                background-size: 100vw 100vh;
+                min-height: 100vh;
+                font-family: mainfont;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                color: white;
+            }
         }
 
         button {
@@ -62,6 +65,21 @@
             justify-content: center;
             font-family: mainfont;
             margin-right: auto;
+        }
+
+        html {
+            width: 500px;
+            height: 580px;
+        }
+
+        e {
+            color: rgb(255, 0, 0);
+            font-size: x-small;
+        }
+
+        li {
+            display: inline-block;
+            padding: 2px;
         }
 
         ul {
