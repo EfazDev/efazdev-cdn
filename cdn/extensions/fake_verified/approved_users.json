@@ -2,17 +2,26 @@
     "1078332491": {
         "name": "Efaazz",
         "displayName": "Efaz",
-        "id": 1078332491
+        "id": 1078332491,
+        "hexColor": "#ff4b00"
     },
     "4498865751": {
         "name": "EfazDev_a",
         "displayName": "Efaz",
-        "id": 4498865751
+        "id": 4498865751,
+        "hexColor": "#ff4b00"
+    },
+    "4848720257": {
+        "id": 4848720257,
+        "name": "Efaz_W",
+        "displayName": "Efaz_W",
+        "hexColor": "#ff4b00"
     },
     "837731385": {
         "id": 837731385,
         "name": "Cabled3D",
-        "displayName": "Cabled"
+        "displayName": "Cabled",
+        "hexColor": "#ffd000"
     },
     "1816195844": {
         "id": 1816195844,
@@ -24,11 +33,6 @@
         "name": "ftCalm",
         "displayName": "Calm"
     },
-    "4848720257": {
-        "id": 4848720257,
-        "name": "Efaz_W",
-        "displayName": "Efaz_W"
-    },
     "197715955": {
         "id": 197715955,
         "name": "5DiamondzZzZ",
@@ -37,17 +41,20 @@
     "953932652": {
         "id": 953932652,
         "name": "RoGamxr",
-        "displayName": "RoGamxr"
+        "displayName": "RoGamxr",
+        "hexColor": "#ff0000"
     },
     "73608952": {
         "id": 73608952,
         "name": "JustNafjan",
-        "displayName": "Nafjan"
+        "displayName": "Nafjan",
+        "hexColor": "#ff0000"
     },
     "4244289167": {
         "id": 4244289167,
         "name": "BuilderNoobDraws",
-        "displayName": "BuilderNoob"
+        "displayName": "BuilderNoob",
+        "hexColor": "#ffd000"
     },
     "409384302": {
         "id": 409384302,
@@ -67,12 +74,14 @@
     "591886122": {
         "id": 591886122,
         "name": "Cellis617",
-        "displayName": "CeIlisPlays"
+        "displayName": "CeIlisPlays",
+        "hexColor": "#ffd000"
     },
     "1658363733": {
         "id": 1658363733,
         "name": "OfficialMJPlayzGames",
-        "displayName": "OfficialMJPlayzGames"
+        "displayName": "OfficialMJPlayzGames",
+        "hexColor": "#0000ff"
     },
     "50434605": {
         "id": 50434605,
