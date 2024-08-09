@@ -192,7 +192,7 @@ function start() {
                                 group_name_verified_html = group_name_verified_html.replace("%230066FF", hex_color);
                                 group_owner_name_html = group_owner_name_html.replace("%230066FF", hex_color);
                                 reseller_html = reseller_html.replace("%230066FF", hex_color);
-                                efaz_approved_prompt_html  = efaz_approved_prompt_html.replace("%23FF4B00", hex_color);
+                                efaz_approved_prompt_html = efaz_approved_prompt_html.replace("%23FF4B00", hex_color);
                             }
                             /* Apply color changes to HTML above */
                             var include_groups = false;
@@ -488,13 +488,15 @@ function start() {
                                                     }
 
                                                     if (applied_updating == false) {
-                                                        var group_headers = document.getElementsByClassName("group-title");
-                                                        group_headers = Array.prototype.slice.call(group_headers);
-                                                        if (group_headers.length > 0) {
-                                                            var group_header = group_headers[1];
-                                                            applied_updating = true;
-                                                            var observer = new MutationObserver(applyCallback);
-                                                            observer.observe(group_header, { attributes: true, childList: true });
+                                                        if (false) {
+                                                            var group_headers = document.getElementsByClassName("group-title");
+                                                            group_headers = Array.prototype.slice.call(group_headers);
+                                                            if (group_headers.length > 0) {
+                                                                var group_header = group_headers[1];
+                                                                applied_updating = true;
+                                                                var observer = new MutationObserver(applyCallback);
+                                                                observer.observe(group_header, { attributes: true, childList: true });
+                                                            }
                                                         }
                                                     }
                                                 }
