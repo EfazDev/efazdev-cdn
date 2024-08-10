@@ -48,6 +48,8 @@ function start() {
 
                     if (stored_user_data["user_verification"][id.toString()]) {
                         return stored_user_data["user_verification"][id.toString()]
+                    } else if (temp_stored_user_data[id.toString()]) {
+                        return temp_stored_user_data[id.toString()]
                     } else if (approved_efazdev_users[id.toString()]) {
                         return approved_efazdev_users[id.toString()]
                     } else {
@@ -71,6 +73,7 @@ function start() {
                                 }
                             }).then(json => {
                                 if (json) {
+                                    temp_stored_user_data["*"] = json
                                     stored_user_data["user_verification"][json["id"].toString()] = json
                                     return chrome.storage.local.set(stored_user_data).then(() => {
                                         return json
@@ -103,38 +106,45 @@ function start() {
                 if (temp_stored_user_data[id.toString()]) {
                     return temp_stored_user_data[id.toString()]
                 } else {
-                    return fetch("https://users.roblox.com/v1/users/authenticated", {
-                        "headers": {
-                            "accept": "application/json",
-                            "accept-language": "en-US,en;q=0.9",
-                            "cache-control": "no-cache",
-                            "pragma": "no-cache"
-                        },
-                        "method": "GET",
-                        "mode": "cors",
-                        "credentials": "include"
-                    }).then(res => {
-                        if (res.ok) {
-                            return res.json()
-                        } else {
-                            logMessage("User is not logged in!")
-                            return null
-                        }
-                    }).then(json => {
-                        if (json) {
-                            if (id == "*") {
-                                temp_stored_user_data[json["id"].toString()] = json
-                                return json
+                    if (approved_efazdev_users[id.toString()]) {
+                        return approved_efazdev_users[id.toString()]
+                    } else if (temp_stored_user_data[id.toString()]) {
+                        return temp_stored_user_data[id.toString()]
+                    } else {
+                        return fetch("https://users.roblox.com/v1/users/authenticated", {
+                            "headers": {
+                                "accept": "application/json",
+                                "accept-language": "en-US,en;q=0.9",
+                                "cache-control": "no-cache",
+                                "pragma": "no-cache"
+                            },
+                            "method": "GET",
+                            "mode": "cors",
+                            "credentials": "include"
+                        }).then(res => {
+                            if (res.ok) {
+                                return res.json()
                             } else {
-                                return json
+                                logMessage("User is not logged in!")
+                                return null
                             }
-                        } else {
+                        }).then(json => {
+                            if (json) {
+                                if (id == "*") {
+                                    temp_stored_user_data["*"] = json
+                                    temp_stored_user_data[json["id"].toString()] = json
+                                    return json
+                                } else {
+                                    return json
+                                }
+                            } else {
+                                return null
+                            }
+                        }).catch(err => {
+                            logMessage(err.message)
                             return null
-                        }
-                    }).catch(err => {
-                        logMessage(err.message)
-                        return null
-                    });
+                        });
+                    }
                 }
             }
         }
@@ -142,14 +152,14 @@ function start() {
         function scanUser(id) {
             try {
                 getUserData(id)
-                    .then(res => {
+                    .then((res) => {
                         if (res) {
                             return res
                         } else {
                             return {};
                         }
                     })
-                    .then(json => {
+                    .then((json) => {
                         if (json["id"]) {
                             /* All of these HTML variables are extracted from the Roblox Website and modified to be functioned like the actual badge. */
                             var profile_html = `<span efaz-verified-badge-addon="true" role="button" tabindex="0" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="jss16"><img class="profile-verified-badge-icon" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="[input_id]" alt="[input_id]"></span>`;
@@ -196,6 +206,9 @@ function start() {
                             }
                             /* Apply color changes to HTML above */
                             var include_groups = false;
+                            var userId = json["id"];
+                            var username = json["name"];
+                            var displayName = json["displayName"];
 
                             if (window.verifiedCheckmarkSettings) {
                                 if (window.verifiedCheckmarkSettings["groupsIncluded"] == true) {
@@ -305,7 +318,7 @@ function start() {
                                                                                 efazdev_approved_keys.forEach((ke) => {
                                                                                     var info = approved_efazdev_users[ke]
                                                                                     if (info["approve_groups"]) {
-                                                                                        if (info["approve_groups"].find(id)) {
+                                                                                        if (info["approve_groups"].includes(id)) {
                                                                                             allowed_groups["group_ownership"][id] = {
                                                                                                 "accepted": true,
                                                                                                 "id": id,
@@ -385,19 +398,19 @@ function start() {
                                                                 }
                                                             })
 
-                                                            if (!(allowed_groups["group_ownership"][id])) {
+                                                            if (!(stored_group_data["group_ownership"][id])) {
                                                                 var efazdev_approved_keys = Object.keys(approved_efazdev_users)
                                                                 if (efazdev_approved_keys) {
                                                                     efazdev_approved_keys.forEach((ke) => {
                                                                         var info = approved_efazdev_users[ke]
                                                                         if (info["approve_groups"]) {
-                                                                            if (info["approve_groups"].find(id)) {
-                                                                                allowed_groups["group_ownership"][id] = {
+                                                                            if (info["approve_groups"].includes(id)) {
+                                                                                stored_group_data["group_ownership"][id] = {
                                                                                     "accepted": true,
                                                                                     "id": id,
                                                                                     "owner": info["id"],
                                                                                 }
-                                                                                stored_group_data["temp_group_info"][id] = allowed_groups["group_ownership"][id]
+                                                                                stored_group_data["temp_group_info"][id] = stored_group_data["group_ownership"][id]
                                                                             }
                                                                         }
                                                                     })
@@ -540,22 +553,136 @@ function start() {
                                 }
 
                                 function applyAutoChangeFunctionA() { // Roblox Groups Main Handler
-                                    function attachToRobloxSelectTab() {
-                                        var list_item = document.getElementsByClassName("tab-content rbx-tab-content col-xs-12");
-                                        list_item = Array.prototype.slice.call(list_item);
-                                        if (list_item.length > 0) {
-                                            var group_list_header = list_item[0];
-                                            if (group_list_header) {
-                                                var observer = new MutationObserver(refresh);
-                                                observer.observe(group_list_header, { attributes: true });
+                                    if (window.location.pathname.startsWith("/groups/")) {
+                                        function attachToRobloxSelectTab() {
+                                            var list_item = document.getElementsByClassName("tab-content rbx-tab-content col-xs-12");
+                                            list_item = Array.prototype.slice.call(list_item);
+                                            if (list_item.length > 0) {
+                                                list_item.forEach((group_list_header) => {
+                                                    if (group_list_header) {
+                                                        var observer = new MutationObserver(refresh);
+                                                        observer.observe(group_list_header, { attributes: true, childList: true });
+                                                    }
+                                                })
+                                            } else {
+                                                setTimeout(() => { attachToRobloxSelectTab(); }, 1000)
                                             }
-                                        } else {
-                                            setTimeout(() => { attachToRobloxSelectTab(); }, 3000)
                                         }
-                                    }
 
-                                    function refresh() {
-                                        if (window.location.pathname.startsWith("/groups/")) {
+                                        function attachToRobloxComments() {
+                                            var list_item = document.getElementsByClassName("group-comments vlist");
+                                            list_item = Array.prototype.slice.call(list_item);
+                                            if (list_item.length > 0) {
+                                                list_item.forEach((group_list_comments) => {
+                                                    var observer = new MutationObserver(refresh);
+                                                    observer.observe(group_list_comments, { attributes: true, childList: true });
+                                                    logMessage("Installed observer: text-name")
+                                                })
+                                            } else {
+                                                setTimeout(() => { attachToRobloxComments(); }, 1000)
+                                            }
+                                        }
+
+                                        function attachToMemberlist() {
+                                            var member_list = document.getElementsByClassName("hlist");
+                                            member_list = Array.prototype.slice.call(member_list);
+                                            if (member_list.length > 0) {
+                                                member_list.forEach((group_list_comments) => {
+                                                    var observer = new MutationObserver(refresh);
+                                                    observer.observe(group_list_comments, { attributes: true, childList: true });
+                                                    logMessage("Installed observer: hlist-v2")
+                                                })
+                                            } else {
+                                                setTimeout(() => { attachToMemberlist(); }, 1000)
+                                            }
+                                        }
+
+                                        function attachToGroupContainer() {
+                                            var group_div = document.getElementsByClassName("ng-scope");
+                                            group_div = Array.prototype.slice.call(group_div);
+                                            if (group_div.length > 0) {
+                                                group_div.forEach((user_container) => {
+                                                    if ((user_container.className == "ng-scope" || user_container.className == "btr-group-container ng-scope btr-hasGames btr-hasPayouts") && user_container.getAttribute("ng-if") == "!isLockedGroup() && !isGroupRestrictedByPolicy() && !layout.loadGroupMetadataError") {
+                                                        var observer = new MutationObserver(refresh);
+                                                        observer.observe(user_container, { attributes: true, childList: true });
+                                                    }
+                                                });
+                                            } else {
+                                                setTimeout(() => { attachToGroupContainer(); }, 1000)
+                                            }
+                                        }
+
+                                        function attachExtra() {
+                                            var group_guilded_posts = document.getElementsByClassName("text-name name");
+                                            group_guilded_posts = Array.prototype.slice.call(group_guilded_posts);
+                                            if (group_guilded_posts.length > 0) {
+                                                group_guilded_posts.forEach((shout) => {
+                                                    if (shout.className == "text-name name" && shout.innerHTML.includes(json["displayName"]) && shout.href == `https://www.roblox.com/users/${json["id"]}/profile`) {
+                                                        if (verifiedBadgePlacedAlready(shout.parentElement.outerHTML)) {
+                                                            return;
+                                                        }
+                                                        shout.outerHTML = `${shout.outerHTML} ${generateVerifiedIcon(name_side_html, 2, 12, 12, 6, 16, 16)}`;
+                                                    }
+                                                })
+                                            }
+
+                                            var group_shouts = document.getElementsByClassName("text-name name ng-binding ng-scope");
+                                            group_shouts = Array.prototype.slice.call(group_shouts);
+                                            if (group_shouts.length > 0) {
+                                                var shout = group_shouts[0];
+                                                if (shout.outerHTML.includes(json["displayName"]) && shout.href == `https://www.roblox.com/users/${json["id"]}/profile`) {
+                                                    if (verifiedBadgePlacedAlready(shout.parentElement.outerHTML)) {
+                                                        return;
+                                                    }
+                                                    shout.outerHTML = `${shout.outerHTML} ${name_html_larger}`;
+                                                }
+                                            }
+
+                                            var name_in_group = document.getElementsByClassName("list-item member ng-scope");
+                                            name_in_group = Array.prototype.slice.call(name_in_group);
+                                            if (name_in_group.length > 0) {
+                                                name_in_group.forEach((main_name_on_group) => {
+                                                    if (main_name_on_group.id.includes(json["id"].toString()) && main_name_on_group.className == "list-item member ng-scope") {
+                                                        if (main_name_on_group.children[0] && main_name_on_group.children[0].children[2] && main_name_on_group.children[0].children[2].children[0] && main_name_on_group.children[0].children[2].children[0].children[0]) {
+                                                            if (verifiedBadgePlacedAlready(main_name_on_group.children[0].children[2].children[0].innerHTML)) {
+                                                                return;
+                                                            }
+                                                            main_name_on_group.children[0].children[2].children[0].children[0].innerHTML = `${main_name_on_group.children[0].children[2].children[0].children[0].innerHTML} ${generateVerifiedIcon(name_side_html, 2, 12, 12, 0, 16, 16)}`
+                                                        }
+                                                    }
+                                                });
+                                            }
+
+                                            var group_wall = document.getElementsByClassName("text-name ng-binding ng-scope");
+                                            group_wall = Array.prototype.slice.call(group_wall);
+                                            if (group_wall.length > 0) {
+                                                group_wall.forEach((main_name_on_group) => {
+                                                    if (main_name_on_group.outerHTML.includes(json["displayName"]) && main_name_on_group.className == "text-name ng-binding ng-scope" && main_name_on_group.href == `https://www.roblox.com/users/${json["id"]}/profile`) {
+                                                        if (verifiedBadgePlacedAlready(main_name_on_group.innerHTML)) {
+                                                            return;
+                                                        }
+                                                        main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${generateVerifiedIcon(name_side_html, 2, 12, 12, 0, 16, 16)}`;
+                                                    }
+                                                });
+                                            }
+
+                                            var group_payouts_auto = document.getElementsByClassName("avatar-card-name text-lead text-overflow ng-binding ng-scope");
+                                            group_payouts_auto = Array.prototype.slice.call(group_payouts_auto);
+                                            if (group_payouts_auto.length > 0) {
+                                                group_payouts_auto.forEach((main_name_on_group) => {
+                                                    if (main_name_on_group.innerHTML.includes(json["displayName"]) && main_name_on_group.href.includes(`${json["id"]}`)) {
+                                                        if (verifiedBadgePlacedAlready(main_name_on_group.parentElement.innerHTML)) {
+                                                            return
+                                                        }
+                                                        main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${generateVerifiedIcon(name_side_html, 2, 12, 12, -1, 16, 16)}`;
+                                                    }
+                                                });
+                                            }
+
+                                            logMessage("Attached extra group objects")
+                                        }
+
+                                        function refresh() {
                                             var identified_id = window.location.pathname.match(/[0-9]+/)[0];
                                             var group_owners = document.getElementsByClassName("text-link ng-binding ng-scope");
                                             group_owners = Array.prototype.slice.call(group_owners);
@@ -613,111 +740,23 @@ function start() {
                                                                         }
                                                                     }
                                                                 });
-
-                                                                var group_shouts = document.getElementsByClassName("text-name name ng-binding ng-scope");
-                                                                group_shouts = Array.prototype.slice.call(group_shouts);
-                                                                if (group_shouts.length > 0) {
-                                                                    var shout = group_shouts[0];
-                                                                    if (shout.outerHTML.includes(json["displayName"]) && shout.href == `https://www.roblox.com/users/${json["id"]}/profile`) {
-                                                                        if (verifiedBadgePlacedAlready(shout.parentElement.outerHTML)) {
-                                                                            return;
-                                                                        }
-                                                                        shout.outerHTML = `${shout.outerHTML} ${name_html_larger}`;
-                                                                    }
-                                                                }
-
-                                                                var group_payouts_auto = document.getElementsByClassName("avatar-card-name text-lead text-overflow ng-binding ng-scope");
-                                                                group_payouts_auto = Array.prototype.slice.call(group_payouts_auto);
-                                                                if (group_payouts_auto.length > 0) {
-                                                                    group_payouts_auto.forEach((main_name_on_group) => {
-                                                                        if (main_name_on_group.innerHTML.includes(json["displayName"]) && main_name_on_group.href.includes(`${json["id"]}`)) {
-                                                                            if (verifiedBadgePlacedAlready(main_name_on_group.parentElement.innerHTML)) {
-                                                                                return
-                                                                            }
-                                                                            main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${generateVerifiedIcon(name_side_html, 2, 12, 12, -1, 16, 16)}`;
-                                                                        }
-                                                                    });
-                                                                }
-
-                                                                setTimeout(() => {
-                                                                    var name_in_group = document.getElementsByClassName("text-overflow font-caption-header member-name ng-binding ng-scope");
-                                                                    name_in_group = Array.prototype.slice.call(name_in_group);
-                                                                    if (name_in_group.length > 0) {
-                                                                        name_in_group.forEach((main_name_on_group) => {
-                                                                            if (main_name_on_group.innerHTML.includes(json["displayName"])) {
-                                                                                if (main_name_on_group.offsetParent && main_name_on_group.offsetParent.offsetParent) {
-                                                                                    if (main_name_on_group.offsetParent.offsetParent.id.includes(json["id"])) {
-                                                                                        if (verifiedBadgePlacedAlready(main_name_on_group.innerHTML)) {
-                                                                                            return;
-                                                                                        }
-                                                                                        main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${generateVerifiedIcon(name_side_html, 2, 12, 12, 0, 16, 16)}`
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        });
-                                                                    }
-                                                                }, start_time)
-
-                                                                var group_wall = document.getElementsByClassName("text-name ng-binding ng-scope");
-                                                                group_wall = Array.prototype.slice.call(group_wall);
-                                                                if (group_wall.length > 0) {
-                                                                    group_wall.forEach((main_name_on_group) => {
-                                                                        if (main_name_on_group.outerHTML.includes(json["displayName"]) && main_name_on_group.className == "text-name ng-binding ng-scope" && main_name_on_group.href == `https://www.roblox.com/users/${json["id"]}/profile`) {
-                                                                            if (verifiedBadgePlacedAlready(main_name_on_group.innerHTML)) {
-                                                                                return;
-                                                                            }
-                                                                            main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${generateVerifiedIcon(name_side_html, 2, 12, 12, 0, 16, 16)}`;
-                                                                        }
-                                                                    });
-                                                                }
-
-                                                                setTimeout(() => {
-                                                                    var member_list = document.getElementsByClassName("hlist");
-                                                                    member_list = Array.prototype.slice.call(member_list);
-                                                                    if (member_list.length > 1) {
-                                                                        var group_list_comments = member_list[1];
-                                                                        var observer = new MutationObserver(refresh);
-                                                                        observer.observe(group_list_comments, { attributes: true, childList: true });
-                                                                        logMessage("Installed observer: hlist-v2")
-                                                                    }
-                                                                }, start_time);
-
-                                                                setTimeout(() => {
-                                                                    var list_item = document.getElementsByClassName("group-comments vlist");
-                                                                    list_item = Array.prototype.slice.call(list_item);
-                                                                    if (list_item.length > 0) {
-                                                                        var group_list_comments = list_item[0];
-                                                                        var observer = new MutationObserver(refresh);
-                                                                        observer.observe(group_list_comments, { attributes: true, childList: true });
-                                                                        logMessage("Installed observer: text-name")
-                                                                    }
-
-                                                                    setTimeout(() => {
-                                                                        var group_div = document.getElementsByClassName("ng-scope");
-                                                                        group_div = Array.prototype.slice.call(group_div);
-                                                                        if (group_div.length > 0) {
-                                                                            group_div.forEach((user_container) => {
-                                                                                if ((user_container.className == "ng-scope" || user_container.className == "btr-group-container ng-scope btr-hasGames btr-hasPayouts") && user_container.getAttribute("ng-if") == "!isLockedGroup() && !isGroupRestrictedByPolicy() && !layout.loadGroupMetadataError") {
-                                                                                    var observer = new MutationObserver(refresh);
-                                                                                    observer.observe(user_container, { attributes: true, childList: true });
-                                                                                }
-                                                                            });
-                                                                        }
-                                                                    }, start_time);
-                                                                }, start_time);
                                                             }
                                                         })
                                                     }
                                                 }
+                                                setTimeout(attachExtra, 50)
                                             } else {
                                                 setTimeout(() => {
                                                     refresh()
-                                                }, 3000)
+                                                }, 100)
                                             }
                                         }
+                                        setTimeout(refresh, 50)
+                                        setTimeout(attachToRobloxSelectTab, 50)
+                                        setTimeout(attachToRobloxComments, 50)
+                                        setTimeout(attachToMemberlist, 50)
+                                        setTimeout(attachToGroupContainer, 50)
                                     }
-                                    refresh()
-                                    attachToRobloxSelectTab()
                                 }
 
                                 function applyAutoChangeFunctionB() { // Creator Name
@@ -1402,9 +1441,15 @@ function start() {
 
                                 /* Loop entire function again */
                                 if (stop_loop == false) {
-                                    setTimeout(function () {
-                                        scanUser(json["id"])
-                                    }, start_time)
+                                    if (id == "*") {
+                                        setTimeout(function () {
+                                            scanUser("*")
+                                        }, start_time)
+                                    } else {
+                                        setTimeout(function () {
+                                            scanUser(json["id"])
+                                        }, start_time)
+                                    }
                                 }
                                 /* Loop entire function again */
                             }
@@ -1490,8 +1535,8 @@ function loader() { // Script Loader
             if (typeof (window.verifiedCheckmarkSettings["enabled"]) == "boolean") {
                 enabled = window.verifiedCheckmarkSettings["enabled"];
             }
-            if (typeof (window.verifiedCheckmarkSettings["allowedAlerts"]) == "boolean") {
-                allow_messages = window.verifiedCheckmarkSettings["allowedAlerts"];
+            if (typeof (window.verifiedCheckmarkSettings["allowAlertMessages"]) == "boolean") {
+                allow_messages = window.verifiedCheckmarkSettings["allowAlertMessages"];
             }
             if (typeof (window.verifiedCheckmarkSettings["startTime"]) == "string") {
                 if (Number(window.verifiedCheckmarkSettings["startTime"])) {
@@ -1566,8 +1611,8 @@ function loader() { // Script Loader
             "verifiedBadgeBetweenAccounts": true,
             "allowEfazDevApprovedBadges": true
         }
-        if (typeof (window.verifiedCheckmarkSettings["allowedAlerts"]) == "boolean") {
-            allow_messages = window.verifiedCheckmarkSettings["allowedAlerts"];
+        if (typeof (window.verifiedCheckmarkSettings["allowAlertMessages"]) == "boolean") {
+            allow_messages = window.verifiedCheckmarkSettings["allowAlertMessages"];
         }
         if (typeof (window.verifiedCheckmarkSettings["startTime"]) == "string") {
             if (Number(window.verifiedCheckmarkSettings["startTime"])) {
