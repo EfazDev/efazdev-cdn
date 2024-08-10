@@ -249,58 +249,94 @@ function start() {
                                                         return { "accepted": false }
                                                     } else {
                                                         group_scan = true
-                                                        return fetch(`https://groups.roblox.com/v1/users/${json["id"]}/groups/roles?includeLocked=true&includeNotificationPreferences=true`, { "mode": "cors", "credentials": "include" }).then(grou_res => {
-                                                            if (grou_res.ok) {
-                                                                return grou_res.json();
+                                                        if (stored_group_data["temp_group_info"]) {
+                                                            if (typeof (allowed_groups["group_ownership"][id]) == "object") {
+                                                                if (approved_efazdev_users[allowed_groups["group_ownership"][id]["owner"]] && (!(allowed_groups["group_ownership"][id]["owner"] == json["id"]))) {
+                                                                    return { "accepted": false }
+                                                                } else {
+                                                                    return allowed_groups["group_ownership"][id]
+                                                                }
+                                                            } else if (allowed_groups["group_ownership"][id] == false) {
+                                                                return { "accepted": false }
+                                                            } else if (allowed_groups["group_ownership"] && ((!(allowed_groups["group_ownership"][id])) && allowed_groups["group_ownership"][`scan_${json["id"]}`] == true)) {
+                                                                return { "accepted": false }
                                                             } else {
-                                                                return null
+                                                                return { "accepted": false }
                                                             }
-                                                        }).then(grou_resjson => {
-                                                            if (grou_resjson) {
-                                                                if (grou_resjson["data"]) {
-                                                                    stored_group_data["temp_group_info"] = {}
-                                                                    allowed_groups["group_ownership"][`scan_${json["id"]}`] = true
-                                                                    grou_resjson["data"].forEach((grou_json) => {
-                                                                        grou_json = grou_json["group"]
-                                                                        if (grou_json["owner"] && grou_json["owner"]["userId"] == json["id"]) {
-                                                                            grou_json["accepted"] = true
-                                                                            allowed_groups["group_ownership"][grou_json["id"]] = {
-                                                                                "accepted": grou_json["accepted"],
-                                                                                "name": grou_json["name"],
-                                                                                "id": grou_json["id"],
-                                                                                "owner": grou_json["owner"]["userId"],
-                                                                            }
-                                                                        } else {
-                                                                            if (grou_json["owner"]) {
-                                                                                grou_json["accepted"] = false
+                                                        } else {
+                                                            return fetch(`https://groups.roblox.com/v1/users/${json["id"]}/groups/roles?includeLocked=true&includeNotificationPreferences=true`, { "mode": "cors", "credentials": "include" }).then(grou_res => {
+                                                                if (grou_res.ok) {
+                                                                    return grou_res.json();
+                                                                } else {
+                                                                    return null
+                                                                }
+                                                            }).then(grou_resjson => {
+                                                                if (grou_resjson) {
+                                                                    if (grou_resjson["data"]) {
+                                                                        stored_group_data["temp_group_info"] = {}
+                                                                        allowed_groups["group_ownership"][`scan_${json["id"]}`] = true
+                                                                        grou_resjson["data"].forEach((grou_json) => {
+                                                                            grou_json = grou_json["group"]
+                                                                            if (grou_json["owner"] && grou_json["owner"]["userId"] == json["id"]) {
+                                                                                grou_json["accepted"] = true
                                                                                 allowed_groups["group_ownership"][grou_json["id"]] = {
                                                                                     "accepted": grou_json["accepted"],
                                                                                     "name": grou_json["name"],
                                                                                     "id": grou_json["id"],
                                                                                     "owner": grou_json["owner"]["userId"],
                                                                                 }
+                                                                            } else {
+                                                                                if (grou_json["owner"]) {
+                                                                                    grou_json["accepted"] = false
+                                                                                    allowed_groups["group_ownership"][grou_json["id"]] = {
+                                                                                        "accepted": grou_json["accepted"],
+                                                                                        "name": grou_json["name"],
+                                                                                        "id": grou_json["id"],
+                                                                                        "owner": grou_json["owner"]["userId"],
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                            stored_group_data["temp_group_info"][grou_json["id"]] = allowed_groups["group_ownership"][grou_json["id"]]
+                                                                        })
+
+                                                                        if (!(allowed_groups["group_ownership"][id])) {
+                                                                            var efazdev_approved_keys = Object.keys(approved_efazdev_users)
+                                                                            if (efazdev_approved_keys) {
+                                                                                efazdev_approved_keys.forEach((ke) => {
+                                                                                    var info = approved_efazdev_users[ke]
+                                                                                    if (info["approve_groups"]) {
+                                                                                        if (info["approve_groups"].find(id)) {
+                                                                                            allowed_groups["group_ownership"][id] = {
+                                                                                                "accepted": true,
+                                                                                                "id": id,
+                                                                                                "owner": info["id"],
+                                                                                            }
+                                                                                            stored_group_data["temp_group_info"][id] = allowed_groups["group_ownership"][id]
+                                                                                        }
+                                                                                    }
+                                                                                })
                                                                             }
                                                                         }
-                                                                        stored_group_data["temp_group_info"][grou_json["id"]] = allowed_groups["group_ownership"][grou_json["id"]]
-                                                                    })
-                                                                    return chrome.storage.local.set(allowed_groups).then(() => {
-                                                                        logMessage("Saved to chrome storage!")
-                                                                        group_scan = false
-                                                                        if (allowed_groups["group_ownership"][id] == false) {
-                                                                            return { "accepted": false }
-                                                                        } else if (allowed_groups["group_ownership"][id]) {
-                                                                            return allowed_groups["group_ownership"][id]
-                                                                        } else {
-                                                                            return { "accepted": false }
-                                                                        }
-                                                                    })
+
+                                                                        return chrome.storage.local.set(allowed_groups).then(() => {
+                                                                            logMessage("Saved to chrome storage!")
+                                                                            group_scan = false
+                                                                            if (allowed_groups["group_ownership"][id] == false) {
+                                                                                return { "accepted": false }
+                                                                            } else if (allowed_groups["group_ownership"][id]) {
+                                                                                return allowed_groups["group_ownership"][id]
+                                                                            } else {
+                                                                                return { "accepted": false }
+                                                                            }
+                                                                        })
+                                                                    } else {
+                                                                        return { "accepted": false }
+                                                                    }
                                                                 } else {
                                                                     return { "accepted": false }
                                                                 }
-                                                            } else {
-                                                                return { "accepted": false }
-                                                            }
-                                                        });
+                                                            });
+                                                        }
                                                     }
                                                 }
                                             }
@@ -348,6 +384,26 @@ function start() {
                                                                     stored_group_data["group_ownership"][grou_json["id"]] = false
                                                                 }
                                                             })
+
+                                                            if (!(allowed_groups["group_ownership"][id])) {
+                                                                var efazdev_approved_keys = Object.keys(approved_efazdev_users)
+                                                                if (efazdev_approved_keys) {
+                                                                    efazdev_approved_keys.forEach((ke) => {
+                                                                        var info = approved_efazdev_users[ke]
+                                                                        if (info["approve_groups"]) {
+                                                                            if (info["approve_groups"].find(id)) {
+                                                                                allowed_groups["group_ownership"][id] = {
+                                                                                    "accepted": true,
+                                                                                    "id": id,
+                                                                                    "owner": info["id"],
+                                                                                }
+                                                                                stored_group_data["temp_group_info"][id] = allowed_groups["group_ownership"][id]
+                                                                            }
+                                                                        }
+                                                                    })
+                                                                }
+                                                            }
+
                                                             if (stored_group_data["group_ownership"][id]) {
                                                                 logMessage("Saved to local storage!")
                                                                 group_scan = false
@@ -1272,7 +1328,9 @@ function start() {
                                                 var userIdd = user_container.href.match(/[0-9]+/)[0];
                                                 if (json["id"] == userIdd) {
                                                     if (user_container.innerHTML.includes(`class="hide"`) && user_container.innerHTML.includes(json["displayName"])) {
-                                                        user_container.innerHTML = user_container.innerHTML.replaceAll(`class="hide"`, "")
+                                                        if (user_container.children[1]) {
+                                                            user_container.children[1].innerHTML = user_container.children[1].innerHTML.replaceAll(`class="hide"`, "")
+                                                        }
                                                     }
                                                 }
                                             }
