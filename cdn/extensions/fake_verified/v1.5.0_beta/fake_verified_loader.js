@@ -1372,7 +1372,7 @@ function loader() { // Script Loader
                         window.addEventListener("DOMContentLoaded", start)
                     }
                     console.log("Starting Verified Badge Loader: Settings Configuration v3")
-                    setTimeout(() => { stop_loop = true; }, 10000)
+                    setTimeout(() => { stop_loop = true; }, 30000)
                 }).catch(err => {
                     console.warn(err)
                     if (document.readyState === "complete") {
