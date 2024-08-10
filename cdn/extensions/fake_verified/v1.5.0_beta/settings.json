@@ -40,7 +40,7 @@
         "allowEfazDevApprovedBadges": {
             "text": "Approve Verified Badges on Approved Users by EfazDev",
             "type": "checkbox",
-            "default": false
+            "default": true
         }
     },
     "chromeWebstoreLinkEnabled": true,

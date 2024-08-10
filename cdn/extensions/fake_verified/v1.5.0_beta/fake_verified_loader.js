@@ -671,6 +671,12 @@ function start() {
                                         if (username_containers_2.length > 0) {
                                             username_containers_2.forEach((user_container) => {
                                                 if (user_container.outerHTML.includes(`@${json["name"]}`) && user_container.className == "creator-name text-link") {
+                                                    if (!(user_container.parentElement)) {
+                                                        return;
+                                                    }
+                                                    if (verifiedBadgePlacedAlready(user_container.parentElement.outerHTML)) {
+                                                        return;
+                                                    }
                                                     user_container.outerHTML = `${user_container.outerHTML} ${generateVerifiedIcon(name_side_html, 2, null, null, -1)}`;
                                                 }
                                                 if (include_groups == true) {
@@ -681,6 +687,9 @@ function start() {
                                                                 if (info["accepted"] == true) {
                                                                     if (user_container.className == "creator-name text-link") {
                                                                         if (user_container.outerHTML.includes(info["name"])) {
+                                                                            if (!(user_container.parentElement)) {
+                                                                                return;
+                                                                            }
                                                                             if (verifiedBadgePlacedAlready(user_container.parentElement.outerHTML)) {
                                                                                 return;
                                                                             }
@@ -701,6 +710,15 @@ function start() {
                                             username_containers_7.forEach((user_container) => {
                                                 if (user_container.outerHTML.includes(`${json["displayName"]}`) && user_container.className == "avatar-name text-overflow ng-binding") {
                                                     if (user_container.parentElement.parentElement.children[1].outerHTML.includes(`@${json["name"]}`)) {
+                                                        if (!(user_container.parentElement)) {
+                                                            return;
+                                                        }
+                                                        if (!(user_container.parentElement.parentElement)) {
+                                                            return;
+                                                        }
+                                                        if (!(user_container.parentElement.parentElement.parentElement)) {
+                                                            return;
+                                                        }
                                                         if (verifiedBadgePlacedAlready(user_container.parentElement.parentElement.parentElement.outerHTML)) {
                                                             return;
                                                         }
@@ -721,6 +739,9 @@ function start() {
                                                         username_containers_9.forEach((user_container_2) => {
                                                             if (user_container.offsetParent == user_container_2.offsetParent) {
                                                                 if (user_container_2.innerText == `@${json["name"]}`) {
+                                                                    if (!(user_container.parentElement)) {
+                                                                        return;
+                                                                    }
                                                                     if (verifiedBadgePlacedAlready(user_container.parentElement.outerHTML)) {
                                                                         return;
                                                                     }
@@ -756,6 +777,15 @@ function start() {
                                             username_containers_7.forEach((user_container) => {
                                                 if (user_container.outerHTML.includes(`${json["displayName"]}`) && user_container.className == "avatar-name text-overflow ng-binding") {
                                                     if (user_container.parentElement.parentElement.children[1].outerHTML.includes(`@${json["name"]}`)) {
+                                                        if (!(user_container.parentElement)) {
+                                                            return;
+                                                        }
+                                                        if (!(user_container.parentElement.parentElement)) {
+                                                            return;
+                                                        }
+                                                        if (!(user_container.parentElement.parentElement.parentElement)) {
+                                                            return;
+                                                        }
                                                         if (verifiedBadgePlacedAlready(user_container.parentElement.parentElement.parentElement.outerHTML)) {
                                                             return;
                                                         }
@@ -784,6 +814,9 @@ function start() {
                                         if (username_containers_9.length > 0) {
                                             username_containers_9.forEach((user_container) => {
                                                 if (user_container.outerHTML.includes(`@${json["name"]}`) && user_container.className == "creator-name text-overflow text-link ng-binding") {
+                                                    if (!(user_container.parentElement)) {
+                                                        return;
+                                                    }
                                                     if (verifiedBadgePlacedAlready(user_container.parentElement.outerHTML)) {
                                                         return;
                                                     }
@@ -797,6 +830,9 @@ function start() {
                                                                 if (info["accepted"] == true) {
                                                                     if (user_container.className == "creator-name text-overflow text-link ng-binding") {
                                                                         if (user_container.outerHTML.includes(info["name"])) {
+                                                                            if (!(user_container.parentElement)) {
+                                                                                return;
+                                                                            }
                                                                             if (verifiedBadgePlacedAlready(user_container.parentElement.outerHTML)) {
                                                                                 return;
                                                                             }
@@ -827,6 +863,9 @@ function start() {
                                         if (username_containers_10.length > 0) {
                                             username_containers_10.forEach((user_container) => {
                                                 if (user_container.outerHTML.includes(`${json["name"]}`) && user_container.className == "text-name username ng-binding") {
+                                                    if (!(user_container.parentElement)) {
+                                                        return;
+                                                    }
                                                     if (verifiedBadgePlacedAlready(user_container.parentElement.outerHTML)) {
                                                         return;
                                                     }
@@ -852,6 +891,9 @@ function start() {
                                         if (username_containers_11.length > 0) {
                                             username_containers_11.forEach((user_container) => {
                                                 if (user_container.outerHTML.includes(`${json["displayName"]}`) && user_container.href.includes(json["id"]) && user_container.className == "text-overflow avatar-name") {
+                                                    if (!(user_container.parentElement)) {
+                                                        return;
+                                                    }
                                                     if (verifiedBadgePlacedAlready(user_container.parentElement.outerHTML)) {
                                                         return;
                                                     }
@@ -913,6 +955,9 @@ function start() {
                                                                 if (info["accepted"] == true) {
                                                                     if (user_container.className == "ng-binding slide-item-name text-overflow groups font-title") {
                                                                         if (user_container.innerHTML.includes(info["name"])) {
+                                                                            if (!(user_container.parentElement)) {
+                                                                                return;
+                                                                            }
                                                                             if (verifiedBadgePlacedAlready(user_container.parentElement.outerHTML)) {
                                                                                 return;
                                                                             }
@@ -991,6 +1036,9 @@ function start() {
                                         username_containers_4 = Array.prototype.slice.call(username_containers_4);
                                         if (username_containers_4.length > 0) {
                                             username_containers_4.forEach((user_container) => {
+                                                if (!(user_container.parentElement)) {
+                                                    return;
+                                                }
                                                 if (user_container.parentElement.outerHTML.includes(`${json["name"]}`) && user_container.parentElement.outerHTML.includes(json["id"]) && user_container.className == "text-name") {
                                                     if (verifiedBadgePlacedAlready(user_container.parentElement.parentElement.outerHTML)) {
                                                         return;
@@ -1034,6 +1082,9 @@ function start() {
                                 if (username_containers_2.length > 0) {
                                     username_containers_2.forEach((user_container) => {
                                         if (user_container.outerHTML.includes(`@${json["name"]}`) && user_container.className == "creator-name text-link") {
+                                            if (!(user_container.parentElement)) {
+                                                return;
+                                            }
                                             if (verifiedBadgePlacedAlready(user_container.parentElement.outerHTML)) {
                                                 return;
                                             }
@@ -1047,6 +1098,9 @@ function start() {
                                                         if (info["accepted"] == true) {
                                                             if (user_container.className == "creator-name text-link") {
                                                                 if (user_container.outerHTML.includes(info["name"])) {
+                                                                    if (!(user_container.parentElement)) {
+                                                                        return;
+                                                                    }
                                                                     if (verifiedBadgePlacedAlready(user_container.parentElement.outerHTML)) {
                                                                         return;
                                                                     }
@@ -1066,6 +1120,9 @@ function start() {
                                 if (username_containers_3.length > 0) {
                                     username_containers_3.forEach((user_container) => {
                                         if (user_container.outerHTML.includes(`@${json["name"]}`) && user_container.className == "text-name text-overflow") {
+                                            if (!(user_container.parentElement)) {
+                                                return;
+                                            }
                                             if (verifiedBadgePlacedAlready(user_container.parentElement.outerHTML)) {
                                                 return;
                                             }
@@ -1095,6 +1152,9 @@ function start() {
                                 username_containers_4 = Array.prototype.slice.call(username_containers_4);
                                 if (username_containers_4.length > 0) {
                                     username_containers_4.forEach((user_container) => {
+                                        if (!(user_container.parentElement)) {
+                                            return;
+                                        }
                                         if (user_container.parentElement.outerHTML.includes(`${json["name"]}`) && user_container.parentElement.outerHTML.includes(json["id"]) && user_container.className == "text-name") {
                                             if (verifiedBadgePlacedAlready(user_container.parentElement.parentElement.outerHTML)) {
                                                 return;
@@ -1129,6 +1189,9 @@ function start() {
                                 if (username_containers_5.length > 0) {
                                     username_containers_5.forEach((user_container) => {
                                         if (user_container.outerHTML.includes(`${json["displayName"]}`) && user_container.className == "text-overflow age-bracket-label-username font-caption-header") {
+                                            if (!(user_container.parentElement)) {
+                                                return;
+                                            }
                                             if (verifiedBadgePlacedAlready(user_container.parentElement.outerHTML)) {
                                                 return;
                                             }
@@ -1142,6 +1205,9 @@ function start() {
                                 if (username_containers_6.length > 0) {
                                     username_containers_6.forEach((user_container) => {
                                         if (user_container.outerHTML.includes(`${json["displayName"]}`) && user_container.className == "text-name name ng-binding") {
+                                            if (!(user_container.parentElement)) {
+                                                return;
+                                            }
                                             if (verifiedBadgePlacedAlready(user_container.parentElement.outerHTML)) {
                                                 return;
                                             }
@@ -1156,6 +1222,12 @@ function start() {
                                     username_containers_7.forEach((user_container) => {
                                         if (user_container.outerHTML.includes(`${json["displayName"]}`) && user_container.className == "avatar-name text-overflow ng-binding") {
                                             if (user_container.parentElement.parentElement.children[1].outerHTML.includes(`@${json["name"]}`)) {
+                                                if (!(user_container.parentElement)) {
+                                                    return;
+                                                }
+                                                if (!(user_container.parentElement.parentElement)) {
+                                                    return;
+                                                }
                                                 if (verifiedBadgePlacedAlready(user_container.parentElement.parentElement.parentElement.outerHTML)) {
                                                     return;
                                                 }
@@ -1177,6 +1249,9 @@ function start() {
                                                     username_containers_9.forEach((user_container_2) => {
                                                         if (user_container.offsetParent == user_container_2.offsetParent) {
                                                             if (user_container_2.innerText == `@${json["name"]}`) {
+                                                                if (!(user_container.parentElement)) {
+                                                                    return;
+                                                                }
                                                                 if (verifiedBadgePlacedAlready(user_container.parentElement.outerHTML)) {
                                                                     return;
                                                                 }
@@ -1343,7 +1418,7 @@ function loader() { // Script Loader
                     "thanks": true,
                     "verifiedPrompt": true,
                     "verifiedBadgeBetweenAccounts": true,
-                    "allowEfazDevApprovedBadges": false
+                    "allowEfazDevApprovedBadges": true
                 }
             }
             if (typeof (window.verifiedCheckmarkSettings["enabled"]) == "boolean") {
@@ -1423,7 +1498,7 @@ function loader() { // Script Loader
             "thanks": true,
             "verifiedPrompt": true,
             "verifiedBadgeBetweenAccounts": true,
-            "allowEfazDevApprovedBadges": false
+            "allowEfazDevApprovedBadges": true
         }
         if (typeof (window.verifiedCheckmarkSettings["allowedAlerts"]) == "boolean") {
             allow_messages = window.verifiedCheckmarkSettings["allowedAlerts"];
