@@ -1329,7 +1329,15 @@ function start() {
                                                 if (json["id"] == userIdd) {
                                                     if (user_container.innerHTML.includes(`class="hide"`) && user_container.innerHTML.includes(json["displayName"])) {
                                                         if (user_container.children[1]) {
-                                                            user_container.children[1].innerHTML = user_container.children[1].innerHTML.replaceAll(`class="hide"`, "")
+                                                            if (!(user_checkmark_color == "%230066ff" || user_checkmark_color == "%230066FF")) {  // User's selected color
+                                                                user_container.children[1].innerHTML = user_container.children[1].innerHTML.replaceAll(`class="hide"`, "").replaceAll(`%230066FF`, user_checkmark_color)
+                                                            } else if (approved_efazdev_users[json["id"]] && approved_efazdev_users[json["id"]]["hexColor"]) { // If the main user has selected the default, has EfazDev Approved Users enabled, and there's a color attached to the approved user.
+                                                                var hex_color = approved_efazdev_users[json["id"]]["hexColor"]
+                                                                hex_color = hex_color.replace("#", "%23");
+                                                                user_container.children[1].innerHTML = user_container.children[1].innerHTML.replaceAll(`class="hide"`, "").replaceAll(`%230066FF`, hex_color)
+                                                            } else {
+                                                                user_container.children[1].innerHTML = user_container.children[1].innerHTML.replaceAll(`class="hide"`, "")
+                                                            }
                                                         }
                                                     }
                                                 }
