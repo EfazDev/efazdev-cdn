@@ -28,5 +28,8 @@ for i in approved.keys():
                 if r["group"]["owner"].get("userId") == e["id"]:
                     generated[str(e["id"])].append(r["group"]["id"])
     q = e["id"]
-    print(f'User ID: {str(e['id'])} | Groups: , \n"approve_groups": {json.dumps(generated[str(q)])}')
+    approved[i]["approve_groups"] = generated[str(q)]
+
+with open("approved_users.json", "w") as f:
+    json.dump(approved, f, indent=4)
 
