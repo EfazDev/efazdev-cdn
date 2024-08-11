@@ -241,12 +241,6 @@ if __name__ == "__main__":
         if installRemoveBuilder == True:
             generated_json["FFlagEnableNewFontNameMappingABTest2"] = "false"
 
-        # Revert Builder Font
-        printMainMessage("Would you like to remove the Builder font and revert it to the original font on your client? [y/n]")
-        installRemoveBuilder = input("> ").lower() == "y"
-        if installRemoveBuilder == True:
-            generated_json["FFlagEnableNewFontNameMappingABTest2"] = "false"
-
         # Display FPS
         printMainMessage("Would you like your client to display the FPS? [y/n]")
         installRemoveBuilder = input("> ").lower() == "y"
