@@ -208,6 +208,13 @@ if __name__ == "__main__":
 
             if useVulkan == True:
                 generated_json["FFlagDebugGraphicsPreferVulkan"] = str(useVulkan)
+        else:
+            # Roblox FPS Unlocker
+            printMainMessage("Would you like the Roblox FPS Unlocker in your settings?")
+            robloxFPSUnlocker = input("> ").lower() == "y"
+            if robloxFPSUnlocker == True:
+                generated_json["FFlagGameBasicSettingsFramerateCap4"] = "true"
+                generated_json["DFIntTaskSchedulerTargetFps"] = "0"
 
         # Verified Badge
         printMainMessage("Would you like to use a verified badge during Roblox Games? [y/n]")
@@ -227,6 +234,44 @@ if __name__ == "__main__":
             generated_json["FFlagAXAccessoryAdjustment"] = "true"
             generated_json["FFlagAXAccessoryAdjustmentIXPEnabled"] = "true"
             generated_json["FFlagAXAccessoryAdjustmentIXPEnabledForAll"] = "true"
+        
+        # Revert Builder Font
+        printMainMessage("Would you like to remove the Builder font and revert it to the original font on your client? [y/n]")
+        installRemoveBuilder = input("> ").lower() == "y"
+        if installRemoveBuilder == True:
+            generated_json["FFlagEnableNewFontNameMappingABTest2"] = "false"
+
+        # Revert Builder Font
+        printMainMessage("Would you like to remove the Builder font and revert it to the original font on your client? [y/n]")
+        installRemoveBuilder = input("> ").lower() == "y"
+        if installRemoveBuilder == True:
+            generated_json["FFlagEnableNewFontNameMappingABTest2"] = "false"
+
+        # Display FPS
+        printMainMessage("Would you like your client to display the FPS? [y/n]")
+        installRemoveBuilder = input("> ").lower() == "y"
+        if installRemoveBuilder == True:
+            generated_json["FFlagDebugDisplayFPS"] = "true"
+
+        # Disable Ads
+        printMainMessage("Would you like your client to disable ads? [y/n]")
+        installRemoveAds = input("> ").lower() == "y"
+        if installRemoveAds == True:
+            generated_json["FFlagAdServiceEnabled"] = "false"
+
+        # Custom Disconnect Message
+        printMainMessage("Would you like to use your own disconnect message? [y/n]")
+        installCustomDisconnect = input("> ").lower() == "y"
+        if installCustomDisconnect == True:
+            generated_json["FFlagReconnectDisabled"] = "true"
+            generated_json["FStringReconnectDisabledReason"] = input("Enter Disconnect Message: ")
+
+        # Quick Connect
+        printMainMessage("Would you like to install Quick Connect on your client? [y/n]")
+        printErrorMessage("WARNING! This can be buggy and may cause issues on your Roblox experience!!!")
+        installQuickConnect = input("> ").lower() == "y"
+        if installQuickConnect == True:
+            generated_json["FFlagEnableQuickGameLaunch"] = "true"
 
         # Custom Fast Flags
         def custom():
