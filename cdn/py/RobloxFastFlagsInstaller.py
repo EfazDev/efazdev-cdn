@@ -33,7 +33,7 @@ class RobloxFastFlagsInstaller():
             os.system("taskkill /IM RobloxPlayerBeta.exe /F")
         else:
             print("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
-    def installFastFlagsJSON(self, fastflagJSON: object, askForPerms: bool=False):
+    def installFastFlagsJSON(self, fastflagJSON: object, askForPerms=False):
         if __name__ == "__main__":
             if main_os == "Darwin":
                 printMainMessage(f"Closing any open Roblox windows..")
