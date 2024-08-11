@@ -10,7 +10,6 @@ macOS_dir = "/Applications/Roblox.app"
 macOS_beforeClientServices = "/Contents/MacOS/"
 
 windows_dir = f"{os.getenv('LOCALAPPDATA')}\Roblox"
-windows_beforeClientServices = "\\"
 # If your Roblox installation is inside of an another folder or on an extra hard drive, you may edit the following here.
 
 def printMainMessage(mes):
@@ -58,18 +57,18 @@ class RobloxFastFlagsInstaller():
                 printMainMessage(f"Closing any open Roblox windows..")
                 self.endRoblox()
                 printMainMessage(f"Generating Client Settings Folder..")
-                if not os.path.exists(f"{windows_dir}{windows_beforeClientServices}ClientSettings"):
-                    os.mkdir(f"{windows_dir}{windows_beforeClientServices}ClientSettings")
-                    printSuccessMessage(f"Created {windows_dir}{windows_beforeClientServices}ClientSettings..")
+                if not os.path.exists(f"{windows_dir}\ClientSettings"):
+                    os.mkdir(f"{windows_dir}\ClientSettings")
+                    printSuccessMessage(f"Created {windows_dir}\ClientSettings..")
                 else:
                     printWarnMessage(f"Client Settings is already created. Skipping Folder Creation..")
                 printMainMessage("Writing ClientAppSettings.json")
-                with open(f"{windows_dir}{windows_beforeClientServices}ClientSettings/ClientAppSettings.json", "w") as f:
+                with open(f"{windows_dir}\ClientSettings\ClientAppSettings.json", "w") as f:
                     f.write(json.dumps(fastflagJSON))
                 printSuccessMessage("DONE!")
                 printSuccessMessage("Your fast flags should be installed!")
                 printSuccessMessage("Please know that you'll have to use this script again after every Roblox update/reinstall! Also, it only shows if you play a game, not in the home menu!")
-                printSuccessMessage(f"If you like to update your fast flags, go to: {windows_dir}{windows_beforeClientServices}ClientSettings/ClientAppSettings.json")
+                printSuccessMessage(f"If you like to update your fast flags, go to: {windows_dir}\ClientSettings\ClientAppSettings.json")
                 printMainMessage("Would you like to open Roblox? [y/n]")
                 if input("> ").lower() == "y":
                     self.openRoblox()
@@ -90,9 +89,9 @@ class RobloxFastFlagsInstaller():
                     f.write(json.dumps(fastflagJSON))
             elif main_os == "Windows":
                 self.endRoblox()
-                if not os.path.exists(f"{windows_dir}{windows_beforeClientServices}ClientSettings"):
-                    os.mkdir(f"{windows_dir}{windows_beforeClientServices}ClientSettings")
-                with open(f"{windows_dir}{windows_beforeClientServices}ClientSettings/ClientAppSettings.json", "w") as f:
+                if not os.path.exists(f"{windows_dir}\ClientSettings"):
+                    os.mkdir(f"{windows_dir}\ClientSettings")
+                with open(f"{windows_dir}\ClientSettings\ClientAppSettings.json", "w") as f:
                     f.write(json.dumps(fastflagJSON))
             else:
                 print("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
