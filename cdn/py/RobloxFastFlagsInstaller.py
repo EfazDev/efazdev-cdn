@@ -25,13 +25,18 @@ def printWarnMessage(mes):
     print(f"\x1b[38;2;255;75;0m{mes}\033[38;5;231m")
 
 class RobloxFastFlagsInstaller():
+    def printLog(m):
+        if __name__ == "__main__":
+            printMainMessage(m)
+        else:
+            print(m)
     def endRoblox(self):
         if main_os == "Darwin":
             os.system("killall -9 RobloxPlayer")
         elif main_os == "Windows":
             os.system("taskkill /IM RobloxPlayerBeta.exe /F")
         else:
-            print("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
+            self.printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
     def installFastFlagsJSON(self, fastflagJSON: object, askForPerms=False):
         if __name__ == "__main__":
             if main_os == "Darwin":
@@ -76,10 +81,10 @@ class RobloxFastFlagsInstaller():
                 printErrorMessage("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
         else:
             if askForPerms == True:
-                print("Would you like to continue with the Roblox Fast Flag installation? [y/n]")
-                print("WARNING! This will force-quit any open Roblox windows! Please close them in order to prevent data loss!")
+                self.printLog("Would you like to continue with the Roblox Fast Flag installation? [y/n]")
+                self.printLog("WARNING! This will force-quit any open Roblox windows! Please close them in order to prevent data loss!")
                 if not (input("> ").lower() == "y"):
-                    print("Stopped installation..")
+                    self.printLog("Stopped installation..")
                     return
             if main_os == "Darwin":
                 self.endRoblox()
@@ -94,7 +99,7 @@ class RobloxFastFlagsInstaller():
                 with open(f"{windows_dir}\ClientSettings\ClientAppSettings.json", "w") as f:
                     f.write(json.dumps(fastflagJSON))
             else:
-                print("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
+                self.printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
     def openRoblox(self):
         if main_os == "Darwin":
             os.system(f"open -a {macOS_dir}")
@@ -116,10 +121,11 @@ class RobloxFastFlagsInstaller():
             most_recent_roblox_version_dir = get_last_updated_folder(f"{windows_dir}\Versions")
             if most_recent_roblox_version_dir:
                 os.system(f"start {most_recent_roblox_version_dir}RobloxPlayerBeta.exe")
+                self.printLog("Started Roblox..")
             else:
-                print("Roblox couldn't be found.")
+                self.printLog("Roblox couldn't be found.")
         else:
-            print("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
+            self.printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
 
 if __name__ == "__main__":
     if main_os == "Windows":
