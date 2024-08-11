@@ -112,7 +112,7 @@ class RobloxFastFlagsInstaller():
                 if not latest_folder.endswith("\\"):
                     latest_folder += "\\"
                 return latest_folder
-            most_recent_roblox_version_dir = get_last_updated_folder(f"{windows_dir}")
+            most_recent_roblox_version_dir = get_last_updated_folder(f"{windows_dir}\Versions")
             if most_recent_roblox_version_dir:
                 os.system(f"start {most_recent_roblox_version_dir}RobloxPlayerLauncher.exe")
             else:
