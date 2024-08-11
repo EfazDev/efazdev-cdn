@@ -303,8 +303,13 @@ if __name__ == "__main__":
         printMainMessage("Settings are now finished and now ready for setup!")
         printMainMessage("Would you like to continue with the fast flag installation? [y/n]")
         printErrorMessage("WARNING! This will force-quit any open Roblox windows! Please close them in order to prevent data loss!")
-        if input("> ").lower() == "y":
+        install_now = input("> ")
+        if install_now.lower() == "y":
             handler.installFastFlagsJSON(generated_json)
+        elif install_now.lower() == "json()":
+            printMainMessage("Generated JSON:")
+            printMainMessage(json.dumps(generated_json))
+            exit()
         else:
             printMainMessage("Ending installation..")
             exit()
