@@ -1,13 +1,17 @@
 import os
 import platform
 import json
-import sys
 
 os.system("cls" if os.name == "nt" else "clear")
-    
 main_os = platform.system()
-dir = "/Applications/Roblox.app"
-beforeClientServices = "/Contents/MacOS/"
+
+# If your Roblox installation is inside of an another folder or on an extra hard drive, you may edit the following here.
+macOS_dir = "/Applications/Roblox.app"
+macOS_beforeClientServices = "/Contents/MacOS/"
+
+windows_dir = "%LocalAppData%\Roblox"
+windows_beforeClientServices = "\\"
+# If your Roblox installation is inside of an another folder or on an extra hard drive, you may edit the following here.
 
 def printMainMessage(mes):
     print(f"\x1b[38;2;255;255;255m{mes}\033[38;5;231m")
@@ -21,32 +25,129 @@ def printSuccessMessage(mes):
 def printWarnMessage(mes):
     print(f"\x1b[38;2;255;75;0m{mes}\033[38;5;231m")
 
+class RobloxFastFlagsInstaller():
+    def endRoblox(self):
+        if main_os == "Darwin":
+            os.system("killall -9 RobloxPlayer")
+        elif main_os == "Windows":
+            os.system("taskkill /IM RobloxPlayerBeta.exe /F")
+        else:
+            print("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
+    def installFastFlagsJSON(self, fastflagJSON, askForPerms):
+        if __name__ == "__main__":
+            if main_os == "Darwin":
+                printMainMessage(f"Closing any open Roblox windows..")
+                self.endRoblox()
+                printMainMessage(f"Generating Client Settings Folder..")
+                if not os.path.exists(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings"):
+                    os.mkdir(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings")
+                    printSuccessMessage(f"Created {macOS_dir}{macOS_beforeClientServices}ClientSettings..")
+                else:
+                    printWarnMessage(f"Client Settings is already created. Skipping Folder Creation..")
+                printMainMessage("Writing ClientAppSettings.json")
+                with open(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings/ClientAppSettings.json", "w") as f:
+                    f.write(json.dumps(fastflagJSON))
+                printSuccessMessage("DONE!")
+                printSuccessMessage("Your fast flags should be installed!")
+                printSuccessMessage("Please know that you'll have to use this script again after every Roblox update/reinstall! Also, it only shows if you play a game, not in the home menu!")
+                printSuccessMessage(f"If you like to update your fast flags, go to: {macOS_dir}{macOS_beforeClientServices}ClientSettings/ClientAppSettings.json")
+                printMainMessage("Would you like to open Roblox? [y/n]")
+                if input("> ").lower() == "y":
+                    self.openRoblox()
+            elif main_os == "Windows":
+                printMainMessage(f"Closing any open Roblox windows..")
+                self.endRoblox()
+                printMainMessage(f"Generating Client Settings Folder..")
+                if not os.path.exists(f"{windows_dir}{windows_beforeClientServices}ClientSettings"):
+                    os.mkdir(f"{windows_dir}{windows_beforeClientServices}ClientSettings")
+                    printSuccessMessage(f"Created {windows_dir}{windows_beforeClientServices}ClientSettings..")
+                else:
+                    printWarnMessage(f"Client Settings is already created. Skipping Folder Creation..")
+                printMainMessage("Writing ClientAppSettings.json")
+                with open(f"{windows_dir}{windows_beforeClientServices}ClientSettings/ClientAppSettings.json", "w") as f:
+                    f.write(json.dumps(fastflagJSON))
+                printSuccessMessage("DONE!")
+                printSuccessMessage("Your fast flags should be installed!")
+                printSuccessMessage("Please know that you'll have to use this script again after every Roblox update/reinstall! Also, it only shows if you play a game, not in the home menu!")
+                printSuccessMessage(f"If you like to update your fast flags, go to: {windows_dir}{windows_beforeClientServices}ClientSettings/ClientAppSettings.json")
+                printMainMessage("Would you like to open Roblox? [y/n]")
+                if input("> ").lower() == "y":
+                    self.openRoblox()
+            else:
+                printErrorMessage("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
+        else:
+            if askForPerms == True:
+                print("Would you like to continue with the Roblox Fast Flag installation? [y/n]")
+                print("WARNING! This will force-quit any open Roblox windows! Please close them in order to prevent data loss!")
+                if not (input("> ").lower() == "y"):
+                    print("Stopped installation..")
+                    return
+            if main_os == "Darwin":
+                self.endRoblox()
+                if not os.path.exists(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings"):
+                    os.mkdir(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings")
+                with open(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings/ClientAppSettings.json", "w") as f:
+                    f.write(json.dumps(fastflagJSON))
+            elif main_os == "Windows":
+                self.endRoblox()
+                if not os.path.exists(f"{windows_dir}{windows_beforeClientServices}ClientSettings"):
+                    os.mkdir(f"{windows_dir}{windows_beforeClientServices}ClientSettings")
+                with open(f"{windows_dir}{windows_beforeClientServices}ClientSettings/ClientAppSettings.json", "w") as f:
+                    f.write(json.dumps(fastflagJSON))
+            else:
+                print("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
+    def openRoblox(self):
+        if main_os == "Darwin":
+            os.system(f"open -a {macOS_dir}")
+        elif main_os == "Windows":
+            def get_last_updated_folder(directory): # Thanks ChatGPT :)
+                versions = [os.path.join(directory, folder) for folder in os.listdir(directory) if os.path.isdir(os.path.join(directory, folder))]
+                formatted = []
+                if not versions:
+                    return None
+                for fold in versions:
+                    if os.path.isdir(fold):
+                        if os.path.exists(f"{fold}RobloxPlayerLauncher.exe"):
+                            formatted.append(fold)
+                latest_folder = max(formatted, key=os.path.getmtime)
+                if not latest_folder.endswith("\\"):
+                    latest_folder += "\\"
+                return latest_folder
+            most_recent_roblox_version_dir = get_last_updated_folder(f"{windows_dir}")
+            if most_recent_roblox_version_dir:
+                os.system(f"start {most_recent_roblox_version_dir}RobloxPlayerLauncher.exe")
+            else:
+                print("Roblox is not found.")
+        else:
+            print("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
+
 if __name__ == "__main__":
-    printWarnMessage("-----------")
-    printWarnMessage("Welcome to Roblox Fast Flags Setup for macOS!")
+    if main_os == "Windows":
+        printWarnMessage("-----------")
+        printWarnMessage("Welcome to Roblox Fast Flags Setup by EfazDev!")
+    elif main_os == "Darwin":
+        printWarnMessage("-----------")
+        printWarnMessage("Welcome to Roblox Fast Flags Setup by EfazDev for macOS!")
+    else:
+        printErrorMessage("Please run this script on macOS/Windows.")
+        exit()
     printWarnMessage("Made by Efaz from efaz.dev!")
-    printWarnMessage("v1.0.0")
+    printWarnMessage("v1.0.1")
     printWarnMessage("-----------")
     printMainMessage("Entering Setup..")
+    handler = RobloxFastFlagsInstaller()
     def getUserId():
-        if main_os == "Darwin": 
-            printMainMessage("Please input your User ID! This can be found on your profile in the URL: https://www.roblox.com/users/XXXXXXXX/profile")
-            printMainMessage("This will be used for items that require a User ID.")
-            id = input("> ")
-            if id.isnumeric():
-                return id
-            elif id == "exit":
-                printMainMessage("Ending installation..")
-                exit()
-            else:
-                printWarnMessage("Let's try again!")
-                return getUserId()
-        elif main_os == "Windows":
-            printWarnMessage("In order to use fast flags, use Bloxstrap instead.")
-            return None
+        printMainMessage("Please input your User ID! This can be found on your profile in the URL: https://www.roblox.com/users/XXXXXXXX/profile")
+        printMainMessage("This will be used for items that require a User ID.")
+        id = input("> ")
+        if id.isnumeric():
+            return id
+        elif id == "exit":
+            printMainMessage("Ending installation..")
+            exit()
         else:
-            printErrorMessage("Please run this script on macOS.")
-            return None
+            printWarnMessage("Let's try again!")
+            return getUserId()
     id = getUserId()
     if id:
         # Based JSON
@@ -73,7 +174,9 @@ if __name__ == "__main__":
             printMainMessage("Would you like to use Vulkan Rendering? (It will remove the cap fully but may cause issues) [y/n]")
             useVulkan = input("> ").lower() == "y"
 
-            generated_json["FFlagDebugGraphicsDisableMetal"] =  "true"
+            if main_os == "Darwin":
+                generated_json["FFlagDebugGraphicsDisableMetal"] =  "true"
+
             if fpsCap == None:
                 generated_json["DFIntTaskSchedulerTargetFps"] = 99999
             else:
@@ -132,34 +235,7 @@ if __name__ == "__main__":
         printMainMessage("Would you like to continue with the fast flag installation? [y/n]")
         printErrorMessage("WARNING! This will force-quit any open Roblox windows! Please close them in order to prevent data loss!")
         if input("> ").lower() == "y":
-            printMainMessage(f"Closing any open Roblox windows..")
-            os.system("killall -9 RobloxPlayer")
-            printMainMessage(f"Generating Client Settings Folder..")
-            if not os.path.exists(f"{dir}{beforeClientServices}ClientSettings"):
-                os.mkdir(f"{dir}{beforeClientServices}ClientSettings")
-                printSuccessMessage(f"Created {dir}{beforeClientServices}ClientSettings..")
-            else:
-                printWarnMessage(f"Client Settings is already created. Skipping Folder Creation..")
-            printMainMessage("Writing ClientAppSettings.json")
-            with open(f"{dir}{beforeClientServices}ClientSettings/ClientAppSettings.json", "w") as f:
-                f.write(json.dumps(generated_json))
-            printSuccessMessage("DONE!")
-            printSuccessMessage("Your fast flags should be installed!")
-            printSuccessMessage("Please know that you'll have to use this script again after every Roblox update/reinstall! Also, it only shows if you play a game, not in the home menu!")
-            printSuccessMessage(f"If you like to update your fast flags, go to: {dir}{beforeClientServices}ClientSettings/ClientAppSettings.json")
-            printMainMessage("Would you like to open Roblox? [y/n]")
-            if input("> ").lower() == "y":
-                os.system(f"open -a {dir}")
+            handler.installFastFlagsJSON(generated_json)
         else:
             printMainMessage("Ending installation..")
             exit()
-else:
-    class RobloxFastFlagsInstaller():
-        def installFastFlagsJSON(self, generated_json):
-            os.system("killall -9 RobloxPlayer")
-            if not os.path.exists(f"{dir}{beforeClientServices}ClientSettings"):
-                os.mkdir(f"{dir}{beforeClientServices}ClientSettings")
-            with open(f"{dir}{beforeClientServices}ClientSettings/ClientAppSettings.json", "w") as f:
-                f.write(json.dumps(generated_json))
-        def openRoblox(self):
-            os.system(f"open -a {dir}")

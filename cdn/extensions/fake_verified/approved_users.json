@@ -183,6 +183,7 @@
         "name": "1ukis",
         "displayName": "Lukas",
         "approve_groups": [
+            34776152,
             34741676,
             34719044,
             32863542,
@@ -316,6 +317,37 @@
             33499053,
             33101016,
             3196054
+        ]
+    },
+    "253887243": {
+        "id": 253887243,
+        "name": "Reditionist",
+        "displayName": "Red",
+        "hexColor": "#ff0000",
+        "approve_groups": [
+            34154891,
+            33026742
+        ]
+    },
+    "444234610": {
+        "id": 444234610,
+        "name": "hectorsavger2",
+        "displayName": "Bestbuy6_9",
+        "approve_groups": [
+            33423885,
+            4100776
+        ]
+    },
+    "1773305624": {
+        "id": 1773305624,
+        "name": "HeydanDev",
+        "displayName": "Heydan",
+        "approve_groups": [
+            33963861,
+            32942730,
+            32931711,
+            32756181,
+            15263693
         ]
     }
 }
