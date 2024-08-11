@@ -88,18 +88,18 @@ class RobloxFastFlagsInstaller():
                 if most_recent_roblox_version_dir:
                     printMainMessage(f"Found version: {most_recent_roblox_version_dir}")
                     printMainMessage(f"Generating Client Settings Folder..")
-                    if not os.path.exists(f"{most_recent_roblox_version_dir}\ClientSettings"):
-                        os.mkdir(f"{most_recent_roblox_version_dir}\ClientSettings")
-                        printSuccessMessage(f"Created {most_recent_roblox_version_dir}\ClientSettings..")
+                    if not os.path.exists(f"{most_recent_roblox_version_dir}ClientSettings"):
+                        os.mkdir(f"{most_recent_roblox_version_dir}ClientSettings")
+                        printSuccessMessage(f"Created {most_recent_roblox_version_dir}ClientSettings..")
                     else:
                         printWarnMessage(f"Client Settings is already created. Skipping Folder Creation..")
                     printMainMessage("Writing ClientAppSettings.json")
-                    with open(f"{most_recent_roblox_version_dir}\ClientSettings\ClientAppSettings.json", "w") as f:
+                    with open(f"{most_recent_roblox_version_dir}ClientSettings\ClientAppSettings.json", "w") as f:
                         f.write(json.dumps(fastflagJSON))
                     printSuccessMessage("DONE!")
                     printSuccessMessage("Your fast flags should be installed!")
                     printSuccessMessage("Please know that you'll have to use this script again after every Roblox update/reinstall! Also, it only shows if you play a game, not in the home menu!")
-                    printSuccessMessage(f"If you like to update your fast flags, go to: {most_recent_roblox_version_dir}\ClientSettings\ClientAppSettings.json")
+                    printSuccessMessage(f"If you like to update your fast flags, go to: {most_recent_roblox_version_dir}ClientSettings\ClientAppSettings.json")
                     printMainMessage("Would you like to open Roblox? [y/n]")
                     if input("> ").lower() == "y":
                         self.openRoblox()
@@ -124,9 +124,9 @@ class RobloxFastFlagsInstaller():
                 self.endRoblox()
                 most_recent_roblox_version_dir = self.get_latest_roblox_version(f"{windows_dir}\Versions")
                 if most_recent_roblox_version_dir:
-                    if not os.path.exists(f"{most_recent_roblox_version_dir}\ClientSettings"):
-                        os.mkdir(f"{most_recent_roblox_version_dir}\ClientSettings")
-                    with open(f"{most_recent_roblox_version_dir}\ClientSettings\ClientAppSettings.json", "w") as f:
+                    if not os.path.exists(f"{most_recent_roblox_version_dir}ClientSettings"):
+                        os.mkdir(f"{most_recent_roblox_version_dir}ClientSettings")
+                    with open(f"{most_recent_roblox_version_dir}ClientSettings\ClientAppSettings.json", "w") as f:
                         f.write(json.dumps(fastflagJSON))
                 else:
                     self.printLog("Roblox couldn't be found.")
