@@ -25,11 +25,33 @@ def printWarnMessage(mes):
     print(f"\x1b[38;2;255;75;0m{mes}\033[38;5;231m")
 
 class RobloxFastFlagsInstaller():
-    def printLog(m):
+    # System Functions
+    def printLog(self, m):
         if __name__ == "__main__":
             printMainMessage(m)
         else:
             print(m)
+    def get_latest_roblox_version(self, versions_dir): # Thanks ChatGPT :)
+        if main_os == "Windows":
+            versions = [os.path.join(versions_dir, folder) for folder in os.listdir(versions_dir) if os.path.isdir(os.path.join(versions_dir, folder))]
+            formatted = []
+            if not versions:
+                return None
+            for fold in versions:
+                if os.path.isdir(fold):
+                    if os.path.exists(f"{fold}\RobloxPlayerLauncher.exe"):
+                        formatted.append(f"{fold}\\")
+            if len(formatted) > 0:
+                latest_folder = max(formatted, key=os.path.getmtime)
+                return latest_folder
+            else:
+                return None
+        elif main_os == "Darwin":
+            return f"{macOS_dir}/"
+        else:
+            self.printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
+    # System Functions
+                
     def endRoblox(self):
         if main_os == "Darwin":
             os.system("killall -9 RobloxPlayer")
@@ -61,22 +83,28 @@ class RobloxFastFlagsInstaller():
             elif main_os == "Windows":
                 printMainMessage(f"Closing any open Roblox windows..")
                 self.endRoblox()
-                printMainMessage(f"Generating Client Settings Folder..")
-                if not os.path.exists(f"{windows_dir}\ClientSettings"):
-                    os.mkdir(f"{windows_dir}\ClientSettings")
-                    printSuccessMessage(f"Created {windows_dir}\ClientSettings..")
+                printMainMessage(f"Finding latest Roblox Version..")
+                most_recent_roblox_version_dir = self.get_latest_roblox_version(f"{windows_dir}\Versions")
+                if most_recent_roblox_version_dir:
+                    printMainMessage(f"Found version: {most_recent_roblox_version_dir}")
+                    printMainMessage(f"Generating Client Settings Folder..")
+                    if not os.path.exists(f"{most_recent_roblox_version_dir}\ClientSettings"):
+                        os.mkdir(f"{most_recent_roblox_version_dir}\ClientSettings")
+                        printSuccessMessage(f"Created {most_recent_roblox_version_dir}\ClientSettings..")
+                    else:
+                        printWarnMessage(f"Client Settings is already created. Skipping Folder Creation..")
+                    printMainMessage("Writing ClientAppSettings.json")
+                    with open(f"{most_recent_roblox_version_dir}\ClientSettings\ClientAppSettings.json", "w") as f:
+                        f.write(json.dumps(fastflagJSON))
+                    printSuccessMessage("DONE!")
+                    printSuccessMessage("Your fast flags should be installed!")
+                    printSuccessMessage("Please know that you'll have to use this script again after every Roblox update/reinstall! Also, it only shows if you play a game, not in the home menu!")
+                    printSuccessMessage(f"If you like to update your fast flags, go to: {most_recent_roblox_version_dir}\ClientSettings\ClientAppSettings.json")
+                    printMainMessage("Would you like to open Roblox? [y/n]")
+                    if input("> ").lower() == "y":
+                        self.openRoblox()
                 else:
-                    printWarnMessage(f"Client Settings is already created. Skipping Folder Creation..")
-                printMainMessage("Writing ClientAppSettings.json")
-                with open(f"{windows_dir}\ClientSettings\ClientAppSettings.json", "w") as f:
-                    f.write(json.dumps(fastflagJSON))
-                printSuccessMessage("DONE!")
-                printSuccessMessage("Your fast flags should be installed!")
-                printSuccessMessage("Please know that you'll have to use this script again after every Roblox update/reinstall! Also, it only shows if you play a game, not in the home menu!")
-                printSuccessMessage(f"If you like to update your fast flags, go to: {windows_dir}\ClientSettings\ClientAppSettings.json")
-                printMainMessage("Would you like to open Roblox? [y/n]")
-                if input("> ").lower() == "y":
-                    self.openRoblox()
+                    printErrorMessage("Roblox couldn't be found.")
             else:
                 printErrorMessage("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
         else:
@@ -94,31 +122,21 @@ class RobloxFastFlagsInstaller():
                     f.write(json.dumps(fastflagJSON))
             elif main_os == "Windows":
                 self.endRoblox()
-                if not os.path.exists(f"{windows_dir}\ClientSettings"):
-                    os.mkdir(f"{windows_dir}\ClientSettings")
-                with open(f"{windows_dir}\ClientSettings\ClientAppSettings.json", "w") as f:
-                    f.write(json.dumps(fastflagJSON))
+                most_recent_roblox_version_dir = self.get_latest_roblox_version(f"{windows_dir}\Versions")
+                if most_recent_roblox_version_dir:
+                    if not os.path.exists(f"{most_recent_roblox_version_dir}\ClientSettings"):
+                        os.mkdir(f"{most_recent_roblox_version_dir}\ClientSettings")
+                    with open(f"{most_recent_roblox_version_dir}\ClientSettings\ClientAppSettings.json", "w") as f:
+                        f.write(json.dumps(fastflagJSON))
+                else:
+                    self.printLog("Roblox couldn't be found.")
             else:
                 self.printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
     def openRoblox(self):
         if main_os == "Darwin":
             os.system(f"open -a {macOS_dir}")
         elif main_os == "Windows":
-            def get_last_updated_folder(directory): # Thanks ChatGPT :)
-                versions = [os.path.join(directory, folder) for folder in os.listdir(directory) if os.path.isdir(os.path.join(directory, folder))]
-                formatted = []
-                if not versions:
-                    return None
-                for fold in versions:
-                    if os.path.isdir(fold):
-                        if os.path.exists(f"{fold}\RobloxPlayerLauncher.exe"):
-                            formatted.append(f"{fold}\\")
-                if len(formatted) > 0:
-                    latest_folder = max(formatted, key=os.path.getmtime)
-                    return latest_folder
-                else:
-                    return None
-            most_recent_roblox_version_dir = get_last_updated_folder(f"{windows_dir}\Versions")
+            most_recent_roblox_version_dir = self.get_latest_roblox_version(f"{windows_dir}\Versions")
             if most_recent_roblox_version_dir:
                 os.system(f"start {most_recent_roblox_version_dir}RobloxPlayerBeta.exe")
                 self.printLog("Started Roblox..")
