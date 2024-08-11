@@ -106,18 +106,16 @@ class RobloxFastFlagsInstaller():
                     return None
                 for fold in versions:
                     if os.path.isdir(fold):
-                        if os.path.exists(f"{fold}RobloxPlayerLauncher.exe"):
-                            formatted.append(fold)
+                        if os.path.exists(f"{fold}\RobloxPlayerLauncher.exe"):
+                            formatted.append(f"{fold}\\")
                 if len(formatted) > 0:
                     latest_folder = max(formatted, key=os.path.getmtime)
-                    if not latest_folder.endswith("\\"):
-                        latest_folder += "\\"
                     return latest_folder
                 else:
                     return None
             most_recent_roblox_version_dir = get_last_updated_folder(f"{windows_dir}\Versions")
             if most_recent_roblox_version_dir:
-                os.system(f"start {most_recent_roblox_version_dir}RobloxPlayerLauncher.exe")
+                os.system(f"start {most_recent_roblox_version_dir}RobloxPlayerBeta.exe")
             else:
                 print("Roblox couldn't be found.")
         else:
