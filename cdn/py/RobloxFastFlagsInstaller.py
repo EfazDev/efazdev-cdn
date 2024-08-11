@@ -9,7 +9,7 @@ main_os = platform.system()
 macOS_dir = "/Applications/Roblox.app"
 macOS_beforeClientServices = "/Contents/MacOS/"
 
-windows_dir = "%LocalAppData%\Roblox"
+windows_dir = f"{os.getenv('LOCALAPPDATA')}\Roblox"
 windows_beforeClientServices = "\\"
 # If your Roblox installation is inside of an another folder or on an extra hard drive, you may edit the following here.
 
