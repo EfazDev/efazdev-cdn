@@ -108,15 +108,18 @@ class RobloxFastFlagsInstaller():
                     if os.path.isdir(fold):
                         if os.path.exists(f"{fold}RobloxPlayerLauncher.exe"):
                             formatted.append(fold)
-                latest_folder = max(formatted, key=os.path.getmtime)
-                if not latest_folder.endswith("\\"):
-                    latest_folder += "\\"
-                return latest_folder
+                if len(formatted) > 0:
+                    latest_folder = max(formatted, key=os.path.getmtime)
+                    if not latest_folder.endswith("\\"):
+                        latest_folder += "\\"
+                    return latest_folder
+                else:
+                    return None
             most_recent_roblox_version_dir = get_last_updated_folder(f"{windows_dir}\Versions")
             if most_recent_roblox_version_dir:
                 os.system(f"start {most_recent_roblox_version_dir}RobloxPlayerLauncher.exe")
             else:
-                print("Roblox is not found.")
+                print("Roblox couldn't be found.")
         else:
             print("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
 
