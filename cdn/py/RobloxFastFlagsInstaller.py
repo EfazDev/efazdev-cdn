@@ -328,7 +328,7 @@ if __name__ == "__main__":
 
         # Rename Charts to Discover
         printWarnMessage("--- Replace Charts ---")
-        printMainMessage("Would you like to rename Charts back to Discover? (y/n)")
+        printMainMessage("Would you like to rename Charts back to Discover (may work)? (y/n)")
         installRenameCharts = input("> ")
         if isYes(installRenameCharts) == True:
             generated_json["FFlagLuaAppChartsPageRenameIXP"] = "true"
@@ -338,7 +338,7 @@ if __name__ == "__main__":
 
         # Enable Developer Tools
         printWarnMessage("--- Enable Developer Tools ---")
-        printMainMessage("Would you like to enable Developer Tools inside of the Roblox App (when website frame is opened)? (y/n)")
+        printMainMessage("Would you like to enable Developer Tools inside of the Roblox App (when website frame is opened) (may work)? (y/n)")
         installEnableDeveloper = input("> ")
         if isYes(installEnableDeveloper) == True:
             generated_json["FFlagDebugEnableNewWebView2DevTool"] = "true"
