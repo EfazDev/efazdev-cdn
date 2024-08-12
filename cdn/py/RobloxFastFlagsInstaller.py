@@ -243,7 +243,7 @@ if __name__ == "__main__":
         
         # Remove Builder Font
         printWarnMessage("--- Remove Builder Font ---")
-        printMainMessage("Would you like to remove the Builder font and revert it back to the original font on your client? (y/n)")
+        printMainMessage("Would you like to remove the Builder font and revert it back to the original font on your client? (This may not work anymore!!) (y/n)")
         installRemoveBuilder = input("> ").lower() == "y"
         if installRemoveBuilder == True:
             generated_json["FFlagEnableNewFontNameMappingABTest2"] = "false"
