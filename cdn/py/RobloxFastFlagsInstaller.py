@@ -262,7 +262,7 @@ if __name__ == "__main__":
             printMainMessage("Would you like to use Vulkan Rendering? (It will remove the cap fully but may cause issues) (y/n)")
             useVulkan = input("> ")
             generated_json["FFlagTaskSchedulerLimitTargetFpsTo2402"] = "false"
-            
+
             if main_os == "Darwin":
                 generated_json["FFlagDebugGraphicsDisableMetal"] =  "true"
 
@@ -480,29 +480,30 @@ if __name__ == "__main__":
             exit()
 
         # Installation
-        printWarnMessage("--- Installation Ready! ---")
-        printMainMessage("Settings are now finished and now ready for setup!")
-        printMainMessage("Would you like to continue with the fast flag installation? (y/n)")
-        printErrorMessage("WARNING! This will force-quit any open Roblox windows! Please close them now before continuing in order to prevent data loss!")
-        install_now = input("> ")
-        if isYes(install_now) == True:
-            if isYes(select_mode) == True:
-                handler.installFastFlagsJSON(generated_json)
-            elif select_mode.lower() == "j" or select_mode.lower() == "json":
-                printMainMessage("Generated JSON:")
-                printMainMessage(json.dumps(generated_json))
-                exit()
-            elif select_mode.lower() == "nm" or select_mode.lower() == "no-merge":
-                handler.installFastFlagsJSON(generated_json, merge=False)
-            elif select_mode.lower() == "f" or select_mode.lower() == "flat":
-                handler.installFastFlagsJSON(generated_json, flat=True)
-            elif select_mode.lower() == "fnm" or select_mode.lower() == "flat-no-merge":
-                handler.installFastFlagsJSON(generated_json, merge=False, flat=True)
-            elif select_mode.lower() == "r" or select_mode.lower() == "reset":
-                handler.installFastFlagsJSON({})
+        if not (select_mode.lower() == "j" or select_mode.lower() == "json"):
+            printWarnMessage("--- Installation Ready! ---")
+            printMainMessage("Settings are now finished and now ready for setup!")
+            printMainMessage("Would you like to continue with the fast flag installation? (y/n)")
+            printErrorMessage("WARNING! This will force-quit any open Roblox windows! Please close them now before continuing in order to prevent data loss!")
+            install_now = input("> ")
+            if isYes(install_now) == True:
+                if isYes(select_mode) == True:
+                    handler.installFastFlagsJSON(generated_json)
+                elif select_mode.lower() == "j" or select_mode.lower() == "json":
+                    printMainMessage("Generated JSON:")
+                    printMainMessage(json.dumps(generated_json))
+                    exit()
+                elif select_mode.lower() == "nm" or select_mode.lower() == "no-merge":
+                    handler.installFastFlagsJSON(generated_json, merge=False)
+                elif select_mode.lower() == "f" or select_mode.lower() == "flat":
+                    handler.installFastFlagsJSON(generated_json, flat=True)
+                elif select_mode.lower() == "fnm" or select_mode.lower() == "flat-no-merge":
+                    handler.installFastFlagsJSON(generated_json, merge=False, flat=True)
+                elif select_mode.lower() == "r" or select_mode.lower() == "reset":
+                    handler.installFastFlagsJSON({})
+                else:
+                    printMainMessage("Ending installation..")
+                    exit()
             else:
                 printMainMessage("Ending installation..")
                 exit()
-        else:
-            printMainMessage("Ending installation..")
-            exit()
