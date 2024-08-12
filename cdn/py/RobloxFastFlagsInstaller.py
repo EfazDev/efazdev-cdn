@@ -59,7 +59,7 @@ class RobloxFastFlagsInstaller():
             os.system("taskkill /IM RobloxPlayerBeta.exe /F")
         else:
             self.printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
-    def installFastFlagsJSON(self, fastflagJSON: object, askForPerms=False):
+    def installFastFlagsJSON(self, fastflagJSON: object, askForPerms=False, merge=True, flat=False):
         if __name__ == "__main__":
             if main_os == "Darwin":
                 printMainMessage(f"Closing any open Roblox windows..")
@@ -71,8 +71,21 @@ class RobloxFastFlagsInstaller():
                 else:
                     printWarnMessage(f"Client Settings is already created. Skipping Folder Creation..")
                 printMainMessage("Writing ClientAppSettings.json")
+                if merge == True:
+                    if os.path.exists(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings/ClientAppSettings.json"):
+                        try:
+                            printMainMessage("Reading Previous Client App Settings..")
+                            with open(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings/ClientAppSettings.json", "r") as f:
+                                merge_json = json.loads(f.read())
+                            merge_json.update(fastflagJSON)
+                            fastflagJSON = merge_json
+                        except Exception as e:
+                            printErrorMessage(f"Something went wrong while trying to generate a merged JSON: {str(e)}")
                 with open(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings/ClientAppSettings.json", "w") as f:
-                    f.write(json.dumps(fastflagJSON))
+                    if flat == True:
+                        json.dump(fastflagJSON, f)
+                    else:
+                        json.dump(fastflagJSON, f, indent=4)
                 printSuccessMessage("DONE!")
                 printSuccessMessage("Your fast flags should be installed!")
                 printSuccessMessage("Please know that you'll have to use this script again after every Roblox update/reinstall! Also, it only shows if you play a game, not in the home menu!")
@@ -94,8 +107,21 @@ class RobloxFastFlagsInstaller():
                     else:
                         printWarnMessage(f"Client Settings is already created. Skipping Folder Creation..")
                     printMainMessage("Writing ClientAppSettings.json")
+                    if merge == True:
+                        if os.path.exists(f"{most_recent_roblox_version_dir}ClientSettings\ClientAppSettings.json"):
+                            try:
+                                printMainMessage("Reading Previous Client App Settings..")
+                                with open(f"{most_recent_roblox_version_dir}ClientSettings\ClientAppSettings.json", "w") as f:
+                                    merge_json = json.loads(f.read())
+                                merge_json.update(fastflagJSON)
+                                fastflagJSON = merge_json
+                            except Exception as e:
+                                printErrorMessage(f"Something went wrong while trying to generate a merged JSON: {str(e)}")
                     with open(f"{most_recent_roblox_version_dir}ClientSettings\ClientAppSettings.json", "w") as f:
-                        f.write(json.dumps(fastflagJSON))
+                        if flat == True:
+                            json.dump(fastflagJSON, f)
+                        else:
+                            json.dump(fastflagJSON, f, indent=4)
                     printSuccessMessage("DONE!")
                     printSuccessMessage("Your fast flags should be installed!")
                     printSuccessMessage("Please know that you'll have to use this script again after every Roblox update/reinstall! Also, it only shows if you play a game, not in the home menu!")
@@ -118,16 +144,40 @@ class RobloxFastFlagsInstaller():
                 self.endRoblox()
                 if not os.path.exists(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings"):
                     os.mkdir(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings")
+                if merge == True:
+                    if os.path.exists(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings/ClientAppSettings.json"):
+                        try:
+                            with open(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings/ClientAppSettings.json", "w") as f:
+                                merge_json = json.loads(f.read())
+                            merge_json.update(fastflagJSON)
+                            fastflagJSON = merge_json
+                        except Exception as e:
+                            self.printLog(f"Something went wrong while trying to generate a merged JSON: {str(e)}")
                 with open(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings/ClientAppSettings.json", "w") as f:
-                    f.write(json.dumps(fastflagJSON))
+                    if flat == True:
+                        json.dump(fastflagJSON, f)
+                    else:
+                        json.dump(fastflagJSON, f, indent=4)
             elif main_os == "Windows":
                 self.endRoblox()
                 most_recent_roblox_version_dir = self.get_latest_roblox_version(f"{windows_dir}\Versions")
                 if most_recent_roblox_version_dir:
                     if not os.path.exists(f"{most_recent_roblox_version_dir}ClientSettings"):
                         os.mkdir(f"{most_recent_roblox_version_dir}ClientSettings")
+                    if merge == True:
+                        if os.path.exists(f"{most_recent_roblox_version_dir}ClientSettings\ClientAppSettings.json"):
+                            try:
+                                with open(f"{most_recent_roblox_version_dir}ClientSettings\ClientAppSettings.json", "w") as f:
+                                    merge_json = json.loads(f.read())
+                                merge_json.update(fastflagJSON)
+                                fastflagJSON = merge_json
+                            except Exception as e:
+                                self.printLog(f"Something went wrong while trying to generate a merged JSON: {str(e)}")
                     with open(f"{most_recent_roblox_version_dir}ClientSettings\ClientAppSettings.json", "w") as f:
-                        f.write(json.dumps(fastflagJSON))
+                        if flat == True:
+                            json.dump(fastflagJSON, f)
+                        else:
+                            json.dump(fastflagJSON, f, indent=4)
                 else:
                     self.printLog("Roblox couldn't be found.")
             else:
@@ -156,10 +206,11 @@ if __name__ == "__main__":
         printErrorMessage("Please run this script on macOS/Windows.")
         exit()
     printWarnMessage("Made by Efaz from efaz.dev!")
-    printWarnMessage("v1.0.1")
+    printWarnMessage("v1.1.0")
     printWarnMessage("-----------")
     printWarnMessage("Entering Setup..")
     handler = RobloxFastFlagsInstaller()
+
     def getUserId():
         printMainMessage("Please input your User ID! This can be found on your profile in the URL: https://www.roblox.com/users/XXXXXXXX/profile")
         printMainMessage("This will be used for items that require a User ID.")
@@ -172,6 +223,16 @@ if __name__ == "__main__":
         else:
             printWarnMessage("Let's try again!")
             return getUserId()
+        
+    def isYes(text):
+        return text.lower() == "y" or text.lower() == "yes"
+    
+    def isNo(text):
+        return text.lower() == "n" or text.lower() == "no"
+    
+    def isRequestClose(text):
+        return text.lower() == "exit" or text.lower() == "exit()"
+    
     id = getUserId()
     if id:
         # Based JSON
@@ -180,7 +241,7 @@ if __name__ == "__main__":
         # FPS Unlocker
         printWarnMessage("--- FPS Unlocker ---")
         printMainMessage("Would you like to use an FPS Unlocker? (y/n)")
-        installFPSUnlocker = input("> ").lower() == "y"
+        installFPSUnlocker = input("> ")
         def getFPSCap():
             printWarnMessage("- FPS Cap -")
             printMainMessage("Enter the FPS cap to install on your client. (Leave blank for no cap)")
@@ -192,14 +253,14 @@ if __name__ == "__main__":
                 exit()
             else:
                 return None
-        if installFPSUnlocker == True:
+        if isYes(installFPSUnlocker) == True:
             # FPS Cap
             fpsCap = getFPSCap()
 
             # Roblox Vulkan Rendering
             printWarnMessage("- Roblox Vulkan Rendering -")
             printMainMessage("Would you like to use Vulkan Rendering? (It will remove the cap fully but may cause issues) (y/n)")
-            useVulkan = input("> ").lower() == "y"
+            useVulkan = input("> ")
 
             if main_os == "Darwin":
                 generated_json["FFlagDebugGraphicsDisableMetal"] =  "true"
@@ -209,29 +270,49 @@ if __name__ == "__main__":
             else:
                 generated_json["DFIntTaskSchedulerTargetFps"] = int(fpsCap)
 
-            if useVulkan == True:
-                generated_json["FFlagDebugGraphicsPreferVulkan"] = str(useVulkan)
-        else:
+            if isYes(useVulkan) == True:
+                generated_json["FFlagDebugGraphicsPreferVulkan"] = "true"
+            elif isNo(useVulkan) == True:
+                generated_json["FFlagDebugGraphicsPreferVulkan"] = "false"
+            elif isRequestClose(useVulkan) == True:
+                printMainMessage("Ending installation..")
+                exit()
+        elif isRequestClose(installFPSUnlocker) == True:
+            printMainMessage("Ending installation..")
+            exit()
+        elif isNo(installFPSUnlocker) == True:
+            generated_json["FFlagDebugGraphicsPreferVulkan"] = "false"
+            generated_json["DFIntTaskSchedulerTargetFps"] = 60
+            generated_json["FFlagDebugGraphicsDisableMetal"] = "false"
+
             # Roblox FPS Unlocker
             printWarnMessage("- Roblox FPS Unlocker -")
             printMainMessage("Would you like the Roblox FPS Unlocker in your settings? (This may not work depending on your Roblox client version.) (y/n)")
-            robloxFPSUnlocker = input("> ").lower() == "y"
-            if robloxFPSUnlocker == True:
+            robloxFPSUnlocker = input("> ")
+            if isYes(robloxFPSUnlocker) == True:
                 generated_json["FFlagGameBasicSettingsFramerateCap4"] = "true"
-                generated_json["DFIntTaskSchedulerTargetFps"] = "0"
+                generated_json["DFIntTaskSchedulerTargetFps"] = 0
+            elif isRequestClose(robloxFPSUnlocker) == True:
+                printMainMessage("Ending installation..")
+                exit()
 
         # Verified Badge
         printWarnMessage("--- Verified Badge ---")
         printMainMessage("Would you like to use a verified badge during Roblox Games? (y/n)")
-        installVerifiedBadge = input("> ").lower() == "y"
-        if installVerifiedBadge == True:
+        installVerifiedBadge = input("> ")
+        if isYes(installVerifiedBadge) == True:
             generated_json["FStringWhitelistVerifiedUserId"] = str(id)
+        elif isRequestClose(installVerifiedBadge) == True:
+            printMainMessage("Ending installation..")
+            exit()
+        elif isNo(installVerifiedBadge) == True:
+            generated_json["FStringWhitelistVerifiedUserId"] = ""
 
         # Accessory Adjustments
         printWarnMessage("--- Accessory Adjustments ---")
         printMainMessage("Would you like to install an accessory adjustments fast flag? (It may depend on your current version of Roblox.) (y/n)")
-        installAccessoryAdjust = input("> ").lower() == "y"
-        if installAccessoryAdjust == True:
+        installAccessoryAdjust = input("> ")
+        if isYes(installAccessoryAdjust) == True:
             generated_json["FFlagAccessoryAdjustmentEnabled2"] = "true"
             generated_json["FFlagHumanoidDescriptionUseInstances5"] = "true"
             generated_json["FFlagEnableNonUAPAccessoryAdjustment"] = "true"
@@ -240,51 +321,86 @@ if __name__ == "__main__":
             generated_json["FFlagAXAccessoryAdjustment"] = "true"
             generated_json["FFlagAXAccessoryAdjustmentIXPEnabled"] = "true"
             generated_json["FFlagAXAccessoryAdjustmentIXPEnabledForAll"] = "true"
+        elif isRequestClose(installAccessoryAdjust) == True:
+            printMainMessage("Ending installation..")
+            exit()
         
         # Remove Builder Font
         printWarnMessage("--- Remove Builder Font ---")
         printMainMessage("Would you like to remove the Builder font and revert it back to the original font on your client? (This may not work anymore!!) (y/n)")
-        installRemoveBuilder = input("> ").lower() == "y"
-        if installRemoveBuilder == True:
+        installRemoveBuilder = input("> ")
+        if isYes(installRemoveBuilder) == True:
             generated_json["FFlagEnableNewFontNameMappingABTest2"] = "false"
+        elif isRequestClose(installRemoveBuilder) == True:
+            printMainMessage("Ending installation..")
+            exit()
+        elif isNo(installRemoveBuilder) == True:
+            generated_json["FFlagEnableNewFontNameMappingABTest2"] = "true"
 
         # Display FPS
         printWarnMessage("--- Display FPS ---")
         printMainMessage("Would you like your client to display the FPS? (y/n)")
-        installRemoveBuilder = input("> ").lower() == "y"
-        if installRemoveBuilder == True:
+        installFPSViewer = input("> ")
+        if isYes(installFPSViewer) == True:
             generated_json["FFlagDebugDisplayFPS"] = "true"
+        elif isRequestClose(installFPSViewer) == True:
+            printMainMessage("Ending installation..")
+            exit()
+        elif isNo(installFPSViewer) == True:
+            generated_json["FFlagDebugDisplayFPS"] = "false"
 
         # Disable Ads
         printWarnMessage("--- Disable Ads ---")
         printMainMessage("Would you like your client to disable ads? (y/n)")
-        installRemoveAds = input("> ").lower() == "y"
-        if installRemoveAds == True:
+        installRemoveAds = input("> ")
+        if isYes(installRemoveAds) == True:
             generated_json["FFlagAdServiceEnabled"] = "false"
+        elif isRequestClose(installRemoveAds) == True:
+            printMainMessage("Ending installation..")
+            exit()
+        elif isNo(installRemoveAds) == True:
+            generated_json["FFlagAdServiceEnabled"] = "true"
 
         # Darker Mode
         printWarnMessage("--- Darker Mode ---")
         printMainMessage("Would you like to enable Darker mode on your client? (y/n)")
-        installDarkerMode = input("> ").lower() == "y"
-        if installDarkerMode == True:
+        installDarkerMode = input("> ")
+        if isYes(installDarkerMode) == True:
             generated_json["FFlagLuaAppUseUIBloxColorPalettes1"] = "true"
             generated_json["FFlagUIBloxUseNewThemeColorPalettes"] = "true"
+        elif isRequestClose(installDarkerMode) == True:
+            printMainMessage("Ending installation..")
+            exit()
+        elif isNo(installDarkerMode) == True:
+            generated_json["FFlagLuaAppUseUIBloxColorPalettes1"] = "false"
+            generated_json["FFlagUIBloxUseNewThemeColorPalettes"] = "false"
 
         # Custom Disconnect Message
         printWarnMessage("--- Custom Disconnect Message ---")
         printMainMessage("Would you like to use your own disconnect message? (y/n)")
-        installCustomDisconnect = input("> ").lower() == "y"
-        if installCustomDisconnect == True:
+        installCustomDisconnect = input("> ")
+        if isYes(installCustomDisconnect) == True:
             generated_json["FFlagReconnectDisabled"] = "true"
             generated_json["FStringReconnectDisabledReason"] = input("Enter Disconnect Message: ")
+        elif isRequestClose(installCustomDisconnect) == True:
+            printMainMessage("Ending installation..")
+            exit()
+        elif isNo(installCustomDisconnect) == True:
+            generated_json["FFlagReconnectDisabled"] = "false"
+            generated_json["FStringReconnectDisabledReason"] = ""
 
         # Quick Connect
         printWarnMessage("--- Quick Connect ---")
         printMainMessage("Would you like to install Quick Connect on your client? (y/n)")
         printErrorMessage("WARNING! This can be buggy and may cause issues on your Roblox experience!!!")
-        installQuickConnect = input("> ").lower() == "y"
-        if installQuickConnect == True:
+        installQuickConnect = input("> ")
+        if isYes(installQuickConnect) == True:
             generated_json["FFlagEnableQuickGameLaunch"] = "true"
+        elif isRequestClose(installQuickConnect) == True:
+            printMainMessage("Ending installation..")
+            exit()
+        elif isNo(installQuickConnect) == True:
+            generated_json["FFlagEnableQuickGameLaunch"] = "false"
 
         # Custom Fast Flags
         printWarnMessage("--- Custom Fast Flags ---")
@@ -305,26 +421,67 @@ if __name__ == "__main__":
             if completeLoop["success"] == True:
                 generated_json[completeLoop["key"]] = completeLoop["value"]
                 printMainMessage("Would you like to add more fast flags? (y/n)")
-                more = input("> ").lower() == "y"
-                if more == True:
+                more = input("> ")
+                if isYes(more) == True:
                     custom()
         printMainMessage("Would you like to use custom fast flags? (y/n)")
-        installCustom = input("> ").lower() == "y"
-        if installCustom == True:
+        installCustom = input("> ")
+        if isYes(installCustom) == True:
             custom()
+        elif isRequestClose(installCustom) == True:
+            printMainMessage("Ending installation..")
+            exit()
+
+        # Installation Mode
+        printWarnMessage("--- Installation Mode ---")
+        printMainMessage("[y/yes] = Install/Reinstall Flags")
+        printMainMessage("[n/no/(*)] = Cancel Install")
+        printMainMessage("[j/json] = Get JSON Settings")
+        printMainMessage("[nm/no-merge] = Don't Merge Settings with Previous Settings")
+        printMainMessage("[f/flat] = Flat JSON Install")
+        printMainMessage("[fnm/flat-no-merge] = Flat-No-Merge Install")
+        printMainMessage("[r/reset] = Reset Settings")
+        select_mode = input("> ")
+        if isYes(select_mode) == True:
+            printMainMessage("Selected Mode: Normal Install")
+        elif select_mode.lower() == "j" or select_mode.lower() == "json":
+            printMainMessage("Selected Mode: Get JSON Settings")
+        elif select_mode.lower() == "nm" or select_mode.lower() == "no-merge":
+            printMainMessage("Selected Mode: Merge Settings with Previous Settings")
+        elif select_mode.lower() == "f" or select_mode.lower() == "flat":
+            printMainMessage("Selected Mode: Flat JSON Install")
+        elif select_mode.lower() == "fnm" or select_mode.lower() == "flat-no-merge":
+            printMainMessage("Selected Mode: Flat-No-Merge Install")
+        elif select_mode.lower() == "r" or select_mode.lower() == "reset":
+            printMainMessage("Selected Mode: Reset Settings")
+        else:
+            printMainMessage("Ending installation..")
+            exit()
 
         # Installation
         printWarnMessage("--- Installation Ready! ---")
         printMainMessage("Settings are now finished and now ready for setup!")
         printMainMessage("Would you like to continue with the fast flag installation? (y/n)")
-        printErrorMessage("WARNING! This will force-quit any open Roblox windows! Please close them in order to prevent data loss!")
+        printErrorMessage("WARNING! This will force-quit any open Roblox windows! Please close them now before continuing in order to prevent data loss!")
         install_now = input("> ")
-        if install_now.lower() == "y":
-            handler.installFastFlagsJSON(generated_json)
-        elif install_now.lower() == "json()":
-            printMainMessage("Generated JSON:")
-            printMainMessage(json.dumps(generated_json))
-            exit()
+        if isYes(install_now) == True:
+            if isYes(select_mode) == True:
+                handler.installFastFlagsJSON(generated_json)
+            elif select_mode.lower() == "j" or select_mode.lower() == "json":
+                printMainMessage("Generated JSON:")
+                printMainMessage(json.dumps(generated_json))
+                exit()
+            elif select_mode.lower() == "nm" or select_mode.lower() == "no-merge":
+                handler.installFastFlagsJSON(generated_json, merge=False)
+            elif select_mode.lower() == "f" or select_mode.lower() == "flat":
+                handler.installFastFlagsJSON(generated_json, flat=True)
+            elif select_mode.lower() == "fnm" or select_mode.lower() == "flat-no-merge":
+                handler.installFastFlagsJSON(generated_json, merge=False, flat=True)
+            elif select_mode.lower() == "r" or select_mode.lower() == "reset":
+                handler.installFastFlagsJSON({})
+            else:
+                printMainMessage("Ending installation..")
+                exit()
         else:
             printMainMessage("Ending installation..")
             exit()
