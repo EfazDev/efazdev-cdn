@@ -336,15 +336,16 @@ if __name__ == "__main__":
             printMainMessage("Ending installation..")
             exit()
 
-        # Enable Developer Tools
-        printWarnMessage("--- Enable Developer Tools ---")
-        printMainMessage("Would you like to enable Developer Tools inside of the Roblox App (when website frame is opened) (may work)? (y/n)")
-        installEnableDeveloper = input("> ")
-        if isYes(installEnableDeveloper) == True:
-            generated_json["FFlagDebugEnableNewWebView2DevTool"] = "true"
-        elif isRequestClose(installEnableDeveloper) == True:
-            printMainMessage("Ending installation..")
-            exit()
+        if main_os == "Windows":
+            # Enable Developer Tools
+            printWarnMessage("--- Enable Developer Tools ---")
+            printMainMessage("Would you like to enable Developer Tools inside of the Roblox App (when website frame is opened) (Ctrl+Shift+I)? (y/n)")
+            installEnableDeveloper = input("> ")
+            if isYes(installEnableDeveloper) == True:
+                generated_json["FFlagDebugEnableNewWebView2DevTool"] = "true"
+            elif isRequestClose(installEnableDeveloper) == True:
+                printMainMessage("Ending installation..")
+                exit()
         
         # Remove Builder Font
         printWarnMessage("--- Remove Builder Font ---")
