@@ -443,11 +443,11 @@ if __name__ == "__main__":
         printMainMessage("[r/reset] = Reset Settings")
         select_mode = input("> ")
         if isYes(select_mode) == True:
-            printMainMessage("Selected Mode: Normal Install")
+            printMainMessage("Selected Mode: Install/Reinstall Flags")
         elif select_mode.lower() == "j" or select_mode.lower() == "json":
             printMainMessage("Selected Mode: Get JSON Settings")
         elif select_mode.lower() == "nm" or select_mode.lower() == "no-merge":
-            printMainMessage("Selected Mode: Merge Settings with Previous Settings")
+            printMainMessage("Selected Mode: Don't Merge Settings with Previous Settings")
         elif select_mode.lower() == "f" or select_mode.lower() == "flat":
             printMainMessage("Selected Mode: Flat JSON Install")
         elif select_mode.lower() == "fnm" or select_mode.lower() == "flat-no-merge":
