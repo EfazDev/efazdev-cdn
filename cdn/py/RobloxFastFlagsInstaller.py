@@ -77,7 +77,7 @@ class RobloxFastFlagsInstaller():
                 printSuccessMessage("Your fast flags should be installed!")
                 printSuccessMessage("Please know that you'll have to use this script again after every Roblox update/reinstall! Also, it only shows if you play a game, not in the home menu!")
                 printSuccessMessage(f"If you like to update your fast flags, go to: {macOS_dir}{macOS_beforeClientServices}ClientSettings/ClientAppSettings.json")
-                printMainMessage("Would you like to open Roblox? [y/n]")
+                printMainMessage("Would you like to open Roblox? (y/n)")
                 if input("> ").lower() == "y":
                     self.openRoblox()
             elif main_os == "Windows":
@@ -100,7 +100,7 @@ class RobloxFastFlagsInstaller():
                     printSuccessMessage("Your fast flags should be installed!")
                     printSuccessMessage("Please know that you'll have to use this script again after every Roblox update/reinstall! Also, it only shows if you play a game, not in the home menu!")
                     printSuccessMessage(f"If you like to update your fast flags, go to: {most_recent_roblox_version_dir}ClientSettings\ClientAppSettings.json")
-                    printMainMessage("Would you like to open Roblox? [y/n]")
+                    printMainMessage("Would you like to open Roblox? (y/n)")
                     if input("> ").lower() == "y":
                         self.openRoblox()
                 else:
@@ -109,7 +109,7 @@ class RobloxFastFlagsInstaller():
                 printErrorMessage("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
         else:
             if askForPerms == True:
-                self.printLog("Would you like to continue with the Roblox Fast Flag installation? [y/n]")
+                self.printLog("Would you like to continue with the Roblox Fast Flag installation? (y/n)")
                 self.printLog("WARNING! This will force-quit any open Roblox windows! Please close them in order to prevent data loss!")
                 if not (input("> ").lower() == "y"):
                     self.printLog("Stopped installation..")
@@ -158,7 +158,7 @@ if __name__ == "__main__":
     printWarnMessage("Made by Efaz from efaz.dev!")
     printWarnMessage("v1.0.1")
     printWarnMessage("-----------")
-    printMainMessage("Entering Setup..")
+    printWarnMessage("Entering Setup..")
     handler = RobloxFastFlagsInstaller()
     def getUserId():
         printMainMessage("Please input your User ID! This can be found on your profile in the URL: https://www.roblox.com/users/XXXXXXXX/profile")
@@ -178,10 +178,12 @@ if __name__ == "__main__":
         generated_json = {}
 
         # FPS Unlocker
-        printMainMessage("Would you like to use an FPS Unlocker? [y/n]")
+        printWarnMessage("--- FPS Unlocker ---")
+        printMainMessage("Would you like to use an FPS Unlocker? (y/n)")
         installFPSUnlocker = input("> ").lower() == "y"
         def getFPSCap():
-            printMainMessage("Enter a FPS Cap [Click Enter/Return for no cap]")
+            printWarnMessage("- FPS Cap -")
+            printMainMessage("Enter the FPS cap to install on your client. (Leave blank for no cap)")
             cap = input("> ")
             if cap.isnumeric():
                 return cap
@@ -195,7 +197,8 @@ if __name__ == "__main__":
             fpsCap = getFPSCap()
 
             # Roblox Vulkan Rendering
-            printMainMessage("Would you like to use Vulkan Rendering? (It will remove the cap fully but may cause issues) [y/n]")
+            printWarnMessage("- Roblox Vulkan Rendering -")
+            printMainMessage("Would you like to use Vulkan Rendering? (It will remove the cap fully but may cause issues) (y/n)")
             useVulkan = input("> ").lower() == "y"
 
             if main_os == "Darwin":
@@ -210,20 +213,23 @@ if __name__ == "__main__":
                 generated_json["FFlagDebugGraphicsPreferVulkan"] = str(useVulkan)
         else:
             # Roblox FPS Unlocker
-            printMainMessage("Would you like the Roblox FPS Unlocker in your settings?")
+            printWarnMessage("- Roblox FPS Unlocker -")
+            printMainMessage("Would you like the Roblox FPS Unlocker in your settings? (This may not work depending on your Roblox client version.) (y/n)")
             robloxFPSUnlocker = input("> ").lower() == "y"
             if robloxFPSUnlocker == True:
                 generated_json["FFlagGameBasicSettingsFramerateCap4"] = "true"
                 generated_json["DFIntTaskSchedulerTargetFps"] = "0"
 
         # Verified Badge
-        printMainMessage("Would you like to use a verified badge during Roblox Games? [y/n]")
+        printWarnMessage("--- Verified Badge ---")
+        printMainMessage("Would you like to use a verified badge during Roblox Games? (y/n)")
         installVerifiedBadge = input("> ").lower() == "y"
         if installVerifiedBadge == True:
             generated_json["FStringWhitelistVerifiedUserId"] = str(id)
 
         # Accessory Adjustments
-        printMainMessage("Would you like to install an accessory adjustments fast flag? (It may depend on your current version of Roblox.) [y/n]")
+        printWarnMessage("--- Accessory Adjustments ---")
+        printMainMessage("Would you like to install an accessory adjustments fast flag? (It may depend on your current version of Roblox.) (y/n)")
         installAccessoryAdjust = input("> ").lower() == "y"
         if installAccessoryAdjust == True:
             generated_json["FFlagAccessoryAdjustmentEnabled2"] = "true"
@@ -235,39 +241,53 @@ if __name__ == "__main__":
             generated_json["FFlagAXAccessoryAdjustmentIXPEnabled"] = "true"
             generated_json["FFlagAXAccessoryAdjustmentIXPEnabledForAll"] = "true"
         
-        # Revert Builder Font
-        printMainMessage("Would you like to remove the Builder font and revert it to the original font on your client? [y/n]")
+        # Remove Builder Font
+        printWarnMessage("--- Remove Builder Font ---")
+        printMainMessage("Would you like to remove the Builder font and revert it back to the original font on your client? (y/n)")
         installRemoveBuilder = input("> ").lower() == "y"
         if installRemoveBuilder == True:
             generated_json["FFlagEnableNewFontNameMappingABTest2"] = "false"
 
         # Display FPS
-        printMainMessage("Would you like your client to display the FPS? [y/n]")
+        printWarnMessage("--- Display FPS ---")
+        printMainMessage("Would you like your client to display the FPS? (y/n)")
         installRemoveBuilder = input("> ").lower() == "y"
         if installRemoveBuilder == True:
             generated_json["FFlagDebugDisplayFPS"] = "true"
 
         # Disable Ads
-        printMainMessage("Would you like your client to disable ads? [y/n]")
+        printWarnMessage("--- Disable Ads ---")
+        printMainMessage("Would you like your client to disable ads? (y/n)")
         installRemoveAds = input("> ").lower() == "y"
         if installRemoveAds == True:
             generated_json["FFlagAdServiceEnabled"] = "false"
 
+        # Darker Mode
+        printWarnMessage("--- Darker Mode ---")
+        printMainMessage("Would you like to enable Darker mode on your client? (y/n)")
+        installDarkerMode = input("> ").lower() == "y"
+        if installDarkerMode == True:
+            generated_json["FFlagLuaAppUseUIBloxColorPalettes1"] = "true"
+            generated_json["FFlagUIBloxUseNewThemeColorPalettes"] = "true"
+
         # Custom Disconnect Message
-        printMainMessage("Would you like to use your own disconnect message? [y/n]")
+        printWarnMessage("--- Custom Disconnect Message ---")
+        printMainMessage("Would you like to use your own disconnect message? (y/n)")
         installCustomDisconnect = input("> ").lower() == "y"
         if installCustomDisconnect == True:
             generated_json["FFlagReconnectDisabled"] = "true"
             generated_json["FStringReconnectDisabledReason"] = input("Enter Disconnect Message: ")
 
         # Quick Connect
-        printMainMessage("Would you like to install Quick Connect on your client? [y/n]")
+        printWarnMessage("--- Quick Connect ---")
+        printMainMessage("Would you like to install Quick Connect on your client? (y/n)")
         printErrorMessage("WARNING! This can be buggy and may cause issues on your Roblox experience!!!")
         installQuickConnect = input("> ").lower() == "y"
         if installQuickConnect == True:
             generated_json["FFlagEnableQuickGameLaunch"] = "true"
 
         # Custom Fast Flags
+        printWarnMessage("--- Custom Fast Flags ---")
         def custom():
             def loop():
                 key = input("Enter Key Value: ")
@@ -277,25 +297,26 @@ if __name__ == "__main__":
                 if value == "exit":
                     return {"success": False, "key": "", "value": ""}
                 if value.isnumeric():
-                    isNum = input("Would you like this value to be a number value or do you want to keep it as a string? [y/n]")
+                    isNum = input("Would you like this value to be a number value or do you want to keep it as a string? (y/n)")
                     if isNum == True:
                         value = int(value)
                 return {"success": True, "key": key, "value": value}
             completeLoop = loop()
             if completeLoop["success"] == True:
                 generated_json[completeLoop["key"]] = completeLoop["value"]
-                printMainMessage("Would you like to add more fast flags? [y/n]")
+                printMainMessage("Would you like to add more fast flags? (y/n)")
                 more = input("> ").lower() == "y"
                 if more == True:
                     custom()
-        printMainMessage("Would you like to use custom fast flags? [y/n]")
+        printMainMessage("Would you like to use custom fast flags? (y/n)")
         installCustom = input("> ").lower() == "y"
         if installCustom == True:
             custom()
 
         # Installation
+        printWarnMessage("--- Installation Ready! ---")
         printMainMessage("Settings are now finished and now ready for setup!")
-        printMainMessage("Would you like to continue with the fast flag installation? [y/n]")
+        printMainMessage("Would you like to continue with the fast flag installation? (y/n)")
         printErrorMessage("WARNING! This will force-quit any open Roblox windows! Please close them in order to prevent data loss!")
         install_now = input("> ")
         if install_now.lower() == "y":
