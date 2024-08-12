@@ -206,7 +206,7 @@ if __name__ == "__main__":
         printErrorMessage("Please run this script on macOS/Windows.")
         exit()
     printWarnMessage("Made by Efaz from efaz.dev!")
-    printWarnMessage("v1.1.0")
+    printWarnMessage("v1.1.1")
     printWarnMessage("-----------")
     printWarnMessage("Entering Setup..")
     handler = RobloxFastFlagsInstaller()
@@ -261,7 +261,8 @@ if __name__ == "__main__":
             printWarnMessage("- Roblox Vulkan Rendering -")
             printMainMessage("Would you like to use Vulkan Rendering? (It will remove the cap fully but may cause issues) (y/n)")
             useVulkan = input("> ")
-
+            generated_json["FFlagTaskSchedulerLimitTargetFpsTo2402"] = "false"
+            
             if main_os == "Darwin":
                 generated_json["FFlagDebugGraphicsDisableMetal"] =  "true"
 
@@ -322,6 +323,26 @@ if __name__ == "__main__":
             generated_json["FFlagAXAccessoryAdjustmentIXPEnabled"] = "true"
             generated_json["FFlagAXAccessoryAdjustmentIXPEnabledForAll"] = "true"
         elif isRequestClose(installAccessoryAdjust) == True:
+            printMainMessage("Ending installation..")
+            exit()
+
+        # Rename Charts to Discover
+        printWarnMessage("--- Replace Charts ---")
+        printMainMessage("Would you like to rename Charts back to Discover? (y/n)")
+        installRenameCharts = input("> ")
+        if isYes(installRenameCharts) == True:
+            generated_json["FFlagLuaAppChartsPageRenameIXP"] = "true"
+        elif isRequestClose(installRenameCharts) == True:
+            printMainMessage("Ending installation..")
+            exit()
+
+        # Enable Developer Tools
+        printWarnMessage("--- Enable Developer Tools ---")
+        printMainMessage("Would you like to enable Developer Tools inside of the Roblox App (when website frame is opened)? (y/n)")
+        installEnableDeveloper = input("> ")
+        if isYes(installEnableDeveloper) == True:
+            generated_json["FFlagDebugEnableNewWebView2DevTool"] = "true"
+        elif isRequestClose(installEnableDeveloper) == True:
             printMainMessage("Ending installation..")
             exit()
         

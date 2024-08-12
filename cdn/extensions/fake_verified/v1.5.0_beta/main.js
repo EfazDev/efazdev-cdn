@@ -1,9 +1,9 @@
 var latest_code = ""
 var ready = true
-const storage = chrome.storage.sync;
+const storage = chrome.storage.local;
 
 chrome.runtime.onInstalled.addListener(() => {
-    const storage = chrome.storage.sync;
+    const storage = chrome.storage.local;
     fetch("settings.json").then(setting_res => {
         return setting_res.json()
     }).then(settings => {

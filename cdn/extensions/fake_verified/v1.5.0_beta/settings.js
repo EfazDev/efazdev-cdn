@@ -9,7 +9,7 @@ settings.js:
 
 */
 
-const storage = chrome.storage.sync
+const storage = chrome.storage.local
 var system_settings = {}
 
 async function loopThroughArrayAsync(array, callback) {

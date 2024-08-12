@@ -2,7 +2,7 @@ var enabled = true;
 var allow_messages = false;
 var stored_group_data = {};
 var temp_stored_user_data = {};
-var start_time = 200;
+var start_time = 75;
 var stop_loop = false;
 var approved_efazdev_users = {};
 var group_scan = false;
@@ -530,11 +530,13 @@ function start() {
                                 name_on_side = Array.prototype.slice.call(name_on_side);
                                 if (name_on_side.length > 0) {
                                     name_on_side.forEach((main_name_on_side) => {
-                                        if (main_name_on_side.outerHTML.includes(json["displayName"])) {
-                                            if (verifiedBadgePlacedAlready(main_name_on_side.outerHTML)) {
-                                                return;
+                                        if (main_name_on_side.outerHTML.includes(json["displayName"]) && main_name_on_side.parentElement && main_name_on_side.parentElement.href) {
+                                            if (main_name_on_side.parentElement.href == `https://www.roblox.com/users/${json["id"]}/profile`) {
+                                                if (verifiedBadgePlacedAlready(main_name_on_side.outerHTML)) {
+                                                    return;
+                                                }
+                                                main_name_on_side.innerHTML = `${main_name_on_side.innerHTML} ${name_side_real_html}`;
                                             }
-                                            main_name_on_side.innerHTML = `${main_name_on_side.innerHTML} ${name_side_real_html}`;
                                         }
                                     });
                                 }
@@ -1516,7 +1518,7 @@ function start() {
 
 function loader() { // Script Loader
     if (typeof chrome !== 'undefined' && typeof chrome.storage !== 'undefined') { // Chrome Extension >= v1.4.0
-        chrome.storage.sync.get(["verified_checkmark_settings"], function (items) {
+        chrome.storage.local.get(["verified_checkmark_settings"], function (items) {
             if (items["verified_checkmark_settings"] && items["verified_checkmark_settings"]["color"]) {
                 window.verifiedCheckmarkSettings = items["verified_checkmark_settings"]
             } else {
@@ -1525,7 +1527,7 @@ function loader() { // Script Loader
                     "color": "#0066ff",
                     "enabled": true,
                     "groupsIncluded": true,
-                    "startTime": "200",
+                    "startTime": "75",
                     "thanks": true,
                     "verifiedPrompt": true,
                     "verifiedBadgeBetweenAccounts": true,
@@ -1605,7 +1607,7 @@ function loader() { // Script Loader
             "color": "#0066ff",
             "enabled": true,
             "groupsIncluded": true,
-            "startTime": "200",
+            "startTime": "75",
             "thanks": true,
             "verifiedPrompt": true,
             "verifiedBadgeBetweenAccounts": true,
