@@ -1,15 +1,14 @@
 import os
 import platform
 import json
+import subprocess
 
-os.system("cls" if os.name == "nt" else "clear")
 main_os = platform.system()
 
 # If your Roblox installation is inside of an another folder or on an extra hard drive, you may edit the following here.
 macOS_dir = "/Applications/Roblox.app"
 macOS_beforeClientServices = "/Contents/MacOS/"
-
-windows_dir = f"{os.getenv('LOCALAPPDATA')}\Roblox"
+windows_dir = f"{os.getenv('LOCALAPPDATA')}\\Roblox"
 # If your Roblox installation is inside of an another folder or on an extra hard drive, you may edit the following here.
 
 def printMainMessage(mes):
@@ -24,44 +23,51 @@ def printSuccessMessage(mes):
 def printWarnMessage(mes):
     print(f"\x1b[38;2;255;75;0m{mes}\033[38;5;231m")
 
-class RobloxFastFlagsInstaller():
+class Main():
     # System Functions
+    def __init__(self):
+        self.__main_os__ = main_os
+    # System Functions
+
     def printLog(self, m):
         if __name__ == "__main__":
             printMainMessage(m)
         else:
             print(m)
-    def get_latest_roblox_version(self, versions_dir): # Thanks ChatGPT :)
-        if main_os == "Windows":
-            versions = [os.path.join(versions_dir, folder) for folder in os.listdir(versions_dir) if os.path.isdir(os.path.join(versions_dir, folder))]
-            formatted = []
-            if not versions:
-                return None
-            for fold in versions:
-                if os.path.isdir(fold):
-                    if os.path.exists(f"{fold}\RobloxPlayerLauncher.exe"):
-                        formatted.append(f"{fold}\\")
-            if len(formatted) > 0:
-                latest_folder = max(formatted, key=os.path.getmtime)
-                return latest_folder
-            else:
-                return None
-        elif main_os == "Darwin":
-            return f"{macOS_dir}/"
-        else:
-            self.printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
-    # System Functions
                 
     def endRoblox(self):
-        if main_os == "Darwin":
-            os.system("killall -9 RobloxPlayer")
-        elif main_os == "Windows":
-            os.system("taskkill /IM RobloxPlayerBeta.exe /F")
+        if self.getIfRobloxIsOpen():
+            if self.__main_os__ == "Darwin":
+                os.system("killall -9 RobloxPlayer")
+            elif self.__main_os__ == "Windows":
+                os.system("taskkill /IM RobloxPlayerBeta.exe /F")
+            else:
+                self.printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
+    def getIfRobloxIsOpen(self):
+        if self.__main_os__ == "Windows":
+            process = subprocess.Popen(['tasklist'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        elif self.__main_os__ == "Darwin":
+            process = subprocess.Popen(['ps', 'aux'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         else:
             self.printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
+            return
+
+        output, _ = process.communicate()
+        process_list = output.decode('utf-8')
+
+        if main_os == "Darwin":
+            if process_list.rfind("/RobloxPlayer") == -1:
+                return False
+            else:
+                return True
+        else:
+            if process_list.rfind("RobloxPlayerBeta.exe") == -1:
+                return False
+            else:
+                return True
     def installFastFlagsJSON(self, fastflagJSON: object, askForPerms=False, merge=True, flat=False):
         if __name__ == "__main__":
-            if main_os == "Darwin":
+            if self.__main_os__ == "Darwin":
                 printMainMessage(f"Closing any open Roblox windows..")
                 self.endRoblox()
                 printMainMessage(f"Generating Client Settings Folder..")
@@ -93,11 +99,11 @@ class RobloxFastFlagsInstaller():
                 printMainMessage("Would you like to open Roblox? (y/n)")
                 if input("> ").lower() == "y":
                     self.openRoblox()
-            elif main_os == "Windows":
+            elif self.__main_os__ == "Windows":
                 printMainMessage(f"Closing any open Roblox windows..")
                 self.endRoblox()
                 printMainMessage(f"Finding latest Roblox Version..")
-                most_recent_roblox_version_dir = self.get_latest_roblox_version(f"{windows_dir}\Versions")
+                most_recent_roblox_version_dir = self.getRobloxVersion(f"{windows_dir}\\Versions")
                 if most_recent_roblox_version_dir:
                     printMainMessage(f"Found version: {most_recent_roblox_version_dir}")
                     printMainMessage(f"Generating Client Settings Folder..")
@@ -108,16 +114,16 @@ class RobloxFastFlagsInstaller():
                         printWarnMessage(f"Client Settings is already created. Skipping Folder Creation..")
                     printMainMessage("Writing ClientAppSettings.json")
                     if merge == True:
-                        if os.path.exists(f"{most_recent_roblox_version_dir}ClientSettings\ClientAppSettings.json"):
+                        if os.path.exists(f"{most_recent_roblox_version_dir}ClientSettings\\ClientAppSettings.json"):
                             try:
                                 printMainMessage("Reading Previous Client App Settings..")
-                                with open(f"{most_recent_roblox_version_dir}ClientSettings\ClientAppSettings.json", "w") as f:
+                                with open(f"{most_recent_roblox_version_dir}ClientSettings\\ClientAppSettings.json", "r") as f:
                                     merge_json = json.loads(f.read())
                                 merge_json.update(fastflagJSON)
                                 fastflagJSON = merge_json
                             except Exception as e:
                                 printErrorMessage(f"Something went wrong while trying to generate a merged JSON: {str(e)}")
-                    with open(f"{most_recent_roblox_version_dir}ClientSettings\ClientAppSettings.json", "w") as f:
+                    with open(f"{most_recent_roblox_version_dir}ClientSettings\\ClientAppSettings.json", "w") as f:
                         if flat == True:
                             json.dump(fastflagJSON, f)
                         else:
@@ -125,7 +131,7 @@ class RobloxFastFlagsInstaller():
                     printSuccessMessage("DONE!")
                     printSuccessMessage("Your fast flags should be installed!")
                     printSuccessMessage("Please know that you'll have to use this script again after every Roblox update/reinstall! Also, it only shows if you play a game, not in the home menu!")
-                    printSuccessMessage(f"If you like to update your fast flags, go to: {most_recent_roblox_version_dir}ClientSettings\ClientAppSettings.json")
+                    printSuccessMessage(f"If you like to update your fast flags, go to: {most_recent_roblox_version_dir}ClientSettings\\ClientAppSettings.json")
                     printMainMessage("Would you like to open Roblox? (y/n)")
                     if input("> ").lower() == "y":
                         self.openRoblox()
@@ -140,14 +146,14 @@ class RobloxFastFlagsInstaller():
                 if not (input("> ").lower() == "y"):
                     self.printLog("Stopped installation..")
                     return
-            if main_os == "Darwin":
+            if self.__main_os__ == "Darwin":
                 self.endRoblox()
                 if not os.path.exists(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings"):
                     os.mkdir(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings")
                 if merge == True:
                     if os.path.exists(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings/ClientAppSettings.json"):
                         try:
-                            with open(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings/ClientAppSettings.json", "w") as f:
+                            with open(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings/ClientAppSettings.json", "r") as f:
                                 merge_json = json.loads(f.read())
                             merge_json.update(fastflagJSON)
                             fastflagJSON = merge_json
@@ -158,22 +164,22 @@ class RobloxFastFlagsInstaller():
                         json.dump(fastflagJSON, f)
                     else:
                         json.dump(fastflagJSON, f, indent=4)
-            elif main_os == "Windows":
+            elif self.__main_os__ == "Windows":
                 self.endRoblox()
-                most_recent_roblox_version_dir = self.get_latest_roblox_version(f"{windows_dir}\Versions")
+                most_recent_roblox_version_dir = self.getRobloxVersion(f"{windows_dir}\\Versions")
                 if most_recent_roblox_version_dir:
                     if not os.path.exists(f"{most_recent_roblox_version_dir}ClientSettings"):
                         os.mkdir(f"{most_recent_roblox_version_dir}ClientSettings")
                     if merge == True:
-                        if os.path.exists(f"{most_recent_roblox_version_dir}ClientSettings\ClientAppSettings.json"):
+                        if os.path.exists(f"{most_recent_roblox_version_dir}ClientSettings\\ClientAppSettings.json"):
                             try:
-                                with open(f"{most_recent_roblox_version_dir}ClientSettings\ClientAppSettings.json", "w") as f:
+                                with open(f"{most_recent_roblox_version_dir}ClientSettings\\ClientAppSettings.json", "r") as f:
                                     merge_json = json.loads(f.read())
                                 merge_json.update(fastflagJSON)
                                 fastflagJSON = merge_json
                             except Exception as e:
                                 self.printLog(f"Something went wrong while trying to generate a merged JSON: {str(e)}")
-                    with open(f"{most_recent_roblox_version_dir}ClientSettings\ClientAppSettings.json", "w") as f:
+                    with open(f"{most_recent_roblox_version_dir}ClientSettings\\ClientAppSettings.json", "w") as f:
                         if flat == True:
                             json.dump(fastflagJSON, f)
                         else:
@@ -182,11 +188,35 @@ class RobloxFastFlagsInstaller():
                     self.printLog("Roblox couldn't be found.")
             else:
                 self.printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
-    def openRoblox(self):
-        if main_os == "Darwin":
+    def getRobloxVersion(self, versions_dir=f"{windows_dir}\\Versions"): # Thanks ChatGPT :)
+        if self.__main_os__ == "Windows":
+            versions = [os.path.join(versions_dir, folder) for folder in os.listdir(versions_dir) if os.path.isdir(os.path.join(versions_dir, folder))]
+            formatted = []
+            if not versions:
+                return None
+            for fold in versions:
+                if os.path.isdir(fold):
+                    if os.path.exists(f"{fold}\\RobloxPlayerLauncher.exe"):
+                        formatted.append(f"{fold}\\")
+            if len(formatted) > 0:
+                latest_folder = max(formatted, key=os.path.getmtime)
+                return latest_folder
+            else:
+                return None
+        elif self.__main_os__ == "Darwin":
+            return f"{macOS_dir}/"
+        else:
+            self.printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
+    def openRoblox(self, forceQuit=False):
+        if self.getIfRobloxIsOpen():
+            if forceQuit == True:
+                self.endRoblox()
+            else:
+                return
+        if self.__main_os__ == "Darwin":
             os.system(f"open -a {macOS_dir}")
-        elif main_os == "Windows":
-            most_recent_roblox_version_dir = self.get_latest_roblox_version(f"{windows_dir}\Versions")
+        elif self.__main_os__ == "Windows":
+            most_recent_roblox_version_dir = self.getRobloxVersion(f"{windows_dir}\\Versions")
             if most_recent_roblox_version_dir:
                 os.system(f"start {most_recent_roblox_version_dir}RobloxPlayerBeta.exe")
                 self.printLog("Started Roblox..")
@@ -196,6 +226,7 @@ class RobloxFastFlagsInstaller():
             self.printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
 
 if __name__ == "__main__":
+    os.system("cls" if os.name == "nt" else "clear")
     if main_os == "Windows":
         printWarnMessage("-----------")
         printWarnMessage("Welcome to Roblox Fast Flags Setup by EfazDev!")
@@ -206,10 +237,20 @@ if __name__ == "__main__":
         printErrorMessage("Please run this script on macOS/Windows.")
         exit()
     printWarnMessage("Made by Efaz from efaz.dev!")
-    printWarnMessage("v1.1.1")
+    printWarnMessage("v1.1.5")
     printWarnMessage("-----------")
     printWarnMessage("Entering Setup..")
-    handler = RobloxFastFlagsInstaller()
+    if main_os == "Windows":
+        if not os.path.exists(windows_dir):
+            printErrorMessage("The Roblox Website App Path doesn't exist. Please install Roblox from your web browser in order to use!")
+            exit()
+    elif main_os == "Darwin":
+        printWarnMessage("-----------")
+        printWarnMessage("Welcome to Roblox Fast Flags Setup by EfazDev for macOS!")
+        if not os.path.exists(macOS_dir):
+            printErrorMessage("The Roblox Website App Path doesn't exist. Please install Roblox from your web browser in order to use!")
+            exit()
+    handler = Main()
 
     def getUserId():
         printMainMessage("Please input your User ID! This can be found on your profile in the URL: https://www.roblox.com/users/XXXXXXXX/profile")
