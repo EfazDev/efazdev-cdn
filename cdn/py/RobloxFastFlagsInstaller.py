@@ -291,7 +291,7 @@ if __name__ == "__main__":
             printMainMessage("Would you like the Roblox FPS Unlocker in your settings? (This may not work depending on your Roblox client version.) (y/n)")
             robloxFPSUnlocker = input("> ")
             if isYes(robloxFPSUnlocker) == True:
-                generated_json["FFlagGameBasicSettingsFramerateCap4"] = "true"
+                generated_json["FFlagGameBasicSettingsFramerateCap5"] = "true"
                 generated_json["DFIntTaskSchedulerTargetFps"] = 0
             elif isRequestClose(robloxFPSUnlocker) == True:
                 printMainMessage("Ending installation..")
@@ -347,17 +347,18 @@ if __name__ == "__main__":
                 printMainMessage("Ending installation..")
                 exit()
         
-        # Remove Builder Font
-        printWarnMessage("--- Remove Builder Font ---")
-        printMainMessage("Would you like to remove the Builder font and revert it back to the original font on your client? (This may not work anymore!!) (y/n)")
-        installRemoveBuilder = input("> ")
-        if isYes(installRemoveBuilder) == True:
-            generated_json["FFlagEnableNewFontNameMappingABTest2"] = "false"
-        elif isRequestClose(installRemoveBuilder) == True:
-            printMainMessage("Ending installation..")
-            exit()
-        elif isNo(installRemoveBuilder) == True:
-            generated_json["FFlagEnableNewFontNameMappingABTest2"] = "true"
+        if False: # This FFlag is no longer in service :(
+            # Remove Builder Font
+            printWarnMessage("--- Remove Builder Font ---")
+            printMainMessage("Would you like to remove the Builder font and revert it back to the original font on your client? (This may not work anymore!!) (y/n)")
+            installRemoveBuilder = input("> ")
+            if isYes(installRemoveBuilder) == True:
+                generated_json["FFlagEnableNewFontNameMappingABTest2"] = "false"
+            elif isRequestClose(installRemoveBuilder) == True:
+                printMainMessage("Ending installation..")
+                exit()
+            elif isNo(installRemoveBuilder) == True:
+                generated_json["FFlagEnableNewFontNameMappingABTest2"] = "true"
 
         # Display FPS
         printWarnMessage("--- Display FPS ---")

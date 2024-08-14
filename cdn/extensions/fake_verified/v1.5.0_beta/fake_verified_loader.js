@@ -1531,7 +1531,7 @@ function loader() { // Script Loader
                     "thanks": true,
                     "verifiedPrompt": true,
                     "verifiedBadgeBetweenAccounts": true,
-                    "allowEfazDevApprovedBadges": true
+                    "allowEfazDevApprovedBadges": false
                 }
             }
             if (typeof (window.verifiedCheckmarkSettings["enabled"]) == "boolean") {
@@ -1611,7 +1611,7 @@ function loader() { // Script Loader
             "thanks": true,
             "verifiedPrompt": true,
             "verifiedBadgeBetweenAccounts": true,
-            "allowEfazDevApprovedBadges": true
+            "allowEfazDevApprovedBadges": false
         }
         if (typeof (window.verifiedCheckmarkSettings["allowAlertMessages"]) == "boolean") {
             allow_messages = window.verifiedCheckmarkSettings["allowAlertMessages"];

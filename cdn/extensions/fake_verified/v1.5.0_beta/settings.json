@@ -38,9 +38,9 @@
             "default": true
         },
         "allowEfazDevApprovedBadges": {
-            "text": "Approve Verified Badges on Approved Users by EfazDev",
+            "text": "Approve Verified Badges on Users Approved by EfazDev <e style='color:#ff0000; font-size: smaller;'>(BETA)</e>",
             "type": "checkbox",
-            "default": true
+            "default": false
         }
     },
     "chromeWebstoreLinkEnabled": true,
