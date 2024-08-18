@@ -685,72 +685,74 @@ function start() {
                                         }
 
                                         function refresh() {
-                                            var identified_id = window.location.pathname.match(/[0-9]+/)[0];
-                                            var group_owners = document.getElementsByClassName("text-link ng-binding ng-scope");
-                                            group_owners = Array.prototype.slice.call(group_owners);
-                                            if (group_owners.length > 0) {
-                                                if (window.verifiedCheckmarkSettings) {
-                                                    if (window.verifiedCheckmarkSettings["groupsIncluded"] == true) {
-                                                        var group_list_verified_logo = document.getElementsByTagName("groups-list-item");
-                                                        group_list_verified_logo = Array.prototype.slice.call(group_list_verified_logo);
-                                                        if (group_list_verified_logo.length > 0) {
-                                                            group_list_verified_logo.forEach((main_name_on_group) => {
-                                                                if (main_name_on_group.children[0] && main_name_on_group.children[0].children[0] && main_name_on_group.children[0].children[0].children[1]) {
-                                                                    if (main_name_on_group.children[0].href) {
-                                                                        var group_id = main_name_on_group.children[0].href.match(/[0-9]+/)[0];
-                                                                        if (group_id) {
-                                                                            approvedGroup(group_id).then((info) => {
-                                                                                if (info["accepted"] == true) {
-                                                                                    main_name_on_group = main_name_on_group.children[0].children[0].children[1];
-                                                                                    if (verifiedBadgePlacedAlready(main_name_on_group.innerHTML)) {
-                                                                                        return;
-                                                                                    }
-                                                                                    main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${name_side_html}`;
-                                                                                }
-                                                                            })
-                                                                        }
-                                                                    }
-                                                                }
-                                                            });
-                                                        }
-
-                                                        approvedGroup(identified_id).then(info => {
-                                                            if (info["accepted"] == true) {
-                                                                group_owners.forEach((group_owner_name) => {
-                                                                    if (group_owner_name.innerHTML.includes(json["displayName"]) && group_owner_name.href == `https://www.roblox.com/users/${json["id"]}/profile`) {
-                                                                        if (!(group_owner_name.parentElement)) {
-                                                                            return;
-                                                                        }
-
-                                                                        if (!(verifiedBadgePlacedAlready(group_owner_name.parentElement.innerHTML))) {
-                                                                            group_owner_name.outerHTML = `${group_owner_name.outerHTML}${group_owner_name_html}`;
-                                                                        }
-
-                                                                        if (window.verifiedCheckmarkSettings) {
-                                                                            if (window.verifiedCheckmarkSettings["groupsIncluded"] == true) {
-                                                                                var group_name = document.getElementsByClassName("group-name text-overflow ng-binding ng-scope");
-                                                                                group_name = Array.prototype.slice.call(group_name);
-                                                                                if (group_name.length > 0) {
-                                                                                    group_name.forEach((main_name_on_group) => {
+                                            var identified_id = window.location.pathname.match(/[0-9]+/);
+                                            if (identified_id && identified_id[0]) {
+                                                var group_owners = document.getElementsByClassName("text-link ng-binding ng-scope");
+                                                group_owners = Array.prototype.slice.call(group_owners);
+                                                if (group_owners.length > 0) {
+                                                    if (window.verifiedCheckmarkSettings) {
+                                                        if (window.verifiedCheckmarkSettings["groupsIncluded"] == true) {
+                                                            var group_list_verified_logo = document.getElementsByTagName("groups-list-item");
+                                                            group_list_verified_logo = Array.prototype.slice.call(group_list_verified_logo);
+                                                            if (group_list_verified_logo.length > 0) {
+                                                                group_list_verified_logo.forEach((main_name_on_group) => {
+                                                                    if (main_name_on_group.children[0] && main_name_on_group.children[0].children[0] && main_name_on_group.children[0].children[0].children[1]) {
+                                                                        if (main_name_on_group.children[0].href) {
+                                                                            var group_id = main_name_on_group.children[0].href.match(/[0-9]+/)[0];
+                                                                            if (group_id) {
+                                                                                approvedGroup(group_id).then((info) => {
+                                                                                    if (info["accepted"] == true) {
+                                                                                        main_name_on_group = main_name_on_group.children[0].children[0].children[1];
                                                                                         if (verifiedBadgePlacedAlready(main_name_on_group.innerHTML)) {
                                                                                             return;
                                                                                         }
-                                                                                        main_name_on_group.innerHTML = `${main_name_on_group.innerHTML}${group_name_verified_html}`;
-                                                                                    });
-                                                                                }
+                                                                                        main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${name_side_html}`;
+                                                                                    }
+                                                                                })
                                                                             }
                                                                         }
                                                                     }
                                                                 });
                                                             }
-                                                        })
+    
+                                                            approvedGroup(identified_id).then(info => {
+                                                                if (info["accepted"] == true) {
+                                                                    group_owners.forEach((group_owner_name) => {
+                                                                        if (group_owner_name.innerHTML.includes(json["displayName"]) && group_owner_name.href == `https://www.roblox.com/users/${json["id"]}/profile`) {
+                                                                            if (!(group_owner_name.parentElement)) {
+                                                                                return;
+                                                                            }
+    
+                                                                            if (!(verifiedBadgePlacedAlready(group_owner_name.parentElement.innerHTML))) {
+                                                                                group_owner_name.outerHTML = `${group_owner_name.outerHTML}${group_owner_name_html}`;
+                                                                            }
+    
+                                                                            if (window.verifiedCheckmarkSettings) {
+                                                                                if (window.verifiedCheckmarkSettings["groupsIncluded"] == true) {
+                                                                                    var group_name = document.getElementsByClassName("group-name text-overflow ng-binding ng-scope");
+                                                                                    group_name = Array.prototype.slice.call(group_name);
+                                                                                    if (group_name.length > 0) {
+                                                                                        group_name.forEach((main_name_on_group) => {
+                                                                                            if (verifiedBadgePlacedAlready(main_name_on_group.innerHTML)) {
+                                                                                                return;
+                                                                                            }
+                                                                                            main_name_on_group.innerHTML = `${main_name_on_group.innerHTML}${group_name_verified_html}`;
+                                                                                        });
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    });
+                                                                }
+                                                            })
+                                                        }
                                                     }
+                                                    setTimeout(attachExtra, 50)
+                                                } else {
+                                                    setTimeout(() => {
+                                                        refresh()
+                                                    }, 100)
                                                 }
-                                                setTimeout(attachExtra, 50)
-                                            } else {
-                                                setTimeout(() => {
-                                                    refresh()
-                                                }, 100)
                                             }
                                         }
                                         setTimeout(refresh, 50)
