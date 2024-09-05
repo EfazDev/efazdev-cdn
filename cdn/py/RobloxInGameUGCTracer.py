@@ -42,15 +42,15 @@ def getLink(value):
             return None
 
 def printMainMessage(mes):
-    print(f"\x1b[38;2;255;255;255m{mes}\033[38;5;231m")
+    print(f"\033[38;5;255m{mes}\033[0m")
     console_logs.append(mes + " - Main")
 
 def printSuccessMessage(mes):
-    print(f"\x1b[38;2;0;255;0m{mes}\033[38;5;231m")
+    print(f"\033[38;5;82m{mes}\033[0m")
     console_logs.append(mes + " - SUCCESS")
 
 def printWarnMessage(mes):
-    print(f"\x1b[38;2;255;75;0m{mes}\033[38;5;231m")
+    print(f"\033[38;5;202m{mes}\033[0m")
     console_logs.append(mes + " - WARN")
 
 if __name__ == "__main__":

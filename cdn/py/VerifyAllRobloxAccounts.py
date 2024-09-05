@@ -168,13 +168,19 @@ class VerifyAllRobloxAccountsViaEmails:
 
 if __name__ == "__main__":
     def printMainMessage(mes):
-        print(f"\033[38;5;231m{mes}\033[38;5;231m")
+        print(f"\033[38;5;255m{mes}\033[0m")
+
     def printErrorMessage(mes):
-        print(f"\033[38;5;196m{mes}\033[38;5;231m")
-    def printWarnMessage(mes):
-        print(f"\x1b[38;2;255;75;0m{mes}\033[38;5;231m")
+        print(f"\033[38;5;196m{mes}\033[0m")
+
     def printSuccessMessage(mes):
-        print(f"\x1b[38;2;0;255;0m{mes}\033[38;5;231m")
+        print(f"\033[38;5;82m{mes}\033[0m")
+
+    def printWarnMessage(mes):
+        print(f"\033[38;5;202m{mes}\033[0m")
+
+    def printDebugMessage(mes):
+        print(f"\033[38;5;226m{mes}\033[0m")
 
     os.system("cls" if os.name == "nt" else "clear")
     version = "v1.0.0"
