@@ -32,6 +32,9 @@ function start() {
 
     if (enabled) {
         var user_checkmark_color = "%230066FF"
+        var broken_context = false;
+        var cached_group_list = null;
+
         if (window.verifiedCheckmarkSettings) {
             var custom_checkmark_color = window.verifiedCheckmarkSettings["color"]
             if (custom_checkmark_color) {
@@ -41,67 +44,72 @@ function start() {
 
         async function getUserData(id) {
             if (typeof chrome !== 'undefined' && typeof chrome.storage !== 'undefined') {
-                return chrome.storage.local.get("user_verification").then((stored_user_data) => {
-                    if (!(typeof (stored_user_data["user_verification"]) == "object")) {
-                        stored_user_data["user_verification"] = {}
-                    }
-
-                    if (stored_user_data["user_verification"][id.toString()]) {
-                        return stored_user_data["user_verification"][id.toString()]
-                    } else if (temp_stored_user_data[id.toString()]) {
-                        return temp_stored_user_data[id.toString()]
-                    } else if (approved_efazdev_users[id.toString()]) {
-                        return approved_efazdev_users[id.toString()]
-                    } else {
-                        if (id == "*") {
-                            return fetch("https://users.roblox.com/v1/users/authenticated", {
-                                "headers": {
-                                    "accept": "application/json",
-                                    "accept-language": "en-US,en;q=0.9",
-                                    "cache-control": "no-cache",
-                                    "pragma": "no-cache"
-                                },
-                                "method": "GET",
-                                "mode": "cors",
-                                "credentials": "include"
-                            }).then(res => {
-                                if (res.ok) {
-                                    return res.json()
-                                } else {
-                                    logMessage("User is not logged in!")
-                                    return null
-                                }
-                            }).then(json => {
-                                if (json) {
-                                    temp_stored_user_data["*"] = json
-                                    stored_user_data["user_verification"][json["id"].toString()] = json
-                                    return chrome.storage.local.set(stored_user_data).then(() => {
-                                        return json
-                                    })
-                                } else {
-                                    return null
-                                }
-                            }).catch(err => {
-                                logMessage(err.message)
-                                return null
-                            });
+                if (broken_context == true) {
+                    return null
+                } else {
+                    return chrome.storage.local.get("user_verification").then((stored_user_data) => {
+                        if (!(typeof (stored_user_data["user_verification"]) == "object")) {
+                            stored_user_data["user_verification"] = {}
+                        }
+    
+                        if (stored_user_data["user_verification"][id.toString()]) {
+                            return stored_user_data["user_verification"][id.toString()]
+                        } else if (temp_stored_user_data[id.toString()]) {
+                            return temp_stored_user_data[id.toString()]
+                        } else if (approved_efazdev_users[id.toString()]) {
+                            return approved_efazdev_users[id.toString()]
                         } else {
-                            if (stored_user_data["user_verification"][id.toString()]) {
-                                return stored_user_data["user_verification"][id.toString()]
+                            if (id == "*") {
+                                return fetch("https://users.roblox.com/v1/users/authenticated", {
+                                    "headers": {
+                                        "accept": "application/json",
+                                        "accept-language": "en-US,en;q=0.9",
+                                        "cache-control": "no-cache",
+                                        "pragma": "no-cache"
+                                    },
+                                    "method": "GET",
+                                    "mode": "cors",
+                                    "credentials": "include"
+                                }).then(res => {
+                                    if (res.ok) {
+                                        return res.json()
+                                    } else {
+                                        logMessage("User is not logged in!")
+                                        return null
+                                    }
+                                }).then(json => {
+                                    if (json) {
+                                        temp_stored_user_data["*"] = json
+                                        stored_user_data["user_verification"][json["id"].toString()] = json
+                                        return chrome.storage.local.set(stored_user_data).then(() => {
+                                            return json
+                                        })
+                                    } else {
+                                        return null
+                                    }
+                                }).catch(err => {
+                                    logMessage(err.message)
+                                    return null
+                                });
                             } else {
-                                logMessage("Something went wrong.")
-                                return null
+                                if (stored_user_data["user_verification"][id.toString()]) {
+                                    return stored_user_data["user_verification"][id.toString()]
+                                } else {
+                                    logMessage("Something went wrong.")
+                                    return null
+                                }
                             }
                         }
-                    }
-                }).catch(err => {
-                    if (err.toString().includes("Extension context")) {
-                        return null
-                    } else {
-                        console.warn(`Error with getting approved users: ${err}`)
-                        return null
-                    }
-                });
+                    }).catch(err => {
+                        if (err.toString().includes("Extension context")) {
+                            broken_context = true
+                            return null
+                        } else {
+                            console.warn(`Error with getting approved users: ${err}`)
+                            return null
+                        }
+                    });
+                }
             } else {
                 if (temp_stored_user_data[id.toString()]) {
                     return temp_stored_user_data[id.toString()]
@@ -206,6 +214,7 @@ function start() {
                             }
                             /* Apply color changes to HTML above */
                             var include_groups = false;
+                            var enable_observers = false;
                             var userId = json["id"];
                             var username = json["name"];
                             var displayName = json["displayName"];
@@ -217,145 +226,155 @@ function start() {
                             }
 
                             async function approvedGroup(id, onlycached) {
+                                if (broken_context == true) {
+                                    return { "accepted": false }
+                                }
                                 if (typeof chrome !== 'undefined' && typeof chrome.storage !== 'undefined') {
                                     try {
-                                        return chrome.storage.local.get("group_ownership").then((allowed_groups) => {
-                                            if (!(typeof (allowed_groups["group_ownership"]) == "object")) {
-                                                allowed_groups["group_ownership"] = {}
-                                            }
-
-                                            var group_keys = Object.keys(allowed_groups["group_ownership"])
-                                            var changes_made = false
-                                            group_keys.forEach((key) => {
-                                                if (allowed_groups["group_ownership"][key] && allowed_groups["group_ownership"][key]["owner"] == json["id"] && allowed_groups["group_ownership"][key]["accepted"] == false) {
-                                                    allowed_groups["group_ownership"][key]["accepted"] = true
-                                                    changes_made = true
+                                        if (cached_group_list) {
+                                            return cached_group_list
+                                        } else {
+                                            return chrome.storage.local.get("group_ownership").then((allowed_groups) => {
+                                                if (!(typeof (allowed_groups["group_ownership"]) == "object")) {
+                                                    allowed_groups["group_ownership"] = {}
                                                 }
-                                            })
-                                            if (changes_made == true) {
-                                                chrome.storage.local.set(allowed_groups).then(() => {
-                                                    logMessage("Saved to chrome storage!")
-                                                    group_scan = false
-                                                    if (allowed_groups["group_ownership"][id] == false) {
+
+                                                var group_keys = Object.keys(allowed_groups["group_ownership"])
+                                                var changes_made = false
+                                                group_keys.forEach((key) => {
+                                                    if (allowed_groups["group_ownership"][key] && allowed_groups["group_ownership"][key]["owner"] == json["id"] && allowed_groups["group_ownership"][key]["accepted"] == false) {
+                                                        allowed_groups["group_ownership"][key]["accepted"] = true
+                                                        changes_made = true
+                                                    }
+                                                })
+                                                if (changes_made == true) {
+                                                    chrome.storage.local.set(allowed_groups).then(() => {
+                                                        logMessage("Saved to chrome storage!")
+                                                        group_scan = false
+                                                        if (allowed_groups["group_ownership"][id] == false) {
+                                                            return { "accepted": false }
+                                                        } else {
+                                                            return allowed_groups["group_ownership"][id]
+                                                        }
+                                                    })
+                                                }
+                                                cached_group_list = allowed_groups
+                                                setTimeout(() => { cached_group_list = null }, start_time * 100)
+
+                                                if (typeof (allowed_groups["group_ownership"][id]) == "object") {
+                                                    if (approved_efazdev_users[allowed_groups["group_ownership"][id]["owner"]] && (!(allowed_groups["group_ownership"][id]["owner"] == json["id"]))) {
                                                         return { "accepted": false }
                                                     } else {
                                                         return allowed_groups["group_ownership"][id]
                                                     }
-                                                })
-                                            }
-
-                                            if (typeof (allowed_groups["group_ownership"][id]) == "object") {
-                                                if (approved_efazdev_users[allowed_groups["group_ownership"][id]["owner"]] && (!(allowed_groups["group_ownership"][id]["owner"] == json["id"]))) {
+                                                } else if (allowed_groups["group_ownership"][id] == false) {
+                                                    return { "accepted": false }
+                                                } else if (allowed_groups["group_ownership"] && ((!(allowed_groups["group_ownership"][id])) && allowed_groups["group_ownership"][`scan_${json["id"]}`] == true)) {
                                                     return { "accepted": false }
                                                 } else {
-                                                    return allowed_groups["group_ownership"][id]
-                                                }
-                                            } else if (allowed_groups["group_ownership"][id] == false) {
-                                                return { "accepted": false }
-                                            } else if (allowed_groups["group_ownership"] && ((!(allowed_groups["group_ownership"][id])) && allowed_groups["group_ownership"][`scan_${json["id"]}`] == true)) {
-                                                return { "accepted": false }
-                                            } else {
-                                                if (onlycached == true) {
-                                                    return { "accepted": false }
-                                                } else {
-                                                    if (group_scan == true) {
+                                                    if (onlycached == true) {
                                                         return { "accepted": false }
                                                     } else {
-                                                        group_scan = true
-                                                        if (stored_group_data["temp_group_info"]) {
-                                                            if (typeof (allowed_groups["group_ownership"][id]) == "object") {
-                                                                if (approved_efazdev_users[allowed_groups["group_ownership"][id]["owner"]] && (!(allowed_groups["group_ownership"][id]["owner"] == json["id"]))) {
+                                                        if (group_scan == true) {
+                                                            return { "accepted": false }
+                                                        } else {
+                                                            group_scan = true
+                                                            if (stored_group_data["temp_group_info"]) {
+                                                                if (typeof (allowed_groups["group_ownership"][id]) == "object") {
+                                                                    if (approved_efazdev_users[allowed_groups["group_ownership"][id]["owner"]] && (!(allowed_groups["group_ownership"][id]["owner"] == json["id"]))) {
+                                                                        return { "accepted": false }
+                                                                    } else {
+                                                                        return allowed_groups["group_ownership"][id]
+                                                                    }
+                                                                } else if (allowed_groups["group_ownership"][id] == false) {
+                                                                    return { "accepted": false }
+                                                                } else if (allowed_groups["group_ownership"] && ((!(allowed_groups["group_ownership"][id])) && allowed_groups["group_ownership"][`scan_${json["id"]}`] == true)) {
                                                                     return { "accepted": false }
                                                                 } else {
-                                                                    return allowed_groups["group_ownership"][id]
+                                                                    return { "accepted": false }
                                                                 }
-                                                            } else if (allowed_groups["group_ownership"][id] == false) {
-                                                                return { "accepted": false }
-                                                            } else if (allowed_groups["group_ownership"] && ((!(allowed_groups["group_ownership"][id])) && allowed_groups["group_ownership"][`scan_${json["id"]}`] == true)) {
-                                                                return { "accepted": false }
                                                             } else {
-                                                                return { "accepted": false }
-                                                            }
-                                                        } else {
-                                                            return fetch(`https://groups.roblox.com/v1/users/${json["id"]}/groups/roles?includeLocked=true&includeNotificationPreferences=true`, { "mode": "cors", "credentials": "include" }).then(grou_res => {
-                                                                if (grou_res.ok) {
-                                                                    return grou_res.json();
-                                                                } else {
-                                                                    return null
-                                                                }
-                                                            }).then(grou_resjson => {
-                                                                if (grou_resjson) {
-                                                                    if (grou_resjson["data"]) {
-                                                                        stored_group_data["temp_group_info"] = {}
-                                                                        allowed_groups["group_ownership"][`scan_${json["id"]}`] = true
-                                                                        grou_resjson["data"].forEach((grou_json) => {
-                                                                            grou_json = grou_json["group"]
-                                                                            if (grou_json["owner"] && grou_json["owner"]["userId"] == json["id"]) {
-                                                                                grou_json["accepted"] = true
-                                                                                allowed_groups["group_ownership"][grou_json["id"]] = {
-                                                                                    "accepted": grou_json["accepted"],
-                                                                                    "name": grou_json["name"],
-                                                                                    "id": grou_json["id"],
-                                                                                    "owner": grou_json["owner"]["userId"],
-                                                                                }
-                                                                            } else {
-                                                                                if (grou_json["owner"]) {
-                                                                                    grou_json["accepted"] = false
+                                                                return fetch(`https://groups.roblox.com/v1/users/${json["id"]}/groups/roles?includeLocked=true&includeNotificationPreferences=true`, { "mode": "cors", "credentials": "include" }).then(grou_res => {
+                                                                    if (grou_res.ok) {
+                                                                        return grou_res.json();
+                                                                    } else {
+                                                                        return null
+                                                                    }
+                                                                }).then(grou_resjson => {
+                                                                    if (grou_resjson) {
+                                                                        if (grou_resjson["data"]) {
+                                                                            stored_group_data["temp_group_info"] = {}
+                                                                            allowed_groups["group_ownership"][`scan_${json["id"]}`] = true
+                                                                            grou_resjson["data"].forEach((grou_json) => {
+                                                                                grou_json = grou_json["group"]
+                                                                                if (grou_json["owner"] && grou_json["owner"]["userId"] == json["id"]) {
+                                                                                    grou_json["accepted"] = true
                                                                                     allowed_groups["group_ownership"][grou_json["id"]] = {
                                                                                         "accepted": grou_json["accepted"],
                                                                                         "name": grou_json["name"],
                                                                                         "id": grou_json["id"],
                                                                                         "owner": grou_json["owner"]["userId"],
                                                                                     }
-                                                                                }
-                                                                            }
-                                                                            stored_group_data["temp_group_info"][grou_json["id"]] = allowed_groups["group_ownership"][grou_json["id"]]
-                                                                        })
-
-                                                                        if (!(allowed_groups["group_ownership"][id])) {
-                                                                            var efazdev_approved_keys = Object.keys(approved_efazdev_users)
-                                                                            if (efazdev_approved_keys) {
-                                                                                efazdev_approved_keys.forEach((ke) => {
-                                                                                    var info = approved_efazdev_users[ke]
-                                                                                    if (info["approve_groups"]) {
-                                                                                        if (info["approve_groups"].includes(id)) {
-                                                                                            allowed_groups["group_ownership"][id] = {
-                                                                                                "accepted": true,
-                                                                                                "id": id,
-                                                                                                "owner": info["id"],
-                                                                                            }
-                                                                                            stored_group_data["temp_group_info"][id] = allowed_groups["group_ownership"][id]
+                                                                                } else {
+                                                                                    if (grou_json["owner"]) {
+                                                                                        grou_json["accepted"] = false
+                                                                                        allowed_groups["group_ownership"][grou_json["id"]] = {
+                                                                                            "accepted": grou_json["accepted"],
+                                                                                            "name": grou_json["name"],
+                                                                                            "id": grou_json["id"],
+                                                                                            "owner": grou_json["owner"]["userId"],
                                                                                         }
                                                                                     }
-                                                                                })
-                                                                            }
-                                                                        }
+                                                                                }
+                                                                                stored_group_data["temp_group_info"][grou_json["id"]] = allowed_groups["group_ownership"][grou_json["id"]]
+                                                                            })
 
-                                                                        return chrome.storage.local.set(allowed_groups).then(() => {
-                                                                            logMessage("Saved to chrome storage!")
-                                                                            group_scan = false
-                                                                            if (allowed_groups["group_ownership"][id] == false) {
-                                                                                return { "accepted": false }
-                                                                            } else if (allowed_groups["group_ownership"][id]) {
-                                                                                return allowed_groups["group_ownership"][id]
-                                                                            } else {
-                                                                                return { "accepted": false }
+                                                                            if (!(allowed_groups["group_ownership"][id])) {
+                                                                                var efazdev_approved_keys = Object.keys(approved_efazdev_users)
+                                                                                if (efazdev_approved_keys) {
+                                                                                    efazdev_approved_keys.forEach((ke) => {
+                                                                                        var info = approved_efazdev_users[ke]
+                                                                                        if (info["approve_groups"]) {
+                                                                                            if (info["approve_groups"].includes(id)) {
+                                                                                                allowed_groups["group_ownership"][id] = {
+                                                                                                    "accepted": true,
+                                                                                                    "id": id,
+                                                                                                    "owner": info["id"],
+                                                                                                }
+                                                                                                stored_group_data["temp_group_info"][id] = allowed_groups["group_ownership"][id]
+                                                                                            }
+                                                                                        }
+                                                                                    })
+                                                                                }
                                                                             }
-                                                                        })
+
+                                                                            return chrome.storage.local.set(allowed_groups).then(() => {
+                                                                                logMessage("Saved to chrome storage!")
+                                                                                group_scan = false
+                                                                                if (allowed_groups["group_ownership"][id] == false) {
+                                                                                    return { "accepted": false }
+                                                                                } else if (allowed_groups["group_ownership"][id]) {
+                                                                                    return allowed_groups["group_ownership"][id]
+                                                                                } else {
+                                                                                    return { "accepted": false }
+                                                                                }
+                                                                            })
+                                                                        } else {
+                                                                            return { "accepted": false }
+                                                                        }
                                                                     } else {
                                                                         return { "accepted": false }
                                                                     }
-                                                                } else {
-                                                                    return { "accepted": false }
-                                                                }
-                                                            });
+                                                                });
+                                                            }
                                                         }
                                                     }
                                                 }
-                                            }
-                                        })
+                                            })
+                                        }
                                     } catch (err) {
                                         if (err.toString().includes("Extension context")) {
+                                            broken_context = true
                                             return { "accepted": false }
                                         } else {
                                             console.warn(`Error with getting approved group: ${err}`)
@@ -562,8 +581,17 @@ function start() {
                                             if (list_item.length > 0) {
                                                 list_item.forEach((group_list_header) => {
                                                     if (group_list_header) {
-                                                        var observer = new MutationObserver(refresh);
-                                                        observer.observe(group_list_header, { attributes: true, childList: true });
+                                                        var a = false
+                                                        function s() {
+                                                            if (a == false) {
+                                                                a = true
+                                                                setTimeout(() => {
+                                                                    a = false
+                                                                }, 200)
+                                                            } else {
+                                                                refresh()
+                                                            }
+                                                        }
                                                     }
                                                 })
                                             } else {
@@ -576,9 +604,17 @@ function start() {
                                             list_item = Array.prototype.slice.call(list_item);
                                             if (list_item.length > 0) {
                                                 list_item.forEach((group_list_comments) => {
-                                                    var observer = new MutationObserver(refresh);
-                                                    observer.observe(group_list_comments, { attributes: true, childList: true });
-                                                    logMessage("Installed observer: text-name")
+                                                    var a = false
+                                                    function s() {
+                                                        if (a == false) {
+                                                            a = true
+                                                            setTimeout(() => {
+                                                                a = false
+                                                            }, 200)
+                                                        } else {
+                                                            refresh()
+                                                        }
+                                                    }
                                                 })
                                             } else {
                                                 setTimeout(() => { attachToRobloxComments(); }, 1000)
@@ -590,9 +626,18 @@ function start() {
                                             member_list = Array.prototype.slice.call(member_list);
                                             if (member_list.length > 0) {
                                                 member_list.forEach((group_list_comments) => {
-                                                    var observer = new MutationObserver(refresh);
-                                                    observer.observe(group_list_comments, { attributes: true, childList: true });
-                                                    logMessage("Installed observer: hlist-v2")
+                                                    var a = false
+                                                    function s() {
+                                                        if (a == false) {
+                                                            a = true
+                                                            setTimeout(() => {
+                                                                a = false
+                                                            }, 200)
+                                                        } else {
+                                                            refresh()
+                                                        }
+                                                    }
+                                                    refresh()
                                                 })
                                             } else {
                                                 setTimeout(() => { attachToMemberlist(); }, 1000)
@@ -605,8 +650,17 @@ function start() {
                                             if (group_div.length > 0) {
                                                 group_div.forEach((user_container) => {
                                                     if ((user_container.className == "ng-scope" || user_container.className == "btr-group-container ng-scope btr-hasGames btr-hasPayouts") && user_container.getAttribute("ng-if") == "!isLockedGroup() && !isGroupRestrictedByPolicy() && !layout.loadGroupMetadataError") {
-                                                        var observer = new MutationObserver(refresh);
-                                                        observer.observe(user_container, { attributes: true, childList: true });
+                                                        var a = false
+                                                        function s() {
+                                                            if (a == false) {
+                                                                a = true
+                                                                setTimeout(() => {
+                                                                    a = false
+                                                                }, 200)
+                                                            } else {
+                                                                refresh()
+                                                            }
+                                                        }
                                                     }
                                                 });
                                             } else {
@@ -714,7 +768,7 @@ function start() {
                                                                     }
                                                                 });
                                                             }
-    
+
                                                             approvedGroup(identified_id).then(info => {
                                                                 if (info["accepted"] == true) {
                                                                     group_owners.forEach((group_owner_name) => {
@@ -722,11 +776,11 @@ function start() {
                                                                             if (!(group_owner_name.parentElement)) {
                                                                                 return;
                                                                             }
-    
+
                                                                             if (!(verifiedBadgePlacedAlready(group_owner_name.parentElement.innerHTML))) {
                                                                                 group_owner_name.outerHTML = `${group_owner_name.outerHTML}${group_owner_name_html}`;
                                                                             }
-    
+
                                                                             if (window.verifiedCheckmarkSettings) {
                                                                                 if (window.verifiedCheckmarkSettings["groupsIncluded"] == true) {
                                                                                     var group_name = document.getElementsByClassName("group-name text-overflow ng-binding ng-scope");
@@ -748,18 +802,10 @@ function start() {
                                                         }
                                                     }
                                                     setTimeout(attachExtra, 50)
-                                                } else {
-                                                    setTimeout(() => {
-                                                        refresh()
-                                                    }, 100)
                                                 }
                                             }
                                         }
                                         setTimeout(refresh, 50)
-                                        setTimeout(attachToRobloxSelectTab, 50)
-                                        setTimeout(attachToRobloxComments, 50)
-                                        setTimeout(attachToMemberlist, 50)
-                                        setTimeout(attachToGroupContainer, 50)
                                     }
                                 }
 
@@ -858,8 +904,10 @@ function start() {
                                             list_item = Array.prototype.slice.call(list_item);
                                             if (list_item.length > 0) {
                                                 var catalog_list_header = list_item[0];
-                                                var observer = new MutationObserver(applyAutoChangeFunctionB);
-                                                observer.observe(catalog_list_header, { childList: true });
+                                                if (enable_observers == true) {
+                                                    var observer = new MutationObserver(applyAutoChangeFunctionB);
+                                                    observer.observe(catalog_list_header, { childList: true });
+                                                }
                                             }
 
                                             addPromptButtonInput()
@@ -898,8 +946,10 @@ function start() {
                                         list_item = Array.prototype.slice.call(list_item);
                                         if (list_item.length > 0) {
                                             var catalog_list_header = list_item[0];
-                                            var observer = new MutationObserver(applyAutoChangeFunctionB);
-                                            observer.observe(catalog_list_header, { childList: true });
+                                            if (enable_observers == true) {
+                                                var observer = new MutationObserver(applyAutoChangeFunctionB);
+                                                observer.observe(catalog_list_header, { childList: true });
+                                            }
                                         }
 
                                         addPromptButtonInput()
@@ -949,8 +999,10 @@ function start() {
                                         var list_item = document.getElementById("assetsItems");
                                         if (list_item) {
                                             var catalog_list_header = list_item;
-                                            var observer = new MutationObserver(applyAutoChangeFunctionD);
-                                            observer.observe(catalog_list_header, { childList: true });
+                                            if (enable_observers == true) {
+                                                var observer = new MutationObserver(applyAutoChangeFunctionD);
+                                                observer.observe(catalog_list_header, { childList: true });
+                                            }
                                         }
                                     }, start_time);
                                 }
@@ -977,8 +1029,10 @@ function start() {
                                         list_item = Array.prototype.slice.call(list_item);
                                         if (list_item.length > 0) {
                                             var catalog_list_header = list_item[0];
-                                            var observer = new MutationObserver(applyAutoChangeFunctionE);
-                                            observer.observe(catalog_list_header, { childList: true });
+                                            if (enable_observers == true) {
+                                                var observer = new MutationObserver(applyAutoChangeFunctionE);
+                                                observer.observe(catalog_list_header, { childList: true });
+                                            }
                                         }
                                     }, start_time);
                                 }
@@ -1005,8 +1059,10 @@ function start() {
                                         list_item = Array.prototype.slice.call(list_item);
                                         if (list_item.length > 0) {
                                             var catalog_list_header = list_item[0];
-                                            var observer = new MutationObserver(applyAutoChangeFunctionF);
-                                            observer.observe(catalog_list_header, { childList: true });
+                                            if (enable_observers == true) {
+                                                var observer = new MutationObserver(applyAutoChangeFunctionF);
+                                                observer.observe(catalog_list_header, { childList: true });
+                                            }
                                         }
                                     }, start_time);
                                 }
@@ -1075,15 +1131,19 @@ function start() {
                                         list_item = Array.prototype.slice.call(list_item);
                                         if (list_item.length > 0) {
                                             var catalog_list_header = list_item[0];
-                                            var observer = new MutationObserver(applyAutoChangeFunctionG);
-                                            observer.observe(catalog_list_header, { childList: true });
+                                            if (enable_observers == true) {
+                                                var observer = new MutationObserver(applyAutoChangeFunctionG);
+                                                observer.observe(catalog_list_header, { childList: true });
+                                            }
                                         }
 
                                         var list_item = document.getElementById("groups-switcher");
                                         if (list_item) {
                                             var catalog_list_header = list_item;
-                                            var observer = new MutationObserver(applyAutoChangeFunctionG);
-                                            observer.observe(catalog_list_header, { childList: true });
+                                            if (enable_observers == true) {
+                                                var observer = new MutationObserver(applyAutoChangeFunctionG);
+                                                observer.observe(catalog_list_header, { childList: true });
+                                            }
                                         }
                                     }, start_time);
                                 }
@@ -1123,8 +1183,10 @@ function start() {
                                         var list_item = document.getElementById("rbx-tabs-horizontal rbx-scrollable-tabs-horizontal roblox-messages-container ng-scope");
                                         if (list_item) {
                                             var catalog_list_header = list_item;
-                                            var observer = new MutationObserver(applyAutoChangeFunctionH);
-                                            observer.observe(catalog_list_header, { childList: true });
+                                            if (enable_observers == true) {
+                                                var observer = new MutationObserver(applyAutoChangeFunctionH);
+                                                observer.observe(catalog_list_header, { childList: true });
+                                            }
                                         }
                                     }, start_time);
                                 }
@@ -1170,8 +1232,10 @@ function start() {
                                         var list_item = document.getElementById("item-container");
                                         if (list_item) {
                                             var catalog_list_header = list_item;
-                                            var observer = new MutationObserver(applyAutoChangeFunctionI);
-                                            observer.observe(catalog_list_header, { childList: true });
+                                            if (enable_observers == true) {
+                                                var observer = new MutationObserver(applyAutoChangeFunctionI);
+                                                observer.observe(catalog_list_header, { childList: true });
+                                            }
                                         }
                                     }, start_time);
                                 }
@@ -1394,8 +1458,10 @@ function start() {
                                     list_item = Array.prototype.slice.call(list_item);
                                     if (list_item.length > 0) {
                                         var catalog_list_header = list_item[0];
-                                        var observer = new MutationObserver(applyAutoChangeFunctionB);
-                                        observer.observe(catalog_list_header, { childList: true });
+                                        if (enable_observers == true) {
+                                            var observer = new MutationObserver(applyAutoChangeFunctionB);
+                                            observer.observe(catalog_list_header, { childList: true });
+                                        }
                                         logMessage("Installed observer: search-result")
                                     }
                                 }, start_time);
@@ -1404,8 +1470,10 @@ function start() {
                                 list_item = Array.prototype.slice.call(list_item);
                                 if (list_item.length > 0) {
                                     var catalog_list_header = list_item[0];
-                                    var observer = new MutationObserver(applyAutoChangeFunctionB);
-                                    observer.observe(catalog_list_header, { childList: true });
+                                    if (enable_observers == true) {
+                                        var observer = new MutationObserver(applyAutoChangeFunctionB);
+                                        observer.observe(catalog_list_header, { childList: true });
+                                    }
                                     logMessage("Installed observer: item-cards-stackable")
                                 }
 
@@ -1413,8 +1481,10 @@ function start() {
                                 list_item = Array.prototype.slice.call(list_item);
                                 if (list_item.length > 0) {
                                     var catalog_list_header = list_item[0];
-                                    var observer = new MutationObserver(applyAutoChangeFunctionC);
-                                    observer.observe(catalog_list_header, { childList: true });
+                                    if (enable_observers == true) {
+                                        var observer = new MutationObserver(applyAutoChangeFunctionC);
+                                        observer.observe(catalog_list_header, { childList: true });
+                                    }
                                     logMessage("Installed observer: group-detail")
                                 }
 
@@ -1423,8 +1493,10 @@ function start() {
                                     list_item = Array.prototype.slice.call(list_item);
                                     if (list_item.length > 0) {
                                         var catalog_list_header = list_item[0];
-                                        var observer = new MutationObserver(applyAutoChangeFunctionB);
-                                        observer.observe(catalog_list_header, { childList: true });
+                                        if (enable_observers == true) {
+                                            var observer = new MutationObserver(applyAutoChangeFunctionB);
+                                            observer.observe(catalog_list_header, { childList: true });
+                                        }
                                         logMessage("Installed observer: content")
                                     }
                                 }, start_time);
@@ -1562,7 +1634,6 @@ function loader() { // Script Loader
                         window.addEventListener("DOMContentLoaded", start)
                     }
                     console.log("Starting Verified Badge Loader: Settings Configuration v3")
-                    setTimeout(() => { stop_loop = true; }, 30000)
                 }).catch(err => {
                     console.warn(err)
                     if (document.readyState === "complete") {
@@ -1571,7 +1642,6 @@ function loader() { // Script Loader
                         window.addEventListener("DOMContentLoaded", start)
                     }
                     console.log("Starting Verified Badge Loader: Settings Configuration v3")
-                    setTimeout(() => { stop_loop = true; }, 30000)
                 })
             } else {
                 if (document.readyState === "complete") {
@@ -1580,7 +1650,6 @@ function loader() { // Script Loader
                     window.addEventListener("DOMContentLoaded", start)
                 }
                 console.log("Starting Verified Badge Loader: Settings Configuration v3")
-                setTimeout(() => { stop_loop = true; }, 30000)
             }
         })
     } else if (window.verifiedCheckmarkSettings) { // Chrome Extension < v1.4.0
