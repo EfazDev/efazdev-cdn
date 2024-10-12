@@ -36,13 +36,26 @@
 
 /* Copied Warning Message CSS from https://catalog.roblox.com/docs/resources/Docs.css */
 
-#doc-warning {
-    display: flex;
-    font-family: "Droid Sans", sans-serif;
-    background-color: #ffdddd;
-    border: 1px solid #ee9999;
-    min-height: 45px;
-    color: #8f1d1d;
+@media (prefers-color-scheme: light) {
+    #doc-warning {
+        display: flex;
+        font-family: "Droid Sans", sans-serif;
+        background-color: #ffdddd;
+        border: 1px solid #ee9999;
+        min-height: 45px;
+        color: #8f1d1d;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    #doc-warning {
+        display: flex;
+        font-family: "Droid Sans", sans-serif;
+        background-color: #3c1e1e;
+        border: 1px solid #c23d3d;
+        min-height: 45px;
+        color: #ff0000;
+    }
 }
 
 #doc-warning .warning-description {
