@@ -51,10 +51,10 @@
     #doc-warning {
         display: flex;
         font-family: "Droid Sans", sans-serif;
-        background-color: #3c1e1e;
-        border: 1px solid #c23d3d;
+        background-color: #5e0000;
+        border: 1px solid #ff6060;
         min-height: 45px;
-        color: #ff0000;
+        color: #ff6060;
     }
 } 
 
