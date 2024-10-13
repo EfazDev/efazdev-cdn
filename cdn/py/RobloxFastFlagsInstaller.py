@@ -175,7 +175,11 @@ class Main():
         "editMainExecutable": "Edit the main bootstrap executable",
         "editModScript": "Edit ModScript.py executable",
         "notifications": "Configure or send macOS Notifications through Bootstrap",
-        "configureModModes": "Configure your mod modes"
+        "configureModModes": "Configure your mod modes",
+        "configureRobloxBranding": "Configure your Roblox client's branding",
+        "configureDeathSounds": "Configure your death sounds",
+        "configureCursors": "Configure your cursors",
+        "configureAvatarMaps": "Configure your avatar maps"
     }
     # System Functions 
     class RobloxInstance():
@@ -232,7 +236,8 @@ class Main():
             class EndRoblox(): code=0
 
         class InvalidRobloxHandlerException(Exception):
-            pass
+            def __init__(self):            
+                super().__init__("Please make sure you're providing the RobloxFastFlagsInstaller.Main class!")
 
         def __init__(self, main_handler, pid: str, log_file: str="", debug_mode: bool=False, allow_other_logs: bool=False, created_mutex=None):
             if type(main_handler) is Main:
@@ -458,15 +463,17 @@ class Main():
                                 def generate_arg(json_str):
                                     def fix_json_string(json_str):
                                         try:
-                                            a = (json_str + "}").replace(" ", "").replace("\n", "")
+                                            a = (json_str).replace(" ", "").replace("\n", "")
                                             return json.loads(a)
-                                        except json.JSONDecodeError:
-                                            return {}
+                                        except Exception as e:
+                                            return None
                                         
                                     def extract_ticket_info(ticket):
-                                        decoded_ticket = (urllib.parse.unquote(ticket)) + '"}'
+                                        decoded_ticket = (urllib.parse.unquote(ticket)) + '}'
                                         try:
                                             ticket_json = fix_json_string(decoded_ticket)
+                                            if not ticket_json:
+                                                raise Exception()
                                             return {
                                                 "placeId": ticket_json.get("PlaceId"),
                                                 "jobId": ticket_json.get("GameId"),
@@ -474,12 +481,15 @@ class Main():
                                                 "userId": ticket_json.get("UserId"),
                                                 "displayName": ticket_json.get("DisplayName"),
                                                 "universeId": ticket_json.get("UniverseId"),
-                                                "isTeleport": ticket_json.get("IsTeleport")
+                                                "isTeleport": ticket_json.get("IsTeleport"),
+                                                "followUserId": ticket_json.get("FollowUserId")
                                             }
-                                        except json.JSONDecodeError as e:
+                                        except Exception as e:
+                                            decoded_ticket = (urllib.parse.unquote(ticket)) + '"}'
                                             try:
-                                                decoded_ticket = (urllib.parse.unquote(ticket)) + '""}'
                                                 ticket_json = fix_json_string(decoded_ticket)
+                                                if not ticket_json:
+                                                    raise Exception()
                                                 return {
                                                     "placeId": ticket_json.get("PlaceId"),
                                                     "jobId": ticket_json.get("GameId"),
@@ -487,12 +497,15 @@ class Main():
                                                     "userId": ticket_json.get("UserId"),
                                                     "displayName": ticket_json.get("DisplayName"),
                                                     "universeId": ticket_json.get("UniverseId"),
-                                                    "isTeleport": ticket_json.get("IsTeleport")
+                                                    "isTeleport": ticket_json.get("IsTeleport"),
+                                                    "followUserId": ticket_json.get("FollowUserId")
                                                 }
-                                            except json.JSONDecodeError as e:
+                                            except Exception as e:
                                                 try:
-                                                    decoded_ticket = (urllib.parse.unquote(ticket)) + ':""}'
+                                                    decoded_ticket = (urllib.parse.unquote(ticket)) + '""}'
                                                     ticket_json = fix_json_string(decoded_ticket)
+                                                    if not ticket_json:
+                                                        raise Exception()
                                                     return {
                                                         "placeId": ticket_json.get("PlaceId"),
                                                         "jobId": ticket_json.get("GameId"),
@@ -500,20 +513,37 @@ class Main():
                                                         "userId": ticket_json.get("UserId"),
                                                         "displayName": ticket_json.get("DisplayName"),
                                                         "universeId": ticket_json.get("UniverseId"),
-                                                        "isTeleport": ticket_json.get("IsTeleport")
+                                                        "isTeleport": ticket_json.get("IsTeleport"),
+                                                        "followUserId": ticket_json.get("FollowUserId")
                                                     }
-                                                except json.JSONDecodeError as e:
-                                                    return None
-                                            
+                                                except Exception as e:
+                                                    try:
+                                                        decoded_ticket = (urllib.parse.unquote(ticket)) + ':""}'
+                                                        ticket_json = fix_json_string(decoded_ticket)
+                                                        if not ticket_json:
+                                                            raise Exception()
+                                                        return {
+                                                            "placeId": ticket_json.get("PlaceId"),
+                                                            "jobId": ticket_json.get("GameId"),
+                                                            "username": ticket_json.get("UserName"),
+                                                            "userId": ticket_json.get("UserId"),
+                                                            "displayName": ticket_json.get("DisplayName"),
+                                                            "universeId": ticket_json.get("UniverseId"),
+                                                            "isTeleport": ticket_json.get("IsTeleport"),
+                                                            "followUserId": ticket_json.get("FollowUserId")
+                                                        }
+                                                    except Exception as e:
+                                                        return None
+                                                
                                     json_str = json_str + '"'
-                                    json_obj = fix_json_string(json_str)
+                                    json_obj = fix_json_string(json_str + "}")
                                     if json_obj:
                                         ticket_url = json_obj.get("joinScriptUrl")
                                         if ticket_url:
                                             parsed_url = urllib.parse.urlparse(ticket_url)
                                             query_params = urllib.parse.parse_qs(parsed_url.query)
                                             ticket = query_params.get("ticket", [None])[0]
-
+                                            ticket = ticket.split(',"MatchmakingDecisionId"')[0]
                                             if ticket:
                                                 b = extract_ticket_info(ticket)
                                                 return b
@@ -1221,7 +1251,7 @@ if __name__ == "__main__":
         printErrorMessage("Please run this script on macOS/Windows.")
         exit()
     printWarnMessage("Made by Efaz from efaz.dev!")
-    printWarnMessage("v1.4.0")
+    printWarnMessage("v1.4.1")
     printWarnMessage("-----------")
     printWarnMessage("Entering Setup..")
     if main_os == "Windows":
