@@ -67,7 +67,7 @@
         "showInProjectsPage": true,
         "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
         "dateDiscontinued": "None",
-        "description": "A program inspired by Bloxstrap but using only Python and also on macOS!"
+        "description": "A program heavily inspired by Bloxstrap but using Python!"
     },
     {
         "name": "Item Fixer",

@@ -4,7 +4,7 @@ import requests
 import re
 import json
 
-os.system("cls" if os.name == "nt" else "clear")
+os.system("cls" if os.name == "nt" else 'echo "\033c\033[3J"; clear')
 version = "v1.1.0"
 hideBackgroundConsole = True
 console_logs = []

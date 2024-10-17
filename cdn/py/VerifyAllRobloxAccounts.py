@@ -182,7 +182,7 @@ if __name__ == "__main__":
     def printDebugMessage(mes):
         print(f"\033[38;5;226m{mes}\033[0m")
 
-    os.system("cls" if os.name == "nt" else "clear")
+    os.system("cls" if os.name == "nt" else 'echo "\033c\033[3J"; clear')
     version = "v1.0.0"
     hideBackgroundConsole = True
     console_logs = []
