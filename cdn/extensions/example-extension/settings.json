@@ -1,0 +1,27 @@
+{
+    "name": "exampleExtension",
+    "settings": {
+        "enabled": {
+            "text": "Enable Extension",
+            "type": "checkbox",
+            "default": true
+        },
+        "color": {
+            "text": "Select a color",
+            "type": "color",
+            "default": "#0066FF",
+            "reset": true
+        },
+        "donotdisturb": {
+            "text": "Would you like us to not disturb you?",
+            "type": "checkbox",
+            "default": true,
+            "reset": false
+        }
+    },
+    "chromeWebstoreLinkEnabled": false,
+    "uploadedChromeExtensionID": "",
+    "scanForManifestUpdates": true,
+    "isVersionServer": true,
+    "onlineManifestFile": "https://cdn.efaz.dev/cdn/extensions/versions/public.json"
+}

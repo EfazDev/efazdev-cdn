@@ -1,0 +1,251 @@
+@font-face {
+    font-family: mainfont;
+    src: url("https://cdn.efaz.dev/cdn/styles/mainFont.ttf");
+    font-weight: bold;
+}
+
+@media (prefers-color-scheme: light) {
+    body {
+        background: linear-gradient(90deg, #ff4b00 0%, #dbdb00 40%, #00ce00 60%, #00aad0 100%);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        width: 100%;
+        height: 100vh;
+        font-family: mainfont;
+        color: white;
+        overflow: hidden;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background: linear-gradient(90deg, #4e1700 0%, #4e4e00 40%, #004200 60%, #003d4b 100%);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        width: 100%;
+        height: 100vh;
+        font-family: mainfont;
+        color: white;
+        overflow: hidden;
+    }
+}
+
+div {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    vertical-align: middle;
+    position: fixed;
+
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+e {
+    color: rgb(255, 0, 0);
+    font-size: x-small;
+}
+
+m {
+    text-align: center;
+    color: #00ff00;
+}
+
+.grecaptcha-badge {
+    visibility: hidden;
+}
+
+.footer {
+    left: 0px;
+    bottom: 0px;
+    height: 30px;
+    width: 100%;
+}
+
+html {
+    height: 100%;
+}
+
+group {
+    border-bottom: dashed rgb(255, 255, 255);
+    border-top: dashed rgb(255, 255, 255);
+}
+
+body {
+    height: 100%;
+    margin: 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+p,
+h1,
+h2,
+label {
+    text-align: center;
+}
+
+button {
+    border: 1px solid white;
+    border-collapse: collapse;
+    text-align: center;
+    margin-left: auto;
+    border-radius: 8px;
+    background-color: #00b1ff;
+    color: rgb(255, 255, 255);
+    vertical-align: middle;
+    justify-content: center;
+    font-family: mainfont;
+    margin-right: auto;
+}
+
+button[id="hide_group_main"] {
+    border: 1px solid white;
+    border-collapse: collapse;
+    text-align: center;
+    margin-left: auto;
+    border-radius: 8px;
+    background-color: #ff8000;
+    color: rgb(255, 255, 255);
+    vertical-align: middle;
+    justify-content: center;
+    font-family: mainfont;
+    margin-right: auto;
+}
+
+button[id="hide_group_roblox"] {
+    border: 1px solid white;
+    border-collapse: collapse;
+    text-align: center;
+    margin-left: auto;
+    border-radius: 8px;
+    background-color: #dcda00;
+    color: rgb(255, 255, 255);
+    vertical-align: middle;
+    justify-content: center;
+    font-family: mainfont;
+    margin-right: auto;
+}
+
+button[id="hide_group_account"] {
+    border: 1px solid white;
+    border-collapse: collapse;
+    text-align: center;
+    margin-left: auto;
+    border-radius: 8px;
+    background-color: #43cd00;
+    color: rgb(255, 255, 255);
+    vertical-align: middle;
+    justify-content: center;
+    font-family: mainfont;
+    margin-right: auto;
+}
+
+button[buy="buy_button"] {
+    border: 1px solid white;
+    border-collapse: collapse;
+    text-align: center;
+    margin-left: auto;
+    border-radius: 8px;
+    background-color: #43cd00;
+    color: rgb(255, 255, 255);
+    vertical-align: middle;
+    justify-content: center;
+    font-family: mainfont;
+    margin-right: auto;
+}
+
+button[onclick="logOut('all')"] {
+    border: 1px solid white;
+    border-collapse: collapse;
+    text-align: center;
+    margin-left: auto;
+    border-radius: 8px;
+    background-color: #34a000;
+    color: rgb(255, 255, 255);
+    vertical-align: middle;
+    justify-content: center;
+    font-family: mainfont;
+    margin-right: auto;
+}
+
+button[onclick="logOut('this')"] {
+    border: 1px solid white;
+    border-collapse: collapse;
+    text-align: center;
+    margin-left: auto;
+    border-radius: 8px;
+    background-color: #34a000;
+    color: rgb(255, 255, 255);
+    vertical-align: middle;
+    justify-content: center;
+    font-family: mainfont;
+    margin-right: auto;
+}
+
+button[id="hide_reporting"] {
+    border: 1px solid white;
+    border-collapse: collapse;
+    text-align: center;
+    margin-left: auto;
+    border-radius: 8px;
+    background-color: #00afff;
+    color: rgb(255, 255, 255);
+    vertical-align: middle;
+    justify-content: center;
+    font-family: mainfont;
+    margin-right: auto;
+}
+
+a {
+    color: #0080ff;
+}
+
+input,
+textarea {
+    border: 1px solid white;
+    border-collapse: collapse;
+    text-align: center;
+    margin-left: auto;
+    border-radius: 8px;
+    justify-content: center;
+    font-family: mainfont;
+    margin-right: auto;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+top {
+    background: gray;
+    border-radius: 0px;
+    right: 0px;
+    left: 0px;
+    padding: 6px;
+    position: absolute;
+}
+
+table,
+th,
+td {
+    border: 1px solid white;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+m {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}

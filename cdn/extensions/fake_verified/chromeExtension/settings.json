@@ -1,0 +1,56 @@
+{
+    "name": "verified_checkmark_settings",
+    "settings": {
+        "enabled": {
+            "text": "Enable Checkmark",
+            "type": "checkbox",
+            "default": true
+        },
+        "allowAlertMessages": {
+            "text": "Allow Alerts by Extension",
+            "type": "checkbox",
+            "default": false
+        },
+        "color": {
+            "text": "Custom Color Checkmark (HEX)",
+            "type": "color",
+            "default": "#0066FF",
+            "reset": true
+        },
+        "startTime": {
+            "text": "Start Time (ms)",
+            "type": "number",
+            "default": 75
+        },
+        "groupsIncluded": {
+            "text": "Include Groups Owned by You",
+            "type": "checkbox",
+            "default": true
+        },
+        "verifiedPrompt": {
+            "text": "Enable Verified Badge Prompt",
+            "type": "checkbox",
+            "default": true
+        },
+        "verifiedBadgeBetweenAccounts": {
+            "text": "Enable Verified Badge Between Accounts",
+            "type": "checkbox",
+            "default": true
+        },
+        "allowEfazDevApprovedBadges": {
+            "text": "Approve Verified Badges on Users Approved by EfazDev <e style='color:#ff0000; font-size: smaller;'>(BETA)</e>",
+            "type": "checkbox",
+            "default": false
+        },
+        "useCustomApprovedBadgesByUser": {
+            "text": "Enable Customized Approval <e style='color:#ff0000; font-size: smaller;'>(BETA)</e>",
+            "type": "checkbox",
+            "default": true
+        }
+    },
+    "chromeWebstoreLinkEnabled": true,
+    "uploadedChromeExtensionID": "kediboibmfffkllcmgemojpkphmokaea",
+    "scanForManifestUpdates": true,
+    "isVersionServer": true,
+    "onlineManifestFile": "https://cdn.efaz.dev/cdn/extensions/versions/public.json"
+}

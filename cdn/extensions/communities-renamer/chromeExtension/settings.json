@@ -1,0 +1,31 @@
+{
+    "name": "communities_renamer",
+    "settings": {
+        "enabled": {
+            "text": "Enable Extension",
+            "type": "checkbox",
+            "default": true
+        },
+        "newName": {
+            "text": "Replace Communities with",
+            "type": "text",
+            "default": "Groups",
+            "reset": true
+        },
+        "replaceURLwithGroupsURL": {
+            "text": "Replace /communities URL with /groups",
+            "type": "checkbox",
+            "default": true
+        },
+        "changeTitleHtml": {
+            "text": "Replace Tab Name with New Name",
+            "type": "checkbox",
+            "default": true
+        }
+    },
+    "chromeWebstoreLinkEnabled": true,
+    "uploadedChromeExtensionID": "afaoamnkmjkkpheiblblbinpmdnacipm",
+    "scanForManifestUpdates": true,
+    "isVersionServer": true,
+    "onlineManifestFile": "https://cdn.efaz.dev/cdn/extensions/versions/public.json"
+}

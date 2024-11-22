@@ -1,0 +1,159 @@
+/* 
+
+Efaz's Builder Font Remover
+By: EfazDev
+Page: https://www.efaz.dev/remove-builder-font
+
+Font files are exported to my CDN server in case Roblox attempts to delete the files off their servers.
+CSS is created based on Roblox's servers for old files. Styles using specific classes are made using Google's Chrome Console.
+
+*/
+
+/* [Create font faces based on the files.] */
+@font-face { font-family: "Builder Sans"; font-weight: 300; font-style: normal; src: url("https://css.rbxcdn.com/6eafc48312528e2515d622428b6b95cc-GothamSSm-Book.woff2") format("woff2"), url("https://css.rbxcdn.com/713e0b3a604ff4e44f55f9d1c100e8b5-GothamSSm-Book.woff") format("woff"); font-display: swap; }
+@font-face { font-family: "Builder Sans"; font-weight: 325; font-style: normal; src: url("https://css.rbxcdn.com/6eafc48312528e2515d622428b6b95cc-GothamSSm-Book.woff2") format("woff2"), url("https://css.rbxcdn.com/713e0b3a604ff4e44f55f9d1c100e8b5-GothamSSm-Book.woff") format("woff"); font-display: swap; }
+@font-face { font-family: "Builder Sans"; font-weight: 500; font-style: normal; src: url("https://css.rbxcdn.com/66d562e3299ee732a53db150038c026e-GothamSSm-Medium.woff2") format("woff2"), url("https://css.rbxcdn.com/2ed7693f8cf4d79466dd604c35502f76-GothamSSm-Medium.woff") format("woff"); font-display: swap; }
+@font-face { font-family: "Builder Sans"; font-weight: 800; font-style: normal; src: url("https://css.rbxcdn.com/3c102ace52ea35b16da4383819acfa38-GothamSSm-Bold.woff2") format("woff2"), url("https://css.rbxcdn.com/fe0e9885efc341b17f7e600781493f69-GothamSSm-Bold.woff") format("woff"); font-display: swap; }
+@font-face { font-family: "Builder Mono"; font-weight: 400; font-style: normal; src: url("https://fonts.roblox.com/firamono/FiraMono-Regular.woff2") format("woff2"), url("https://fonts.roblox.com/firamono/FiraMono-Regular.woff") format("woff"); font-display: swap; }
+
+/* [Overwrite pre-existing Builder font-faces with provided font files.]  */
+html { -webkit-font-smoothing: antialiased; box-sizing: border-box; text-size-adjust: 100%; color-scheme: dark; }
+*, ::before, ::after { box-sizing: inherit; }
+strong, b { font-weight: 800; }
+body { margin: 0px; color: rgb(255, 255, 255); font-family: "Builder Sans", Helvetica, Arial, san-serif; font-weight: 300; font-style: normal; line-height: 150%; font-size: 14px; background-color: rgb(17, 18, 22); }
+@media print {
+  body { background-color: rgb(255, 255, 255); }
+}
+body::backdrop { background-color: rgb(17, 18, 22); }
+
+body { font-family: "Builder Sans", Arial, san-serif; font-weight: 325; font-style: normal; line-height: 140%; font-size: 14px; letter-spacing: 0.15px; }
+.css-332b7m-Typography-root-Typography-h6 {
+    font-weight: 500 !important;
+    font-style: normal !important;
+    font-size: 18px !important;
+    line-height: 120% !important;
+}
+.css-ssqkfw-Typography-root-Typography-footer-Typography-colorSecondary, .css-64ahkk-Typography-root-Typography-footer {
+    font-size: 13px !important;
+}
+.css-18of9yg-Typography-root-Typography-smallLabel2-Typography-colorPrimary {
+    font-size: 14px !important;
+    font-weight: 500 !important;
+}
+.css-1r2mmb6-Typography-root-Typography-smallLabel2-Typography-colorSecondary {
+    font-size: 13px !important;
+    font-weight: 400 !important;
+}
+.css-5a98es-Typography-root-Typography-largeLabel2 {
+    font-weight: 400 !important;
+}
+.css-1flhdlh-Typography-root-Typography-subtitle1, div[role="tooltip"] {
+    font-size: 17px !important;
+    font-weight: 400 !important;
+}
+.css-1kqhqgm-Typography-buttonSmall-Button-text-Typography-button-Typography-buttonSmall-Button-text {
+    font-weight: 400 !important;
+}
+.css-1398ohm-Typography-tooltip {
+    font-weight: 400 !important;
+}
+.css-1oslwv2-Typography-tooltip {
+    font-weight: 400 !important;
+}
+.MuiButton-contained {
+    font-weight: 400 !important;
+}
+.css-9iedg7 {
+    font-weight: 400 !important;
+}
+.css-1v2hkw3-Typography-root-Typography-smallLabel2 {
+    font-weight: 400 !important;
+}
+.css-ocxyfa-Typography-body1-Typography-alertTitle {
+    font-weight: 800 !important;
+}
+.web-blox-css-tss-fhm5ml-Typography-footer-Typography-colorSecondary-Typography-root-textEllipsis {
+    font-size: 13px !important;
+}
+.web-blox-css-tss-1p17l25-Typography-subtitle1-Typography-root {
+    font-size: 18px !important;
+    font-weight: 400 !important;
+}
+.web-blox-css-tss-m5bwe7-Typography-h6-Typography-root {
+    font-weight: 600 !important;
+    font-size: 18px !important;
+}
+.web-blox-css-tss-w0082-Typography-footer-Typography-colorSecondary-Typography-root {
+    font-size: 13px !important;
+}
+.web-blox-css-tss-1h50r65-Typography-chip-chip {
+    font-weight: 400 !important;
+}
+.web-blox-css-tss-s6bmpn-Typography-chip {
+    font-weight: 500 !important;
+}
+.web-blox-css-tss-829mim-Typography-h6-Typography-root-overlayLabel-overlayTitle {
+    font-weight: 500 !important;
+}
+.web-blox-css-tss-1uayfe9-Typography-buttonLarge-Typography-root {
+    font-weight: 500 !important;
+}
+.web-blox-css-tss-1ldofmm-Typography-h6-Typography-colorSuccess-Typography-root-overviewLabel {
+    font-weight: 500 !important;
+    font-size: 17px !important;
+}
+.web-blox-css-tss-15qja1v-Typography-smallLabel2-Typography-colorSecondary-Typography-root {
+    font-weight: 500 !important;
+    font-size: 14px !important;
+}
+.web-blox-css-tss-18ak5vb-Typography-h6-Typography-colorSecondary-Typography-root {
+    font-weight: 400 !important;
+    font-size: 18px !important;
+}
+.web-blox-css-tss-3xxkgt-Typography-tooltip {
+    font-weight: 500 !important;
+}
+.highcharts-root {
+    font-weight: 500 !important;
+    font-family: "Builder Sans";
+    font-size: 12px;
+}
+.web-blox-css-tss-1aszub1-Typography-buttonMedium {
+    font-weight: 500 !important;
+}
+.web-blox-css-tss-18hudwy-Typography-buttonLarge {
+    font-weight: 500 !important;
+}
+.web-blox-css-tss-dkq98-Typography-largeLabel2-Typography-root-name-dropdownOptionColor {
+    font-weight: 500 !important;
+}
+.web-blox-css-tss-1e4cgwb-Typography-largeLabel2-Typography-colorSecondary-Typography-root {
+    font-weight: 500 !important;
+}
+.web-blox-css-tss-to5xo2-Typography-buttonSmall {
+    font-weight: 500 !important;
+}
+.web-blox-css-tss-17k663t-Typography-buttonSmall-backButton {
+    font-weight: 500 !important;
+}
+.web-blox-css-tss-4h147w-Typography-buttonSmall {
+    font-weight: 500 !important;
+}
+.web-blox-css-tss-19ogk1j-Typography-smallLabel2-Typography-root {
+    font-weight: 500 !important;
+}
+.web-blox-css-tss-4dh4w4-Typography-smallLabel2-Typography-colorSecondary-Typography-root-distributionText {
+    font-weight: 500 !important;
+}
+.web-blox-css-tss-pci0ex-Typography-buttonLarge {
+    font-weight: 500 !important;
+}
+.web-blox-css-tss-19rl88j-Typography-smallLabel2 {
+    font-weight: 500 !important;
+}
+.web-blox-css-tss-dh2683-Typography-smallLabel2-Typography-colorSecondary-Typography-root-titleLabel {
+    font-weight: 500 !important;
+}
+.web-blox-css-tss-1hqrmd0-Typography-tooltip-tooltipContainer {
+    font-weight: 500 !important;
+}

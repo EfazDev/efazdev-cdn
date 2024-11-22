@@ -1,0 +1,102 @@
+[
+    {
+        "name": "Steal Milk for UGC - By CalmGFX",
+        "url": "https://www.roblox.com/games/16832699537",
+        "download_url": "https://www.roblox.com/games/16832699537",
+        "discontinued": false,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "Play on Roblox!", "ProjectPage": "Play on Roblox!"},
+        "dateDiscontinued": "None",
+        "description": "A Roblox game that you kill people for Milk Points which you can exchange for UGC!"
+    },
+    {
+        "name": "Cabled's Park - By Cabled",
+        "url": "https://www.roblox.com/games/17120491255/Cableds-Park-FREE-UGC",
+        "download_url": "https://www.roblox.com/games/17120491255/Cableds-Park-FREE-UGC",
+        "discontinued": false,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "Play on Roblox!", "ProjectPage": "Play on Roblox!"},
+        "dateDiscontinued": "None",
+        "description": "A Roblox game that is made for Cabled which includes a join & claim and more!"
+    },
+    {
+        "name": "BuilderNoob's Join n Claims - By BuilderNoob",
+        "url": "https://www.roblox.com/games/17163652884/BuilderNoobs-Join-n-Claims-VERY-EASY",
+        "download_url": "https://www.roblox.com/games/17163652884/BuilderNoobs-Join-n-Claims-VERY-EASY",
+        "discontinued": false,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "Play on Roblox!", "ProjectPage": "Play on Roblox!"},
+        "dateDiscontinued": "None",
+        "description": "A Join & Claim Roblox game where creators can host their join & claims at and get followers fast while users can get UGC!"
+    },
+    {
+        "name": "Outflowed's Free Item Claims - By Outflowed",
+        "url": "https://www.roblox.com/games/18365821416/Outfloweds-Free-Item-Claims",
+        "download_url": "https://www.roblox.com/games/18365821416/Outfloweds-Free-Item-Claims",
+        "discontinued": false,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "Play on Roblox!", "ProjectPage": "Play on Roblox!"},
+        "dateDiscontinued": "None",
+        "description": "A Join & Claim Roblox game where you can get a chance for UGC by Outflowed at a set global time!"
+    },
+    {
+        "name": "Guesty - By NK Studios",
+        "url": "https://www.roblox.com/games/4842364293/GUESTY-COUNTDOWN",
+        "download_url": "https://www.roblox.com/games/4842364293/GUESTY-COUNTDOWN",
+        "discontinued": false,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "Play on Roblox!", "ProjectPage": "Play on Roblox!"},
+        "dateDiscontinued": "None",
+        "description": "A Roblox horror game to complete a chapter without getting caught by a guest!"
+    },
+    {
+        "name": "Cabled's Trick or Treat - By Cabled",
+        "url": "https://www.roblox.com/games/76368809972950/Cableds-Trick-or-Treat",
+        "download_url": "https://www.roblox.com/games/76368809972950/Cableds-Trick-or-Treat",
+        "discontinued": false,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "Play on Roblox!", "ProjectPage": "Play on Roblox!"},
+        "dateDiscontinued": "None",
+        "description": "A Roblox game that allows you to knock on doors for candy which you can exchange for UGC!"
+    },
+    {
+        "name": "derek's World - By BuilderNoob",
+        "url": "https://www.roblox.com/games/15318013803/dereks-world",
+        "download_url": "https://www.roblox.com/games/15318013803/dereks-world",
+        "discontinued": false,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "Play on Roblox!", "ProjectPage": "Play on Roblox!"},
+        "dateDiscontinued": "None",
+        "description": "A Hangout Roblox game where you can hangout at!"
+    },
+    {
+        "name": "Drink Milk for UGC - By CalmGFX",
+        "url": "https://www.roblox.com/games/15837324785",
+        "download_url": "https://www.roblox.com/games/15837324785",
+        "discontinued": true,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "Play on Roblox!", "ProjectPage": "Play on Roblox!"},
+        "dateDiscontinued": "July 11th, 2024",
+        "description": "A Roblox game that you drink milk for UGC!"
+    },
+    {
+        "name": "Don't Touch Cellis - By CellisPlays",
+        "url": "https://www.roblox.com/games/15562398167/5-FREE-UGC-Dont-Touch-CelIis",
+        "download_url": "https://www.roblox.com/games/15562398167/5-FREE-UGC-Dont-Touch-CelIis",
+        "discontinued": false,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "Play on Roblox!", "ProjectPage": "Play on Roblox!"},
+        "dateDiscontinued": "None",
+        "description": "A Simulator Roblox game where you can spend/afk on and get UGC!"
+    },
+    {
+        "name": "Nugget - By LeminLimez",
+        "url": "https://github.com/leminlimez/Nugget",
+        "download_url": "https://github.com/leminlimez/Nugget",
+        "discontinued": false,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "Go to GitHub!", "ProjectPage": "Go to GitHub!"},
+        "dateDiscontinued": "None",
+        "description": "An iOS Sparserestore exploit that allows you to unlock your device's full potential!"
+    }
+]
