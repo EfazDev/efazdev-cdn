@@ -150,6 +150,16 @@
         "description": "Chrome extension that simply renames the Roblox Charts page back to Discover!"
     },
     {
+        "name": "Efaz's Roblox Communities Renamer",
+        "url": "https://www.efaz.dev/roblox-communities-rename",
+        "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-communities-renamer/afaoamnkmjkkpheiblblbinpmdnacipm",
+        "discontinued": false,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
+        "dateDiscontinued": "None",
+        "description": "An extension that replaces Communities on Roblox back to Groups!"
+    },
+    {
         "name": "Roblox URL Scheme Launcher",
         "url": "https://rbx.efaz.dev/",
         "download_url": "https://rbx.efaz.dev/",
