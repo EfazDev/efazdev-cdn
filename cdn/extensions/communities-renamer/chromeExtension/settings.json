@@ -12,6 +12,12 @@
             "default": "Groups",
             "reset": true
         },
+        "loopSeconds": {
+            "text": "Amount of Miliseconds before looping",
+            "type": "number",
+            "default": 100,
+            "reset": true
+        },
         "replaceURLwithGroupsURL": {
             "text": "Replace /communities URL with /groups",
             "type": "checkbox",
