@@ -23,6 +23,11 @@
             "type": "checkbox",
             "default": true
         },
+        "massEdit": {
+            "text": "Mass Edit HTML Contents with Community or Communities in them.",
+            "type": "checkbox",
+            "default": true
+        },
         "changeTitleHtml": {
             "text": "Replace Tab Name with New Name",
             "type": "checkbox",

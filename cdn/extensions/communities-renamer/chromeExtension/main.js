@@ -24,7 +24,8 @@ main.js:
                         "newName": "Groups",
                         "replaceURLwithGroupsURL": true,
                         "changeTitleHtml": true,
-                        "loopSeconds": "100"
+                        "loopSeconds": "100",
+                        "massEdit": true
                     }
                 }
                 if (enabled == true) {
@@ -118,7 +119,9 @@ main.js:
                                         if (header.href && settings["replaceURLwithGroupsURL"] == true) {
                                             header.href = header.href.replace("communities", "groups")
                                         }
-                                        header.innerHTML = header.innerHTML.replace("Community", newNameWithoutEndingS)
+                                        if (settings["massEdit"] == true) {
+                                            header.innerHTML = header.innerHTML.replace("Community", newNameWithoutEndingS)
+                                        }
                                     }
                                 }
 
@@ -207,8 +210,10 @@ main.js:
                                             header.href = header.href.replace("/communities", "/groups")
                                         }
                                     }
-                                    if (!(header.innerHTML.includes(newNameWithoutEndingS)) && header.innerHTML.includes("Community")) {
-                                        header.innerHTML = header.innerHTML.replace("Community", newNameWithoutEndingS)
+                                    if (settings["massEdit"] == true) {
+                                        if (!(header.innerHTML.includes(newNameWithoutEndingS)) && header.innerHTML.includes("Community")) {
+                                            header.innerHTML = header.innerHTML.replace("Community", newNameWithoutEndingS)
+                                        }
                                     }
                                 }
     
@@ -218,20 +223,7 @@ main.js:
                                     }
                                 }
     
-                                if (window.location.pathname.includes("/communities") || window.location.pathname.includes("/groups")) {
-                                    var page_headers = document.getElementsByClassName("games-list-header")
-                                    for (let i = 0; i < page_headers.length; i++) {
-                                        var header = page_headers[i]
-                                        if (!(header.innerHTML.includes(newName))) {
-                                            for (let e = 0; e < header.children.length; e++) {
-                                                var child = header.children[e]
-                                                if (!(child.innerHTML.includes(newName))) {
-                                                    child.innerHTML = `${newName}`
-                                                }
-                                            }
-                                        }
-                                    }
-    
+                                if (window.location.pathname.includes("/communities") || window.location.pathname.includes("/groups")) {    
                                     if (settings["changeTitleHtml"] == true) {
                                         var titles = document.getElementsByTagName("title")
                                         for (let i = 0; i < titles.length; i++) {
