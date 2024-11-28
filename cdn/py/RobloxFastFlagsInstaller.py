@@ -813,6 +813,9 @@ class Main():
                                 else:
                                     logs_path = f'{os.path.expanduser("~")}/Library/Logs/Roblox/'
                                 main_log = newest(logs_path)
+                                if not main_log.endswith(".log"):
+                                    time.sleep(0.5)
+                                    return getLogFile()
                                 if self.await_20_second_log_creation == True:
                                     logs_attached = []
                                     if os.path.exists("RobloxFastFlagLogFilesAttached.json"):
@@ -874,14 +877,43 @@ class Main():
                                     threading.Thread(target=cleanLogs).start()
                                     break
                                 if not (line in passed_lines):
-                                    res = handleLine(line)
-                                    if res:
-                                        if res.code == 0:
-                                            threading.Thread(target=cleanLogs).start()
-                                            break
-                                        elif res.code == 1:
-                                            self.ended_process = True
-                                            return
+                                    timestamp_str = line.split(",")
+                                    if len(timestamp_str) > 0:
+                                        timestamp_str = timestamp_str[0]
+                                        if re.match(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z", timestamp_str):
+                                            timestamp = datetime.datetime.strptime(timestamp_str, "%Y-%m-%dT%H:%M:%S.%fZ")
+                                            current_time = datetime.datetime.utcnow()
+                                            if timestamp:
+                                                age_in_seconds = int(current_time.timestamp() - timestamp.timestamp())
+                                                if age_in_seconds < 60:
+                                                    res = handleLine(line)
+                                                    if res:
+                                                        if res.code == 0:
+                                                            threading.Thread(target=cleanLogs).start()
+                                                            break
+                                                        elif res.code == 1:
+                                                            self.ended_process = True
+                                                            return
+                                        else:
+                                            res = handleLine(line)
+                                            if res:
+                                                if res.code == 0:
+                                                    self.ended_process = True
+                                                    threading.Thread(target=cleanLogs).start()
+                                                    break     
+                                                elif res.code == 1:
+                                                    self.ended_process = True
+                                                    return
+                                    else:
+                                        res = handleLine(line)
+                                        if res:
+                                            if res.code == 0:
+                                                self.ended_process = True
+                                                threading.Thread(target=cleanLogs).start()
+                                                break     
+                                            elif res.code == 1:
+                                                self.ended_process = True
+                                                return
                             file.seek(0, os.SEEK_END)
                             while True:
                                 line = file.readline()
@@ -893,15 +925,44 @@ class Main():
                                     time.sleep(0.01)
                                     continue
                                 if not (line in passed_lines):
-                                    res = handleLine(line)
-                                    if res:
-                                        if res.code == 0:
-                                            self.ended_process = True
-                                            threading.Thread(target=cleanLogs).start()
-                                            break     
-                                        elif res.code == 1:
-                                            self.ended_process = True
-                                            return                           
+                                    timestamp_str = line.split(",")
+                                    if len(timestamp_str) > 0:
+                                        timestamp_str = timestamp_str[0]
+                                        if re.match(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z", timestamp_str):
+                                            timestamp = datetime.datetime.strptime(timestamp_str, "%Y-%m-%dT%H:%M:%S.%fZ")
+                                            current_time = datetime.datetime.now(datetime.timezone.utc)
+                                            if timestamp:
+                                                age_in_seconds = int(current_time.timestamp() - timestamp.timestamp())
+                                                if age_in_seconds < 60:
+                                                    res = handleLine(line)
+                                                    if res:
+                                                        if res.code == 0:
+                                                            self.ended_process = True
+                                                            threading.Thread(target=cleanLogs).start()
+                                                            break     
+                                                        elif res.code == 1:
+                                                            self.ended_process = True
+                                                            return  
+                                        else:
+                                            res = handleLine(line)
+                                            if res:
+                                                if res.code == 0:
+                                                    self.ended_process = True
+                                                    threading.Thread(target=cleanLogs).start()
+                                                    break     
+                                                elif res.code == 1:
+                                                    self.ended_process = True
+                                                    return
+                                    else:
+                                        res = handleLine(line)
+                                        if res:
+                                            if res.code == 0:
+                                                self.ended_process = True
+                                                threading.Thread(target=cleanLogs).start()
+                                                break     
+                                            elif res.code == 1:
+                                                self.ended_process = True
+                                                return                           
                 threading.Thread(target=watchDog).start()
                 threading.Thread(target=self.awaitRobloxClosing).start()
     def printLog(self, m):
@@ -1535,16 +1596,13 @@ class Main():
                 else:
                     if debug == True: printDebugMessage("Running RobloxPlayerInstaller executable..")
                     try:
-                        insta = subprocess.Popen(f"{most_recent_roblox_version_dir}RobloxPlayerInstaller.exe", shell=True, check=True, stdout=subprocess.DEVNULL)
+                        insta = subprocess.Popen(f"{most_recent_roblox_version_dir}RobloxPlayerInstaller.exe", shell=True, stdout=subprocess.DEVNULL)
                         while True:
                             if not self.getIfRobloxIsOpen(installer=True):
                                 break
                             else:
                                 time.sleep(1)
-                        if insta.returncode == 0:
-                            if debug == True: printDebugMessage("Installer has succeeded! Awaiting Roblox closing..")
-                        else:
-                            if debug == True: printDebugMessage(f"Installer has failed. Code: {insta.returncode}")
+                        if debug == True: printDebugMessage("Installer has succeeded! Awaiting Roblox closing..")
                         waitForRobloxEnd()
                     except Exception as e:
                         printErrorMessage(f"Something went wrong starting Roblox Installer: {str(e)}")

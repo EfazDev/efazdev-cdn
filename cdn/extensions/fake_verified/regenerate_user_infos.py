@@ -33,7 +33,8 @@ except Exception as e:
 try:
     generated = {}
     generated_filtered_json = {}
-    for i in approved.keys():
+    main_sorted = sorted(approved.keys())
+    for i in main_sorted:
         printWarnMessage(f"--- User ID: {i} ---")
         try:
             e = approved[i]
@@ -94,7 +95,6 @@ try:
             printMainMessage(f"Scan Duration: {generated_filtered_json[i]['scan_duration']}s")
         except Exception as e:
             printErrorMessage(f"Unable to scan ID: {i} | Error: {str(e)}")
-
     printWarnMessage(f"--- Finishing up ---")
     printMainMessage("Finalizing Save..")
     with open(approved_users_path, "w") as f:
