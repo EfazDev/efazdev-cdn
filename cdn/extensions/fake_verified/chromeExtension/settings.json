@@ -38,12 +38,12 @@
             "default": true
         },
         "allowEfazDevApprovedBadges": {
-            "text": "Approve Verified Badges on Users Approved by EfazDev <e style='color:#ff0000; font-size: smaller;'>(BETA)</e>",
+            "text": "Approve Verified Badges on Users Approved by EfazDev",
             "type": "checkbox",
             "default": false
         },
         "useCustomApprovedBadgesByUser": {
-            "text": "Enable Customized Approval <e style='color:#ff0000; font-size: smaller;'>(BETA)</e>",
+            "text": "Enable Customized Approval",
             "type": "checkbox",
             "default": true
         }

@@ -23,7 +23,8 @@ main.js:
                         "enabled": true,
                         "newName": "Groups",
                         "replaceURLwithDiscoverURL": true,
-                        "changeTitleHtml": true
+                        "changeTitleHtml": true,
+                        "startTime": "75"
                     }
                 }
                 if (enabled == true) {
@@ -33,6 +34,7 @@ main.js:
                                 var newName = settings["newName"];
                                 var isGames = newName.toLowerCase() == "games";
                                 var isCharts = newName.toLowerCase() == "charts";
+                                var amountOfSecondsBeforeLoop = (typeof(settings["startTime"]) == "string" && Number(settings["startTime"])) ? Number(settings["startTime"]) : 75
 
                                 /* Clean New Name to prevent crashes */
                                 var div = document.createElement("div");
@@ -106,7 +108,7 @@ main.js:
                                     }
                                 }
 
-                                setTimeout(() => { injectRename(settings) }, 10)
+                                setTimeout(() => { injectRename(settings) }, amountOfSecondsBeforeLoop)
                             }
                             chrome.scripting.executeScript({
                                 target: { tabId: tabId, allFrames: true },

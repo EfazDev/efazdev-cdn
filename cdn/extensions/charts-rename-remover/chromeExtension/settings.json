@@ -21,6 +21,11 @@
             "text": "Replace Tab Name with New Name",
             "type": "checkbox",
             "default": true
+        },
+        "startTime": {
+            "text": "Start Time (ms)",
+            "type": "number",
+            "default": 75
         }
     },
     "chromeWebstoreLinkEnabled": true,

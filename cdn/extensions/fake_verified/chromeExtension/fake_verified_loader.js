@@ -51,7 +51,7 @@ function start() {
         }
 
         function generateInstantPromise(value) {
-            return Promise((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 resolve(value)
             });
         }
@@ -879,7 +879,7 @@ function start() {
                                                                 if (verifiedBadgePlacedAlready(user_container.parentElement.outerHTML)) {
                                                                     return;
                                                                 }
-                                                                user_container.outerHTML = `${user_container.outerHTML} ${name_side_html}`;
+                                                                user_container.outerHTML = `${user_container.outerHTML} ${game_html}`;
                                                             }
                                                         }
                                                     });
@@ -1030,7 +1030,7 @@ function start() {
                                     username_containers_11 = Array.prototype.slice.call(username_containers_11);
                                     if (username_containers_11.length > 0) {
                                         username_containers_11.forEach((user_container) => {
-                                            if (user_container.outerHTML.includes(`${displayName}`) && user_container.href.includes(json["id"]) && user_container.className == "text-overflow avatar-name") {
+                                            if (user_container && user_container.outerHTML.includes(`${displayName}`) && user_container.href.includes(json["id"]) && user_container.className == "text-overflow avatar-name") {
                                                 if (!(user_container.parentElement)) {
                                                     return;
                                                 }

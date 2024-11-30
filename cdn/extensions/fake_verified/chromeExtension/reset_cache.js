@@ -23,9 +23,34 @@ window.addEventListener("load", () => {
                     const file = await fileHandle.getFile();
                     let contents = await file.text();
                     contents = JSON.parse(contents);
-                    chrome.storage.local.set({ "user_approved_json": contents }, () => {
-                        alert("Successfully fetched and saved approved user JSON!");
-                    });
+                    if (typeof(contents) == "object") {
+                        if (Array.isArray(contents) == false) {
+                            var content_keys = Object.keys(contents)
+                            var validated_keys = true
+                            for (a = 0; a < content_keys.length; a++) {
+                                var content_key = content_keys[a]
+                                var content_value = contents[content_key]
+                                if (typeof(content_value) == "object" && Array.isArray(content_value) == false) {
+                                    if (!(content_value["id"].toString() == content_key)) {
+                                        validated_keys = false
+                                    }
+                                } else {
+                                    validated_keys = false
+                                }
+                            }
+                            if (validated_keys == true) {
+                                chrome.storage.local.set({ "user_approved_json": contents }, () => {
+                                    alert("Successfully fetched and saved approved user JSON!");
+                                });
+                            } else {
+                                alert("There was an issue trying to validate approved user JSON! Code: -3")
+                            }
+                        } else {
+                            alert("There was an issue trying to validate approved user JSON! Code: -2")
+                        }
+                    } else {
+                        alert("There was an issue trying to validate approved user JSON! Code: -1")
+                    }
                 }
             }
         } catch (error) {
