@@ -21,7 +21,7 @@ main.js:
                 } else {
                     items["chartsRename"] = {
                         "enabled": true,
-                        "newName": "Groups",
+                        "newName": "Discover",
                         "replaceURLwithDiscoverURL": true,
                         "changeTitleHtml": true,
                         "startTime": "75"

@@ -22,13 +22,13 @@ def printErrorMessage(mes): print(f"\033[38;5;196m{mes}\033[0m")
 def printSuccessMessage(mes): print(f"\033[38;5;82m{mes}\033[0m")
 def printWarnMessage(mes): print(f"\033[38;5;202m{mes}\033[0m")
 def printYellowMessage(mes): print(f"\033[38;5;226m{mes}\033[0m")
-def printDebugMessage(mes): print(f"\033[38;5;226m{mes}\033[0m")
+def printDebugMessage(mes): print(f"\033[38;5;226m[Roblox FFlag Installer] [DEBUG]: {mes}\033[0m")
 def isYes(text): return text.lower() == "y" or text.lower() == "yes"
 def isNo(text): return text.lower() == "n" or text.lower() == "no"
 def isRequestClose(text): return text.lower() == "exit" or text.lower() == "exit()"
 if os.path.exists("FastFlagConfiguration.json") and os.path.exists("Main.py") and os.path.exists("PipHandler.py"):
     efaz_bootstrap_mode = True
-fast_flag_installer_version = "1.6.1"
+fast_flag_installer_version = "1.6.5"
 
 class pip:
     executable = None
@@ -229,7 +229,13 @@ class Main():
         "onGameJoinInfo", 
         "onGameJoined", 
         "onGameLeaving", 
-        "onGameDisconnected"
+        "onGameDisconnected",
+        "onRobloxVoiceChatMute",
+        "onRobloxVoiceChatUnmute",
+        "onRobloxVoiceChatStart",
+        "onRobloxVoiceChatLeft",
+        "onRobloxAudioDeviceStopRecording",
+        "onRobloxAudioDeviceStartRecording",
     ]
     robloxInstanceEventInfo = {
         # 0 = Safe, 1 = Caution, 2 = Warning, 3 = Dangerous
@@ -261,6 +267,12 @@ class Main():
         "onGameJoined": {"message": "Allow detecting when Roblox loads a game fully", "level": 0}, 
         "onGameLeaving": {"message": "Allow detecting when you leave a game", "level": 0}, 
         "onGameDisconnected": {"message": "Allow detecting when you disconnect from a game", "level": 0},
+        "onRobloxVoiceChatMute": {"message": "Detect when you mute your microphone during your Roblox Voice Chat", "level": 1}, 
+        "onRobloxVoiceChatUnmute": {"message": "Detect when you unmute your microphone during your Roblox Voice Chat", "level": 2}, 
+        "onRobloxVoiceChatStart": {"message": "Detect when Voice Chats on the client start", "level": 1}, 
+        "onRobloxVoiceChatLeft": {"message": "Detect when Voice Chats on the client end", "level": 1},
+        "onRobloxAudioDeviceStopRecording": {"message": "Allow detecting when a game audio device stops recording.", "level": 1},
+        "onRobloxAudioDeviceStartRecording": {"message": "Allow detecting when a game audio device starts recording.", "level": 2},
 
         # Efaz's Roblox Bootstrap Permissions
         "fastFlagConfiguration": {"message": "Edit or view your bootstrap configuration file", "level": 3, "detection": "FastFlagConfiguration.json"},
@@ -512,7 +524,7 @@ class Main():
                                 generated_data = {"url": url, "data": body}
                                 if generated_data:
                                     submitToThread(eventName="onGameLoadingReserved", data=generated_data, isLine=False)
-                            elif "[FLog::GameJoinUtil] GameJoinUtil::initiateTeleportToParty" in line:
+                            elif '"partyId":' in line:
                                 url_start = line.find("URL: ") + len("URL: ")
                                 body_start = line.find("Body: ")
                                 url = line[url_start:body_start].strip()
@@ -602,6 +614,18 @@ class Main():
                                 submitToThread(eventName="onGameTeleport", data=line, isLine=True)
                             elif "raiseTeleportInitFailedEvent" in line:
                                 submitToThread(eventName="onGameTeleportFailed", data=line, isLine=True)
+                            elif "RobloxAudioDevice::SetMicrophoneMute true" in line:
+                                submitToThread(eventName="onRobloxVoiceChatMute", data=line, isLine=True)
+                            elif "RobloxAudioDevice::SetMicrophoneMute false" in line:
+                                submitToThread(eventName="onRobloxVoiceChatUnmute", data=line, isLine=True)
+                            elif "VoiceChatSession::leave" in line and "leaveRequested:1" in line:
+                                submitToThread(eventName="onRobloxVoiceChatLeft", data=line, isLine=True)
+                            elif "VoiceChatSession::publishStart - JoinProfiling" in line:
+                                submitToThread(eventName="onRobloxVoiceChatStart", data=line, isLine=True)
+                            elif "RobloxAudioDevice::StopRecording" in line:
+                                submitToThread(eventName="onRobloxAudioDeviceStopRecording", data=line, isLine=True)
+                            elif "RobloxAudioDevice::StartRecording" in line:
+                                submitToThread(eventName="onRobloxAudioDeviceStartRecording", data=line, isLine=True)
                             elif "HttpResponse(" in line:
                                 def generate_arg():
                                     try:

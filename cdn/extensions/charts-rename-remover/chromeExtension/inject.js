@@ -20,9 +20,10 @@ inject.js:
             } else {
                 items["chartsRename"] = {
                     "enabled": true,
-                    "newName": "Groups",
+                    "newName": "Discover",
                     "replaceURLwithDiscoverURL": true,
-                    "changeTitleHtml": true
+                    "changeTitleHtml": true,
+                    "startTime": "75"
                 }
             }
             if (enabled == true) {
