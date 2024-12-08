@@ -165,6 +165,42 @@ class pip:
                 return False
             else:
                 return True
+    def getProcessWindows(self, pid: int):
+        import platform
+        if (type(pid) is str and pid.isnumeric()) or type(pid) is int:
+            if platform.system() == "Windows":
+                try:
+                    import win32gui # type: ignore
+                    import win32process # type: ignore
+                except Exception as e:
+                    self.install(["pywin32"])
+                    import win32gui # type: ignore
+                    import win32process # type: ignore
+                system_windows = []
+                def callback(hwnd, _):
+                    if win32gui.IsWindowVisible(hwnd):
+                        _, window_pid = win32process.GetWindowThreadProcessId(hwnd)
+                        if window_pid == int(pid):
+                            system_windows.append(hwnd)
+                win32gui.EnumWindows(callback, None)
+                return system_windows
+            elif platform.system() == "Darwin":
+                try:
+                    from Quartz import CGWindowListCopyWindowInfo, kCGWindowListOptionOnScreenOnly
+                except Exception as e:
+                    self.install(["pyobjc"])
+                    from Quartz import CGWindowListCopyWindowInfo, kCGWindowListOptionOnScreenOnly
+                system_windows = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, 0)
+                app_windows = [win for win in system_windows if win.get("kCGWindowOwnerPID") == int(pid)]
+                new_set_of_system_windows = []
+                for win in app_windows:
+                    if win and win.get("kCGWindowOwnerPID"):
+                        new_set_of_system_windows.append(win)
+                return new_set_of_system_windows
+            else:
+                return []
+        else:
+            return []
     def findPython(self):
         import os
         import glob
@@ -302,6 +338,7 @@ class Main():
         "setFastFlagConfiguration": {"message": "Set your bootstrap configuration within executable", "level": 2},
         "saveFastFlagConfiguration": {"message": "Edit and save your bootstrap configuration file", "level": 2},
         "getLatestRobloxPid": {"message": "Get the current latest Roblox window's PID", "level": 1},
+        "getOpenedRobloxPids": {"message": "Get all the currently opened Roblox PIDs", "level": 1},
         "getConfiguration": {"message": "Get data in a separate configuration", "level": 0, "free": True},
         "setConfiguration": {"message": "Store data in a separate configuration", "level": 0, "free": True},
         "getDebugMode": {"message": "Get if the bootstrap is in Debug Mode", "level": 0, "free": True},
@@ -364,15 +401,12 @@ class Main():
         await_20_second_log_creation = False
         await_log_creation_attempts = 0
         windows_roblox_starter_launched_roblox = False
-
         class __ReadingLineResponse__():
             class EndRoblox(): code=0
             class EndWatchdog(): code=1
-
         class InvalidRobloxHandlerException(Exception):
             def __init__(self):            
                 super().__init__("Please make sure you're providing the RobloxFastFlagsInstaller.Main class!")
-
         def __init__(self, main_handler, pid: str, log_file: str="", debug_mode: bool=False, allow_other_logs: bool=False, await_20_second_log_creation=False, created_mutex=None):
             if type(main_handler) is Main:
                 self.main_handler = main_handler
@@ -410,6 +444,50 @@ class Main():
                     self.events.append({"name": eventName, "callback": eventCallback})
                     if self.watchdog_started == False:
                         self.startActivityTracking()
+        def getWindowsOpened(self):
+            if self.pid and not (self.pid == "") and self.pid.isnumeric():
+                try:
+                    if main_os == "Windows":
+                        try:
+                            import win32gui # type: ignore
+                            import win32process # type: ignore
+                        except Exception as e:
+                            pip().install(["pywin32"])
+                            import win32gui # type: ignore
+                            import win32process # type: ignore
+                        system_windows = []
+                        def callback(hwnd, _):
+                            if win32gui.IsWindowVisible(hwnd):
+                                _, window_pid = win32process.GetWindowThreadProcessId(hwnd)
+                                if window_pid == int(self.pid):
+                                    system_windows.append(hwnd)
+                        win32gui.EnumWindows(callback, None)
+                        roblox_windows_classes = []
+                        for i in system_windows:
+                            roblox_windows_classes.append(self.main_handler.RobloxWindow(self.pid, i))
+                        return roblox_windows_classes
+                    elif main_os == "Darwin":
+                        try:
+                            from Quartz import CGWindowListCopyWindowInfo, kCGWindowListOptionOnScreenOnly
+                        except Exception as e:
+                            pip().install(["pyobjc"])
+                            from Quartz import CGWindowListCopyWindowInfo, kCGWindowListOptionOnScreenOnly
+                        system_windows = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, 0)
+                        app_windows = [win for win in system_windows if win.get("kCGWindowOwnerPID") == int(self.pid)]
+                        new_set_of_system_windows = []
+                        for win in app_windows:
+                            if win and win.get("kCGWindowOwnerPID"):
+                                new_set_of_system_windows.append(win)
+                        roblox_windows_classes = []
+                        for i in new_set_of_system_windows:
+                            roblox_windows_classes.append(self.main_handler.RobloxWindow(self.pid, i))
+                        return roblox_windows_classes
+                    else:
+                        return []
+                except Exception as e:
+                    return []
+            else:
+                return []
         def clearRobloxEventCallbacks(self, eventName: str=""):
             if eventName == "":
                 self.events = []
@@ -1001,6 +1079,57 @@ class Main():
                                                 return                           
                 threading.Thread(target=watchDog).start()
                 threading.Thread(target=self.awaitRobloxClosing).start()
+    class RobloxWindow():
+        pid = None
+        system_handler = None
+        def __init__(self, pid, system_handler):
+            self.pid = pid
+            self.system_handler = system_handler
+        def focusWindow(self):
+            if main_os == "Windows":
+                try:
+                    import win32gui # type: ignore
+                    import win32process # type: ignore
+                except Exception as e:
+                    pip().install(["pywin32"])
+                    import win32gui # type: ignore
+                    import win32process # type: ignore
+                win32gui.SetFocus(self.system_handler)
+            elif main_os == "Darwin":
+                import subprocess
+                subprocess.run(["osascript", "-e", f'tell application "System Events" to set frontmost of (every process whose unix id is {self.pid}) to true'])
+        def setWindowTitle(self, new_title):
+            if main_os == "Windows":
+                try:
+                    import win32gui # type: ignore
+                except Exception as e:
+                    pip().install(["pywin32"])
+                    import win32gui # type: ignore
+                win32gui.SetWindowText(self.system_handler, new_title)
+        def setWindowPositionAndSize(self, size_x, size_y, position_x, position_y):
+            if main_os == "Windows":
+                try:
+                    import win32gui # type: ignore
+                except Exception as e:
+                    pip().install(["pywin32"])
+                    import win32gui # type: ignore
+                win32gui.SetWindowPos(self.system_handler, win32gui.HWND_TOP, size_x, size_y, position_x, position_y, win32gui.SWP_SHOWWINDOW)
+            elif main_os == "Darwin":
+                try:
+                    process = subprocess.run(["osascript", "-e", f'''
+                    tell application "System Events"
+                        set theProcess to (first process whose unix id is {self.pid})
+                        if (count of windows of theProcess) > 0 then
+                            set theWindow to window 1 of theProcess
+                            set position of theWindow to {{{position_x}, {position_y}}}
+                            set size of theWindow to {{{size_x}, {size_y}}}
+                        end if
+                    end tell'''], capture_output=True, text=True)
+                    if process.stderr:
+                        print("Error:", process.stderr)
+                    print(process.stdout)
+                except Exception as e:
+                    print(f"Failed to execute AppleScript: {e}")
     def printLog(self, m):
         if __name__ == "__main__":
             printMainMessage(m)
@@ -1416,6 +1545,49 @@ class Main():
             except Exception as e:
                 printErrorMessage(f"Error occurred while getting Roblox Instance: {e}")
                 return None
+    def getOpenedRobloxPids(self):
+        if self.__main_os__ == "Darwin":
+            try:
+                result = subprocess.run(["ps", "axo", "pid,etime,command"], stdout=subprocess.PIPE, text=True)
+                processes = result.stdout
+                roblox_lines = [line for line in processes.splitlines() if "RobloxPlayer" in line]
+                if not roblox_lines:
+                    return None
+                pid_list = []
+                for i in roblox_lines:
+                    pid_list.append(i.split()[0])
+                return pid_list
+            except Exception as e:
+                printErrorMessage(f"Error occurred while getting Roblox Instance: {e}")
+                return None
+        elif self.__main_os__ == "Windows":
+            try:
+                result = subprocess.Popen(["tasklist"], stdout=subprocess.PIPE, text=True)
+                processes = result.stdout.read()
+                program_lines = [line for line in processes.splitlines() if "RobloxPlayerBeta.exe" in line]
+                if not program_lines:
+                    return None
+                pid_list = []
+                for i in program_lines:
+                    pid_list.append(i.split()[1])
+                return pid_list
+            except Exception as e:
+                printErrorMessage(f"Error occurred while getting Roblox Instance: {e}")
+                return None
+    def getAllOpenedRobloxWindows(self):
+        pids = self.getOpenedRobloxPids()
+        generated_window_instances = []
+        for i in pids:
+            process_windows = pip().getProcessWindows(i)
+            for e in process_windows:
+                generated_window_instances.append(self.RobloxWindow(int(i), e))
+        return generated_window_instances
+    def getOpenedRobloxWindows(self, pid):
+        generated_window_instance = None
+        process_windows = pip().getProcessWindows(pid)
+        for e in process_windows:
+            generated_window_instance =  self.RobloxWindow(int(pid), e)
+        return generated_window_instance
     def prepareMultiInstance(self, required=False, debug=False, awaitRobloxClosure=True):
         if self.__main_os__ == "Darwin":
             try:
@@ -1562,7 +1734,10 @@ class Main():
                    else:
                        if debug == True: printDebugMessage("There's an issue trying to create a mutex!")
             else:
-                if debug == True and makeDupe == False: printDebugMessage("Roblox is currently open right now and multiple instance is disabled!")
+                if len(self.getAllOpenedRobloxWindows()) > 0:
+                    if debug == True and makeDupe == False: printDebugMessage("Roblox is currently open right now and multiple instance is disabled!")
+                elif makeDupe == True:
+                    self.endRoblox()
 
             most_recent_roblox_version_dir = self.getRobloxInstallFolder(f"{windows_dir}\\Versions")
             if most_recent_roblox_version_dir:
