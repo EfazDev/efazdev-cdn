@@ -1,5 +1,5 @@
 {
-    "name": "verified_checkmark_settings",
+    "name": "dev.efaz.verified_badge_add_on",
     "settings": {
         "enabled": {
             "text": "Enable Checkmark",

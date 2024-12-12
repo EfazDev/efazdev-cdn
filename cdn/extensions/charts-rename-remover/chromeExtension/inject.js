@@ -13,12 +13,13 @@ inject.js:
     const storage = chrome.storage.sync;
 
     try {
-        storage.get(["chartsRename"], function (items) {
+        var storage_key = "dev.efaz.charts_renamer"
+        storage.get([storage_key], function (items) {
             var enabled = true;
-            if (items["chartsRename"]) {
-                if (typeof (items["chartsRename"]["enabled"]) == "boolean") { enabled = items["chartsRename"]["enabled"] };
+            if (items[storage_key]) {
+                if (typeof (items[storage_key]["enabled"]) == "boolean") { enabled = items[storage_key]["enabled"] };
             } else {
-                items["chartsRename"] = {
+                items[storage_key] = {
                     "enabled": true,
                     "newName": "Discover",
                     "replaceURLwithDiscoverURL": true,
@@ -110,7 +111,7 @@ inject.js:
 
                             setTimeout(() => { injectRename(settings) }, amountOfSecondsBeforeLoop)
                         }
-                        injectRename(items["chartsRename"])
+                        injectRename(items[storage_key])
                     }
                 }
             }

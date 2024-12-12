@@ -238,7 +238,8 @@ main.js:
 
     chrome.tabs.onUpdated.addListener(function (tabId, details, tab) {
         try {
-            storage.get(["removeBuilderFont"], function (items) {
+            var storage_key = "dev.efaz.remove_builder_font"
+            storage.get([storage_key], function (items) {
                 var enabled = true;
                 var remoteStyles = false;
                 var overwriteCreateDashboard = true;
@@ -247,14 +248,14 @@ main.js:
                 var oldFontOnOtherSub = true;
                 var trusted_source = "https://oldfont.efaz.dev/"; /* This is customizable by the user, but they would have to find a fitting url and make sure it's trusted. */
 
-                if (items["removeBuilderFont"]) {
-                    if (typeof (items["removeBuilderFont"]["enabled"]) == "boolean") { enabled = items["removeBuilderFont"]["enabled"] };
-                    if (typeof (items["removeBuilderFont"]["remoteStyles"]) == "boolean") { remoteStyles = items["removeBuilderFont"]["remoteStyles"] };
-                    if (typeof (items["removeBuilderFont"]["overwriteCreateDashboard"]) == "boolean") { overwriteCreateDashboard = items["removeBuilderFont"]["overwriteCreateDashboard"] };
-                    if (typeof (items["removeBuilderFont"]["overwriteDevForum"]) == "boolean") { devForum = items["removeBuilderFont"]["overwriteDevForum"] };
-                    if (typeof (items["removeBuilderFont"]["overwriteOtherSubdomains"]) == "boolean") { otherSub = items["removeBuilderFont"]["overwriteOtherSubdomains"] };
-                    if (typeof (items["removeBuilderFont"]["onlyUseOldFontOnMainWebsite"]) == "boolean") { oldFontOnOtherSub = items["removeBuilderFont"]["onlyUseOldFontOnMainWebsite"] };
-                    if (typeof (items["removeBuilderFont"]["resourcesUrl"]) == "string") { if (items["removeBuilderFont"]["resourcesUrl"] == "https://cdn.efaz.dev/cdn/extensions/remove-builder-font/resources/" || items["removeBuilderFont"]["resourcesUrl"] == "https://cdn2.efaz.dev/cdn/remove-builder-font/") { items["removeBuilderFont"]["resourcesUrl"] = trusted_source; storage.set(items); } trusted_source = items["removeBuilderFont"]["resourcesUrl"] };
+                if (items[storage_key]) {
+                    if (typeof (items[storage_key]["enabled"]) == "boolean") { enabled = items[storage_key]["enabled"] };
+                    if (typeof (items[storage_key]["remoteStyles"]) == "boolean") { remoteStyles = items[storage_key]["remoteStyles"] };
+                    if (typeof (items[storage_key]["overwriteCreateDashboard"]) == "boolean") { overwriteCreateDashboard = items[storage_key]["overwriteCreateDashboard"] };
+                    if (typeof (items[storage_key]["overwriteDevForum"]) == "boolean") { devForum = items[storage_key]["overwriteDevForum"] };
+                    if (typeof (items[storage_key]["overwriteOtherSubdomains"]) == "boolean") { otherSub = items[storage_key]["overwriteOtherSubdomains"] };
+                    if (typeof (items[storage_key]["onlyUseOldFontOnMainWebsite"]) == "boolean") { oldFontOnOtherSub = items[storage_key]["onlyUseOldFontOnMainWebsite"] };
+                    if (typeof (items[storage_key]["resourcesUrl"]) == "string") { if (items[storage_key]["resourcesUrl"] == "https://cdn.efaz.dev/cdn/extensions/remove-builder-font/resources/" || items[storage_key]["resourcesUrl"] == "https://cdn2.efaz.dev/cdn/remove-builder-font/") { items[storage_key]["resourcesUrl"] = trusted_source; storage.set(items); } trusted_source = items[storage_key]["resourcesUrl"] };
                 }
                 if (enabled == true) {
                     if (tab.url) {
@@ -306,17 +307,39 @@ main.js:
                             }
                         } else if (tab.url.startsWith("https://devforum.roblox.com")) {
                             if (devForum == true) {
-                                function injectCSS(css) {
-                                    if (document.querySelector("body > discourse-assets > discourse-assets-stylesheets > link:nth-child(30)")) {
-                                        document.querySelector("body > discourse-assets > discourse-assets-stylesheets > link:nth-child(30)").href = ""
-                                    }
-                                    if (document.getElementById("remove-builder-font") == null) {
-                                        if (css) {
-                                            const style = document.createElement("style")
-                                            style.id = "remove-builder-font";
-                                            style.media = "all";
-                                            style.innerHTML = css
-                                            document.head.append(style)
+                                function injectCSS(css, tries) {
+                                    if (css) {
+                                        var new_tries = 0
+                                        if (tries) {
+                                            new_tries = tries
+                                        }
+                                        var roblox_provided_stylesheets = document.getElementsByTagName("discourse-assets-stylesheets")
+                                        var found = false
+                                        if (roblox_provided_stylesheets.length > 0) {
+                                            roblox_provided_stylesheets = Array.prototype.slice.call(roblox_provided_stylesheets)[0];
+                                            if (roblox_provided_stylesheets.children.length > 0) {
+                                                var roblox_provided_stylesheets_children = Array.prototype.slice.call(roblox_provided_stylesheets.children);
+                                                roblox_provided_stylesheets_children.forEach((selector) => {
+                                                    if (selector && selector.getAttribute("data-theme-id") == "3") {
+                                                        selector.remove()
+                                                        if (css) {
+                                                            const style = document.createElement("style")
+                                                            style.id = "remove-builder-font";
+                                                            style.media = "all";
+                                                            style.innerHTML = css
+                                                            document.head.append(style)
+                                                        }
+                                                        found = true
+                                                    }
+                                                })
+                                                if (found == false) {
+                                                    setTimeout(() => { injectCSS(css, new_tries + 1) }, 100)
+                                                }
+                                            } else {
+                                                setTimeout(() => { injectCSS(css, new_tries + 1) }, 100)
+                                            }
+                                        } else {
+                                            setTimeout(() => { injectCSS(css, new_tries + 1) }, 100)
                                         }
                                     }
                                 }
@@ -368,20 +391,21 @@ main.js:
                                             : ''
                                         return text;
                                     }
-
                                     if (css) {
                                         var new_tries = 0
                                         if (tries) {
                                             new_tries = tries
                                         }
-                                        if (new_tries > 75) {
-                                            return
-                                        }
                                         if (document.querySelector("head > style:nth-child(1)")) {
                                             var selector = document.querySelector("head > style:nth-child(1)");
-                                            if (selector.sheet.cssRules[7].cssText.includes("font-face")) {
-                                                if (selector.innerHTML == "") {
-                                                    selector.innerHTML = css
+                                            var sheet_text = sheetToString(selector.sheet)
+                                            if (sheet_text.includes("@font-face")) {
+                                                if (!(selector.innerHTML.includes("Efaz's Builder Font Remover"))) {
+                                                    if (selector.innerHTML == "") {
+                                                        selector.innerHTML = `${sheet_text} \n\n${css}`
+                                                    } else if (selector.innerHTML.includes("/fonts/builder-sans/")) {
+                                                        selector.innerHTML = `${sheet_text} \n\n${css}`
+                                                    }
                                                 }
                                             } else {
                                                 setTimeout(() => { injectCSS(css, new_tries + 1) }, 100)
@@ -391,10 +415,16 @@ main.js:
                                             var found = false
                                             for (q = 0; q < selectors.length; q++) {
                                                 var selector = selectors[q]
-                                                if (selector.getAttribute("data-emotion") == "web-blox-css-mui-global") {
-                                                    if (selector.innerHTML == "" && sheetToString(selector.sheet).includes("@font-face")) {
-                                                        selector.innerHTML = css
-                                                        found = true
+                                                var sheet_text = sheetToString(selector.sheet)
+                                                if (selector.getAttribute("data-emotion") == "web-blox-css-mui-global" && sheet_text.includes("@font-face")) {
+                                                    if (!(selector.innerHTML.includes("Efaz's Builder Font Remover"))) {
+                                                        if (selector.innerHTML == "") {
+                                                            selector.innerHTML = `${sheet_text} \n\n${css}`
+                                                            found = true
+                                                        } else if (selector.innerHTML.includes("/fonts/builder-sans/")) {
+                                                            selector.innerHTML = `${sheet_text} \n\n${css}`
+                                                            found = true
+                                                        }
                                                     }
                                                 }
                                             }
@@ -441,6 +471,17 @@ main.js:
                         } else if (urlObj.hostname.includes(".roblox.com")) {
                             if (otherSub == true && !(urlObj.hostname.includes("create.roblox.com"))) {
                                 function injectCSS(css, tries) {
+                                    function sheetToString(sheet) {
+                                        function stringifyRule(rule) {
+                                            return rule.cssText || ''
+                                        }
+                                        var text = sheet.cssRules
+                                            ? Array.from(sheet.cssRules)
+                                                .map(rule => stringifyRule(rule))
+                                                .join('\n')
+                                            : ''
+                                        return text;
+                                    }
                                     if (css) {
                                         function sheetToString(sheet) {
                                             function stringifyRule(rule) {

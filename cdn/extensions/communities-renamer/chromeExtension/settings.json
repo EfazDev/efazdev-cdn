@@ -1,5 +1,5 @@
 {
-    "name": "communities_renamer",
+    "name": "dev.efaz.communities_renamer",
     "settings": {
         "enabled": {
             "text": "Enable Extension",

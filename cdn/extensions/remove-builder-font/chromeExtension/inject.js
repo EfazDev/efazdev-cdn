@@ -175,7 +175,8 @@ inject.js:
     }
 
     try {
-        storage.get(["removeBuilderFont"], function (items) {
+        var storage_key = "dev.efaz.remove_builder_font"
+        storage.get([storage_key], function (items) {
             var enabled = true;
             var remoteStyles = false;
             var overwriteCreateDashboard = true;
@@ -184,14 +185,14 @@ inject.js:
             var oldFontOnOtherSub = true;
             var trusted_source = "https://oldfont.efaz.dev/"; /* This is customizable by the user, but they would have to find a fitting url and make sure it's trusted. */
 
-            if (items["removeBuilderFont"]) {
-                if (typeof (items["removeBuilderFont"]["enabled"]) == "boolean") { enabled = items["removeBuilderFont"]["enabled"] };
-                if (typeof (items["removeBuilderFont"]["remoteStyles"]) == "boolean") { remoteStyles = items["removeBuilderFont"]["remoteStyles"] };
-                if (typeof (items["removeBuilderFont"]["overwriteCreateDashboard"]) == "boolean") { overwriteCreateDashboard = items["removeBuilderFont"]["overwriteCreateDashboard"] };
-                if (typeof (items["removeBuilderFont"]["overwriteDevForum"]) == "boolean") { devForum = items["removeBuilderFont"]["overwriteDevForum"] };
-                if (typeof (items["removeBuilderFont"]["overwriteOtherSubdomains"]) == "boolean") { otherSub = items["removeBuilderFont"]["overwriteOtherSubdomains"] };
-                if (typeof (items["removeBuilderFont"]["onlyUseOldFontOnMainWebsite"]) == "boolean") { oldFontOnOtherSub = items["removeBuilderFont"]["onlyUseOldFontOnMainWebsite"] };
-                if (typeof (items["removeBuilderFont"]["resourcesUrl"]) == "string") { if (items["removeBuilderFont"]["resourcesUrl"] == "https://cdn.efaz.dev/cdn/extensions/remove-builder-font/resources/" || items["removeBuilderFont"]["resourcesUrl"] == "https://cdn2.efaz.dev/cdn/remove-builder-font/") { items["removeBuilderFont"]["resourcesUrl"] = trusted_source; storage.set(items); } trusted_source = items["removeBuilderFont"]["resourcesUrl"] };
+            if (items[storage_key]) {
+                if (typeof (items[storage_key]["enabled"]) == "boolean") { enabled = items[storage_key]["enabled"] };
+                if (typeof (items[storage_key]["remoteStyles"]) == "boolean") { remoteStyles = items[storage_key]["remoteStyles"] };
+                if (typeof (items[storage_key]["overwriteCreateDashboard"]) == "boolean") { overwriteCreateDashboard = items[storage_key]["overwriteCreateDashboard"] };
+                if (typeof (items[storage_key]["overwriteDevForum"]) == "boolean") { devForum = items[storage_key]["overwriteDevForum"] };
+                if (typeof (items[storage_key]["overwriteOtherSubdomains"]) == "boolean") { otherSub = items[storage_key]["overwriteOtherSubdomains"] };
+                if (typeof (items[storage_key]["onlyUseOldFontOnMainWebsite"]) == "boolean") { oldFontOnOtherSub = items[storage_key]["onlyUseOldFontOnMainWebsite"] };
+                if (typeof (items[storage_key]["resourcesUrl"]) == "string") { if (items[storage_key]["resourcesUrl"] == "https://cdn.efaz.dev/cdn/extensions/remove-builder-font/resources/" || items[storage_key]["resourcesUrl"] == "https://cdn2.efaz.dev/cdn/remove-builder-font/") { items[storage_key]["resourcesUrl"] = trusted_source; storage.set(items); } trusted_source = items[storage_key]["resourcesUrl"] };
             }
             if (enabled == true) {
                 var tab = window.location
@@ -300,11 +301,14 @@ inject.js:
                                     }
                                     if (document.querySelector("head > style:nth-child(1)")) {
                                         var selector = document.querySelector("head > style:nth-child(1)");
-                                        if (sheetToString(selector.sheet).includes("@font-face")) {
-                                            if (selector.innerHTML == "") {
-                                                selector.innerHTML = css
-                                            } else if (selector.innerHTML.includes("/fonts/builder-sans/")) {
-                                                selector.innerHTML = css
+                                        var sheet_text = sheetToString(selector.sheet)
+                                        if (sheet_text.includes("@font-face")) {
+                                            if (!(selector.innerHTML.includes("Efaz's Builder Font Remover"))) {
+                                                if (selector.innerHTML == "") {
+                                                    selector.innerHTML = `${sheet_text} \n\n${css}`
+                                                } else if (selector.innerHTML.includes("/fonts/builder-sans/")) {
+                                                    selector.innerHTML = `${sheet_text} \n\n${css}`
+                                                }
                                             }
                                         } else {
                                             setTimeout(() => { injectCSS(css, new_tries + 1) }, 100)
@@ -314,13 +318,16 @@ inject.js:
                                         var found = false
                                         for (q = 0; q < selectors.length; q++) {
                                             var selector = selectors[q]
-                                            if (selector.getAttribute("data-emotion") == "web-blox-css-mui-global" && sheetToString(selector.sheet).includes("@font-face")) {
-                                                if (selector.innerHTML == "") {
-                                                    selector.innerHTML = css
-                                                    found = true
-                                                } else if (selector.innerHTML.includes("/fonts/builder-sans/")) {
-                                                    selector.innerHTML = css
-                                                    found = true
+                                            var sheet_text = sheetToString(selector.sheet)
+                                            if (selector.getAttribute("data-emotion") == "web-blox-css-mui-global" && sheet_text.includes("@font-face")) {
+                                                if (!(selector.innerHTML.includes("Efaz's Builder Font Remover"))) {
+                                                    if (selector.innerHTML == "") {
+                                                        selector.innerHTML = `${sheet_text} \n\n${css}`
+                                                        found = true
+                                                    } else if (selector.innerHTML.includes("/fonts/builder-sans/")) {
+                                                        selector.innerHTML = `${sheet_text} \n\n${css}`
+                                                        found = true
+                                                    }
                                                 }
                                             }
                                         }

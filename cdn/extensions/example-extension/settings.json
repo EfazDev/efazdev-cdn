@@ -1,5 +1,5 @@
 {
-    "name": "exampleExtension",
+    "name": "dev.efaz.example_extension",
     "settings": {
         "enabled": {
             "text": "Enable Extension",

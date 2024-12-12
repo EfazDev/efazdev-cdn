@@ -12,14 +12,15 @@ main.js:
 
 (function () { // Prevent changes made using the Inspect console.
     const storage = chrome.storage.sync;
+    var storage_key = "dev.efaz.charts_renamer"
     chrome.tabs.onUpdated.addListener(function (tabId, details, tab) {
         try {
-            storage.get(["chartsRename"], function (items) {
+            storage.get([storage_key], function (items) {
                 var enabled = true;
-                if (items["chartsRename"]) {
-                    if (typeof (items["chartsRename"]["enabled"]) == "boolean") { enabled = items["chartsRename"]["enabled"] };
+                if (items[storage_key]) {
+                    if (typeof (items[storage_key]["enabled"]) == "boolean") { enabled = items[storage_key]["enabled"] };
                 } else {
-                    items["chartsRename"] = {
+                    items[storage_key] = {
                         "enabled": true,
                         "newName": "Discover",
                         "replaceURLwithDiscoverURL": true,
@@ -113,7 +114,7 @@ main.js:
                             chrome.scripting.executeScript({
                                 target: { tabId: tabId, allFrames: true },
                                 func: injectRename,
-                                args: [items["chartsRename"]]
+                                args: [items[storage_key]]
                             })
                         }
                     }

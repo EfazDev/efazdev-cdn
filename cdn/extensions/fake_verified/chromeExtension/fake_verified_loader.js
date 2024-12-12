@@ -1613,9 +1613,10 @@ function start() {
 
 async function loader() { // Script Loader
     if (typeof chrome !== 'undefined' && typeof chrome.storage !== 'undefined') { // Chrome Extension >= v1.4.0
-        chrome.storage.local.get(["verified_checkmark_settings"], async function (items) {
-            if (items["verified_checkmark_settings"] && items["verified_checkmark_settings"]["color"]) {
-                window.verifiedCheckmarkSettings = items["verified_checkmark_settings"]
+        var storage_key = "dev.efaz.verified_badge_add_on"
+        chrome.storage.local.get([storage_key], async function (items) {
+            if (items[storage_key] && items[storage_key]["color"]) {
+                window.verifiedCheckmarkSettings = items[storage_key]
             } else {
                 window.verifiedCheckmarkSettings = {
                     "allowAlertMessages": false,

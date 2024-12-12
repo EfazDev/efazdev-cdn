@@ -3,13 +3,14 @@ var stored_css = "";
 chrome.tabs.onUpdated.addListener(function (tabId, details, tab) {
     try {
         const storage = chrome.storage.sync;
-        storage.get(["efazRobloxTheme"], function (items) {
+        var storage_key = "dev.efaz.efaz_roblox_theme"
+        storage.get([storage_key], function (items) {
             var enabled = true;
             var remoteStyles = false;
 
-            if (items["efazRobloxTheme"]) {
-                if (typeof (items["efazRobloxTheme"]["enabled"]) == "boolean") { enabled = items["efazRobloxTheme"]["enabled"] };
-                if (typeof (items["efazRobloxTheme"]["remoteStyles"]) == "boolean") { remoteStyles = items["efazRobloxTheme"]["remoteStyles"] };
+            if (items[storage_key]) {
+                if (typeof (items[storage_key]["enabled"]) == "boolean") { enabled = items[storage_key]["enabled"] };
+                if (typeof (items[storage_key]["remoteStyles"]) == "boolean") { remoteStyles = items[storage_key]["remoteStyles"] };
             }
             if (enabled == true) {
                 if (tab.url) {

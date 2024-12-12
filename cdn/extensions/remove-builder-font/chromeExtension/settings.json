@@ -1,5 +1,5 @@
 {
-    "name": "removeBuilderFont",
+    "name": "dev.efaz.remove_builder_font",
     "settings": {
         "enabled": {
             "text": "Enable Extension",

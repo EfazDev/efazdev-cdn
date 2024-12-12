@@ -13,12 +13,13 @@ inject.js:
     const storage = chrome.storage.sync;
 
     try {
-        storage.get(["communities_renamer"], function (items) {
+        var storage_key = "dev.efaz.communities_renamer"
+        storage.get([storage_key], function (items) {
             var enabled = true;
-            if (items["communities_renamer"]) {
-                if (typeof (items["communities_renamer"]["enabled"]) == "boolean") { enabled = items["communities_renamer"]["enabled"] };
+            if (items[storage_key]) {
+                if (typeof (items[storage_key]["enabled"]) == "boolean") { enabled = items[storage_key]["enabled"] };
             } else {
-                items["communities_renamer"] = {
+                items[storage_key] = {
                     "enabled": true,
                     "newName": "Groups",
                     "replaceURLwithGroupsURL": true,
@@ -237,7 +238,7 @@ inject.js:
 
                             setTimeout(() => { injectRename(settings) }, amountOfSecondsBeforeLoop)
                         }
-                        injectRename(items["communities_renamer"])
+                        injectRename(items[storage_key])
                     }
                 }
             }
