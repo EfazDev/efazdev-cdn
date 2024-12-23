@@ -343,14 +343,14 @@ inject.js:
                                 })
                             } else {
                                 if (remoteStyles == true) {
-                                    fetch("https://cdn.efaz.dev/cdn/extensions/remove-builder-font/chromeExtension/global_font.css").then(res => { return res.text() }).then(fetched => {
+                                    fetch("https://cdn.efaz.dev/cdn/extensions/remove-builder-font/chromeExtension/creator_dashboard.css").then(res => { return res.text() }).then(fetched => {
                                         stored_creator_dashboard_css = fetched
                                         overwriteResourcesUrl(fetched, trusted_source, 3, oldFontOnOtherSub).then(a => {
                                             injectCSS(a)
                                         })
                                     })
                                 } else {
-                                    fetch(chrome.runtime.getURL("global_font.css")).then(res => { return res.text() }).then(fetched => {
+                                    fetch(chrome.runtime.getURL("creator_dashboard.css")).then(res => { return res.text() }).then(fetched => {
                                         stored_creator_dashboard_css = fetched
                                         overwriteResourcesUrl(fetched, trusted_source, 3, oldFontOnOtherSub).then(a => {
                                             injectCSS(a)
