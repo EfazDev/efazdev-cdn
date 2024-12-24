@@ -28,7 +28,7 @@ def isNo(text): return text.lower() == "n" or text.lower() == "no"
 def isRequestClose(text): return text.lower() == "exit" or text.lower() == "exit()"
 if os.path.exists("FastFlagConfiguration.json") and os.path.exists("Main.py") and os.path.exists("PipHandler.py"):
     efaz_bootstrap_mode = True
-fast_flag_installer_version = "1.7.0"
+fast_flag_installer_version = "1.7.5"
 
 class pip:
     executable = None
@@ -142,29 +142,52 @@ class pip:
             return f'{os.path.expanduser("~")}/Library/'
         else:
             return f'{os.path.expanduser("~")}/'
+    def restartScript(self, argv: list):
+        import sys
+        import subprocess
+        subprocess.run([self.findPython()] + argv, shell=True)
+        sys.exit(0)
+    def importModule(self, module_name: str, install_module_if_not_found: bool=False):
+        import importlib
+        import subprocess
+        try:
+            return importlib.import_module(module_name)
+        except ModuleNotFoundError:
+            try:
+                if install_module_if_not_found == True: self.install([module_name])
+                return importlib.import_module(module_name)
+            except subprocess.CalledProcessError as e:
+                raise ImportError(f'Unable to find module "{module_name}" in Python environment.')
     def getIfProcessIsOpened(self, process_name="", pid=""):
         import platform
         import subprocess
         ma_os = platform.system()
         if ma_os == "Windows":
-            process = subprocess.run("tasklist", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-        elif ma_os == "Darwin":
-            process = subprocess.run("ps aux", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-        else:
-            process = subprocess.run("ps aux", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+            process = subprocess.Popen(["tasklist"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            output, _ = process.communicate()
+            process_list = output.decode("utf-8")
 
-        process_list = process.stdout.decode("utf-8")
-
-        if pid == "":
-            if process_list.rfind(process_name) == -1:
-                return False
+            if pid == "" or pid == None:
+                if process_list.rfind(process_name) == -1:
+                    return False
+                else:
+                    return True
             else:
-                return True
+                if process_list.rfind(pid) == -1:
+                    return False
+                else:
+                    return True
         else:
-            if process_list.rfind(pid) == -1:
-                return False
+            if pid == "" or pid == None:
+                if subprocess.run(f"pgrep -f '{process_name}' > /dev/null 2>&1", shell=True).returncode == 0:
+                    return True
+                else:
+                    return False
             else:
-                return True
+                if subprocess.run(f"ps -p {pid} > /dev/null 2>&1", shell=True).returncode == 0:
+                    return True
+                else:
+                    return False
     def getProcessWindows(self, pid: int):
         import platform
         if (type(pid) is str and pid.isnumeric()) or type(pid) is int:
@@ -234,7 +257,7 @@ class pip:
                     if os.path.isfile(path):
                         return path
             return None
-class Main():
+class Main:
     # System Functions
     def __init__(self):
         self.__main_os__ = main_os
@@ -337,6 +360,7 @@ class Main():
         "getFastFlagConfiguration": {"message": "View your bootstrap configuration file", "level": 1},
         "setFastFlagConfiguration": {"message": "Set your bootstrap configuration within executable", "level": 2},
         "saveFastFlagConfiguration": {"message": "Edit and save your bootstrap configuration file", "level": 2},
+        "getIfRobloxLaunched": {"message": "Get if Roblox has launched from the bootstrap", "level": 0, "free": True},
         "getLatestRobloxPid": {"message": "Get the current latest Roblox window's PID", "level": 1},
         "getOpenedRobloxPids": {"message": "Get all the currently opened Roblox PIDs", "level": 1},
         "changeRobloxWindowSizeAndPosition": {"message": "Change the Roblox Window Size and Position", "level": 2},
@@ -534,18 +558,13 @@ class Main():
                             for i in self.events:
                                 if i and callable(i.get("callback")) and i.get("name") == eventName: threading.Thread(target=i.get("callback"), args=[data]).start()
                         def handleLine(line=""):
-                            if "The crash manager ends the monitor thread at exit." in line or "[FLog::SingleSurfaceApp] destroy controllers" in line:
-                                submitToThread(eventName="onRobloxExit", data=line)
-                                return self.__ReadingLineResponse__.EndRoblox()
-                            elif "[FLog::RobloxStarter] RobloxStarter destroyed" in line:
+                            if "[FLog::RobloxStarter] RobloxStarter destroyed" in line:
                                 if self.windows_roblox_starter_launched_roblox == False:
-                                    submitToThread(eventName="onRobloxSharedLogLaunch", data=line)
                                     submitToThread(eventName="onRobloxExit", data=line)
+                                    submitToThread(eventName="onRobloxSharedLogLaunch", data=line)
                                     return self.__ReadingLineResponse__.EndWatchdog()
                                 else:
                                     submitToThread(eventName="onRobloxLauncherDestroyed", data=line)
-                            elif "[FLog::RobloxStarter] Roblox stage" in line and "completed" in line:
-                                self.windows_roblox_starter_launched_roblox = True
                             elif "[FLog::UpdateController] Update check thread: updateRequired FALSE" in line:
                                 submitToThread(eventName="onRobloxPassedUpdate", data=line)
                             elif "[FLog::SingleSurfaceApp] initializeWithAppStarter" in line:
@@ -690,6 +709,7 @@ class Main():
                                 generated_data = generate_arg()
                                 if generated_data:
                                     submitToThread(eventName="onRobloxChannel", data=generated_data, isLine=False)
+                                    self.windows_roblox_starter_launched_roblox = True
                             elif "[FLog::Warning] WebLogin authentication is failed and App is quitting" in line:
                                 submitToThread(eventName="onRobloxAppLoginFailed", data=line, isLine=True)
                             elif "[FLog::UgcExperienceController] UgcExperienceController: doTeleport: joinScriptUrl" in line:
@@ -880,7 +900,7 @@ class Main():
                                     submitToThread(eventName="onGameJoined", data=generated_data, isLine=False)
                             elif "[FLog::SingleSurfaceApp] leaveUGCGameInternal" in line:
                                 submitToThread(eventName="onGameLeaving", data=line, isLine=True)
-                            elif "RBXCRASH:" in line:
+                            elif "RBXCRASH:" in line or "[FLog::CrashReportLog] Terminated" in line:
                                 submitToThread(eventName="onRobloxCrash", data=line, isLine=True)
                             elif "Roblox::terminateWaiter" in line:
                                 submitToThread(eventName="onRobloxTerminateInstance", data=line, isLine=True)
@@ -893,7 +913,7 @@ class Main():
                                         def b():
                                             time.sleep(3)
                                             self.disconnect_cooldown = False
-                                        threading.Thread(target=b).start()
+                                        threading.Thread(target=b, daemon=True).start()
                                         code_message = "Unknown"
                                         if self.disconnect_code_list.get(str(main_code)):
                                             code_message = self.disconnect_code_list.get(str(main_code))
@@ -977,50 +997,30 @@ class Main():
                                     write_file.writelines(end_lines)
                             while True:
                                 line = file.readline()
-                                if self.ended_process == True:
-                                    submitToThread(eventName="onRobloxExit", data=line)
-                                    return
                                 if not line:
                                     threading.Thread(target=cleanLogs).start()
                                     break
+                                if self.ended_process == True:
+                                    submitToThread(eventName="onRobloxExit", data=line)
+                                    return
                                 if not (line in passed_lines):
                                     timestamp_str = line.split(",")
                                     if len(timestamp_str) > 0:
                                         timestamp_str = timestamp_str[0]
                                         if re.match(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z", timestamp_str):
-                                            try:
-                                                timestamp = datetime.datetime.strptime(timestamp_str, "%Y-%m-%dT%H:%M:%S.%fZ")
-                                                current_time = datetime.datetime.utcnow()
-                                                if timestamp:
-                                                    age_in_seconds = int(current_time.timestamp() - timestamp.timestamp())
-                                                    if age_in_seconds < 60:
-                                                        res = handleLine(line)
-                                                        if res:
-                                                            if res.code == 0:
-                                                                threading.Thread(target=cleanLogs).start()
-                                                                break
-                                                            elif res.code == 1:
-                                                                self.ended_process = True
-                                                                return
-                                            except Exception as e:
-                                                res = handleLine(line)
-                                                if res:
-                                                    if res.code == 0:
-                                                        threading.Thread(target=cleanLogs).start()
-                                                        break
-                                                    elif res.code == 1:
-                                                        self.ended_process = True
-                                                        return
-                                        else:
-                                            res = handleLine(line)
-                                            if res:
-                                                if res.code == 0:
-                                                    self.ended_process = True
-                                                    threading.Thread(target=cleanLogs).start()
-                                                    break     
-                                                elif res.code == 1:
-                                                    self.ended_process = True
-                                                    return
+                                            timestamp = datetime.datetime.strptime(timestamp_str, "%Y-%m-%dT%H:%M:%S.%fZ")
+                                            current_time = datetime.datetime.now(datetime.timezone.utc)
+                                            if timestamp:
+                                                age_in_seconds = int(current_time.timestamp() - timestamp.timestamp())
+                                                if age_in_seconds < 60:
+                                                    res = handleLine(line)
+                                                    if res:
+                                                        if res.code == 0:
+                                                            threading.Thread(target=cleanLogs).start()
+                                                            break
+                                                        elif res.code == 1:
+                                                            self.ended_process = True
+                                                            return
                                     else:
                                         res = handleLine(line)
                                         if res:
@@ -1176,28 +1176,10 @@ class Main():
     def getIfRobloxIsOpen(self, installer=False, pid=""):
         if self.__main_os__ == "Windows":
             process = subprocess.Popen(["tasklist"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        elif self.__main_os__ == "Darwin":
-            process = subprocess.Popen(["ps", "aux"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        else:
-            self.printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
-            return
+            output, _ = process.communicate()
+            process_list = output.decode("utf-8")
 
-        output, _ = process.communicate()
-        process_list = output.decode("utf-8")
-
-        if pid == "":
-            if main_os == "Darwin":
-                if installer == False:
-                    if process_list.rfind("/RobloxPlayer") == -1:
-                        return False
-                    else:
-                        return True
-                else:
-                    if process_list.rfind("/RobloxPlayerInstaller") == -1:
-                        return False
-                    else:
-                        return True
-            else:
+            if pid == "" or pid == None:
                 if installer == False:
                     if process_list.rfind("RobloxPlayerBeta.exe") == -1:
                         return False
@@ -1208,11 +1190,31 @@ class Main():
                         return False
                     else:
                         return True
-        else:
-            if process_list.rfind(pid) == -1:
-                return False
             else:
-                return True
+                if process_list.rfind(pid) == -1:
+                    return False
+                else:
+                    return True
+        elif self.__main_os__ == "Darwin":
+            if pid == "" or pid == None:
+                if installer == False:
+                    if subprocess.run(f"pgrep -f {macOS_dir}{macOS_beforeClientServices}RobloxPlayer > /dev/null 2>&1", shell=True).returncode == 0:
+                        return True
+                    else:
+                        return False
+                else:
+                    if subprocess.run(f"pgrep -f {macOS_dir}{macOS_beforeClientServices}RobloxPlayerInstaller > /dev/null 2>&1", shell=True).returncode == 0:
+                        return True
+                    else:
+                        return False
+            else:
+                if subprocess.run(f"ps -p {pid} > /dev/null 2>&1", shell=True).returncode == 0:
+                    return True
+                else:
+                    return False
+        else:
+            self.printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
+            return
     def getLatestClientVersion(self, debug=False, channel="LIVE"):
         # Mac: https://clientsettingscdn.roblox.com/v2/client-version/MacPlayer
         # Windows: https://clientsettingscdn.roblox.com/v2/client-version/WindowsPlayer
@@ -1228,52 +1230,55 @@ class Main():
             else:
                 printErrorMessage("Returning back to application.")
                 return {"success": False, "message": "User rejected need of module."}
-            
-        if self.__main_os__ == "Darwin":
-            if debug == True: printDebugMessage("Sending Request to Roblox Servers..") 
-            if channel:
-                res = requests.get(f"https://clientsettingscdn.roblox.com/v2/client-version/MacPlayer/channel/{channel}")
-            else:
-                res = requests.get(f"https://clientsettingscdn.roblox.com/v2/client-version/MacPlayer")
-            if res.ok:
-                jso = res.json()
-                if jso.get("clientVersionUpload") and jso.get("version"):
-                    if debug == True: printDebugMessage(f"Called ({res.url}): {res.text}")
-                    return {"success": True, "client_version": jso.get("clientVersionUpload"), "short_version": jso.get("version")}
+
+        try:    
+            if self.__main_os__ == "Darwin":
+                if debug == True: printDebugMessage("Sending Request to Roblox Servers..") 
+                if channel:
+                    res = requests.get(f"https://clientsettingscdn.roblox.com/v2/client-version/MacPlayer/channel/{channel}")
                 else:
-                    if debug == True: printDebugMessage(f"Something went wrong: {res.text}")
-                    return {"success": False, "message": "Something went wrong."}
-            else:
-                if not (channel == "LIVE"):
-                    if debug == True: printDebugMessage(f"Roblox rejected update check with channel {channel}, retrying as channel LIVE: {res.text}")
-                    return self.getLatestClientVersion(debug=debug, channel="LIVE")
+                    res = requests.get(f"https://clientsettingscdn.roblox.com/v2/client-version/MacPlayer")
+                if res.ok:
+                    jso = res.json()
+                    if jso.get("clientVersionUpload") and jso.get("version"):
+                        if debug == True: printDebugMessage(f"Called ({res.url}): {res.text}")
+                        return {"success": True, "client_version": jso.get("clientVersionUpload"), "short_version": jso.get("version")}
+                    else:
+                        if debug == True: printDebugMessage(f"Something went wrong: {res.text}")
+                        return {"success": False, "message": "Something went wrong."}
                 else:
-                    if debug == True: printDebugMessage(f"Something went wrong: {res.text}")
-                    return {"success": False, "message": "Something went wrong."}
-        elif self.__main_os__ == "Windows":
-            if debug == True: printDebugMessage("Sending Request to Roblox Servers..") 
-            if channel:
-                res = requests.get(f"https://clientsettingscdn.roblox.com/v2/client-version/WindowsPlayer/channel/{channel}")
-            else:
-                res = requests.get(f"https://clientsettingscdn.roblox.com/v2/client-version/WindowsPlayer")
-            if res.ok:
-                jso = res.json()
-                if jso.get("clientVersionUpload") and jso.get("version"):
-                    if debug == True: printDebugMessage(f"Called ({res.url}): {res.text}")
-                    return {"success": True, "client_version": jso.get("clientVersionUpload"), "short_version": jso.get("version")}
+                    if not (channel == "LIVE"):
+                        if debug == True: printDebugMessage(f"Roblox rejected update check with channel {channel}, retrying as channel LIVE: {res.text}")
+                        return self.getLatestClientVersion(debug=debug, channel="LIVE")
+                    else:
+                        if debug == True: printDebugMessage(f"Something went wrong: {res.text}")
+                        return {"success": False, "message": "Something went wrong."}
+            elif self.__main_os__ == "Windows":
+                if debug == True: printDebugMessage("Sending Request to Roblox Servers..") 
+                if channel:
+                    res = requests.get(f"https://clientsettingscdn.roblox.com/v2/client-version/WindowsPlayer/channel/{channel}")
                 else:
-                    if debug == True: printDebugMessage(f"Something went wrong: {res.text}")
-                    return {"success": False, "message": "Something went wrong."}
-            else:
-                if not (channel == "LIVE"):
-                    if debug == True: printDebugMessage(f"Roblox rejected update check with channel {channel}, retrying as channel LIVE: {res.text}")
-                    return self.getLatestClientVersion(debug=debug, channel="LIVE")
+                    res = requests.get(f"https://clientsettingscdn.roblox.com/v2/client-version/WindowsPlayer")
+                if res.ok:
+                    jso = res.json()
+                    if jso.get("clientVersionUpload") and jso.get("version"):
+                        if debug == True: printDebugMessage(f"Called ({res.url}): {res.text}")
+                        return {"success": True, "client_version": jso.get("clientVersionUpload"), "short_version": jso.get("version")}
+                    else:
+                        if debug == True: printDebugMessage(f"Something went wrong: {res.text}")
+                        return {"success": False, "message": "Something went wrong."}
                 else:
-                    if debug == True: printDebugMessage(f"Something went wrong: {res.text}")
-                    return {"success": False, "message": "Something went wrong."}
-        else:
-            self.printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
-            return {"success": False, "message": "OS not compatible."}
+                    if not (channel == "LIVE"):
+                        if debug == True: printDebugMessage(f"Roblox rejected update check with channel {channel}, retrying as channel LIVE: {res.text}")
+                        return self.getLatestClientVersion(debug=debug, channel="LIVE")
+                    else:
+                        if debug == True: printDebugMessage(f"Something went wrong: {res.text}")
+                        return {"success": False, "message": "Something went wrong."}
+            else:
+                self.printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
+                return {"success": False, "message": "OS not compatible."}
+        except Exception as e:
+            return {"success": False, "message": "There was an error checking. Please check your internet connection!"}
     def getCurrentClientVersion(self):
         if self.__main_os__ == "Darwin":
             if os.path.exists(f"{macOS_dir}/Contents/Info.plist"):
@@ -1317,22 +1322,21 @@ class Main():
             self.printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
             return {"success": False, "message": "OS not compatible."}
     def installFastFlagsJSON(self, fastflagJSON: object, askForPerms=False, merge=True, flat=False, endRobloxInstances=True, isBootstrapper=False, debug=False):
-        fastFlagFileName = "ClientAppSettings.json"
         if __name__ == "__main__":
             if self.__main_os__ == "Darwin":
                 if endRobloxInstances == True:
                     printMainMessage(f"Closing any open Roblox windows..")
                     self.endRoblox()
-                if efaz_bootstrap_mode == False:
+                if isBootstrapper == False:
                     printMainMessage(f"Generating Client Settings Folder..")
                     if not os.path.exists(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings"):
                         os.mkdir(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings")
                         printSuccessMessage(f"Created {macOS_dir}{macOS_beforeClientServices}ClientSettings..")
                     else:
                         printWarnMessage(f"Client Settings is already created. Skipping Folder Creation..")
-                printMainMessage(f"Writing {fastFlagFileName}")
+                printMainMessage(f"Writing ClientAppSettings.json")
                 if merge == True:
-                    if os.path.exists("FastFlagConfiguration.json"):
+                    if isBootstrapper == True and os.path.exists("FastFlagConfiguration.json"):
                         try:
                             printMainMessage("Reading Previous Configurations..")
                             with open(f"FastFlagConfiguration.json", "r") as f:
@@ -1341,17 +1345,17 @@ class Main():
                             fastflagJSON = merge_json
                         except Exception as e:
                             printErrorMessage(f"Something went wrong while trying to generate a merged JSON: {str(e)}")
-                    elif os.path.exists(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings/{fastFlagFileName}"):
+                    elif os.path.exists(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings/ClientAppSettings.json"):
                         try:
                             printMainMessage("Reading Previous Client App Settings..")
-                            with open(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings/{fastFlagFileName}", "r") as f:
+                            with open(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings/ClientAppSettings.json", "r") as f:
                                 merge_json = json.load(f)
                             merge_json.update(fastflagJSON)
                             fastflagJSON = merge_json
                         except Exception as e:
                             printErrorMessage(f"Something went wrong while trying to generate a merged JSON: {str(e)}")
-                set_location = f"{macOS_dir}{macOS_beforeClientServices}ClientSettings/{fastFlagFileName}"
-                if os.path.exists("FastFlagConfiguration.json"):
+                set_location = f"{macOS_dir}{macOS_beforeClientServices}ClientSettings/ClientAppSettings.json"
+                if isBootstrapper == True and os.path.exists("FastFlagConfiguration.json"):
                     set_location = "FastFlagConfiguration.json"
                 with open(set_location, "w") as f:
                     if flat == True:
@@ -1359,7 +1363,7 @@ class Main():
                     else:
                         json.dump(fastflagJSON, f, indent=4)
                 printSuccessMessage("DONE!")
-                if efaz_bootstrap_mode == True:
+                if isBootstrapper == True:
                     printSuccessMessage("Your fast flags was successfully saved into your Fast Flag Settings!")
                     printSuccessMessage(f"If you like to update your fast flags, go to: {set_location}")
                 else:
@@ -1377,14 +1381,14 @@ class Main():
                 most_recent_roblox_version_dir = self.getRobloxInstallFolder(f"{windows_dir}\\Versions")
                 if most_recent_roblox_version_dir:
                     printMainMessage(f"Found version: {most_recent_roblox_version_dir}")
-                    if efaz_bootstrap_mode == False:
+                    if isBootstrapper == False:
                         printMainMessage(f"Generating Client Settings Folder..")
                         if not os.path.exists(f"{most_recent_roblox_version_dir}ClientSettings"):
                             os.mkdir(f"{most_recent_roblox_version_dir}ClientSettings")
                             printSuccessMessage(f"Created {most_recent_roblox_version_dir}ClientSettings..")
                         else:
                             printWarnMessage(f"Client Settings is already created. Skipping Folder Creation..")
-                    printMainMessage(f"Writing {fastFlagFileName}")
+                    printMainMessage(f"Writing ClientAppSettings.json")
                     if merge == True:
                         if os.path.exists("FastFlagConfiguration.json"):
                             try:
@@ -1395,18 +1399,18 @@ class Main():
                                 fastflagJSON = merge_json
                             except Exception as e:
                                 printErrorMessage(f"Something went wrong while trying to generate a merged JSON: {str(e)}")
-                        elif os.path.exists(f"{most_recent_roblox_version_dir}ClientSettings\\{fastFlagFileName}"):
+                        elif os.path.exists(f"{most_recent_roblox_version_dir}ClientSettings\\ClientAppSettings.json"):
                             try:
                                 printMainMessage("Reading Previous Client App Settings..")
-                                with open(f"{most_recent_roblox_version_dir}ClientSettings\\{fastFlagFileName}", "r") as f:
+                                with open(f"{most_recent_roblox_version_dir}ClientSettings\\ClientAppSettings.json", "r") as f:
                                     merge_json = json.load(f)
                                 merge_json.update(fastflagJSON)
                                 fastflagJSON = merge_json
                             except Exception as e:
                                 printErrorMessage(f"Something went wrong while trying to generate a merged JSON: {str(e)}")
                     
-                    set_location = f"{most_recent_roblox_version_dir}ClientSettings\\{fastFlagFileName}"
-                    if os.path.exists("FastFlagConfiguration.json"):
+                    set_location = f"{most_recent_roblox_version_dir}ClientSettings\\ClientAppSettings.json"
+                    if isBootstrapper == True and os.path.exists("FastFlagConfiguration.json"):
                         set_location = "FastFlagConfiguration.json"
                     with open(set_location, "w") as f:
                         if flat == True:
@@ -1414,7 +1418,7 @@ class Main():
                         else:
                             json.dump(fastflagJSON, f, indent=4)
                     printSuccessMessage("DONE!")
-                    if efaz_bootstrap_mode == True:
+                    if isBootstrapper == True:
                         printSuccessMessage("Your fast flags was successfully saved into your Fast Flag Settings!")
                         printSuccessMessage(f"If you like to update your fast flags, go to: {set_location}")
                     else:
@@ -1443,21 +1447,21 @@ class Main():
                     os.mkdir(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings")
                     if debug == True: printDebugMessage("Created ClientSettings folder..")
                 if merge == True:
-                    if os.path.exists(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings/{fastFlagFileName}"):
+                    if os.path.exists(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings/ClientAppSettings.json"):
                         try:
-                            with open(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings/{fastFlagFileName}", "r") as f:
+                            with open(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings/ClientAppSettings.json", "r") as f:
                                 merge_json = json.load(f)
                             merge_json.update(fastflagJSON)
                             fastflagJSON = merge_json
                             if debug == True: printDebugMessage("Successfully merged the JSON in the ClientSettings folder with the provided json!")
                         except Exception as e:
                             self.printLog(f"Something went wrong while trying to generate a merged JSON: {str(e)}")
-                with open(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings/{fastFlagFileName}", "w") as f:
+                with open(f"{macOS_dir}{macOS_beforeClientServices}ClientSettings/ClientAppSettings.json", "w") as f:
                     if flat == True:
                         json.dump(fastflagJSON, f)
                     else:
                         json.dump(fastflagJSON, f, indent=4)
-                if debug == True: printDebugMessage(f"Saved to {fastFlagFileName} successfully!")
+                if debug == True: printDebugMessage(f"Saved to ClientAppSettings.json successfully!")
             elif self.__main_os__ == "Windows":
                 self.endRoblox()
                 if debug == True: printDebugMessage("Ending Roblox Instances..")
@@ -1467,21 +1471,21 @@ class Main():
                         os.mkdir(f"{most_recent_roblox_version_dir}ClientSettings")
                         if debug == True: printDebugMessage("Created ClientSettings folder..")
                     if merge == True:
-                        if os.path.exists(f"{most_recent_roblox_version_dir}ClientSettings\\{fastFlagFileName}"):
+                        if os.path.exists(f"{most_recent_roblox_version_dir}ClientSettings\\ClientAppSettings.json"):
                             try:
-                                with open(f"{most_recent_roblox_version_dir}ClientSettings\\{fastFlagFileName}", "r") as f:
+                                with open(f"{most_recent_roblox_version_dir}ClientSettings\\ClientAppSettings.json", "r") as f:
                                     merge_json = json.load(f)
                                 merge_json.update(fastflagJSON)
                                 fastflagJSON = merge_json
                                 if debug == True: printDebugMessage("Successfully merged the JSON in the ClientSettings folder with the provided json!")
                             except Exception as e:
                                 self.printLog(f"Something went wrong while trying to generate a merged JSON: {str(e)}")
-                    with open(f"{most_recent_roblox_version_dir}ClientSettings\\{fastFlagFileName}", "w") as f:
+                    with open(f"{most_recent_roblox_version_dir}ClientSettings\\ClientAppSettings.json", "w") as f:
                         if flat == True:
                             json.dump(fastflagJSON, f)
                         else:
                             json.dump(fastflagJSON, f, indent=4)
-                    if debug == True: printDebugMessage(f"Saved to {fastFlagFileName} successfully!")
+                    if debug == True: printDebugMessage(f"Saved to ClientAppSettings.json successfully!")
                 else:
                     self.printLog("Roblox couldn't be found.")
             else:
@@ -1650,8 +1654,8 @@ class Main():
                             kernel32.ReleaseMutex(mutex)
                         except Exception as e:
                             kernel32.ReleaseMutex(mutex)
-                threading.Thread(target=hold_mutex).start()
-                threading.Thread(target=hold_mutex2).start()
+                threading.Thread(target=hold_mutex, daemon=True).start()
+                threading.Thread(target=hold_mutex2, daemon=True).start()
                 return True
         else:
             self.printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
@@ -1741,6 +1745,11 @@ class Main():
                     if debug == True and makeDupe == False: printDebugMessage("Roblox is currently open right now and multiple instance is disabled!")
                 elif makeDupe == True:
                     self.endRoblox()
+                    created_mutex = self.prepareMultiInstance(debug=debug)
+                    if created_mutex == True:
+                        if debug == True: printDebugMessage("Successfully attached the mutex! Once this window closes, all the other Roblox windows will close.")
+                    else:
+                        if debug == True: printDebugMessage("There's an issue trying to create a mutex!")
 
             most_recent_roblox_version_dir = self.getRobloxInstallFolder(f"{windows_dir}\\Versions")
             if most_recent_roblox_version_dir:
@@ -2020,7 +2029,11 @@ if __name__ == "__main__":
             printMainMessage("Would you like the Roblox FPS Unlocker in your settings? (This may not work depending on your Roblox client version.) (y/n)")
             robloxFPSUnlocker = input("> ")
             if isYes(robloxFPSUnlocker) == True:
-                generated_json["FFlagGameBasicSettingsFramerateCap5"] = "true" # If roblox decides to change, I won't need to :)
+                generated_json["FFlagGameBasicSettingsFramerateCap1"] = "true" # If roblox decides to change, I won't need to :)
+                generated_json["FFlagGameBasicSettingsFramerateCap2"] = "true"
+                generated_json["FFlagGameBasicSettingsFramerateCap3"] = "true"
+                generated_json["FFlagGameBasicSettingsFramerateCap4"] = "true"
+                generated_json["FFlagGameBasicSettingsFramerateCap5"] = "true"
                 generated_json["FFlagGameBasicSettingsFramerateCap6"] = "true"
                 generated_json["FFlagGameBasicSettingsFramerateCap7"] = "true"
                 generated_json["FFlagGameBasicSettingsFramerateCap8"] = "true"
@@ -2030,6 +2043,18 @@ if __name__ == "__main__":
             elif isRequestClose(robloxFPSUnlocker) == True:
                 printMainMessage("Ending installation..")
                 exit()
+            elif isNo(robloxFPSUnlocker) == True:
+                generated_json["FFlagGameBasicSettingsFramerateCap1"] = "false" # If roblox decides to change, I won't need to :)
+                generated_json["FFlagGameBasicSettingsFramerateCap2"] = "false"
+                generated_json["FFlagGameBasicSettingsFramerateCap3"] = "false"
+                generated_json["FFlagGameBasicSettingsFramerateCap4"] = "false"
+                generated_json["FFlagGameBasicSettingsFramerateCap5"] = "false"
+                generated_json["FFlagGameBasicSettingsFramerateCap6"] = "false"
+                generated_json["FFlagGameBasicSettingsFramerateCap7"] = "false"
+                generated_json["FFlagGameBasicSettingsFramerateCap8"] = "false"
+                generated_json["FFlagGameBasicSettingsFramerateCap9"] = "false"
+                generated_json["FFlagGameBasicSettingsFramerateCap10"] = "false" # If roblox decides to change, I won't need to :)
+                generated_json["DFIntTaskSchedulerTargetFps"] = None
 
         # Verified Badge
         printWarnMessage("--- Verified Badge ---")
@@ -2092,11 +2117,11 @@ if __name__ == "__main__":
 
         # Increase Max Assets Loading
         printWarnMessage("--- Increase Max Assets Loading ---")
-        printMainMessage("Would you like to increase the limit on Max Assets loading from 100 to 1,000? (this will make loading into games faster depending on your computer) (y/n)")
+        printMainMessage("Would you like to increase the limit on Max Assets loading from 100 to 999,999? (this will make loading into games faster depending on your computer) (y/n)")
         printYellowMessage("WARNING! This can crash your Roblox session!")
         installRemoveMaxAssets = input("> ")
         if isYes(installRemoveMaxAssets) == True:
-            generated_json["DFIntNumAssetsMaxToPreload"] = "1000"
+            generated_json["DFIntNumAssetsMaxToPreload"] = "999999"
         elif isRequestClose(installRemoveMaxAssets) == True:
             printMainMessage("Ending installation..")
             exit()
@@ -2129,19 +2154,41 @@ if __name__ == "__main__":
         elif isNo(installFreecam) == True:
             generated_json["FFlagLoadFreecamModule"] = "false"
 
-        # Enable Text Size Scaling
-        printWarnMessage("--- Enable Text Size Scaling ---")
-        printMainMessage("Would you like to enable the text size scaling in beta? (y/n)")
-        installTextSizeScale = input("> ")
-        if isYes(installTextSizeScale) == True:
-            generated_json["FFlagEnablePreferredTextSizeScale"] = "true"
-            generated_json["FFlagEnablePreferredTextSizeSettingInMenus2"] = "true"
-        elif isRequestClose(installTextSizeScale) == True:
+        # Enable New Camera Controls
+        printWarnMessage("--- Enable New Camera Controls ---")
+        printMainMessage("Would you like to enable new camera controls? (y/n)")
+        installNewCamera = input("> ")
+        if isYes(installNewCamera) == True:
+            generated_json["FFlagNewCameraControls"] = "true"
+        elif isRequestClose(installNewCamera) == True:
             printMainMessage("Ending installation..")
             exit()
-        elif isNo(installTextSizeScale) == True:
-            generated_json["FFlagEnablePreferredTextSizeScale"] = "false"
-            generated_json["FFlagEnablePreferredTextSizeSettingInMenus2"] = "false"
+        elif isNo(installNewCamera) == True:
+            generated_json["FFlagNewCameraControls"] = "false"
+
+        # Hide Internet Disconnect Message
+        printWarnMessage("--- Hide Internet Disconnect Message ---")
+        printMainMessage("Would you like to hide the Internet Disconnect message when you're kicked? (You will still be kicked, jsut the message will not show.) (y/n)")
+        installHideDisconnect = input("> ")
+        if isYes(installHideDisconnect) == True:
+            generated_json["DFFlagDebugDisableTimeoutDisconnect"] = "true"
+        elif isRequestClose(installHideDisconnect) == True:
+            printMainMessage("Ending installation..")
+            exit()
+        elif isNo(installHideDisconnect) == True:
+            generated_json["DFFlagDebugDisableTimeoutDisconnect"] = "false"
+
+        # Disable In-Game Purchases
+        printWarnMessage("--- Disable In-Game Purchases ---")
+        printMainMessage("Would you like to disable in-game purchases (game-passes, developer products, etc.)? (You will still be kicked, jsut the message will not show.) (y/n)")
+        installDisablePurchases = input("> ")
+        if isYes(installDisablePurchases) == True:
+            generated_json["DFFlagOrder66"] = "true"
+        elif isRequestClose(installDisablePurchases) == True:
+            printMainMessage("Ending installation..")
+            exit()
+        elif isNo(installDisablePurchases) == True:
+            generated_json["DFFlagOrder66"] = "false"
 
         # Remove Automatically Translated
         printWarnMessage("--- Remove Automatically Translated ---")
@@ -2375,7 +2422,7 @@ if __name__ == "__main__":
                 printMainMessage("Are you sure you would like to save these FFlags in the bootstrap system?")
                 install_now = input("> ")
                 if isYes(install_now) == True:
-                    handler.installFastFlagsJSON(generated_json, endRobloxInstances=False)
+                    handler.installFastFlagsJSON(generated_json, endRobloxInstances=False, isBootstrapper=True)
                 else:
                     printMainMessage("Ending installation..")
                     exit()
