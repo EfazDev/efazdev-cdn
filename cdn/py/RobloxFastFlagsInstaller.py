@@ -2203,34 +2203,16 @@ if __name__ == "__main__":
 
     # Darker Mode
     printWarnMessage("--- Darker Mode ---")
-    printMainMessage("Would you like to enable Darker mode on your client? (y/n)")
+    printMainMessage("Would you like to enable Darker mode on your client? (Recently, this may not work.) (y/n)")
     installDarkerMode = input("> ")
     if isYes(installDarkerMode) == True:
         generated_json["FFlagLuaAppUseUIBloxColorPalettes1"] = "true"
-        generated_json["FFlagLuaAppUseUIBloxColorPalettes2"] = "true"
-        generated_json["FFlagLuaAppUseUIBloxColorPalettes3"] = "true"
-        generated_json["FFlagLuaAppUseUIBloxColorPalettes4"] = "true"
-        generated_json["FFlagLuaAppUseUIBloxColorPalettes5"] = "true"
-        generated_json["FFlagLuaAppUseUIBloxColorPalettes6"] = "true"
-        generated_json["FFlagLuaAppUseUIBloxColorPalettes7"] = "true"
-        generated_json["FFlagLuaAppUseUIBloxColorPalettes8"] = "true"
-        generated_json["FFlagLuaAppUseUIBloxColorPalettes9"] = "true"
-        generated_json["FFlagLuaAppUseUIBloxColorPalettes10"] = "true"
         generated_json["FFlagUIBloxUseNewThemeColorPalettes"] = "true"
     elif isRequestClose(installDarkerMode) == True:
         printMainMessage("Ending installation..")
         exit()
     elif isNo(installDarkerMode) == True:
         generated_json["FFlagLuaAppUseUIBloxColorPalettes1"] = "false"
-        generated_json["FFlagLuaAppUseUIBloxColorPalettes2"] = "false"
-        generated_json["FFlagLuaAppUseUIBloxColorPalettes3"] = "false"
-        generated_json["FFlagLuaAppUseUIBloxColorPalettes4"] = "false"
-        generated_json["FFlagLuaAppUseUIBloxColorPalettes5"] = "false"
-        generated_json["FFlagLuaAppUseUIBloxColorPalettes6"] = "false"
-        generated_json["FFlagLuaAppUseUIBloxColorPalettes7"] = "false"
-        generated_json["FFlagLuaAppUseUIBloxColorPalettes8"] = "false"
-        generated_json["FFlagLuaAppUseUIBloxColorPalettes9"] = "false"
-        generated_json["FFlagLuaAppUseUIBloxColorPalettes10"] = "false"
         generated_json["FFlagUIBloxUseNewThemeColorPalettes"] = "false"
 
     # Blue Foundation Colors
