@@ -1957,6 +1957,7 @@ if __name__ == "__main__":
         else:
             printErrorMessage("Please run this script on macOS/Windows.")
             exit()
+        printWarnMessage("--------------------")
 
     def getUserId():
         printMainMessage("Please input your User ID! This can be found on your profile in the URL: https://www.roblox.com/users/XXXXXXXX/profile")
