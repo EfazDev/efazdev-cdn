@@ -1948,6 +1948,7 @@ if __name__ == "__main__":
                     printErrorMessage("Something went wrong trying to determine your current Roblox version.")
                     input("> ")
                     sys.exit(0)
+        printWarnMessage("-----------")
     else:
         if main_os == "Windows":
             printWarnMessage(f"Starting Roblox Fast Flags Installer v{fast_flag_installer_version}!")
@@ -1956,7 +1957,6 @@ if __name__ == "__main__":
         else:
             printErrorMessage("Please run this script on macOS/Windows.")
             exit()
-    printWarnMessage("-----------")
 
     def getUserId():
         printMainMessage("Please input your User ID! This can be found on your profile in the URL: https://www.roblox.com/users/XXXXXXXX/profile")
