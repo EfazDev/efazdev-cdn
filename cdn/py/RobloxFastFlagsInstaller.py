@@ -1654,8 +1654,8 @@ class Main:
                             kernel32.ReleaseMutex(mutex)
                         except Exception as e:
                             kernel32.ReleaseMutex(mutex)
-                threading.Thread(target=hold_mutex, daemon=True).start()
-                threading.Thread(target=hold_mutex2, daemon=True).start()
+                threading.Thread(target=hold_mutex).start()
+                threading.Thread(target=hold_mutex2).start()
                 return True
         else:
             self.printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
