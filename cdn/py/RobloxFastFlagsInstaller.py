@@ -985,11 +985,7 @@ class Main:
                                         f_index = line.find("[F")
                                         if f_index != -1:
                                             filtered_line = line[f_index:]
-                                            if filtered_line == current_log:
-                                                should_remove = True
-                                            elif "[FLog::WndProcessCheck]" in line:
-                                                should_remove = True
-                                            elif "[FLog::FMOD] FMOD API error" in line:
+                                            if filtered_line == current_log or "[FLog::WndProcessCheck]" in line or "[FLog::FMOD] FMOD API error" in line or "HttpResponse(" in line:
                                                 should_remove = True
                                             else:
                                                 current_log = filtered_line
