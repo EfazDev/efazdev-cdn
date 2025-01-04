@@ -28,7 +28,7 @@ def isNo(text): return text.lower() == "n" or text.lower() == "no"
 def isRequestClose(text): return text.lower() == "exit" or text.lower() == "exit()"
 if os.path.exists("FastFlagConfiguration.json") and os.path.exists("Main.py") and os.path.exists("PipHandler.py"):
     efaz_bootstrap_mode = True
-fast_flag_installer_version = "1.7.5"
+fast_flag_installer_version = "1.7.6"
 
 class pip:
     executable = None
@@ -710,7 +710,7 @@ class Main:
                                 if generated_data:
                                     submitToThread(eventName="onRobloxChannel", data=generated_data, isLine=False)
                                     self.windows_roblox_starter_launched_roblox = True
-                            elif "[FLog::Warning] WebLogin authentication is failed and App is quitting" in line:
+                            elif "[FLog::Warning] WebLogin authentication is failed and App is quitting" in line or "[FLog::Warning] (RobloxPlayerAppDelegate) WebLogin authentication failure" in line:
                                 submitToThread(eventName="onRobloxAppLoginFailed", data=line, isLine=True)
                             elif "[FLog::UgcExperienceController] UgcExperienceController: doTeleport: joinScriptUrl" in line:
                                 submitToThread(eventName="onGameTeleport", data=line, isLine=True)
@@ -2116,16 +2116,25 @@ if __name__ == "__main__":
 
     # Increase Max Assets Loading
     printWarnMessage("--- Increase Max Assets Loading ---")
-    printMainMessage("Would you like to increase the limit on Max Assets loading from 100 to 999,999? (this will make loading into games faster depending on your computer) (y/n)")
+    printMainMessage("Would you like to increase the limit on Max Assets loading from 100? (this will make loading into games faster depending on your computer) (y/n)")
     printYellowMessage("WARNING! This can crash your Roblox session!")
     installRemoveMaxAssets = input("> ")
     if isYes(installRemoveMaxAssets) == True:
-        generated_json["DFIntNumAssetsMaxToPreload"] = "999999"
+        printMainMessage("Enter the amount of assets you would like to load at the same time:")
+        installRemoveMaxAssetsNum = input("> ")
+        if installRemoveMaxAssetsNum.isnumeric():
+            generated_json["DFIntNumAssetsMaxToPreload"] = str(int(installRemoveMaxAssetsNum))
+            generated_json["DFIntAssetPreloading"] = str(int(installRemoveMaxAssetsNum))
+        else:
+            printYellowMessage("Disabled limit due to invalid prompt.")
+            generated_json["DFIntNumAssetsMaxToPreload"] = "100"
+            generated_json["DFIntAssetPreloading"] = "100"
     elif isRequestClose(installRemoveMaxAssets) == True:
         printMainMessage("Ending installation..")
         exit()
     elif isNo(installRemoveMaxAssets) == True:
         generated_json["DFIntNumAssetsMaxToPreload"] = "100"
+        generated_json["DFIntAssetPreloading"] = "100"
 
     # Enable Genre System
     printWarnMessage("--- Enable New Genre System Under Making ---")
@@ -2189,6 +2198,54 @@ if __name__ == "__main__":
     elif isNo(installDisablePurchases) == True:
         generated_json["DFFlagOrder66"] = "false"
 
+    # Disable Voice Chat
+    printWarnMessage("--- Disable Voice Chat ---")
+    printMainMessage("Would you like to disable Voice Chat? (y/n)")
+    installDisableVoiceChat = input("> ")
+    if isYes(installDisableVoiceChat) == True:
+        generated_json["DFFlagVoiceChat4"] = "false"
+    elif isRequestClose(installDisableVoiceChat) == True:
+        printMainMessage("Ending installation..")
+        exit()
+    elif isNo(installDisableVoiceChat) == True:
+        generated_json["DFFlagVoiceChat4"] = "true"
+
+    # Disable In-Game Chat
+    printWarnMessage("--- Disable In-Game Chat ---")
+    printMainMessage("Would you like to disable In-Game Chat? (y/n)")
+    installDisableGameChat = input("> ")
+    if isYes(installDisableGameChat) == True:
+        generated_json["FFlagDebugForceChatDisabled"] = "true"
+    elif isRequestClose(installDisableGameChat) == True:
+        printMainMessage("Ending installation..")
+        exit()
+    elif isNo(installDisableGameChat) == True:
+        generated_json["FFlagDebugForceChatDisabled"] = "false"
+
+    # Disable Full Screen Title Bar
+    printWarnMessage("--- Disable Full Screen Title Bar ---")
+    printMainMessage("Would you like to disable the Title Bar when you go into full screen on the Roblox client? (y/n)")
+    installDisableFullScreenTitle = input("> ")
+    if isYes(installDisableFullScreenTitle) == True:
+        generated_json["FIntFullscreenTitleBarTriggerDelayMillis"] = "3600000"
+    elif isRequestClose(installDisableFullScreenTitle) == True:
+        printMainMessage("Ending installation..")
+        exit()
+    elif isNo(installDisableFullScreenTitle) == True:
+        generated_json["FIntFullscreenTitleBarTriggerDelayMillis"] = ""
+
+    # Enable Red Text Font
+    printWarnMessage("--- Enable Red Text Font ---")
+    printMainMessage("Would you like to enable Red text instead of White text color in the lua app? (y/n)")
+    installRedText = input("> ")
+    if isYes(installRedText) == True:
+        generated_json["FStringDebugHighlightSpecificFont"] = "rbxasset://fonts/families/BuilderSans.json"
+    elif isRequestClose(installRedText) == True:
+        printMainMessage("Ending installation..")
+        exit()
+    elif isNo(installRedText) == True:
+        generated_json["FStringDebugHighlightSpecificFont"] = ""
+
     # Remove Automatically Translated
     printWarnMessage("--- Remove Automatically Translated ---")
     printMainMessage("Would you like to remove the chat automatically translated message in the chat? (y/n)")
@@ -2200,6 +2257,150 @@ if __name__ == "__main__":
         exit()
     elif isNo(installRemoveAutoTranslate) == True:
         generated_json["FFlagChatTranslationEnableSystemMessage"] = "true"
+
+    # Rendering Mode
+    got_modes = []
+    ui_options = {}
+    if main_os == "Darwin":
+        got_modes.append("Metal (for MacOS)")
+    got_modes.append("Vulkan (may cause issues)")
+    got_modes.append("OpenGL")
+    got_modes.append("DirectX 10")
+    got_modes.append("DirectX 11")
+    got_modes = sorted(got_modes)
+    count = 1
+
+    generated_json["FFlagDebugGraphicsPreferMetal"] = ""
+    generated_json["FFlagDebugGraphicsDisableDirect3D11"] = ""
+    generated_json["FFlagDebugGraphicsPreferVulkan"] = ""
+    generated_json["FFlagDebugGraphicsPreferOpenGL"] = ""
+    generated_json["FFlagDebugGraphicsPreferD3D11FL10"] = ""
+    generated_json["FFlagDebugGraphicsPreferD3D11"] = ""
+        
+    printWarnMessage("--- Rendering Mode ---")
+    printMainMessage("Select a rendering mode to force on the client:")
+    print("\033[38;5;215mThis FFlag was from the LatteFlags GitHub! (https://github.com/espresso-soft/latteflags)\033[0m")
+    for i in got_modes:
+        printMainMessage(f"[{str(count)}] = {i}")
+        ui_options[str(count)] = i
+        count += 1
+    print("[*] = None")
+    installRenderingMode = input("> ")
+    if ui_options.get(installRenderingMode):
+        opt = ui_options[installRenderingMode]
+        if opt == "Metal (for MacOS)":
+            generated_json["FFlagDebugGraphicsPreferMetal"] = "true"
+        elif opt == "Vulkan (may cause issues)":
+            generated_json["FFlagDebugGraphicsDisableDirect3D11"] = "true"
+            generated_json["FFlagDebugGraphicsPreferVulkan"] = "true"
+        elif opt == "OpenGL":
+            generated_json["FFlagDebugGraphicsDisableDirect3D11"] = "true"
+            generated_json["FFlagDebugGraphicsPreferOpenGL"] = "true"
+        elif opt == "DirectX 10":
+            generated_json["FFlagDebugGraphicsPreferD3D11FL10"] = "true"
+        elif opt == "DirectX 11":
+            generated_json["FFlagDebugGraphicsPreferD3D11"] = "true"
+
+    # Lighting Mode
+    got_modes = []
+    ui_options = {}
+    got_modes.append("Voxel Lighting (Phase 1)")
+    got_modes.append("Shadowmap Lighting (Phase 2)")
+    got_modes.append("Future Lighting (Phase 3)")
+    got_modes.append("Unified Lighting")
+    got_modes = sorted(got_modes)
+    count = 1
+
+    generated_json["DFFlagDebugRenderForceTechnologyVoxel"] = ""
+    generated_json["FFlagDebugForceFutureIsBrightPhase2"] = ""
+    generated_json["FFlagDebugForceFutureIsBrightPhase3"] = ""
+    generated_json["FFlagRenderUnifiedLighting10"] = ""
+    generated_json["FFlagUnifiedLightingBetaFeature"] = ""
+        
+    printWarnMessage("--- Lighting Mode ---")
+    printMainMessage("Select a lighting mode to force on the client:")
+    print("\033[38;5;215mThis FFlag was from the LatteFlags GitHub! (https://github.com/espresso-soft/latteflags)\033[0m")
+    for i in got_modes:
+        printMainMessage(f"[{str(count)}] = {i}")
+        ui_options[str(count)] = i
+        count += 1
+    print("[*] = None")
+    installLightingMode = input("> ")
+    if ui_options.get(installLightingMode):
+        opt = ui_options[installLightingMode]
+        if opt == "Voxel Lighting (Phase 1)":
+            generated_json["DFFlagDebugRenderForceTechnologyVoxel"] = "true"
+        elif opt == "Shadowmap Lighting (Phase 2)":
+            generated_json["FFlagDebugForceFutureIsBrightPhase2"] = "true"
+        elif opt == "Future Lighting (Phase 3)":
+            generated_json["FFlagDebugForceFutureIsBrightPhase3"] = "true"
+        elif opt == "Unified Lighting":
+            generated_json["FFlagRenderUnifiedLighting10"] = "true"
+            generated_json["FFlagUnifiedLightingBetaFeature"] = "true"
+
+    # Texture Quality
+    got_modes = []
+    ui_options = {}
+    got_modes.append("Level 1 (Low Quality)")
+    got_modes.append("Level 2 (Medium Quality)")
+    got_modes.append("Level 3 (Highest Quality)")
+    got_modes = sorted(got_modes)
+    count = 1
+
+    generated_json["DFFlagTextureQualityOverrideEnabled"] = ""
+    generated_json["DFIntTextureQualityOverride"] = ""
+        
+    printWarnMessage("--- Texture Quality ---")
+    printMainMessage("Select a texture quality number to put on the client:")
+    for i in got_modes:
+        printMainMessage(f"[{str(count)}] = {i}")
+        ui_options[str(count)] = i
+        count += 1
+    print("[*] = None")
+    installTextureQuality = input("> ")
+    if ui_options.get(installTextureQuality):
+        opt = ui_options[installTextureQuality]
+        if opt == "Level 1 (Low Quality)":
+            generated_json["DFFlagTextureQualityOverrideEnabled"] = "true"
+            generated_json["DFIntTextureQualityOverride"] = "1"
+        elif opt == "Level 2 (Medium Quality)":
+            generated_json["DFFlagTextureQualityOverrideEnabled"] = "true"
+            generated_json["DFIntTextureQualityOverride"] = "2"
+        elif opt == "Level 3 (Highest Quality)":
+            generated_json["DFFlagTextureQualityOverrideEnabled"] = "true"
+            generated_json["DFIntTextureQualityOverride"] = "3"
+
+    # Disable Highlights
+    printWarnMessage("--- Disable Highlights ---")
+    printMainMessage("Would you like to disable Highlight rendering on the client? (y/n)")
+    print("\033[38;5;215mThis FFlag was from the LatteFlags GitHub! (https://github.com/espresso-soft/latteflags)\033[0m")
+    installDisableHighLight = input("> ")
+    if isYes(installDisableHighLight) == True:
+        generated_json["DFFlagRenderHighlightManagerPrepare"] = "true"
+    elif isRequestClose(installDisableHighLight) == True:
+        printMainMessage("Ending installation..")
+        exit()
+    elif isNo(installDisableHighLight) == True:
+        generated_json["DFFlagRenderHighlightManagerPrepare"] = "false"
+
+    # Limit Videos Playing
+    printWarnMessage("--- Limit Videos Playing ---")
+    printMainMessage("Would you like to set a number of Videos that can be played in-game on the client? (y/n)")
+    print("\033[38;5;215mThis FFlag was from the LatteFlags GitHub! (https://github.com/espresso-soft/latteflags)\033[0m")
+    installLimitVideos = input("> ")
+    if isYes(installLimitVideos) == True:
+        printMainMessage("Input the number of videos you would like to limit:")
+        installLimitVideosNum = input("> ")
+        if installLimitVideosNum.isnumeric():
+            generated_json["DFIntVideoMaxNumberOfVideosPlaying"] = str(int(installLimitVideosNum))
+        else:
+            printYellowMessage("Disabled limit due to invalid prompt.")
+            generated_json["DFIntVideoMaxNumberOfVideosPlaying"] = ""
+    elif isRequestClose(installLimitVideos) == True:
+        printMainMessage("Ending installation..")
+        exit()
+    elif isNo(installLimitVideos) == True:
+        generated_json["DFIntVideoMaxNumberOfVideosPlaying"] = ""
 
     # Darker Mode
     printWarnMessage("--- Darker Mode ---")
@@ -2296,6 +2497,20 @@ if __name__ == "__main__":
         exit()
     elif isNo(installQuickConnect) == True:
         generated_json["FFlagEnableQuickGameLaunch"] = "false"
+
+    # Pre-Rendering
+    printWarnMessage("--- Pre-Rendering ---")
+    printMainMessage("Would you like to enable Pre-Rendering on the client? (y/n)")
+    printYellowMessage("This may conclude a 25% Performance Boost but may cause compatibility issues in games.")
+    print("\033[38;5;215mThis FFlag was from the LatteFlags GitHub! (https://github.com/espresso-soft/latteflags)\033[0m")
+    installPreRendering = input("> ")
+    if isYes(installPreRendering) == True:
+        generated_json["FFlagMovePrerender"] = "true"
+    elif isRequestClose(installPreRendering) == True:
+        printMainMessage("Ending installation..")
+        exit()
+    elif isNo(installPreRendering) == True:
+        generated_json["FFlagMovePrerender"] = "false"
 
     # Custom Fast Flags
     printWarnMessage("--- Custom Fast Flags ---")
