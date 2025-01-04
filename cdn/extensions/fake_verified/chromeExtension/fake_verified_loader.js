@@ -7,6 +7,10 @@ var approved_efazdev_users = {};
 var approved_by_user_users = {};
 var group_scan = false;
 
+function warn(mes) {
+    console.warn(`Verified Badge Loader: ${mes}`)
+}
+
 function start() {
     function logMessage(message) {
         if (allow_messages == true) { console.log(`Verified Badge Loader: ${message}`) }
@@ -44,6 +48,14 @@ function start() {
 
         function getIfLinkIsGroup(link) {
             if (link.includes("/groups/") || link.includes("/communities/")) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function getIfLinkIsUserProfile(link) {
+            if (link.includes("/users/") && link.includes("/profile")) {
                 return true;
             } else {
                 return false;
@@ -120,7 +132,7 @@ function start() {
                             broken_context = true
                             return null
                         } else {
-                            console.warn(`Error with getting approved users: ${err}`)
+                            warn(`Error with getting approved users: ${err}`)
                             return null
                         }
                     });
@@ -437,7 +449,7 @@ function start() {
                                             broken_context = true;
                                             return { "accepted": false }
                                         } else {
-                                            console.warn(`Error with getting approved group: ${err}`);
+                                            warn(`Error with getting approved group: ${err}`);
                                             return { "accepted": false }
                                         }
                                     }
@@ -586,9 +598,9 @@ function start() {
                             }
 
                             if (enabled == true) {
-                                profile_html = profile_html.replace("[input_id]", json["id"]).replace("[input_id]", json["id"]).replace("[input_id]", json["id"]).replace("[input_id]", json["id"]);
+                                profile_html = profile_html.replaceAll("[input_id]", json["id"]);
 
-                                if (window.location.pathname == `/users/${json["id"]}/profile` || window.location.pathname == `/users/${json["id"]}/profile/`) {
+                                if (getIfLinkIsUserProfile(window.location.pathname) && window.location.pathname.includes(json["id"].toString())) {
                                     var main_headers = document.getElementsByClassName("profile-name text-overflow");
                                     main_headers = Array.prototype.slice.call(main_headers);
                                     if (main_headers.length > 0) {
@@ -634,7 +646,7 @@ function start() {
                                 if (name_on_side.length > 0) {
                                     name_on_side.forEach((main_name_on_side) => {
                                         if (main_name_on_side.outerHTML.includes(displayName) && main_name_on_side.parentElement && main_name_on_side.parentElement.href) {
-                                            if (main_name_on_side.parentElement.href == `https://www.roblox.com/users/${json["id"]}/profile`) {
+                                            if (getIfLinkIsUserProfile(main_name_on_side.parentElement.href) && main_name_on_side.parentElement.href.includes(json["id"].toString())) {
                                                 if (verifiedBadgePlacedAlready(main_name_on_side.outerHTML)) {
                                                     return;
                                                 }
@@ -664,7 +676,7 @@ function start() {
                                             group_guilded_posts = Array.prototype.slice.call(group_guilded_posts);
                                             if (group_guilded_posts.length > 0) {
                                                 group_guilded_posts.forEach((shout) => {
-                                                    if (shout.className == "text-name name" && shout.innerHTML.includes(displayName) && shout.href == `https://www.roblox.com/users/${json["id"]}/profile`) {
+                                                    if (shout.className == "text-name name" && shout.innerHTML.includes(displayName) && getIfLinkIsUserProfile(shout.href) && shout.href.includes(json["id"].toString())) {
                                                         if (verifiedBadgePlacedAlready(shout.parentElement.outerHTML)) {
                                                             return;
                                                         }
@@ -677,7 +689,7 @@ function start() {
                                             group_shouts = Array.prototype.slice.call(group_shouts);
                                             if (group_shouts.length > 0) {
                                                 group_shouts.forEach((shout) => {
-                                                    if (shout.outerHTML.includes(displayName) && shout.href == `https://www.roblox.com/users/${json["id"]}/profile`) {
+                                                    if (shout.outerHTML.includes(displayName) && getIfLinkIsUserProfile(shout.href) && shout.href.includes(json["id"].toString())) {
                                                         if (verifiedBadgePlacedAlready(shout.parentElement.outerHTML)) {
                                                             return;
                                                         }
@@ -690,7 +702,7 @@ function start() {
                                             name_in_group = Array.prototype.slice.call(name_in_group);
                                             if (name_in_group.length > 0) {
                                                 name_in_group.forEach((main_name_on_group) => {
-                                                    if (main_name_on_group && main_name_on_group.children[0] && main_name_on_group.children[0].children[0] && main_name_on_group.children[0].children[0].href == `https://www.roblox.com/users/${json["id"]}/profile`) {
+                                                    if (main_name_on_group && main_name_on_group.children[0] && main_name_on_group.children[0].children[0] && getIfLinkIsUserProfile(main_name_on_group.children[0].children[0].href) && main_name_on_group.children[0].children[0].href.includes(json["id"].toString())) {
                                                         if (main_name_on_group.children[0] && main_name_on_group.children[0].children[2] && main_name_on_group.children[0].children[2].children[0] && main_name_on_group.children[0].children[2].children[0].children[0]) {
                                                             if (verifiedBadgePlacedAlready(main_name_on_group.children[0].children[2].children[0].innerHTML)) {
                                                                 return;
@@ -705,7 +717,7 @@ function start() {
                                             group_wall = Array.prototype.slice.call(group_wall);
                                             if (group_wall.length > 0) {
                                                 group_wall.forEach((main_name_on_group) => {
-                                                    if (main_name_on_group.outerHTML.includes(displayName) && main_name_on_group.className == "text-name ng-binding ng-scope" && main_name_on_group.href == `https://www.roblox.com/users/${json["id"]}/profile`) {
+                                                    if (main_name_on_group.outerHTML.includes(displayName) && main_name_on_group.className == "text-name ng-binding ng-scope" && getIfLinkIsUserProfile(main_name_on_group.href) && main_name_on_group.href.includes(json["id"].toString())) {
                                                         if (verifiedBadgePlacedAlready(main_name_on_group.innerHTML)) {
                                                             return;
                                                         }
@@ -761,7 +773,7 @@ function start() {
                                                             approvedGroup(identified_id).then(info => {
                                                                 if (info["accepted"] == true) {
                                                                     group_owners.forEach((group_owner_name) => {
-                                                                        if (group_owner_name.innerHTML.includes(displayName) && group_owner_name.href == `https://www.roblox.com/users/${json["id"]}/profile`) {
+                                                                        if (group_owner_name.innerHTML.includes(displayName) && getIfLinkIsUserProfile(group_owner_name.href) && group_owner_name.href.includes(json["id"].toString())) {
                                                                             if (!(group_owner_name.parentElement)) {
                                                                                 return;
                                                                             }
@@ -1519,20 +1531,24 @@ function start() {
                                 }, start_time)
                                 /* Loop entire function again */
                             }
-                        } else {
-                            if (allow_messages == true) alert("Fake Verified Badge couldn't be applied since we couldn't figure what your User ID is.");
                         }
                     }).catch(err => {
                         if (err.toString().includes("Extension context")) {
                             broken_context = true
                             return { "accepted": false }
                         } else {
-                            console.warn(err);
-                            if (allow_messages == true) alert("We couldn't apply the verified badge due to an error! Sorry!");
+                            warn(err);
+                            if (allow_messages == true) {
+                                alert("We couldn't apply the verified badge due to an error! Sorry!");
+                            } else {
+                                setTimeout(() => {
+                                    scanUser(id, isMain)
+                                }, start_time)
+                            }
                         }
                     })
             } catch (err) {
-                console.warn(err);
+                warn(err);
                 if (allow_messages == true) alert("We couldn't apply the verified badge due to an error! Sorry!");
             }
         }
@@ -1542,7 +1558,7 @@ function start() {
                 scanUser(json["id"], true)
             }
         }).catch(err => {
-            console.warn(err);
+            warn(err);
             if (allow_messages == true) alert("We couldn't apply the verified badge due to an error! Sorry!");
         })
         setTimeout(function () {
@@ -1562,7 +1578,7 @@ function start() {
                             })
                         }
                     }).catch(err => {
-                        console.warn(err);
+                        warn(err);
                         if (allow_messages == true) alert("We couldn't apply the verified badge due to an error! Sorry!");
                     })
                 }
@@ -1582,7 +1598,7 @@ function start() {
                             })
                         }
                     }).catch(err => {
-                        console.warn(err);
+                        warn(err);
                         if (allow_messages == true) alert("We couldn't apply the verified badge due to an error! Sorry!");
                     })
                 }
@@ -1602,7 +1618,7 @@ function start() {
                             })
                         }
                     }).catch(err => {
-                        console.warn(err);
+                        warn(err);
                         if (allow_messages == true) alert("We couldn't apply the verified badge due to an error! Sorry!");
                     })
                 }
@@ -1651,12 +1667,12 @@ async function loader() { // Script Loader
                             return {}
                         }
                     }).catch((err) => {
-                        console.warn(err)
+                        warn(err)
                         return {}
                     })
                     approved_efazdev_users = appr_json;
                 } catch (err) {
-                    console.warn(err)
+                    warn(err)
                     approved_efazdev_users = {}
                 }
             }
@@ -1667,17 +1683,17 @@ async function loader() { // Script Loader
                             if (typeof (app_json_items["user_approved_json"]) == "object") {
                                 return app_json_items["user_approved_json"]
                             } else {
-                                console.warn("Invalid JSON data.");
+                                warn("Invalid JSON data.");
                                 return {}
                             }
                         } else {
-                            console.warn("Invalid JSON data.");
+                            warn("Invalid JSON data.");
                             return {}
                         }
                     });
                     approved_by_user_users = appr_json;
                 } catch (err) {
-                    console.warn(err)
+                    warn(err)
                     approved_by_user_users = {}
                 }
             }
@@ -1716,7 +1732,7 @@ async function loader() { // Script Loader
                 }
                 console.log("Starting Verified Badge Loader: Settings Configuration v2")
             }).catch(err => {
-                console.warn(err)
+                warn(err)
                 if (document.readyState === "complete") {
                     setTimeout(() => { start() }, start_time)
                 } else {
