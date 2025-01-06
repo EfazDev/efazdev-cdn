@@ -34,6 +34,11 @@
     height: 48px;
 }
 
+.swagger-ui .scheme-container {
+    margin: 0 0 0px !important;
+    padding: 0px 0 !important;
+}
+
 /* Copied Warning Message CSS from https://catalog.roblox.com/docs/resources/Docs.css */
 
 @media (prefers-color-scheme: light) {
