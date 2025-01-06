@@ -38,6 +38,9 @@
     margin: 0 0 0px !important;
     padding: 0px 0 !important;
 }
+.swagger-ui .info>div {
+    margin: 0 0 -15px !important;
+}
 
 /* Copied Warning Message CSS from https://catalog.roblox.com/docs/resources/Docs.css */
 
