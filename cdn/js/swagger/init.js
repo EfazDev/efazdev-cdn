@@ -18,8 +18,8 @@ window.onload = function () {
                     "name": "Dashboard API"
                 },
                 {
-                    "url": "https://following.efaz.dev/api/swagger",
-                    "name": "Following API"
+                    "url": "https://glitch.efaz.dev/api/swagger",
+                    "name": "Glitch API"
                 }
             ],
             "default": "Main API",
@@ -48,14 +48,14 @@ window.onload = function () {
                 "name": "Following API"
             }
         ]
-    } else if (window.location.href.includes("?urls.primaryName=Following%20API")) {
-        options["customOptions"]["default"] = "Following API"
-        options["customOptions"]["launchUrl"] = "https://following.efaz.dev/api/swagger"
-        options["customOptions"]["configUrl"] = "https://following.efaz.dev/api/swagger"
+    } else if (window.location.href.includes("?urls.primaryName=Glitch%20API")) {
+        options["customOptions"]["default"] = "Glitch API"
+        options["customOptions"]["launchUrl"] = "https://glitch.efaz.dev/api/swagger"
+        options["customOptions"]["configUrl"] = "https://glitch.efaz.dev/api/swagger"
         options["customOptions"]["urls"] = [
             {
-                "url": "https://following.efaz.dev/api/swagger",
-                "name": "Following API"
+                "url": "https://glitch.efaz.dev/api/swagger",
+                "name": "Glitch API"
             },
             {
                 "url": "https://api.efaz.dev/api/swagger",
