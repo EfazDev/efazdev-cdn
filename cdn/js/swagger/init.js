@@ -44,8 +44,8 @@ window.onload = function () {
                 "name": "Main API"
             },
             {
-                "url": "https://following.efaz.dev/api/swagger",
-                "name": "Following API"
+                "url": "https://glitch.efaz.dev/api/swagger",
+                "name": "Glitch API"
             }
         ]
     } else if (window.location.href.includes("?urls.primaryName=Glitch%20API")) {
