@@ -1,0 +1,27 @@
+{
+    "name": "dev.efaz.roblox_foundation_color_accents",
+    "settings": {
+        "enabled": {
+            "text": "Enable Extension",
+            "type": "checkbox",
+            "default": true
+        },
+        "loopSeconds": {
+            "text": "Amount of Miliseconds before looping",
+            "type": "number",
+            "default": 100,
+            "reset": true
+        },
+        "color": {
+            "text": "Select an accent color",
+            "type": "color",
+            "default": "#335FFF",
+            "reset": true
+        }
+    },
+    "chromeWebstoreLinkEnabled": true,
+    "uploadedChromeExtensionID": "ofblldaagkkmhajigieajamomjcbohgf",
+    "scanForManifestUpdates": true,
+    "isVersionServer": true,
+    "onlineManifestFile": "https://cdn.efaz.dev/cdn/extensions/versions/public.json"
+}
