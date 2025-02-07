@@ -7,7 +7,7 @@ Made by Efaz from efaz.dev!
 
 (Information about this script)
 Made by: Efaz from https://www.efaz.dev
-Script Version: v1.1.0 Beta
+Script Version: v1.1.5 Beta
 Type of Code: JavaScript
 
 */
@@ -208,12 +208,12 @@ function set_mode(mode) {
             if (system_json["showCurrentMode"] && document.getElementById("current_mode")) {
                 var obj1 = document.getElementById("current_mode")
                 var obj2 = document.getElementById("sendButton")
-                obj1.innerHTML = `Current Mode: ${mode}`
+                obj1.innerHTML = 'Current Mode: ' + mode
 
                 if (specific_settings["showModeInButtonText"] == false) {
-                    obj2.innerHTML = `Send Form!`
+                    obj2.innerHTML = 'Send Form!'
                 } else {
-                    obj2.innerHTML = `Send ${mode}!`
+                    obj2.innerHTML = 'Send ' + mode + "!"
                 }
 
                 var questions = system_json["questions"]
@@ -221,7 +221,7 @@ function set_mode(mode) {
                     for (let a = 0; a < questions.length; a++) {
                         var main_question = questions[a]
                         if (!(main_question["autofilled"] == true)) {
-                            var object = document.getElementById(`${main_question["jsonName"]}_input`)
+                            var object = document.getElementById(main_question["jsonName"] + '_input')
                             if (object) {
                                 if (object.parentNode.tagName == "DIV") {
                                     object.style.display = ""
@@ -235,7 +235,7 @@ function set_mode(mode) {
                     for (let a = 0; a < questions.length; a++) {
                         var main_question = questions[a]
                         if (!(main_question["autofilled"] == true)) {
-                            var object = document.getElementById(`${main_question["jsonName"]}_input`)
+                            var object = document.getElementById(main_question["jsonName"] + '_input')
                             if (object) {
                                 if (object.parentNode.tagName == "DIV") {
                                     object.style.display = "none"
@@ -261,7 +261,7 @@ function set_mode(mode) {
                 }
             } else {
                 var obj2 = document.getElementById("sendButton")
-                obj2.innerHTML = `Send Form!`
+                obj2.innerHTML = 'Send Form!'
             }
         }
     })
@@ -275,7 +275,7 @@ async function get_captcha(callback_a, token) {
                     callback_a(["Google", token])
                 })
         } else if (cloudflare_captcha_enabled == true) {
-            await turnstile.render(`#${cloudflare_captcha["jsonName"]}_input`, {
+            await turnstile.render('#' + cloudflare_captcha["jsonName"] + '_input', {
                 sitekey: cloudflare_captcha["siteKey"],
                 callback: function (token) {
                     callback_a(["Cloudflare", token])
@@ -305,11 +305,7 @@ function send_response(verification_key) {
         try {
             function responseToError(err) {
                 view_error_menu("Response couldn't be sent due to a client error. View console for specific details.")
-                console.log(`
-            Error:
-            
-            ${err.message}
-            `)
+                console.log('EfazDev Forms System Error: ' + err.message)
             }
             get_values().then(values => {
                 get_xcsrf(values).then(x_csrf_token => {
@@ -333,10 +329,10 @@ function send_response(verification_key) {
                                             new_formated_values[key] = main_val
                                         } else if (main_val2["in"] == "URL") {
                                             if (appliedAtSymbol == false) {
-                                                new_api_url = new_api_url + `?${main_val2["jsonName"]}=${main_val}`
+                                                new_api_url = new_api_url + '?' + main_val2["jsonName"] + '=' + main_val
                                                 appliedAtSymbol = true
                                             } else {
-                                                new_api_url = new_api_url + `&${main_val2["jsonName"]}=${main_val}`
+                                                new_api_url = new_api_url + '?' + main_val2["jsonName"] + '=' + main_val
                                             }
                                         }
                                     }
@@ -362,19 +358,19 @@ function send_response(verification_key) {
                             }
 
                             if (listOfEmptyRequiredVariables.length > 0) {
-                                var new_string_g = `${listOfEmptyRequiredVariables[0]}`
+                                var new_string_g = (listOfEmptyRequiredVariables[0] || "null").toString()
                                 var remove = false
                                 for (let f = 0; f < listOfEmptyRequiredVariables.length + 1; f++) {
                                     if (remove == true) {
                                         if (listOfEmptyRequiredVariables[f]) {
                                             var val_h = listOfEmptyRequiredVariables[f]
-                                            new_string_g = new_string_g + `, ${val_h}`
+                                            new_string_g = new_string_g + ", " + (val_h || "null").toString()
                                         }
                                     } else {
                                         remove = true
                                     }
                                 }
-                                view_error_menu(`The following questions were filled empty: ${new_string_g}`)
+                                view_error_menu("The following questions were filled empty: " + new_string_g)
                             } else {
                                 get_captcha(captcha_key => {
                                     if (captcha_key[0] == "Google") {
@@ -458,37 +454,37 @@ function start_system() {
         title = system_json["title"]
         icon_url = system_json["icon_url"]
     }
-    document.body.innerHTML = `
-    <div id="main_menu">
-        <h1 id="title1">${title}</h1>
-    </div>
-    <div id="failed" style="display: none;">
-        <h1 id="title2">Oops!</h1>
-        <p id="message1">{error}</p>
-        <br>
-        <button type="button" id="returnButton" class="center" onclick="view_main_menu()">Try again!</button>
-    </div>
-    <div id="awaiting" style="display: none;">
-        <h1 id="title2">Hold on!</h1>
-        <p id="message1">We are processing your request! Be right back!</p>
-    </div>
-    <div id="success" style="display: none;">
-        <h1 id="title3">Success!</h1>
-        <p id="message2">Thanks for submitting your form!</p>
-        <br>
-        <button type="button" id="reloadButton" class="center" onclick="returnFromMessageAndClear()">Do another!</button>
-    </div>
-    ` /* Clear all objects inside the body and resets to default usable HTML. */
+    document.body.innerHTML = 
+    '<div id="main_menu">\n' +
+        '    <h1 id="title1">' + title + '</h1>\n' +
+    '</div>\n' +
+    '<div id="failed" style="display: none;">\n' +
+        '    <h1 id="title2">Oops!</h1>\n' +
+        '    <p id="message1">{error}</p>\n' +
+        '    <br>\n' +
+        '    <button type="button" id="returnButton" class="center" onclick="view_main_menu()">Try again!</button>\n' +
+    '</div>\n' +
+    '<div id="awaiting" style="display: none;">\n' +
+        '    <h1 id="title2">Hold on!</h1>\n' +
+        '    <p id="message1">We are processing your request! Be right back!</p>\n' +
+    '</div>\n' +
+    '<div id="success" style="display: none;">\n' +
+        '    <h1 id="title3">Success!</h1>\n' +
+        '    <p id="message2">Thanks for submitting your form!</p>\n' +
+        '    <br>\n' +
+        '    <button type="button" id="reloadButton" class="center" onclick="returnFromMessageAndClear()">Do another!</button>\n' +
+    '</div>'; /* Clear all objects inside the body and resets to default usable HTML. */
 
     if (disabled_system == false) {
         try {
             var main_menu = document.getElementById("main_menu")
             if (!(specific_settings["hideIcon"] == true)) {
                 if (specific_settings["resize_logo"]) {
-                    var new_html = `<img src="${icon_url}" height="${specific_settings["resize_logo"]["height"]}" width="${specific_settings["resize_logo"]["width"]}" class="center">`
+                    var new_html = '<img src="' + icon_url + '" height="' + specific_settings["resize_logo"]["height"] + 
+                               '" width="' + specific_settings["resize_logo"]["width"] + '" class="center">';
                     main_menu.innerHTML = new_html + main_menu.innerHTML
                 } else {
-                    var new_html = `<img src="${icon_url}" height="64" width="64" class="center">`
+                    var new_html = '<img src="' + icon_url + '" height="64" width="64" class="center">'
                     main_menu.innerHTML = new_html + main_menu.innerHTML
                 }
             }
@@ -498,179 +494,181 @@ function start_system() {
             for (let a = 0; a < questions.length; a++) {
                 var newQuestion = questions[a]
                 if (newQuestion["type"] == "Short Response" || newQuestion["type"] == "SR") {
-                    var new_html = `<p>${newQuestion["name"]}: <input placeholder="${newQuestion["placeholder"]}" type="text" class="${newQuestion["custom_class"]}" id="${newQuestion["jsonName"]}_input"`
+                    var new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + 
+                                '" type="text" class="' + newQuestion["custom_class"] + 
+                                '" id="' + newQuestion["jsonName"] + '_input"';
                     if (newQuestion["required"] == true) {
-                        new_html = new_html + ` required></input>`
+                        new_html = new_html + ' required></input>'
                         if (specific_settings["showRequiredText"] == true) {
-                            new_html = new_html + ` <e class="required">*</e>`
+                            new_html = new_html + ' <e class="required">*</e>'
                         }
                     } else {
-                        new_html = new_html + `></input>`
+                        new_html = new_html + '></input>'
                     }
-                    new_html = new_html + `</p>`
+                    new_html = new_html + '</p>'
                     main_menu.innerHTML = main_menu.innerHTML + new_html
                 } else if (newQuestion["type"] == "Detailed Message" || newQuestion["type"] == "DM") {
-                    var new_html = `<p>${newQuestion["name"]}: </p><textarea placeholder="${newQuestion["placeholder"]}" type="text" class="${newQuestion["custom_class"]}" id="${newQuestion["jsonName"]}_input" cols="40" rows="10"`
+                    var new_html = '<p>' + newQuestion["name"] + ': </p><textarea placeholder="' + newQuestion["placeholder"] + '" type="text" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input" cols="40" rows="10"'
                     if (newQuestion["required"] == true) {
-                        new_html = new_html + ` required></textarea>`
+                        new_html = new_html + " required></textarea>"
                         if (specific_settings["showRequiredText"] == true) {
-                            new_html = new_html + ` <e class="required">(required)</e>`
+                            new_html = new_html + ' <e class="required">(required)</e>'
                         }
                     } else {
-                        new_html = new_html + `></textarea>`
+                        new_html = new_html + "></textarea>"
                     }
                     main_menu.innerHTML = main_menu.innerHTML + new_html
                 } else if (newQuestion["type"] == "Integer" || newQuestion["type"] == "INT") {
-                    var new_html = `<p>${newQuestion["name"]}: <input placeholder="${newQuestion["placeholder"]}" type="number" class="${newQuestion["custom_class"]}" id="${newQuestion["jsonName"]}_input"`
+                    var new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="number" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"'
                     if (newQuestion["required"] == true) {
-                        new_html = new_html + ` required></input>`
+                        new_html = new_html + ' required></input>'
                         if (specific_settings["showRequiredText"] == true) {
-                            new_html = new_html + ` <e class="required">*</e>`
+                            new_html = new_html + ' <e class="required">*</e>'
                         }
                     } else {
-                        new_html = new_html + `></input>`
+                        new_html = new_html + '></input>'
                     }
-                    new_html = new_html + `</p>`
+                    new_html = new_html + '</p>'
                     main_menu.innerHTML = main_menu.innerHTML + new_html
                 } else if (newQuestion["type"] == "Email" || newQuestion["type"] == "EMAIL") {
-                    var new_html = `<p>${newQuestion["name"]}: <input placeholder="${newQuestion["placeholder"]}" type="email" class="${newQuestion["custom_class"]}" id="${newQuestion["jsonName"]}_input"`
+                    var new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="email" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"'
                     if (newQuestion["required"] == true) {
-                        new_html = new_html + ` required></input>`
+                        new_html = new_html + ' required></input>'
                         if (specific_settings["showRequiredText"] == true) {
-                            new_html = new_html + ` <e class="required">*</e>`
+                            new_html = new_html + ' <e class="required">*</e>'
                         }
                     } else {
-                        new_html = new_html + `></input>`
+                        new_html = new_html + '></input>'
                     }
-                    new_html = new_html + `</p>`
+                    new_html = new_html + '</p>'
                     main_menu.innerHTML = main_menu.innerHTML + new_html
                 } else if (newQuestion["type"] == "Password" || newQuestion["type"] == "PW") {
-                    var new_html = `<p>${newQuestion["name"]}: <input placeholder="${newQuestion["placeholder"]}" type="password" class="${newQuestion["custom_class"]}" id="${newQuestion["jsonName"]}_input"`
+                    var new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="password" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"'
                     if (newQuestion["required"] == true) {
-                        new_html = new_html + ` required></input>`
+                        new_html = new_html + ' required></input>'
                         if (specific_settings["showRequiredText"] == true) {
-                            new_html = new_html + ` <e class="required">*</e>`
+                            new_html = new_html + ' <e class="required">*</e>'
                         }
                     } else {
-                        new_html = new_html + `></input>`
+                        new_html = new_html + '></input>'
                     }
-                    new_html = new_html + `</p>`
+                    new_html = new_html + '</p>'
                     main_menu.innerHTML = main_menu.innerHTML + new_html
                 } else if (newQuestion["type"] == "Time" || newQuestion["type"] == "TIME") {
-                    var new_html = `<p>${newQuestion["name"]}: <input placeholder="${newQuestion["placeholder"]}" type="time" class="${newQuestion["custom_class"]}" id="${newQuestion["jsonName"]}_input"`
+                    var new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="time" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"'
                     if (newQuestion["required"] == true) {
-                        new_html = new_html + ` required></input>`
+                        new_html = new_html + ' required></input>'
                         if (specific_settings["showRequiredText"] == true) {
-                            new_html = new_html + ` <e class="required">*</e>`
+                            new_html = new_html + ' <e class="required">*</e>'
                         }
                     } else {
-                        new_html = new_html + `></input>`
+                        new_html = new_html + '></input>'
                     }
-                    new_html = new_html + `</p>`
+                    new_html = new_html + '</p>'
                     main_menu.innerHTML = main_menu.innerHTML + new_html
                 } else if (newQuestion["type"] == "Datetime Local" || newQuestion["type"] == "DTLocal") {
-                    var new_html = `<p>${newQuestion["name"]}: <input placeholder="${newQuestion["placeholder"]}" type="datetime-local" class="${newQuestion["custom_class"]}" id="${newQuestion["jsonName"]}_input"`
+                    var new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="datetime-local" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"'
                     if (newQuestion["required"] == true) {
-                        new_html = new_html + ` required></input>`
+                        new_html = new_html + ' required></input>'
                         if (specific_settings["showRequiredText"] == true) {
-                            new_html = new_html + ` <e class="required">*</e>`
+                            new_html = new_html + ' <e class="required">*</e>'
                         }
                     } else {
-                        new_html = new_html + `></input>`
+                        new_html = new_html + '></input>'
                     }
-                    new_html = new_html + `</p>`
+                    new_html = new_html + '</p>'
                     main_menu.innerHTML = main_menu.innerHTML + new_html
                 } else if (newQuestion["type"] == "Color" || newQuestion["type"] == "HEX") {
-                    var new_html = `<p>${newQuestion["name"]}: <input placeholder="${newQuestion["placeholder"]}" type="color" class="${newQuestion["custom_class"]}" id="${newQuestion["jsonName"]}_input"`
+                    var new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="color" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"'
                     if (newQuestion["required"] == true) {
-                        new_html = new_html + ` required></input>`
+                        new_html = new_html + ' required></input>'
                         if (specific_settings["showRequiredText"] == true) {
-                            new_html = new_html + ` <e class="required">*</e>`
+                            new_html = new_html + ' <e class="required">*</e>'
                         }
                     } else {
-                        new_html = new_html + `></input>`
+                        new_html = new_html + '></input>'
                     }
-                    new_html = new_html + `</p>`
+                    new_html = new_html + '</p>'
                     main_menu.innerHTML = main_menu.innerHTML + new_html
                 } else if (newQuestion["type"] == "Selection" || newQuestion["type"] == "SELECT") {
-                    var new_html = `<p>${newQuestion["name"]}: <select class="${newQuestion["custom_class"]}" id="${newQuestion["jsonName"]}_input"`
+                    var new_html = '<p>' + newQuestion["name"] + ': <select class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"'
                     if (newQuestion["required"] == true) {
-                        new_html = new_html + ` required>`
+                        new_html = new_html + ' required>'
 
                         for (let d_k = 0; d_k < newQuestion["placeholder"].length; d_k++) {
                             var sel = newQuestion["placeholder"][d_k]
-                            new_html = new_html + `<option value="${sel["value"]}">${sel["name"]}</option>`
+                            new_html = new_html + '<option value="' + sel["value"]+ '">' + sel["name"] + '</option>'
                         }
 
-                        new_html = new_html + `</select>`
+                        new_html = new_html + '</select>'
 
                         if (specific_settings["showRequiredText"] == true) {
-                            new_html = new_html + ` <e class="required">*</e>`
+                            new_html = new_html + ' <e class="required">*</e>'
                         }
                     } else {
-                        new_html = new_html + `>`
+                        new_html = new_html + '>'
                         for (let d_k = 0; d_k < newQuestion["placeholder"].length; d_k++) {
                             var sel = newQuestion["placeholder"][d_k]
-                            new_html = new_html + `<option value="${sel["value"]}">${sel["name"]}</option>`
+                            new_html = new_html + '<option value="' + sel["value"]+ '">' + sel["name"] + '</option>'
                         }
-                        new_html = new_html + `</select>`
+                        new_html = new_html + '</select>'
                     }
-                    new_html = new_html + `</p>`
+                    new_html = new_html + '</p>'
                     main_menu.innerHTML = main_menu.innerHTML + new_html
                 } else if (newQuestion["type"] == "Image" || newQuestion["type"] == "IMG") {
-                    var new_html = `<p>${newQuestion["name"]}: <input accept="image/*" type="file" class="${newQuestion["custom_class"]}" id="${newQuestion["jsonName"]}_input"`
+                    var new_html = '<p>' + newQuestion["name"] + ': <input accept="image/*" type="file" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"'
                     if (newQuestion["required"] == true) {
-                        new_html = new_html + ` required></input>`
+                        new_html = new_html + ' required></input>'
                         if (specific_settings["showRequiredText"] == true) {
-                            new_html = new_html + ` <e class="required">*</e>`
+                            new_html = new_html + ' <e class="required">*</e>'
                         }
                     } else {
-                        new_html = new_html + `></input>`
+                        new_html = new_html + '></input>'
                     }
-                    new_html = new_html + `</p>`
+                    new_html = new_html + '</p>'
                     main_menu.innerHTML = main_menu.innerHTML + new_html
                 } else if (newQuestion["type"] == "Video" || newQuestion["type"] == "VID") {
-                    var new_html = `<p>${newQuestion["name"]}: <input accept="video/*" type="file" class="${newQuestion["custom_class"]}" id="${newQuestion["jsonName"]}_input"`
+                    var new_html = '<p>' + newQuestion["name"] + ': <input accept="video/*" type="file" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"'
                     if (newQuestion["required"] == true) {
-                        new_html = new_html + ` required></input>`
+                        new_html = new_html + ' required></input>'
                         if (specific_settings["showRequiredText"] == true) {
-                            new_html = new_html + ` <e class="required">*</e>`
+                            new_html = new_html + ' <e class="required">*</e>'
                         }
                     } else {
-                        new_html = new_html + `></input>`
+                        new_html = new_html + '></input>'
                     }
-                    new_html = new_html + `</p>`
+                    new_html = new_html + '</p>'
                     main_menu.innerHTML = main_menu.innerHTML + new_html
                 } else if (newQuestion["type"] == "Audio" || newQuestion["type"] == "AUD") {
-                    var new_html = `<p>${newQuestion["name"]}: <input accept="audio/*" type="file" class="${newQuestion["custom_class"]}" id="${newQuestion["jsonName"]}_input"`
+                    var new_html = '<p>' + newQuestion["name"] + ': <input accept="audio/*" type="file" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"'
                     if (newQuestion["required"] == true) {
-                        new_html = new_html + ` required></input>`
+                        new_html = new_html + ' required></input>'
                         if (specific_settings["showRequiredText"] == true) {
-                            new_html = new_html + ` <e class="required">*</e>`
+                            new_html = new_html + ' <e class="required">*</e>'
                         }
                     } else {
-                        new_html = new_html + `></input>`
+                        new_html = new_html + '></input>'
                     }
-                    new_html = new_html + `</p>`
+                    new_html = new_html + '</p>'
                     main_menu.innerHTML = main_menu.innerHTML + new_html
                 } else if (newQuestion["type"] == "Date" || newQuestion["type"] == "DATE") {
-                    var new_html = `<p>${newQuestion["name"]}: <input placeholder="${newQuestion["placeholder"]}" type="date" class="${newQuestion["custom_class"]}" id="${newQuestion["jsonName"]}_input"`
+                    var new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="date" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"'
                     if (newQuestion["required"] == true) {
-                        new_html = new_html + ` required></input>`
+                        new_html = new_html + ' required></input>'
                         if (specific_settings["showRequiredText"] == true) {
-                            new_html = new_html + ` <e class="required">*</e>`
+                            new_html = new_html + ' <e class="required">*</e>'
                         }
                     } else {
-                        new_html = new_html + `></input>`
+                        new_html = new_html + '></input>'
                     }
-                    new_html = new_html + `</p>`
+                    new_html = new_html + '</p>'
                     main_menu.innerHTML = main_menu.innerHTML + new_html
                 } else {
-                    var new_html = `<p>${newQuestion["name"]}: Failed to create question. Please ask the owner of this form to correct the question type.</p>"`
+                    var new_html = '<p>' + newQuestion["name"] + ': Failed to create question. Please ask the owner of this form to correct the question type.</p>"'
                     main_menu.innerHTML = main_menu.innerHTML + new_html
                 }
-                if (document.getElementById(`${newQuestion["jsonName"]}_input`)) {
-                    var object = document.getElementById(`${newQuestion["jsonName"]}_input`)
+                if (document.getElementById(newQuestion["jsonName"] + '_input')) {
+                    var object = document.getElementById(newQuestion["jsonName"] + '_input')
                     if (object.tagName.toLowerCase() == "input") {
                         if (newQuestion["autofilled"] == true) {
                             object.parentNode.style.display = "none"
@@ -681,22 +679,22 @@ function start_system() {
                 }
             }
             if (system_json["hideModeSelection"] == false) {
-                var new_html = `<p>Modes: `
+                var new_html = '<p>Modes: '
                 for (let b = 0; b < modes.length; b++) {
                     var new_mode = modes[b]
-                    new_html = new_html + `<button type="button" id="modeButton" onclick="set_mode('${new_mode["name"]}')">${new_mode["name"]}</button> `
+                    new_html = new_html + '<button type="button" id="modeButton" onclick="set_mode(\'' + new_mode["name"] + '\')">' + new_mode["name"] + '</button> '
                 }
                 main_menu.innerHTML = main_menu.innerHTML + new_html
             }
             if (system_json["showCurrentMode"] == true) {
-                var new_html = `<p id="current_mode">Current Mode: ${selected_mode}</p>`
+                var new_html = '<p id="current_mode">Current Mode: ' + selected_mode + '</p>'
                 if (specific_settings["add_html_slot2"]) {
                     new_html = new_html + specific_settings["add_html_slot2"]
                 }
                 if (specific_settings["showModeInButtonText"] == false) {
-                    new_html = new_html + `<button type="button" id="sendButton" class="center" onclick="send_response('${btoa(task_key)}')">Send Form!</button>`
+                    new_html = new_html + '<button type="button" id="sendButton" class="center" onclick="send_response(\'' + btoa(task_key) + '\')">Send Form!</button>'
                 } else {
-                    new_html = new_html + `<button type="button" id="sendButton" class="center" onclick="send_response('${btoa(task_key)}')">Send ${selected_mode}!</button>`
+                    new_html = new_html + '<button type="button" id="sendButton" class="center" onclick="send_response(\'' + btoa(task_key) + '\')">Send ' + selected_mode + '!</button>'
                 }
                 main_menu.innerHTML = main_menu.innerHTML + new_html
             } else {
@@ -704,39 +702,39 @@ function start_system() {
                 if (specific_settings["add_html_slot2"]) {
                     new_html = new_html + specific_settings["add_html_slot2"]
                 }
-                new_html = new_html + `<button type="button" id="sendButton" class="center" onclick="send_response('${btoa(task_key)}')">Send Form!</button>`
+                new_html = new_html + '<button type="button" id="sendButton" class="center" onclick="send_response(\'' + btoa(task_key) + '\')">Send Form!</button>'
                 main_menu.innerHTML = main_menu.innerHTML + new_html
             }
             if (specific_settings["add_html_slot3"]) {
                 main_menu.innerHTML = main_menu.innerHTML + specific_settings["add_html_slot3"]
             }
             if (google_captcha["enabled"] == true && cloudflare_captcha["enabled"] == false) {
-                var new_html = `<input type="hidden" id="${google_captcha["jsonName"]}_input" name="${google_captcha["jsonName"]}_input"></input>`
+                var new_html = '<input type="hidden" id="' + google_captcha["jsonName"] + '_input" name="' + google_captcha["jsonName"] + '_input"></input>'
                 main_menu.innerHTML = main_menu.innerHTML + new_html
 
                 try {
                     grecaptcha.ready(function () {
                         grecaptcha.execute(google_captcha["siteKey"], { action: 'validate_captcha' }).then(function (token) {
-                            document.getElementById(`${google_captcha["jsonName"]}_input`).innerHTML = token
+                            document.getElementById(google_captcha["jsonName"] + '_input').innerHTML = token
                         });
                         google_captcha_enabled = true
 
-                        var new_html = `<p class="footer">This form uses and is protected by reCAPTCHA that is used by Google's <a href="https://policies.google.com/privacy?hl=en-US">Privacy Policy</a> and <a href="https://policies.google.com/terms?hl=en-US">Terms of Service</a>.</p>`
+                        var new_html = '<p class="footer">This form uses and is protected by reCAPTCHA that is used by Google\'s <a href="https://policies.google.com/privacy?hl=en-US">Privacy Policy</a> and <a href="https://policies.google.com/terms?hl=en-US">Terms of Service</a>.</p>'
                         document.body.innerHTML = document.body.innerHTML + new_html
                     });
                 } catch (err) {
                     console.warn("Google Captcha failed to load due to an error. Please make sure to use Google Captcha v3 and is in your head object!")
                 }
             } else if (google_captcha["enabled"] == false && cloudflare_captcha["enabled"] == true) {
-                var new_html = `<input type="hidden" id="${cloudflare_captcha["jsonName"]}_input" name="${cloudflare_captcha["jsonName"]}_input"></input>`
+                var new_html = '<input type="hidden" id="' + cloudflare_captcha["jsonName"] + '_input" name="' + cloudflare_captcha["jsonName"] + '_input"></input>'
                 main_menu.innerHTML = main_menu.innerHTML + new_html
 
                 try {
                     turnstile.ready(function () {
-                        widget_id = turnstile.render(`#${cloudflare_captcha["jsonName"]}_input`, {
+                        widget_id = turnstile.render('#' + cloudflare_captcha["jsonName"] + '_input', {
                             sitekey: cloudflare_captcha["siteKey"],
                             callback: function (token) {
-                                document.getElementById(`${cloudflare_captcha["jsonName"]}_input`).innerHTML = token
+                                document.getElementById(cloudflare_captcha["jsonName"] + '_input').innerHTML = token
                             },
                         });
                         cloudflare_captcha_enabled = true
@@ -781,12 +779,12 @@ function loadFormJSONfromURL(url) {
                 })
             } else {
                 res.json().then(json => {
-                    console.error(`Request failed, json resulted with: ${JSON.stringify(json)}`)
+                    console.error('Request failed, json resulted with: ' + JSON.stringify(json))
                 })
             }
         })
     } catch (err) {
-        console.log(`Error while loading from url: ${err.message}`)
+        console.log('Error while loading from url: ' + err.message)
         loadLastLoadedJSON()
     }
 }
@@ -833,20 +831,20 @@ async function loadFormJSONfromURLByAsync(url) {
                 })
             } else {
                 return res.json().then(json => {
-                    console.error(`Request failed, json resulted with: ${JSON.stringify(json)}`)
+                    console.error('Request failed, json resulted with: ' + JSON.stringify(json))
                     return [false, JSON.stringify(json)]
                 }).catch(err => {
-                    console.error(`Request failed, json resulted with: ${err.message}`)
+                    console.error('Request failed, json resulted with: ' + err.message)
                     return [false, err.message]
                 })
             }
         }).catch(err => {
-            console.log(`Error while loading from url: ${err.message}`)
+            console.log('Error while loading from url: ' + err.message)
             loadLastLoadedJSON()
             return [false, err.message]
         })
     } catch (err) {
-        console.log(`Error while loading from url: ${err.message}`)
+        console.log('Error while loading from url: ' + err.message)
         loadLastLoadedJSON()
         return [false, err.message]
     }

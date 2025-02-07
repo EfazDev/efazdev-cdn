@@ -1687,7 +1687,6 @@ async function loader() { // Script Loader
                                 return {}
                             }
                         } else {
-                            warn("Invalid JSON data.");
                             return {}
                         }
                     });

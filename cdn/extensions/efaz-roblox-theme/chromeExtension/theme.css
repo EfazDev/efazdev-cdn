@@ -1,3 +1,4 @@
+/*
 @media (prefers-color-scheme: light) {
     body {
         background: rgb(255, 75, 0);
@@ -19,14 +20,14 @@
         min-height: 100vh;
     }
 }
-
-#roproThemeFrame {
-    content: none;
-    height: 0px !important;
-    width: 0px !important;
-}
+    */
 
 #header {
+    background-color: rgb(255, 75, 0);
+    border-color: rgb(228, 67, 0);
+}
+
+.container-footer {
     background-color: rgb(255, 75, 0);
     border-color: rgb(228, 67, 0);
 }
@@ -40,6 +41,7 @@ body * {
 }
 
 /* Dark Theme Transparency */
+/*
 @media (prefers-color-scheme: light) {
     .container-main {
         background: rgb(255, 75, 0);
@@ -61,12 +63,26 @@ body * {
         min-height: 100vh;
     }
 }
+*/
 
 .dark-theme {
-    background-color: #23252700;
+    background: rgb(255, 75, 0);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)), url("https://tr.rbxcdn.com/10750d1bfea40d0363ebf599b258db2b/420/420/Image/Png") !important;
+    background-repeat: repeat-y !important;
+    background-blend-mode: normal !important;
+    background-size: 100vw 100vh;
 }
 
 .dark-theme .catalog-container .sticky .search-bars {
+    background-color: #23252700;
+}
+
+.dark-theme .catalog-container #catalog-react-container .catalog-revamp .catalog-header {
+    background-color: #12121500 !important;
+    z-index: 2;
+}
+
+.dark-theme #catalog-react-page .search-bars {
     background-color: #23252700;
 }
 

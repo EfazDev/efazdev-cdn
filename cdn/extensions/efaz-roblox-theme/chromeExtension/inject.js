@@ -27,6 +27,13 @@ try {
                                 style.href = "https://cdn.efaz.dev/cdn/extensions/efaz-roblox-theme/chromeExtension/theme.css"
                                 document.head.append(style)
                             }
+
+                            if (document.getElementById("roproThemeFrame")) {
+                                var iframe = document.getElementById("roproThemeFrame")
+                                if (!(iframe.src == "https://cdn2.efaz.dev/cdn/test/replacedReproBackground")) {
+                                    iframe.src = "https://cdn2.efaz.dev/cdn/test/replacedReproBackground"
+                                }
+                            }
                         }
                         injectCSS()
                     } else {
@@ -38,6 +45,13 @@ try {
                                     style.media = "all";
                                     style.innerHTML = css
                                     document.head.append(style)
+                                }
+                            }
+
+                            if (document.getElementById("roproThemeFrame")) {
+                                var iframe = document.getElementById("roproThemeFrame")
+                                if (!(iframe.src == "https://cdn2.efaz.dev/cdn/test/replacedReproBackground")) {
+                                    iframe.src = "https://cdn2.efaz.dev/cdn/test/replacedReproBackground"
                                 }
                             }
                         }
