@@ -52,6 +52,7 @@ function compareVersions(version1, version2) {
 
 async function loadChanges2() {
     let system_settings = await fetch(chrome.runtime.getURL("settings.json")).then((re) => { if (re.ok) { return re.json() } else { return {} } });
+    let man_json = await fetch(chrome.runtime.getURL("manifest.json")).then((re) => { if (re.ok) { return re.json() } else { return {} } });
     await loopThroughArrayAsync(extensions, async (_, exName) => {
         let manifest = await fetch(chrome.runtime.getURL(exName + "/chromeExtension/manifest.json")).then((re) => { if (re.ok) { return re.json() } else { return {} } });
         let settings = await fetch(chrome.runtime.getURL(exName + "/chromeExtension/settings.json")).then((re) => { if (re.ok) { return re.json() } else { return {} } });
