@@ -160,6 +160,16 @@
         "description": "An extension that replaces Communities on Roblox back to Groups!"
     },
     {
+        "name": "Efaz's Roblox Foundation Color Accents",
+        "url": "https://www.efaz.dev/roblox-foundation-color-accents",
+        "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-foundation-color-accents/ofblldaagkkmhajigieajamomjcbohgf",
+        "discontinued": false,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
+        "dateDiscontinued": "None",
+        "description": "An extension that can change the accent colors of the new Foundation blue color to something else!"
+    },
+    {
         "name": "Roblox URL Scheme Launcher",
         "url": "https://rbx.efaz.dev/",
         "download_url": "https://rbx.efaz.dev/",

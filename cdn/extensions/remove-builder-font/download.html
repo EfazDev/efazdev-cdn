@@ -8,18 +8,18 @@
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
 
-            var defaultt = "https://api.efaz.dev/api/projects/removeBuilderFont/link"
+            var defaultt = "https://api.efaz.dev/api/projects/remove-builder-font/open-source/chrome"
             var listOfDownloads = {
                 "packed": {
-                    "chrome": "https://api.efaz.dev/api/projects/removeBuilderFont/packed/chrome",
-                    "firefox": "https://api.efaz.dev/api/projects/removeBuilderFont/packed/firefox"
+                    "chrome": "https://api.efaz.dev/api/projects/remove-builder-font/packed/chrome",
+                    "firefox": "https://api.efaz.dev/api/projects/remove-builder-font/packed/firefox"
                 },
                 "open-source": {
-                    "chrome": "https://api.efaz.dev/api/projects/removeBuilderFont/open-source/chrome",
-                    "firefox": "https://api.efaz.dev/api/projects/removeBuilderFont/open-source/firefox"
+                    "chrome": defaultt,
+                    "firefox": "https://api.efaz.dev/api/projects/remove-builder-font/open-source/firefox"
                 },
                 "link": {
-                    "all": defaultt
+                    "all": "https://api.efaz.dev/api/projects/remove-builder-font/link"
                 }
             }
             if (urlParams.get("type") && urlParams.get("browser")) {

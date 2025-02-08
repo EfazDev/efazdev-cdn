@@ -8,16 +8,16 @@
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
 
-            var defaultt = "https://api.efaz.dev/api/projects/dark-mode-accents/link"
+            var defaultt = "https://api.efaz.dev/api/projects/foundation-color-accents/open-source/chrome"
             var listOfDownloads = {
                 "packed": {
-                    "chrome": "https://api.efaz.dev/api/projects/dark-mode-accents/packed/chrome"
+                    "chrome": "https://api.efaz.dev/api/projects/foundation-color-accents/packed/chrome"
                 },
                 "open-source": {
-                    "chrome": "https://api.efaz.dev/api/projects/dark-mode-accents/open-source/chrome"
+                    "chrome": defaultt
                 },
                 "link": {
-                    "all": defaultt
+                    "all": "https://api.efaz.dev/api/projects/foundation-color-accents/link"
                 }
             }
             if (urlParams.get("type") && urlParams.get("browser")) {

@@ -5,7 +5,7 @@ try {
     var storage_key = "dev.efaz.roblox_foundation_color_accents"
     storage.get([storage_key], function (items) {
         if (!(items[storage_key])) {
-            items[storage_key] = { "enabled": true, "color": "#335FFF", "loopSeconds": "100" }
+            items[storage_key] = {"enabled": true, "color": "#335FFF", "loopSeconds": "100", "overwriteSuccessColor": false}
         }
         if (items[storage_key]["enabled"] == true) {
             var tab = window.location
@@ -17,9 +17,10 @@ try {
                         var all_links = document.getElementsByTagName("link")
                         for (let i = 0; i < all_links.length; i++) {
                             var header = all_links[i]
-                            if (header.rel && header.rel == "stylesheet" && (header.getAttribute("data-bundlename") == "StyleGuide") && header.href) {
+                            var affect_bundles = ["StyleGuide", "Catalog", "Chat", "PlacesList", "ItemDetailsInfo", "UserSettings", "ItemPurchaseUpsell", "GameCarousel", "NotificationStream", "AccountSecurityPrompt"]
+                            if (header.rel && header.rel == "stylesheet" && (affect_bundles.includes(header.getAttribute("data-bundlename"))) && header.href) {
                                 var fetchLink = header.href
-                                header.setAttribute("data-bundlename", "StyleGuide_Accented")
+                                header.setAttribute("data-bundlename", header.getAttribute("data-bundlename") + "_Accented")
                                 await fetch(fetchLink).then((res) => {
                                     if (res.ok) {
                                         return res.text();
@@ -30,8 +31,11 @@ try {
                                 }).then((stylesheet) => {
                                     if (stylesheet) {
                                         stylesheet = stylesheet.replaceAll("#335fff", settings["color"].toLowerCase())
+                                        if (settings["overwriteSuccessColor"] == true) {
+                                            stylesheet = stylesheet.replaceAll("#39c582", settings["color"].toLowerCase())
+                                        }
                                         var d = document.createElement("div")
-                                        d.innerHTML = '<style rel="stylesheet" onerror="Roblox.BundleDetector &amp;&amp; Roblox.BundleDetector.reportBundleError(this)" data-bundlename="StyleGuide_Accented" data-bundle-source="Main">' + stylesheet + '</style>'
+                                        d.innerHTML = '<style rel="stylesheet" onerror="Roblox.BundleDetector &amp;&amp; Roblox.BundleDetector.reportBundleError(this)" data-bundlename="' + header.getAttribute("data-bundlename") + "_Accented" + '" data-bundle-source="Main">' + stylesheet + '</style>'
                                         d.href = ""
                                         header.append(d.children[0])
                                     }

@@ -8,16 +8,16 @@
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
 
-            var defaultt = "https://api.efaz.dev/api/projects/communities-renamer/link"
+            var defaultt = "https://api.efaz.dev/api/projects/efaz-roblox-theme/open-source/chrome"
             var listOfDownloads = {
                 "packed": {
-                    "chrome": "https://api.efaz.dev/api/projects/communities-renamer/packed/chrome"
+                    "chrome": "https://api.efaz.dev/api/projects/efaz-roblox-theme/packed/chrome"
                 },
                 "open-source": {
-                    "chrome": "https://api.efaz.dev/api/projects/communities-renamer/open-source/chrome"
+                    "chrome": defaultt
                 },
                 "link": {
-                    "all": defaultt
+                    "all": "https://api.efaz.dev/api/projects/efaz-roblox-theme/link"
                 }
             }
             if (urlParams.get("type") && urlParams.get("browser")) {

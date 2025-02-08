@@ -13,10 +13,15 @@
             "reset": true
         },
         "color": {
-            "text": "Select an accent color",
+            "text": "Choose an accent color",
             "type": "color",
             "default": "#335FFF",
             "reset": true
+        },
+        "overwriteSuccessColor": {
+            "text": "Overwrite Success Color",
+            "type": "checkbox",
+            "default": false
         }
     },
     "chromeWebstoreLinkEnabled": true,

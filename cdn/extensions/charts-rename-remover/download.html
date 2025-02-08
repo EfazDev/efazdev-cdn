@@ -8,16 +8,16 @@
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
 
-            var defaultt = "https://api.efaz.dev/api/projects/charts-rename-remover/link"
+            var defaultt = "https://api.efaz.dev/api/projects/charts-rename-remover/open-source/chrome"
             var listOfDownloads = {
                 "packed": {
                     "chrome": "https://api.efaz.dev/api/projects/charts-rename-remover/packed/chrome"
                 },
                 "open-source": {
-                    "chrome": "https://api.efaz.dev/api/projects/charts-rename-remover/open-source/chrome"
+                    "chrome": defaultt
                 },
                 "link": {
-                    "all": defaultt
+                    "all": "https://api.efaz.dev/api/projects/charts-rename-remover/link"
                 }
             }
             if (urlParams.get("type") && urlParams.get("browser")) {
