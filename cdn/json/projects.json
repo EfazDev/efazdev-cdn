@@ -167,7 +167,7 @@
         "showInProjectsPage": true,
         "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
         "dateDiscontinued": "None",
-        "description": "An extension that can change the accent colors of the new Foundation blue color to something else!"
+        "description": "An extension that can change the accent colors of the new Roblox Foundation blue color to something else!"
     },
     {
         "name": "Roblox URL Scheme Launcher",
