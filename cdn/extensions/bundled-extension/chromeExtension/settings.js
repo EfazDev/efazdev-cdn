@@ -57,6 +57,9 @@ async function loadChanges2() {
         let manifest = await fetch(chrome.runtime.getURL(exName + "/chromeExtension/manifest.json")).then((re) => { if (re.ok) { return re.json() } else { return {} } });
         let settings = await fetch(chrome.runtime.getURL(exName + "/chromeExtension/settings.json")).then((re) => { if (re.ok) { return re.json() } else { return {} } });
 
+        document.getElementById("extens_vers").innerHTML = `v${man_json["version"]}`
+        document.getElementById("window_title").innerText = `Bundle Settings`
+
         if (document.getElementById(exName) == null) {
             var generated_html_element = `<label for="${exName}">${settings["bundledDisplayName"]} v${manifest["version"]}: <button type="submit" id="${exName}">Open Settings!</button>`
             var beforeElement = document.getElementById("reviewDetails")
