@@ -1,0 +1,73 @@
+{
+    "name": "Efaz's Bundled Roblox Extensions",
+    "description": "An extension that holds all of Efaz's extensions in one!",
+    "version": "1.0.0",
+    "manifest_version": 3,
+    "author": "EfazDev",
+    "homepage_url": "https://www.efaz.dev/roblox-bundled-extensions",
+    "icons": {
+        "16": "icon16.png",
+        "32": "icon32.png",
+        "48": "icon48.png",
+        "128": "icon128.png"
+    },
+    "background": {
+        "service_worker": "main.js"
+    },
+    "externally_connectable": {
+        "matches": [
+            "https://cdn.efaz.dev/*"
+        ]
+    },
+    "content_scripts": [
+        {
+            "all_frames": true,
+            "js": [
+                "inject.js",
+                "charts-rename-remover/chromeExtension/inject.js",
+                "communities-renamer/chromeExtension/inject.js",
+                "efaz-roblox-theme/chromeExtension/inject.js",
+                "fake_verified/chromeExtension/fake_verified_loader.js",
+                "foundation-color-accents/chromeExtension/inject.js",
+                "remove-builder-font/chromeExtension/inject.js"
+            ],
+            "matches": [
+                "*://*.roblox.com/*"
+            ],
+            "run_at": "document_start"
+        }
+    ],
+    "web_accessible_resources": [
+        {
+            "matches": [
+                "*://*.roblox.com/*"
+            ],
+            "resources": [
+                "efaz-roblox-theme/chromeExtension/theme.css",
+                "remove-builder-font/chromeExtension/change_font.css",
+                "remove-builder-font/chromeExtension/devforum_font.css",
+                "remove-builder-font/chromeExtension/global_font.css"
+            ],
+            "use_dynamic_url": true
+        }
+    ],
+    "action": {
+        "default_popup": "settings.html",
+        "default_title": "Efaz's Bundled Roblox Extensions",
+        "default_icon": "icon128.png"
+    },
+    "content_security_policy": {
+        "sandbox": "sandbox allow-scripts; script-src * 'wasm-unsafe-eval';"
+    },
+    "sandbox": {
+        "pages": []
+    },
+    "permissions": [
+        "storage",
+        "scripting",
+        "unlimitedStorage"
+    ],
+    "host_permissions": [
+        "https://*.roblox.com/*"
+    ]
+}

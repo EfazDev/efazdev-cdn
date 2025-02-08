@@ -1,0 +1,120 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Security-Policy"
+        content="script-src 'unsafe-inline'; script-src-elem *; img-src *; media-src *; font-src *; connect-src *;">
+    <title id="window_title">Extension Settings</title>
+    <meta name="title" content="Extension Settings">
+    <meta name="description" content="just a extension settings page">
+    <style id="css">
+        @font-face {
+            font-family: mainfont;
+            src: url('https://cdn.efaz.dev/cdn/styles/mainFont.ttf');
+            font-weight: bold;
+        }
+
+        @media (prefers-color-scheme: light) {
+            body {
+                min-height: 100%;
+                min-width: 100%;
+                background: linear-gradient(60deg, #ff4b00 0%, #dbdb00 40%, #00ce00 60%, #00aad0 100%);
+                background-repeat: repeat-y !important;
+                background-blend-mode: normal !important;
+                background-size: 100vw 100vh;
+                min-height: 100vh;
+                font-family: mainfont;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                color: white;
+            }
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                min-height: 100%;
+                min-width: 100%;
+                background: linear-gradient(60deg, #4e1700 0%, #4e4e00 40%, #004200 60%, #003d4b 100%);
+                background-repeat: repeat-y !important;
+                background-blend-mode: normal !important;
+                background-size: 100vw 100vh;
+                min-height: 100vh;
+                font-family: mainfont;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                color: white;
+            }
+        }
+
+        button {
+            border: 1px solid white;
+            border-radius: 8px;
+            background-color: #00b1ff;
+            color: rgb(255, 255, 255);
+            font-family: mainfont;
+        }
+
+        input {
+            border: 1px solid white;
+            border-collapse: collapse;
+            text-align: center;
+            margin-left: auto;
+            border-radius: 8px;
+            background-color: #00b1ff;
+            color: rgb(255, 255, 255);
+            vertical-align: middle;
+            justify-content: center;
+            font-family: mainfont;
+            margin-right: auto;
+        }
+
+        html {
+            width: 500px;
+            height: 580px;
+        }
+
+        e {
+            color: rgb(255, 0, 0);
+            font-size: x-small;
+        }
+
+        li {
+            display: inline-block;
+            padding: 2px;
+        }
+
+        ul {
+            padding-left: 0;
+            display: flex !important;
+            justify-content: left;
+        }
+
+        a {
+            color: #4295f5;
+        }
+    </style>
+    <script src="settings.js"></script>
+</head>
+
+<body style='min-height: 100%; min-width:100%; background-color: rgb(255, 75, 0);'>
+    <div id='main_menu'><img src='https://cdn.efaz.dev/cdn/png/logo.png' class="center" height='64' width='64'>
+        <h1 id='title1'>Hello!</h1>
+        <h3>------ Extensions ------</h3>
+        <h3 id="reviewDetails">------ Review Details! ------</h3>
+        <em>Extension is made by @EfazDev. This extension is not made by Roblox.</em>
+        <ul>
+            <li><a target="_blank" href="https://www.efaz.dev"><img class="resize-img" title="My Website"
+                        src="https://cdn.efaz.dev/cdn/png/logo.png" height="24" width="24"></a></li>
+            <li><a target="_blank" id="extensionLink" href="https://chromewebstore.google.com/detail/extension/"><img class="resize-img" title="Chrome Webstore"
+                src="https://cdn.efaz.dev/cdn/png/chrome_webstore.png" alt height="24" width="24"></a></li>
+            <li><a target="_blank" href="https://twitter.efaz.dev"><img class="resize-img" title="Twitter"
+                        src="https://cdn.efaz.dev/cdn/png/twitter-logo.png" height="24" width="24"></a></li>
+            <li><a target="_blank" href="https://discord.efaz.dev"><img class="resize-img" title="Discord"
+                        src="https://cdn.efaz.dev/cdn/png/discord-logo.png" alt height="24" width="24"></a></li>
+            <li><a target="_blank" href="https://youtube.efaz.dev"><img class="resize-img" title="YouTube"
+                src="https://cdn.efaz.dev/cdn/png/youtube-logo.png" alt height="24" width="24"></a></li>
+        </ul>
+        <p id="extens_vers">Loading..</p>
+    </div>
+</body>
+
+</html>
