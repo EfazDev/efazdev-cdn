@@ -240,7 +240,7 @@ div {
                 if (j) {
                     if (system_settings["isVersionServer"] == true) {
                         var compared = compareVersions(man_json["version"], j[system_settings["id"]])
-                        if (j[system_settings["name"]] == man_json["version"]) {
+                        if (j[system_settings["id"]] == man_json["version"]) {
                             /* User is running the latest non-beta version. */
                             console.log("This user is currently at the latest version!")
                         } else if (compared == -1) {
