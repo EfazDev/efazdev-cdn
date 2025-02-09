@@ -12,7 +12,7 @@ main.js:
 
 (function () { // Prevent changes made using the Inspect console.
     const storage = chrome.storage.sync;
-    var storage_key = "dev.efaz.charts_renamer"
+    const storage_key = "dev.efaz.charts_renamer"
     chrome.tabs.onUpdated.addListener(function (tabId, details, tab) {
         try {
             storage.get([storage_key], function (items) {

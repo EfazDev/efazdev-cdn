@@ -1628,8 +1628,12 @@ function start() {
 }
 
 async function loader() { // Script Loader
+    if (!(window.location.hostname == "www.roblox.com")) {
+        // warn("The host of this script being ran on is not www.roblox.com.")
+        return;
+    }
     if (typeof chrome !== 'undefined' && typeof chrome.storage !== 'undefined') { // Chrome Extension >= v1.4.0
-        var storage_key = "dev.efaz.verified_badge_add_on"
+        const storage_key = "dev.efaz.verified_badge_add_on"
         chrome.storage.local.get([storage_key], async function (items) {
             if (items[storage_key] && items[storage_key]["color"]) {
                 window.verifiedCheckmarkSettings = items[storage_key]

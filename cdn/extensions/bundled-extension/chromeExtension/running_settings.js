@@ -1,20 +1,17 @@
 /* 
 
-Efaz's Extension Settings Handler
+Efaz's Roblox Extension
 By: EfazDev
 
-settings.js:
-    - Handle setting configurations in settings.html
+running_setting.js:
+    - Handle setting configurations from mini extensions
     - Save data to Chrome Storage API
 
 */
 
-const storage = chrome.storage.sync
+var storage = chrome.storage.sync
 var system_settings = {}
-
-if (document.extensionName == "fake_verified") {
-    storage = chrome.storage.local   
-}
+var changes_made = {}
 
 async function loopThroughArrayAsync(array, callback) {
     var generated_keys = Object.keys(array);
@@ -49,6 +46,7 @@ async function saveData() {
         await storage.set(items, () => {
             alert("Saved data!")
         });
+        changes_made = {}
     });
 }
 
@@ -77,6 +75,9 @@ async function loadChanges() {
         return setting_res.json()
     }).then(settings => {
         system_settings = settings
+        if (system_settings["type"]) {
+            storage = chrome.storage[system_settings["type"]]   
+        }
         storage.get([system_settings["name"]], function (items) {
             if (Object.keys(system_settings["settings"]).length == 1) {
                 document.getElementById("extensionSettings").remove()
@@ -112,6 +113,13 @@ async function loadChanges() {
                             } else {
                                 main_selection.value = selected
                             }
+                            main_selection.addEventListener("change", () => {
+                                if ((val["type"] == "checkbox" && !(main_selection.checked == selected)) || !(main_selection.value == selected)) {
+                                    changes_made[key] = true
+                                } else {
+                                    changes_made[key] = false
+                                }
+                            })
                         }
                     }
                     if (val["reset"] == true) {
@@ -124,10 +132,16 @@ async function loadChanges() {
                                 } else {
                                     main_selection.value = val["default"]
                                 }
+                                if ((val["type"] == "checkbox" && !(main_selection.checked == selected)) || !(main_selection.value == selected)) {
+                                    changes_made[key] = true
+                                } else {
+                                    changes_made[key] = false
+                                }
                             })
                         }
                     }
                 })
+                changes_made = {}
             }
         });
         const submitButton = document.getElementById("submitbutton");
@@ -141,7 +155,7 @@ async function loadChanges() {
             var extension_version = man_json["version"]
             var extension_icon = man_json["icons"]["32"]
 
-            document.getElementById("extens_name").innerHTML = `Extension Name: ${extension_name} ${`<img src="${extension_icon}" height="16" width="16" style="vertical-align: middle;">`}`
+            document.getElementById("extens_name").innerHTML = `Extension Name: ${extension_name} ${`<img src="${document.extensionName}/chromeExtension/${extension_icon}" height="16" width="16" style="vertical-align: middle;">`}`
             document.getElementById("extens_vers").innerHTML = `v${extension_version}`
             document.getElementById("window_title").innerText = `${extension_name} Settings`
 
@@ -326,7 +340,7 @@ async function loadChanges() {
                 } else if (system_settings["uploadedChromeExtensionID"]) {
                     /* User used an extracted zip file of the extension instead of using the Chrome Web Store */
                     document.getElementById("extensionLink").href = `https://chromewebstore.google.com/detail/extension/${system_settings["uploadedChromeExtensionID"]}`
-                    document.getElementById("extens_vers").innerHTML = `${document.getElementById("extens_vers").innerHTML} | Unpacked`
+                    // document.getElementById("extens_vers").innerHTML = `${document.getElementById("extens_vers").innerHTML} | Unpacked`
                 }
 
                 document.getElementById("extensionLink").style = ""

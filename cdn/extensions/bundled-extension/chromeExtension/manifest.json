@@ -1,10 +1,10 @@
 {
-    "name": "Efaz's Bundled Roblox Extensions",
-    "description": "An extension that holds all of Efaz's extensions in one!",
-    "version": "1.0.0",
+    "name": "Efaz's Roblox Extension",
+    "description": "An extension that holds all of Efaz's mini Roblox extensions in one!",
+    "version": "1.0.5",
     "manifest_version": 3,
     "author": "EfazDev",
-    "homepage_url": "https://www.efaz.dev/roblox-bundled-extensions",
+    "homepage_url": "https://www.efaz.dev/roblox-extension",
     "icons": {
         "16": "icon16.png",
         "32": "icon32.png",
@@ -23,14 +23,14 @@
         {
             "all_frames": true,
             "js": [
-                "inject.js",
-                "charts-rename-remover/chromeExtension/inject.js",
-                "communities-renamer/chromeExtension/inject.js",
-                "efaz-roblox-theme/chromeExtension/inject.js",
                 "fake_verified/chromeExtension/fake_verified_loader.js",
+                "charts-rename-remover/chromeExtension/inject.js",
                 "foundation-color-accents/chromeExtension/inject.js",
-                "remove-builder-font/chromeExtension/inject.js"
+                "efaz-roblox-theme/chromeExtension/inject.js",
+                "remove-builder-font/chromeExtension/inject.js",
+                "communities-renamer/chromeExtension/inject.js"
             ],
+            "css": [],
             "matches": [
                 "*://*.roblox.com/*"
             ],
@@ -45,6 +45,7 @@
             "resources": [
                 "efaz-roblox-theme/chromeExtension/theme.css",
                 "remove-builder-font/chromeExtension/change_font.css",
+                "remove-builder-font/chromeExtension/creator_dashboard.css",
                 "remove-builder-font/chromeExtension/devforum_font.css",
                 "remove-builder-font/chromeExtension/global_font.css"
             ],
@@ -53,7 +54,7 @@
     ],
     "action": {
         "default_popup": "settings.html",
-        "default_title": "Efaz's Bundled Roblox Extensions",
+        "default_title": "Efaz's Roblox Extension",
         "default_icon": "icon128.png"
     },
     "content_security_policy": {
@@ -64,8 +65,8 @@
     },
     "permissions": [
         "storage",
-        "scripting",
-        "unlimitedStorage"
+        "unlimitedStorage",
+        "scripting"
     ],
     "host_permissions": [
         "https://*.roblox.com/*"

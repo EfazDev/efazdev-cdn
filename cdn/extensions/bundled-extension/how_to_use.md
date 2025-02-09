@@ -1,0 +1,3 @@
+# Efaz's Roblox Extension
+
+Hello! This is a bundled extension that concludes all of Efaz's extensions into one! In order to install this extension, go to your Chrome extension settings page at chrome://extensions, and then enable Developer Mode. Once it's enabled, download the bundled extension zip file, extract it to a new folder, and then select Load Unpacked and select the new folder! And then, enjoy!

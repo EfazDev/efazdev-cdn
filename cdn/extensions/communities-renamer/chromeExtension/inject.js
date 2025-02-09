@@ -13,7 +13,7 @@ inject.js:
     const storage = chrome.storage.sync;
 
     try {
-        var storage_key = "dev.efaz.communities_renamer"
+        const storage_key = "dev.efaz.communities_renamer"
         storage.get([storage_key], function (items) {
             var enabled = true;
             if (items[storage_key]) {

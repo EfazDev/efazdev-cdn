@@ -1,15 +1,12 @@
 /* 
 
-Efaz's Bundled Extension Settings Handler
+Efaz's Roblox Extension
 By: EfazDev
 
 settings.js:
-    - Handle setting configurations in settings.html
-    - Save data to Chrome Storage API
+    - Handle selecting between mini extensions
 
 */
-
-const extensions = ["charts-rename-remover", "communities-renamer", "efaz-roblox-theme", "fake_verified", "foundation-color-accents", "remove-builder-font"]
 var innerBody, innerHead
 
 async function loopThroughArrayAsync(array, callback) {
@@ -53,6 +50,7 @@ function compareVersions(version1, version2) {
 async function loadChanges2() {
     let system_settings = await fetch(chrome.runtime.getURL("settings.json")).then((re) => { if (re.ok) { return re.json() } else { return {} } });
     let man_json = await fetch(chrome.runtime.getURL("manifest.json")).then((re) => { if (re.ok) { return re.json() } else { return {} } });
+    const extensions = system_settings["extensions"]
     await loopThroughArrayAsync(extensions, async (_, exName) => {
         let manifest = await fetch(chrome.runtime.getURL(exName + "/chromeExtension/manifest.json")).then((re) => { if (re.ok) { return re.json() } else { return {} } });
         let settings = await fetch(chrome.runtime.getURL(exName + "/chromeExtension/settings.json")).then((re) => { if (re.ok) { return re.json() } else { return {} } });
@@ -68,7 +66,7 @@ async function loadChanges2() {
             } else {
                 generated_html_element = `${generated_html_element}`
             }
-            generated_html_element = `${generated_html_element}</label><br>`
+            generated_html_element = `${generated_html_element}</label>`
             beforeElement.outerHTML = `${generated_html_element}${document.getElementById("reviewDetails").outerHTML}`
         }
 
@@ -83,7 +81,7 @@ async function loadChanges2() {
                         .replaceAll('<script src="setting_colors.js"></script>', '<script class="reexecute" src="' + exName + "/chromeExtension/setting_colors.js" + '"></script>')
                         .replaceAll('<script src="reset_cache.js"></script>', '<script class="reexecute" src="' + exName + "/chromeExtension/reset_cache.js" + '"></script>')
                         .replaceAll("</meta>", "")
-                    webpage = webpage.replaceAll('<p id="extens_vers">Loading..</p>', '<p id="extens_vers">Loading..</p><br><button type="submit" id="goBackToBundledPage">Go back!</button>')
+                    webpage = webpage.replaceAll('<button type=\'submit\' id="submitbutton" class="center">Save Settings!</button><br><br>', '<button type=\'submit\' id="submitbutton" class="center">Save Settings!</button> <button type="submit" id="goBackToBundledPage">Return to Extensions page!</button><br><br>')
                     
                     // Run HTML
                     var newElement = new DOMParser().parseFromString(webpage, "text/html")
@@ -104,7 +102,7 @@ async function loadChanges2() {
                         s.onload = s.onreadystatechange = function () {
                             if (!r && (!this.readyState || this.readyState == 'complete')) {
                                 r = true;
-                                window.dispatchEvent(new Event("load"));
+                                setTimeout(() => {window.dispatchEvent(new Event("load"));}, 200)
                             }
                         };
                         document.body.appendChild(s);
@@ -115,9 +113,13 @@ async function loadChanges2() {
                     if (document.getElementById("goBackToBundledPage")) {
                         var button2 = document.getElementById("goBackToBundledPage")
                         button2.addEventListener("click", async () => {
-                            document.body.innerHTML = innerBody
-                            document.head.innerHTML = innerHead
-                            setTimeout(() => {loadChanges2()}, 200)
+                            var changes_are_made = false
+                            await loopThroughArrayAsync(changes_made, (_, v) => { if (v == true) { changes_are_made = true } })
+                            if ((changes_are_made == true && confirm("Are you sure you want to return back to the Extensions page without saving?")) || changes_are_made == false) {
+                                document.body.innerHTML = innerBody
+                                document.head.innerHTML = innerHead
+                                setTimeout(() => {loadChanges2()}, 200)
+                            }
                         })
                     }
                 } else {
@@ -237,20 +239,20 @@ div {
             }).then(j => {
                 if (j) {
                     if (system_settings["isVersionServer"] == true) {
-                        var compared = compareVersions(man_json["version"], j[system_settings["name"]])
+                        var compared = compareVersions(man_json["version"], j[system_settings["id"]])
                         if (j[system_settings["name"]] == man_json["version"]) {
                             /* User is running the latest non-beta version. */
                             console.log("This user is currently at the latest version!")
                         } else if (compared == -1) {
                             /* User has an update available */
-                            document.getElementById("extens_vers").innerHTML = `${document.getElementById("extens_vers").innerHTML} | <button id="openChromeExtensionSettings">Update Available to v${j[settings["name"]]}!</button>`
+                            document.getElementById("extens_vers").innerHTML = `${document.getElementById("extens_vers").innerHTML} | <button id="openChromeExtensionSettings">Update Available to v${j[system_settings["id"]]}!</button>`
                             document.getElementById("openChromeExtensionSettings").addEventListener("click", () => {
                                 chrome.tabs.create({ url: "chrome://extensions/" });
                             });
-                            console.log(`New version found! v${man_json["version"]} > v${j[settings["name"]]}`)
+                            console.log(`New version found! v${man_json["version"]} > v${j[system_settings["id"]]}`)
                         } else {
                             /* User is running beta version of the extension */
-                            document.getElementById("extens_vers").innerHTML = `v${extension_version} Beta`
+                            document.getElementById("extens_vers").innerHTML = `v${man_json["version"]} Beta`
                             console.log(`User is in beta version of the extension!`)
                         }
                     } else {
@@ -267,7 +269,7 @@ div {
                             console.log(`New version found! v${man_json["version"]} > v${j["version"]}`)
                         } else {
                             /* User is running beta version of the extension */
-                            document.getElementById("extens_vers").innerHTML = `v${extension_version} Beta`
+                            document.getElementById("extens_vers").innerHTML = `v${man_json["version"]} Beta`
                             console.log(`User is in beta version of the extension!`)
                         }
                     }

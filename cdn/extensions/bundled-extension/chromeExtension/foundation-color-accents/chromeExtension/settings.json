@@ -22,9 +22,15 @@
             "text": "Overwrite Success Color",
             "type": "checkbox",
             "default": false
+        },
+        "applyToPrimaryBtn": {
+            "text": "Apply to Primary Buttons",
+            "type": "checkbox",
+            "default": false
         }
     },
     "bundledDisplayName": "Foundation Color Accents",
+    "typeOfStorage": "sync",
     "chromeWebstoreLinkEnabled": true,
     "uploadedChromeExtensionID": "ofblldaagkkmhajigieajamomjcbohgf",
     "scanForManifestUpdates": true,

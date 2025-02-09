@@ -29,6 +29,7 @@
         }
     },
     "bundledDisplayName": "Charts/Discover Renamer",
+    "typeOfStorage": "sync",
     "chromeWebstoreLinkEnabled": true,
     "uploadedChromeExtensionID": "eghkpfdncgmcaifihhfgihcenboakjck",
     "scanForManifestUpdates": true,

@@ -175,7 +175,7 @@ inject.js:
     }
 
     try {
-        var storage_key = "dev.efaz.remove_builder_font"
+        const storage_key = "dev.efaz.remove_builder_font"
         storage.get([storage_key], function (items) {
             var enabled = true;
             var remoteStyles = false;

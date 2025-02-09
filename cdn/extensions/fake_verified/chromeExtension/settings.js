@@ -73,6 +73,9 @@ async function loadChanges() {
         return setting_res.json()
     }).then(settings => {
         system_settings = settings
+        if (system_settings["type"]) {
+            storage = chrome.storage[system_settings["type"]]   
+        }
         storage.get([system_settings["name"]], function (items) {
             if (Object.keys(system_settings["settings"]).length == 1) {
                 document.getElementById("extensionSettings").remove()

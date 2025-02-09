@@ -13,6 +13,7 @@
         }
     },
     "bundledDisplayName": "Efaz's Theme",
+    "typeOfStorage": "sync",
     "chromeWebstoreLinkEnabled": false,
     "uploadedChromeExtensionID": "",
     "scanForManifestUpdates": true,

@@ -35,6 +35,7 @@
         }
     },
     "bundledDisplayName": "Communities Renamer",
+    "typeOfStorage": "sync",
     "chromeWebstoreLinkEnabled": true,
     "uploadedChromeExtensionID": "afaoamnkmjkkpheiblblbinpmdnacipm",
     "scanForManifestUpdates": true,

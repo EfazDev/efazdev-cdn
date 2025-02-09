@@ -20,6 +20,7 @@
         }
     },
     "bundledDisplayName": "Example Extension",
+    "typeOfStorage": "sync",
     "chromeWebstoreLinkEnabled": false,
     "uploadedChromeExtensionID": "",
     "scanForManifestUpdates": true,

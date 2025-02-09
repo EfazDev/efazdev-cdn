@@ -39,6 +39,7 @@
         }
     },
     "bundledDisplayName": "Builder Font Remover",
+    "typeOfStorage": "sync",
     "chromeWebstoreLinkEnabled": true,
     "uploadedChromeExtensionID": "hapbigglmmihgdmpficddjdmfgikalcp",
     "scanForManifestUpdates": true,

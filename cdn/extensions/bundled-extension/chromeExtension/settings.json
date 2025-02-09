@@ -1,7 +1,15 @@
 {
-    "name": "dev.efaz.bundled_extension",
-    "settings": {},
-    "chromeWebstoreLinkEnabled": false,
+    "name": "Efaz's Roblox Extension",
+    "id": "dev.efaz.bundled_extension",
+    "extensions": [
+        "fake_verified",
+        "charts-rename-remover",
+        "foundation-color-accents",
+        "efaz-roblox-theme",
+        "remove-builder-font",
+        "communities-renamer"
+    ],
+    "chromeWebstoreLinkEnabled": true,
     "uploadedChromeExtensionID": "",
     "scanForManifestUpdates": true,
     "isVersionServer": true,

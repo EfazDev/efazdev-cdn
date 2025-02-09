@@ -49,6 +49,7 @@
         }
     },
     "bundledDisplayName": "Verified Badge Add-on",
+    "typeOfStorage": "local",
     "chromeWebstoreLinkEnabled": true,
     "uploadedChromeExtensionID": "kediboibmfffkllcmgemojpkphmokaea",
     "scanForManifestUpdates": true,

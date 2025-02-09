@@ -238,7 +238,7 @@ main.js:
 
     chrome.tabs.onUpdated.addListener(function (tabId, details, tab) {
         try {
-            var storage_key = "dev.efaz.remove_builder_font"
+            const storage_key = "dev.efaz.remove_builder_font"
             storage.get([storage_key], function (items) {
                 var enabled = true;
                 var remoteStyles = false;
@@ -455,7 +455,7 @@ main.js:
                                             })
                                         })
                                     } else {
-                                        fetch(chrome.runtime.getURL("creator_dashboard.css")).then(res => { return res.text() }).then(fetched => {
+                                        fetch("creator_dashboard.css").then(res => { return res.text() }).then(fetched => {
                                             stored_creator_dashboard_css = fetched
                                             overwriteResourcesUrl(fetched, trusted_source, 3, oldFontOnOtherSub).then(generated_css => {
                                                 chrome.scripting.executeScript({
@@ -555,7 +555,7 @@ main.js:
                                             })
                                         })
                                     } else {
-                                        fetch(chrome.runtime.getURL("global_font.css")).then(res => { return res.text() }).then(fetched => {
+                                        fetch("global_font.css").then(res => { return res.text() }).then(fetched => {
                                             stored_creator_dashboard_css = fetched
                                             overwriteResourcesUrl(fetched, trusted_source, 4, oldFontOnOtherSub).then(generated_css => {
                                                 chrome.scripting.executeScript({
