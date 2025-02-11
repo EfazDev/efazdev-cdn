@@ -47,7 +47,7 @@ inject.js:
             // This is for Efaz's Roblox Extension support
             if (chrome.runtime.getManifest()["homepage_url"] == "https://www.efaz.dev/roblox-extension") {
                 // This is run under bundled extension [{extension_name}/{resource}]
-                return chrome.runtime.getURL("remove-builder-theme" + "/" + resource)
+                return chrome.runtime.getURL("remove-builder-font" + "/" + resource)
             } else {
                 return chrome.runtime.getURL(resource)
             }

@@ -17,7 +17,7 @@ main.js:
             // This is for Efaz's Roblox Extension support
             if (chrome.runtime.getManifest()["homepage_url"] == "https://www.efaz.dev/roblox-extension") {
                 // This is run under bundled extension [{extension_name}/{resource}]
-                return chrome.runtime.getURL("communities-renamer" + "/" + resource)
+                return chrome.runtime.getURL("{extension_name_this_is_replace_when_building_bundle_with_folder_name_if_youre_wondering}" + "/" + resource)
             } else {
                 return chrome.runtime.getURL(resource)
             }

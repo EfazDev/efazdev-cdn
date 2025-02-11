@@ -27,6 +27,7 @@ def isNo(text):
 def isRequestClose(text):
     return text.lower() == "exit" or text.lower() == "exit()"
 
+# Preparing Generation
 printWarnMessage("--- Preparing Generation ---")
 current_path_location = os.path.dirname(os.path.abspath(__file__))
 extension_path = os.path.join(current_path_location, "chromeExtension")
@@ -34,11 +35,15 @@ extensions_folder = os.path.join(current_path_location, "..")
 printMainMessage(f"Python File Location: {current_path_location}")
 printMainMessage(f"Bundle Extension Location: {extension_path}")
 printMainMessage(f"Extensions Location: {extensions_folder}")
+
+# Clearing Existing Extensions
 printWarnMessage("--- Clearing Existing Extensions ---")
 for i in os.listdir(extension_path):
     if os.path.isdir(os.path.join(extension_path, i)):
         printMainMessage(f"Clearing {i} Extension..")
         shutil.rmtree(os.path.join(extension_path, i), ignore_errors=True)
+
+# Finding Available Extensions
 printWarnMessage("--- Finding Available Extensions ---")
 extensions_added = []
 for i in os.listdir(extensions_folder):
@@ -53,19 +58,8 @@ for i in os.listdir(extensions_folder):
         )
         extensions_added.append(i)
 printMainMessage(f"Extensions: {json.dumps(extensions_added)}")
-"""
-printWarnMessage("--- Cleaning Extensions ---")
-for i in os.listdir(extension_path):
-    if os.path.isdir(os.path.join(extension_path, i)):
-        printMainMessage(f"Cleaning {i} Extension..")
-        e = os.path.join(extension_path, i)
-        for p in os.listdir(os.path.join(extension_path, i)):
-            if not (p == "chromeExtension"):
-                if os.path.isdir(os.path.join(e, p)):
-                    shutil.rmtree(os.path.join(e, p), ignore_errors=True)
-                else:
-                    os.remove(os.path.join(e, p))
-"""
+
+# Updating Bundle Information
 printWarnMessage("--- Updating Bundle Information ---")
 printMainMessage("Opening Settings JSON..")
 with open(os.path.join(extension_path, "settings.json"), "r") as f:
@@ -150,27 +144,48 @@ printMainMessage("Saving Manifest JSON..")
 with open(os.path.join(extension_path, "manifest.json"), "w") as f:
     json.dump(ma, f, indent=4)
     
+# Configuring Mini Extensions
+printWarnMessage("--- Configuring Mini Extensions ---")
+ex_name_replace_key = "{extension_name_this_is_replace_when_building_bundle_with_folder_name_if_youre_wondering}"
+for i in extensions_added:
+    printMainMessage(f"Configuring {i}..")
+    with open(f"{extension_path}/{i}/settings.js", "w") as f:
+        f.write("// This file was used for the mini extensions but since this extension is currently being used for bundle extension, it's cleared with this message.")
+    for q in os.listdir(f"{extension_path}/{i}/"):
+        if os.path.isfile(f"{extension_path}/{i}/{q}") and q.endswith(".js"):
+            with open(f"{extension_path}/{i}/{q}", "r") as f:
+                fi_f = f.read()
+            fi_f = fi_f.replace(ex_name_replace_key, i)
+            with open(f"{extension_path}/{i}/{q}", "w") as f:
+                f.write(fi_f)
+
+# Final Touches
+printWarnMessage("--- Making Final Touches ---")
 for i in extensions_added:
     printMainMessage(f"Saving JSONs for {i}..")
     with open(f"{extension_path}/{i}/org_manifest.json", "w") as f:
         json.dump(mans[i], f, indent=4)
     with open(f"{extension_path}/{i}/settings.json", "w") as f:
         json.dump(ses[i], f, indent=4)
-    with open(f"{extension_path}/{i}/settings.js", "w") as f:
-        f.write("// This file was used for the mini extensions but since this extension is currently being used for bundle extension, it's cleared with this message.")
     os.remove(f"{extension_path}/{i}/manifest.json")
 
 if not (os.name == "nt"):
-    printWarnMessage("--- Creating ZIP File ---")
+    printMainMessage("Creating Bundle ZIP File..")
     if os.path.exists(
         os.path.join(current_path_location, "zip", "chromeExtension.zip")
     ):
         os.remove(os.path.join(current_path_location, "zip", "chromeExtension.zip"))
-    subprocess.run(
+    a = subprocess.run(
         f'zip -r ../zip/chromeExtension.zip ./ -x "*.git*" -x "*.DS_Store" -x "__MACOSX*" -x "__pycache*"',
         cwd=extension_path,
         shell=True,
     )
+    if a.returncode == 0: 
+        printMainMessage("Ziping has succeeded!")
+    else:
+        printErrorMessage(f"Uh oh! Ziping has failed due to an error! Status Code: {a.returncode}")
+
+# Done!
 printSuccessMessage("SUCCESS!")
 printSuccessMessage(
     "Successfully recreated bundle from existing extensions made in folder!"
