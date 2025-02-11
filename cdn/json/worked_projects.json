@@ -70,16 +70,6 @@
         "description": "A Hangout Roblox game where you can hangout at!"
     },
     {
-        "name": "Drink Milk for UGC - By CalmGFX",
-        "url": "https://www.roblox.com/games/15837324785",
-        "download_url": "https://www.roblox.com/games/15837324785",
-        "discontinued": true,
-        "showInProjectsPage": true,
-        "buttonText": {"ProjectsPage": "Play on Roblox!", "ProjectPage": "Play on Roblox!"},
-        "dateDiscontinued": "July 11th, 2024",
-        "description": "A Roblox game that you drink milk for UGC!"
-    },
-    {
         "name": "Don't Touch Cellis - By CellisPlays",
         "url": "https://www.roblox.com/games/15562398167/5-FREE-UGC-Dont-Touch-CelIis",
         "download_url": "https://www.roblox.com/games/15562398167/5-FREE-UGC-Dont-Touch-CelIis",
@@ -98,5 +88,15 @@
         "buttonText": {"ProjectsPage": "Go to GitHub!", "ProjectPage": "Go to GitHub!"},
         "dateDiscontinued": "None",
         "description": "An iOS Sparserestore exploit that allows you to unlock your device's full potential!"
+    },
+    {
+        "name": "Drink Milk for UGC - By CalmGFX",
+        "url": "https://www.roblox.com/games/15837324785",
+        "download_url": "https://www.roblox.com/games/15837324785",
+        "discontinued": true,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "Play on Roblox!", "ProjectPage": "Play on Roblox!"},
+        "dateDiscontinued": "July 11th, 2024",
+        "description": "A Roblox game that you drink milk for UGC!"
     }
 ]
