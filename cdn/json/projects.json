@@ -170,6 +170,16 @@
         "description": "An extension that can change the accent colors of the new Roblox Foundation blue color to something else!"
     },
     {
+        "name": "Efaz's Roblox Extension",
+        "url": "https://www.efaz.dev/roblox-extension",
+        "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-extension/iehkcelgogmkojgggahdefcdncfeiadf",
+        "discontinued": false,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
+        "dateDiscontinued": "None",
+        "description": "An extension that contains all of my Roblox Chrome extensions at once!"
+    },
+    {
         "name": "Roblox URL Scheme Launcher",
         "url": "https://rbx.efaz.dev/",
         "download_url": "https://rbx.efaz.dev/",
