@@ -110,6 +110,10 @@ body * {
     border-radius: 10px !important;
 }
 
+button.btn-primary-xs span {
+    color: #232527 !important;
+}
+
 .dark-theme .notification,
 .dark-theme .notification-blue,
 .dark-theme .notification-red {
