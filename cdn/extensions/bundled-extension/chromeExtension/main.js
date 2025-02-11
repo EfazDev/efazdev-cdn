@@ -27,7 +27,7 @@ self.addEventListener('install', async (event) => {
             })
             await loopThroughArrayAsync(ex, (_, e) => {
                 console.log("Importing " + e);
-                importScripts(chrome.runtime.getURL('./' + e + '/chromeExtension/main.js'));
+                importScripts(chrome.runtime.getURL('./' + e + '/main.js'));
             })
             console.log("Successfully imported all extension's background script!")
         })

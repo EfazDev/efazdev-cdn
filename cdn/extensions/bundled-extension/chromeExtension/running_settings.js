@@ -71,7 +71,7 @@ function compareVersions(version1, version2) {
 }
 
 async function loadChanges() {
-    fetch(chrome.runtime.getURL(document.extensionName + "/chromeExtension/settings.json")).then(setting_res => {
+    fetch(chrome.runtime.getURL(document.extensionName + "/settings.json")).then(setting_res => {
         return setting_res.json()
     }).then(settings => {
         system_settings = settings
@@ -147,7 +147,7 @@ async function loadChanges() {
         const submitButton = document.getElementById("submitbutton");
         submitButton.addEventListener("click", saveData);
 
-        fetch(chrome.runtime.getURL(document.extensionName + "/chromeExtension/manifest.json")).then(man_res => {
+        fetch(chrome.runtime.getURL(document.extensionName + "/org_manifest.json")).then(man_res => {
             return man_res.json()
         }).then(man_json => {
             /* Fulfill basic manifest details */
@@ -155,7 +155,7 @@ async function loadChanges() {
             var extension_version = man_json["version"]
             var extension_icon = man_json["icons"]["32"]
 
-            document.getElementById("extens_name").innerHTML = `Extension Name: ${extension_name} ${`<img src="${document.extensionName}/chromeExtension/${extension_icon}" height="16" width="16" style="vertical-align: middle;">`}`
+            document.getElementById("extens_name").innerHTML = `Extension Name: ${extension_name} ${`<img src="${document.extensionName}/${extension_icon}" height="16" width="16" style="vertical-align: middle;">`}`
             document.getElementById("extens_vers").innerHTML = `v${extension_version}`
             document.getElementById("window_title").innerText = `${extension_name} Settings`
 

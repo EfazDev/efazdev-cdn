@@ -52,8 +52,8 @@ async function loadChanges2() {
     let man_json = await fetch(chrome.runtime.getURL("manifest.json")).then((re) => { if (re.ok) { return re.json() } else { return {} } });
     const extensions = system_settings["extensions"]
     await loopThroughArrayAsync(extensions, async (_, exName) => {
-        let manifest = await fetch(chrome.runtime.getURL(exName + "/chromeExtension/manifest.json")).then((re) => { if (re.ok) { return re.json() } else { return {} } });
-        let settings = await fetch(chrome.runtime.getURL(exName + "/chromeExtension/settings.json")).then((re) => { if (re.ok) { return re.json() } else { return {} } });
+        let manifest = await fetch(chrome.runtime.getURL(exName + "/org_manifest.json")).then((re) => { if (re.ok) { return re.json() } else { return {} } });
+        let settings = await fetch(chrome.runtime.getURL(exName + "/settings.json")).then((re) => { if (re.ok) { return re.json() } else { return {} } });
 
         document.getElementById("extens_vers").innerHTML = `v${man_json["version"]}`
         document.getElementById("window_title").innerText = `Bundle Settings`
@@ -73,13 +73,13 @@ async function loadChanges2() {
         if (document.getElementById(exName)) {
             var button = document.getElementById(exName)
             button.addEventListener("click", async () => {
-                let webpage = await fetch(chrome.runtime.getURL(exName + "/chromeExtension/settings.html")).then((re) => { if (re.ok) { return re.text() } else { return null } });
+                let webpage = await fetch(chrome.runtime.getURL(exName + "/settings.html")).then((re) => { if (re.ok) { return re.text() } else { return null } });
                 if (webpage) {
                     // Edit Webpage Contents
                     webpage = webpage
                         .replaceAll('<script src="settings.js"></script>', '<script class="reexecute" src="running_settings.js"></script>')
-                        .replaceAll('<script src="setting_colors.js"></script>', '<script class="reexecute" src="' + exName + "/chromeExtension/setting_colors.js" + '"></script>')
-                        .replaceAll('<script src="reset_cache.js"></script>', '<script class="reexecute" src="' + exName + "/chromeExtension/reset_cache.js" + '"></script>')
+                        .replaceAll('<script src="setting_colors.js"></script>', '<script class="reexecute" src="' + exName + "/setting_colors.js" + '"></script>')
+                        .replaceAll('<script src="reset_cache.js"></script>', '<script class="reexecute" src="' + exName + "/reset_cache.js" + '"></script>')
                         .replaceAll("</meta>", "")
                     webpage = webpage.replaceAll('<button type=\'submit\' id="submitbutton" class="center">Save Settings!</button><br><br>', '<button type=\'submit\' id="submitbutton" class="center">Save Settings!</button> <button type="submit" id="goBackToBundledPage">Return to Extensions page!</button><br><br>')
                     

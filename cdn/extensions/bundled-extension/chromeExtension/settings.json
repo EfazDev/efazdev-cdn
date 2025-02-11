@@ -5,12 +5,11 @@
         "fake_verified",
         "charts-rename-remover",
         "foundation-color-accents",
-        "efaz-roblox-theme",
         "remove-builder-font",
         "communities-renamer"
     ],
     "chromeWebstoreLinkEnabled": true,
-    "uploadedChromeExtensionID": "",
+    "uploadedChromeExtensionID": "iehkcelgogmkojgggahdefcdncfeiadf",
     "scanForManifestUpdates": true,
     "isVersionServer": true,
     "onlineManifestFile": "https://cdn.efaz.dev/cdn/extensions/versions/public.json"

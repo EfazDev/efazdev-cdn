@@ -43,16 +43,17 @@ printWarnMessage("--- Finding Available Extensions ---")
 extensions_added = []
 for i in os.listdir(extensions_folder):
     if not (
-        i == "bundled-extension" or i == "example-extension" or i == "versions"
+        i == "bundled-extension" or i == "example-extension" or i == "versions" or i == "efaz-roblox-theme"
     ) and os.path.isdir(os.path.join(extensions_folder, i)):
         printMainMessage(f"Copying {i} Extension..")
         shutil.copytree(
-            os.path.join(extensions_folder, i),
+            os.path.join(extensions_folder, i, "chromeExtension"),
             os.path.join(extension_path, i),
             dirs_exist_ok=True,
         )
         extensions_added.append(i)
 printMainMessage(f"Extensions: {json.dumps(extensions_added)}")
+"""
 printWarnMessage("--- Cleaning Extensions ---")
 for i in os.listdir(extension_path):
     if os.path.isdir(os.path.join(extension_path, i)):
@@ -64,6 +65,7 @@ for i in os.listdir(extension_path):
                     shutil.rmtree(os.path.join(e, p), ignore_errors=True)
                 else:
                     os.remove(os.path.join(e, p))
+"""
 printWarnMessage("--- Updating Bundle Information ---")
 printMainMessage("Opening Settings JSON..")
 with open(os.path.join(extension_path, "settings.json"), "r") as f:
@@ -75,9 +77,9 @@ mans = {}
 ses = {}
 for i in extensions_added:
     printMainMessage(f"Opening JSONs for {i}..")
-    with open(f"{extension_path}/{i}/chromeExtension/manifest.json", "r") as f:
+    with open(f"{extension_path}/{i}/manifest.json", "r") as f:
         mans[i] = json.load(f)
-    with open(f"{extension_path}/{i}/chromeExtension/settings.json", "r") as f:
+    with open(f"{extension_path}/{i}/settings.json", "r") as f:
         ses[i] = json.load(f)
 content_scripts = []
 content_css = []
@@ -91,13 +93,13 @@ for a, v in mans.items():
             jss = []
             csss = []
             for e in js:
-                if e.find(f"{a}/chromeExtension/") == -1:
-                    jss.append(f"{a}/chromeExtension/{e}")
+                if e.find(f"{a}/") == -1:
+                    jss.append(f"{a}/{e}")
                 else:
                     jss.append(f"{e}")
             for e in css:
-                if e.find(f"{a}/chromeExtension/") == -1:
-                    csss.append(f"{a}/chromeExtension/{e}")
+                if e.find(f"{a}/") == -1:
+                    csss.append(f"{a}/{e}")
                 else:
                     csss.append(f"{e}")
             content_scripts = content_scripts + jss
@@ -108,11 +110,13 @@ for a, v in mans.items():
             resou = i.get("resources", [])
             resourcess = []
             for e in resou:
-                if e.find(f"{a}/chromeExtension/") == -1:
-                    resourcess.append(f"{a}/chromeExtension/{e}")
+                if e.find(f"{a}/") == -1:
+                    resourcess.append(f"{a}/{e}")
                 else:
                     resourcess.append(f"{e}")
             web_accessible_resources = web_accessible_resources + resourcess
+for a, v in ses.items():
+    v["bundleAssociatedName"] = a
 for a, v in mans.items():
     if v.get("permissions"):
         for i in v.get("permissions"):
@@ -145,13 +149,16 @@ with open(os.path.join(extension_path, "settings.json"), "w") as f:
 printMainMessage("Saving Manifest JSON..")
 with open(os.path.join(extension_path, "manifest.json"), "w") as f:
     json.dump(ma, f, indent=4)
-#    
-#    for i in extensions_added:
-#        printMainMessage(f"Saving JSONs for {i}..")
-#        with open(f"{extension_path}/{i}/chromeExtension/manifest.json", "w") as f:
-#            json.dump(mans[i], f, indent=4)
-#        with open(f"{extension_path}/{i}/chromeExtension/settings.json", "w") as f:
-#            json.dump(ses[i], f, indent=4)
+    
+for i in extensions_added:
+    printMainMessage(f"Saving JSONs for {i}..")
+    with open(f"{extension_path}/{i}/org_manifest.json", "w") as f:
+        json.dump(mans[i], f, indent=4)
+    with open(f"{extension_path}/{i}/settings.json", "w") as f:
+        json.dump(ses[i], f, indent=4)
+    with open(f"{extension_path}/{i}/settings.js", "w") as f:
+        f.write("// This file was used for the mini extensions but since this extension is currently being used for bundle extension, it's cleared with this message.")
+    os.remove(f"{extension_path}/{i}/manifest.json")
 
 if not (os.name == "nt"):
     printWarnMessage("--- Creating ZIP File ---")

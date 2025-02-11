@@ -11,6 +11,21 @@ inject.js:
 
 (function () {
     var stored_css = ""
+    function getChromeURL(resource) {
+        try {
+            // This is for Efaz's Roblox Extension support
+            if (chrome.runtime.getManifest()["homepage_url"] == "https://www.efaz.dev/roblox-extension") {
+                // This is run under bundled extension [{extension_name}/{resource}]
+                return chrome.runtime.getURL("efaz-roblox-theme" + "/" + resource)
+            } else {
+                return chrome.runtime.getURL(resource)
+            }
+        } catch (_) {
+            // This is run under mini extension [{resource}]
+            return chrome.runtime.getURL(resource)
+        }
+    }
+
     try {
         const storage = chrome.storage.sync;
         const storage_key = "dev.efaz.efaz_roblox_theme"
@@ -69,7 +84,7 @@ inject.js:
                             if (stored_css) {
                                 injectCSS(stored_css)
                             } else {
-                                fetch(chrome.runtime.getURL("efaz-roblox-theme/chromeExtension/theme.css")).then(res => { return res.text() }).then(fetched => {
+                                fetch(getChromeURL("theme.css")).then(res => { return res.text() }).then(fetched => {
                                     stored_css = fetched
                                     injectCSS(fetched)
                                 })

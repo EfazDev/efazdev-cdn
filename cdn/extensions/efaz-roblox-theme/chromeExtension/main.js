@@ -12,6 +12,20 @@ inject.js:
 
 (function () {
     var stored_css = "";
+    function getChromeURL(resource) {
+        try {
+            // This is for Efaz's Roblox Extension support
+            if (chrome.runtime.getManifest()["homepage_url"] == "https://www.efaz.dev/roblox-extension") {
+                // This is run under bundled extension [{extension_name}/{resource}]
+                return chrome.runtime.getURL("efaz-roblox-theme" + "/" + resource)
+            } else {
+                return chrome.runtime.getURL(resource)
+            }
+        } catch (_) {
+            // This is run under mini extension [{resource}]
+            return chrome.runtime.getURL(resource)
+        }
+    }
 
     chrome.tabs.onUpdated.addListener(function (tabId, details, tab) {
         try {
@@ -77,7 +91,7 @@ inject.js:
                                         args: [stored_css]
                                     })
                                 } else {
-                                    fetch(chrome.runtime.getURL("efaz-roblox-theme/chromeExtension/theme.css")).then(res => { return res.text() }).then(fetched => {
+                                    fetch(getChromeURL("theme.css")).then(res => { return res.text() }).then(fetched => {
                                         stored_css = fetched
                                         chrome.scripting.executeScript({
                                             target: { tabId: tabId, allFrames: true },
@@ -110,7 +124,7 @@ inject.js:
                     } else {
                         items[name]["thanks"] = true
                         chrome.tabs.create({
-                            url: chrome.runtime.getURL("thank_you.html")
+                            url: getChromeURL("thank_you.html")
                         })
                         await storage.set(items);
                     }
