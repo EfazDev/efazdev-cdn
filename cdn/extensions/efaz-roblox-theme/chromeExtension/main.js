@@ -111,11 +111,11 @@ inject.js:
     });
 
     chrome.runtime.onInstalled.addListener(() => {
-        const storage = chrome.storage.sync;
+        const storage = chrome.storage.local;
         fetch("settings.json").then(setting_res => {
-            return setting_res.json()
+            return setting_res.json();
         }).then(settings => {
-            var name = settings["name"]
+            var name = settings["name"];
             storage.get([name], async function (items) {
                 if (items[name]) {
                     if (items[name]["thanks"] == true) {
@@ -128,6 +128,12 @@ inject.js:
                         })
                         await storage.set(items);
                     }
+                } else {
+                    items[name] = {"thanks": true}
+                    chrome.tabs.create({
+                        url: getChromeURL("thank_you.html")
+                    })
+                    await storage.set(items);
                 }
             });
         })

@@ -239,8 +239,8 @@ div {
             }).then(j => {
                 if (j) {
                     if (system_settings["isVersionServer"] == true) {
-                        var compared = compareVersions(man_json["version"], j[system_settings["id"]])
-                        if (j[system_settings["id"]] == man_json["version"]) {
+                        var compared = compareVersions(man_json["version"], j[system_settings["name"]])
+                        if (j[system_settings["name"]] == man_json["version"]) {
                             /* User is running the latest non-beta version. */
                             console.log("This user is currently at the latest version!")
                         } else if (compared == -1) {
@@ -249,7 +249,7 @@ div {
                             document.getElementById("openChromeExtensionSettings").addEventListener("click", () => {
                                 chrome.tabs.create({ url: "chrome://extensions/" });
                             });
-                            console.log(`New version found! v${man_json["version"]} > v${j[system_settings["id"]]}`)
+                            console.log(`New version found! v${man_json["version"]} > v${j[system_settings["name"]]}`)
                         } else {
                             /* User is running beta version of the extension */
                             document.getElementById("extens_vers").innerHTML = `v${man_json["version"]} Beta`

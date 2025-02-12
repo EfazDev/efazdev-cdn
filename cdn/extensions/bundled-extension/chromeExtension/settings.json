@@ -1,6 +1,6 @@
 {
-    "name": "Efaz's Roblox Extension",
-    "id": "dev.efaz.bundled_extension",
+    "displayName": "Efaz's Roblox Extension",
+    "name": "dev.efaz.bundled_extension",
     "extensions": [
         "fake_verified",
         "charts-rename-remover",

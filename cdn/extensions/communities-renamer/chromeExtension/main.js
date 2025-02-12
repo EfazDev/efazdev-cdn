@@ -268,26 +268,31 @@ main.js:
     });
 
     chrome.runtime.onInstalled.addListener(() => {
-        console.log("Chrome detects extension refresh.")
+        const storage = chrome.storage.local;
         fetch("settings.json").then(setting_res => {
-            return setting_res.json()
+            return setting_res.json();
         }).then(settings => {
-            var name = settings["name"]
+            var name = settings["name"];
             storage.get([name], async function (items) {
                 if (items[name]) {
                     if (items[name]["thanks"] == true) {
                         console.log("The extension might have updated!")
                         return
                     } else {
-                        console.log("The extension has detected a new user!")
                         items[name]["thanks"] = true
                         chrome.tabs.create({
                             url: getChromeURL("thank_you.html")
                         })
                         await storage.set(items);
                     }
+                } else {
+                    items[name] = {"thanks": true}
+                    chrome.tabs.create({
+                        url: getChromeURL("thank_you.html")
+                    })
+                    await storage.set(items);
                 }
             });
         })
-    })
+    });
 }())
