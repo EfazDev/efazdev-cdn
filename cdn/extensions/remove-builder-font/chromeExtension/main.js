@@ -273,9 +273,9 @@ main.js:
                     if (typeof (items[storage_key]["resourcesUrl"]) == "string") { if (items[storage_key]["resourcesUrl"] == "https://cdn.efaz.dev/cdn/extensions/remove-builder-font/resources/" || items[storage_key]["resourcesUrl"] == "https://cdn2.efaz.dev/cdn/remove-builder-font/") { items[storage_key]["resourcesUrl"] = trusted_source; storage.set(items); } trusted_source = items[storage_key]["resourcesUrl"] };
                 }
                 if (enabled == true) {
-                    if (tab.url) {
-                        var urlObj = new URL(tab.url)
-                        if (tab.url.startsWith("https://www.roblox.com")) {
+                    if (tab.url || tab.pendingUrl) {
+                        var urlObj = new URL(tab.url || tab.pendingUrl)
+                        if (urlObj.hostname == "www.roblox.com") {
                             function injectCSS(css) {
                                 if (document.getElementById("remove-builder-font") == null) {
                                     if (css) {
@@ -320,7 +320,7 @@ main.js:
                                     })
                                 }
                             }
-                        } else if (tab.url.startsWith("https://devforum.roblox.com")) {
+                        } else if (urlObj.hostname == "devforum.roblox.com") {
                             if (devForum == true) {
                                 function injectCSS(css, tries) {
                                     if (css) {
@@ -392,7 +392,7 @@ main.js:
                                     }
                                 }
                             }
-                        } else if (tab.url.startsWith("https://create.roblox.com")) {
+                        } else if (urlObj.hostname == "create.roblox.com") {
                             if (overwriteCreateDashboard == true) {
                                 function injectCSS(css, tries) {
                                     function sheetToString(sheet) {
