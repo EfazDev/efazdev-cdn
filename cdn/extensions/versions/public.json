@@ -1,18 +1,18 @@
 {
-    "dev.efaz.verified_badge_add_on": "1.5.9",
-    "dev.efaz.efaz_roblox_theme": "1.0.0",
-    "dev.efaz.remove_builder_font": "1.4.6",
-    "dev.efaz.charts_renamer": "1.2.4",
-    "dev.efaz.communities_renamer": "1.0.1",
-    "dev.efaz.example_extension": "1.2.0",
-    "dev.efaz.roblox_foundation_color_accents": "1.1.0",
-    "dev.efaz.bundled_extension": "1.0.8",
+    "dev.efaz.verified_badge_add_on": "1.6.0",
+    "dev.efaz.efaz_roblox_theme": "1.1.1",
+    "dev.efaz.remove_builder_font": "1.4.7",
+    "dev.efaz.charts_renamer": "1.2.5",
+    "dev.efaz.communities_renamer": "1.0.2",
+    "dev.efaz.example_extension": "1.2.1",
+    "dev.efaz.roblox_foundation_color_accents": "1.1.1",
+    "dev.efaz.bundled_extension": "1.0.9",
 
-    "verified_checkmark_settings": "1.5.9",
-    "efazRobloxTheme": "1.0.0",
-    "removeBuilderFont": "1.4.6",
+    "verified_checkmark_settings": "1.6.0",
+    "efazRobloxTheme": "1.1.1",
+    "removeBuilderFont": "1.4.7",
     "removeBuilderFontFirefox": "1.4.1",
-    "chartsRename": "1.2.4",
-    "communities_renamer": "1.0.1",
-    "exampleExtension": "1.2.0"
+    "chartsRename": "1.2.5",
+    "communities_renamer": "1.0.2",
+    "exampleExtension": "1.2.1"
 }
