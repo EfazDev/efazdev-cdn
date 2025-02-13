@@ -422,9 +422,8 @@ main.js:
                                                         selector.innerHTML = `${sheet_text} \n\n${css}`
                                                     }
                                                 }
-                                            } else {
-                                                setTimeout(() => { injectCSS(css, new_tries + 1) }, 100)
                                             }
+                                            setTimeout(() => { injectCSS(css, new_tries + 1) }, 500)
                                         } else {
                                             var selectors = document.head.getElementsByTagName("style")
                                             var found = false
@@ -443,9 +442,7 @@ main.js:
                                                     }
                                                 }
                                             }
-                                            if (found == false) {
-                                                setTimeout(() => { injectCSS(css, new_tries + 1) }, 100)
-                                            }
+                                            setTimeout(() => { injectCSS(css, new_tries + 1) }, 500)
                                         }
                                     }
                                 }
