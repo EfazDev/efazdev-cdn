@@ -149,3 +149,7 @@ button.btn-primary-xs span {
 .dark-theme .footer .text-footer-nav:visited {
     color: #ffffff;
 }
+
+.request-error-page-content {
+    display: block !important;
+}
