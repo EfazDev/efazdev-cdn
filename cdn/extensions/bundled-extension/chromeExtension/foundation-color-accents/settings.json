@@ -15,7 +15,7 @@
         "color": {
             "text": "Choose an accent color",
             "type": "color",
-            "default": "#335FFF",
+            "default": "#56ac72",
             "reset": true
         },
         "overwriteSuccessColor": {

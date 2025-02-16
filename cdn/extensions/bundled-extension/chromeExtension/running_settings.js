@@ -75,8 +75,8 @@ async function loadChanges() {
         return setting_res.json()
     }).then(settings => {
         system_settings = settings
-        if (system_settings["type"]) {
-            storage = chrome.storage[system_settings["type"]]   
+        if (system_settings["typeOfStorage"]) {
+            storage = chrome.storage[system_settings["typeOfStorage"]]   
         }
         storage.get([system_settings["name"]], function (items) {
             if (Object.keys(system_settings["settings"]).length == 1) {

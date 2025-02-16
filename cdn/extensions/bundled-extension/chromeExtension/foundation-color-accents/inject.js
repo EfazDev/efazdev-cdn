@@ -29,8 +29,9 @@ inject.js:
         const storage = chrome.storage.sync;
         const storage_key = "dev.efaz.roblox_foundation_color_accents"
         storage.get([storage_key], function (items) {
+            var defaultData = { "enabled": true, "color": "#56ac72", "loopSeconds": "100", "overwriteSuccessColor": false, "applyToPrimaryBtn": false }
             if (!(items[storage_key])) {
-                items[storage_key] = { "enabled": true, "color": "#335FFF", "loopSeconds": "100", "overwriteSuccessColor": false, "applyToPrimaryBtn": false }
+                items[storage_key] = defaultData
             }
             if (items[storage_key]["enabled"] == true) {
                 var tab = window.location

@@ -91,9 +91,60 @@
         a {
             color: #4295f5;
         }
+    </style>
+    <style>
+        .colored_buttons {
+            margin-bottom: 8px;
+            font-size: 12.75px;
+            height: 25px;
+            width: 130px;
+        }
+
+        .colored_grid {
+            display: grid !important;
+            grid-template-columns: 140px 140px 140px !important;
+        }
+
+        .colored_grid_objects {
+            height: 30px;
+            width: 130px;
+            display: block;
+        }
+
+        #red_color {
+            background-color: #ff0000;
+        }
+
+        #orange_color {
+            background-color: #ff4b00;
+        }
+
+        #yellow_color {
+            background-color: #ffdd00;
+        }
 
         #old_green_color {
             background-color: #56ac72;
+        }
+
+        #lime_color {
+            background-color: #00e900;
+        }
+
+        #cyan_color {
+            background-color: #00d5ff;
+        }
+
+        #blue_color {
+            background-color: #335FFF;
+        }
+
+        #purple_color {
+            background-color: #9000ff;
+        }
+
+        #pink_color {
+            background-color: #ff00ff;
         }
     </style>
     <script src="settings.js"></script>
@@ -109,7 +160,18 @@
         <label for="enabled">Enable Extension: <input type="checkbox" id="enabled" name="enabled"></label><br>
         <p id="extensionSettings">------ Extension Settings ------</p>
         <p id="reviewDetails">------ Review Details! ------</p>
-        <button id="old_green_color" class="center">Set Green Color!</button><br><br>
+        <div class="colored_grid">
+            <div class="colored_grid_objects"><button id="red_color" class="colored_buttons center">Set Red Color!</button></div>
+            <div class="colored_grid_objects"><button id="orange_color" class="colored_buttons center">Set Orange Color!</button></div>
+            <div class="colored_grid_objects"><button id="yellow_color" class="colored_buttons center">Set Yellow Color!</button></div>
+            <div class="colored_grid_objects"><button id="lime_color" class="colored_buttons center">Set Lime Color!</button></div>
+            <div class="colored_grid_objects"><button id="cyan_color" class="colored_buttons center">Set Cyan Color!</button></div>
+            <div class="colored_grid_objects"><button id="blue_color" class="colored_buttons center">Set Blue Color!</button></div>
+            <div class="colored_grid_objects"><button id="purple_color" class="colored_buttons center">Set Purple Color!</button></div>
+            <div class="colored_grid_objects"><button id="pink_color" class="colored_buttons center">Set Pink Color!</button></div>
+            <div class="colored_grid_objects"><button id="old_green_color" class="colored_buttons center" style="font-size: 11.5px;">Set Old Green Color!</button></div>
+        </div>
+        <br>
         <button type='submit' id="submitbutton" class="center">Save Settings!</button><br><br>
         <em>Extension is made by @EfazDev. This extension is not affiliated or made by Roblox.</em>
         <ul>
