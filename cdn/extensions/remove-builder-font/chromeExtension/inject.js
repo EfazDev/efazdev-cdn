@@ -12,6 +12,7 @@ inject.js:
 (function () { // Prevent changes made using the Inspect console.
     const storage = chrome.storage.sync;
     var stored_css = ""
+    var stored_css2 = ""
     var stored_creator_dashboard_css = ""
     var stored_devforum_css = ""
 
@@ -109,7 +110,7 @@ inject.js:
                     if (re.ok) {
                         return re.json().then(j => {
                             custom_sheet = generateFontLocationsSheet(j, font_locations, typeString)
-                            
+
                             made_css = made_css.replaceAll(font_locations["Black"]["woff"], custom_sheet["Black"]["woff"])
                             made_css = made_css.replaceAll(font_locations["Black"]["woff2"], custom_sheet["Black"]["woff2"])
 
@@ -142,7 +143,7 @@ inject.js:
                 })
             } else {
                 /* Legacy Font Location Replacement (directory only) */
-                
+
                 if (!(source.endsWith("/"))) {
                     source = `${source}/`
                 }
@@ -214,7 +215,7 @@ inject.js:
                 if (tab.href) {
                     var urlObj = window.location
                     if (urlObj.hostname == "www.roblox.com") {
-                        function injectCSS(css) {
+                        async function injectCSS(css) {
                             if (document.getElementById("remove-builder-font") == null) {
                                 if (css) {
                                     const style = document.createElement("style")
@@ -246,9 +247,55 @@ inject.js:
                                 })
                             }
                         }
+
+                        // This is for new WebBlox objects that were added in 2025.
+                        async function injectCSS2(css) {
+                            if (css) {
+                                var selectors = document.getElementsByTagName("style")
+                                selectors = Array.prototype.slice.call(selectors);
+                                selectors.forEach((selector) => {
+                                    var sheet_text = sheetToString(selector.sheet)
+                                    if (selector.getAttribute("data-emotion") == "web-blox-css-mui-global" && sheet_text.includes("@font-face")) {
+                                        if (!(selector.innerHTML.includes("Efaz's Builder Font Remover"))) {
+                                            if (selector.innerHTML == "") {
+                                                selector.innerHTML = `${sheet_text.replaceAll("Builder Sans", "BuilderRemove").replaceAll("Builder Mono", "BuilderMono")} \n\n${css}`
+                                            } else if (selector.innerHTML.includes("/fonts/builder-sans/")) {
+                                                selector.innerHTML = `${sheet_text.replaceAll("Builder Sans", "BuilderRemove").replaceAll("Builder Mono", "BuilderMono")} \n\n${css}`
+                                            }
+                                        }
+                                    } else if (selector.getAttribute("data-emotion") == "web-blox-css-tss") {
+                                        if (selector.innerHTML.includes("Builder Sans")) {
+                                            selector.innerHTML = `${selector.innerHTML.replaceAll("Builder Sans", "BuilderRemove").replaceAll("Builder Mono", "BuilderMono")} \n\n${css}`
+                                        }
+                                    }
+                                })
+                                setTimeout(() => { injectCSS2(css) }, 500)
+                            }
+                        }
+                        if (stored_css2) {
+                            overwriteResourcesUrl(stored_css2, trusted_source, 3, oldFontOnOtherSub).then(a => {
+                                injectCSS2(a)
+                            })
+                        } else {
+                            if (remoteStyles == true) {
+                                fetch("https://cdn.efaz.dev/cdn/extensions/remove-builder-font/chromeExtension/change_font2.css").then(res => { return res.text() }).then(fetched => {
+                                    stored_css2 = fetched
+                                    overwriteResourcesUrl(fetched, trusted_source, 3, oldFontOnOtherSub).then(a => {
+                                        injectCSS2(a)
+                                    })
+                                })
+                            } else {
+                                fetch(getChromeURL("change_font2.css")).then(res => { return res.text() }).then(fetched => {
+                                    stored_css2 = fetched
+                                    overwriteResourcesUrl(fetched, trusted_source, 3, oldFontOnOtherSub).then(a => {
+                                        injectCSS2(a)
+                                    })
+                                })
+                            }
+                        }
                     } else if (urlObj.hostname == "devforum.roblox.com") {
                         if (devForum == true) {
-                            function injectCSS(css, tries) {
+                            async function injectCSS(css, tries) {
                                 if (css) {
                                     var new_tries = 0
                                     if (tries) {
@@ -308,7 +355,7 @@ inject.js:
                         }
                     } else if (urlObj.hostname == "create.roblox.com") {
                         if (overwriteCreateDashboard == true) {
-                            function injectCSS(css, tries) {
+                            async function injectCSS(css, tries) {
                                 if (css) {
                                     var new_tries = 0
                                     if (tries) {
@@ -326,27 +373,23 @@ inject.js:
                                                 }
                                             }
                                         }
-                                        setTimeout(() => { injectCSS(css, new_tries + 1) }, 500)
                                     } else {
                                         var selectors = document.head.getElementsByTagName("style")
-                                        var found = false
                                         for (q = 0; q < selectors.length; q++) {
-                                            var selector = selectors[q]
-                                            var sheet_text = sheetToString(selector.sheet)
+                                            let selector = selectors[q]
+                                            let sheet_text = sheetToString(selector.sheet)
                                             if (selector.getAttribute("data-emotion") == "web-blox-css-mui-global" && sheet_text.includes("@font-face")) {
                                                 if (!(selector.innerHTML.includes("Efaz's Builder Font Remover"))) {
                                                     if (selector.innerHTML == "") {
                                                         selector.innerHTML = `${sheet_text} \n\n${css}`
-                                                        found = true
                                                     } else if (selector.innerHTML.includes("/fonts/builder-sans/")) {
                                                         selector.innerHTML = `${sheet_text} \n\n${css}`
-                                                        found = true
                                                     }
                                                 }
                                             }
                                         }
-                                        setTimeout(() => { injectCSS(css, new_tries + 1) }, 500)
                                     }
+                                    setTimeout(() => { injectCSS(css, new_tries + 1) }, 500)
                                 }
                             }
                             if (stored_creator_dashboard_css) {
@@ -373,7 +416,7 @@ inject.js:
                         }
                     } else if (urlObj.hostname.includes(".roblox.com")) {
                         if (otherSub == true && !(urlObj.hostname.includes("create.roblox.com"))) {
-                            function injectCSS(css, tries) {
+                            async function injectCSS(css, tries) {
                                 if (css) {
                                     var new_tries = 0
                                     if (tries) {

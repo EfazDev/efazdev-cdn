@@ -43,6 +43,7 @@
             ],
             "resources": [
                 "remove-builder-font/change_font.css",
+                "remove-builder-font/change_font2.css",
                 "remove-builder-font/creator_dashboard.css",
                 "remove-builder-font/devforum_font.css",
                 "remove-builder-font/global_font.css"

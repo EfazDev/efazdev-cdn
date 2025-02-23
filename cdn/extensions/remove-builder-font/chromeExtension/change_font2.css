@@ -1,0 +1,121 @@
+/* 
+
+Efaz's Builder Font Remover
+By: EfazDev
+Page: https://www.efaz.dev/remove-builder-font
+
+Font files are exported to my CDN server in case Roblox attempts to delete the files off their servers.
+CSS is created based on Roblox's servers for old files. Styles using specific classes are made using Google's Chrome Console.
+
+*/
+
+/* [Create font faces based on the files.] */
+@font-face { font-family: BuilderRemove !important; font-weight: 300; font-style: normal; src: url("https://css.rbxcdn.com/6eafc48312528e2515d622428b6b95cc-GothamSSm-Book.woff2") format("woff2"), url("https://css.rbxcdn.com/713e0b3a604ff4e44f55f9d1c100e8b5-GothamSSm-Book.woff") format("woff") !important; font-display: swap; }
+@font-face { font-family: BuilderRemove !important; font-weight: 325; font-style: normal; src: url("https://css.rbxcdn.com/6eafc48312528e2515d622428b6b95cc-GothamSSm-Book.woff2") format("woff2"), url("https://css.rbxcdn.com/713e0b3a604ff4e44f55f9d1c100e8b5-GothamSSm-Book.woff") format("woff") !important; font-display: swap; }
+@font-face { font-family: BuilderRemove !important; font-weight: 500; font-style: normal; src: url("https://css.rbxcdn.com/66d562e3299ee732a53db150038c026e-GothamSSm-Medium.woff2") format("woff2"), url("https://css.rbxcdn.com/2ed7693f8cf4d79466dd604c35502f76-GothamSSm-Medium.woff") format("woff") !important; font-display: swap; }
+@font-face { font-family: BuilderRemove !important; font-weight: 800; font-style: normal; src: url("https://css.rbxcdn.com/3c102ace52ea35b16da4383819acfa38-GothamSSm-Bold.woff2") format("woff2"), url("https://css.rbxcdn.com/fe0e9885efc341b17f7e600781493f69-GothamSSm-Bold.woff") format("woff") !important; font-display: swap; }
+@font-face { font-family: BuilderMono !important; font-weight: 400; font-style: normal; src: url("https://fonts.roblox.com/firamono/FiraMono-Regular.woff2") format("woff2"), url("https://fonts.roblox.com/firamono/FiraMono-Regular.woff") format("woff") !important; font-display: swap; }
+
+/* [Overwrite pre-existing Builder font-faces with provided font files.]  */
+html { -webkit-font-smoothing: antialiased; box-sizing: border-box; text-size-adjust: 100%; color-scheme: dark; }
+*, ::before, ::after { box-sizing: inherit; }
+strong, b { font-weight: 800; }
+body { margin: 0px; color: rgb(255, 255, 255); font-family: BuilderRemove, Helvetica, Arial, san-serif; font-weight: 300; font-style: normal; line-height: 150%; font-size: 14px; background-color: rgb(17, 18, 22); }
+@media print {
+  body { background-color: rgb(255, 255, 255); }
+}
+body::backdrop { background-color: rgb(17, 18, 22); }
+
+body { 
+    font-family: BuilderRemove, Arial, san-serif; 
+    font-weight: 325; 
+    font-style: normal; 
+    line-height: 140%; 
+    font-size: 14px; 
+    letter-spacing: 0.15px; 
+}
+.css-332b7m-Typography-root-Typography-h6 {
+    font-weight: 500 !important;
+    font-style: normal !important;
+    font-size: 16px !important;
+    line-height: 120% !important;
+}
+.web-blox-css-mui-15wphe8-Typography-body1 {
+    font-weight: 500 !important;
+    font-style: normal !important;
+    font-size: 15px !important;
+    line-height: 120% !important;
+}
+b {
+    font-weight: 500;
+}
+a[id="report-abuse-btn"] {
+    font-family: BuilderRemove, Helvetica, Arial, san-serif !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    font-size: 15px !important;
+    line-height: 120% !important;
+}
+li[id="copy-share-link-li"] button[type="button"] {
+    font-family: BuilderRemove, Helvetica, Arial, san-serif !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    font-size: 15px !important;
+    line-height: 120% !important;
+}
+li[id="block-item-btn"] button[id="block-creator-btn"] {
+    font-family: BuilderRemove, Helvetica, Arial, san-serif !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    font-size: 15px !important;
+    line-height: 120% !important;
+}
+li[id="report-abuse-li"]:hover { 
+    font-family: BuilderRemove, Helvetica, Arial, san-serif !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    font-size: 15px !important;
+    line-height: 120% !important;
+
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    background-color: rgba(187, 194, 209, 0.08);
+}
+li[id="copy-share-link-li"] button[type="button"]:hover {
+    font-family: BuilderRemove, Helvetica, Arial, san-serif !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    font-size: 15px !important;
+    line-height: 120% !important;
+
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    background-color: rgba(187, 194, 209, 0.08);
+}
+li[id="block-item-btn"] button[id="block-creator-btn"]:hover {
+    font-family: BuilderRemove, Helvetica, Arial, san-serif !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    font-size: 15px !important;
+    line-height: 120% !important;
+
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    background-color: rgba(187, 194, 209, 0.08);
+}
+.web-blox-css-tss-zzwi3a-Typography-body1-Typography-colorSecondary-Typography-root {
+    font-weight: 400 !important;
+}
+.web-blox-css-tss-ixzjnb-Typography-buttonMedium {
+    font-weight: 500 !important;
+}
+.web-blox-css-tss-ixzjnb-Typography-buttonMedium {
+    font-weight: 500 !important;
+}
+.web-blox-css-tss-1aszub1-Typography-buttonMedium {
+    font-weight: 500 !important;
+}
+.web-blox-css-mui-15wphe8-Typography-body1 {
+    font-family: BuilderRemove, Helvetica, Arial, san-serif !important;
+    font-weight: 400 !important;
+}

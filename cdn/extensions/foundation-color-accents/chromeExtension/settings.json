@@ -18,6 +18,16 @@
             "default": "#56ac72",
             "reset": true
         },
+        "overwriteCreateDashboard": {
+            "text": "Change Colors on Creator Dashboard",
+            "type": "checkbox",
+            "default": false
+        },
+        "includeGraphInDashboard": {
+            "text": "Include Graphs on Creator Dashboard",
+            "type": "checkbox",
+            "default": false
+        },
         "overwriteSuccessColor": {
             "text": "Overwrite Success Color",
             "type": "checkbox",
