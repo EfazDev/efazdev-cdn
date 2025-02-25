@@ -279,6 +279,18 @@ inject.js:
                                             .replaceAll("20,70,255", `${formatRgbVal(converted_rgb["r"] - 20)}, ${formatRgbVal(converted_rgb["g"] - 20)}, ${formatRgbVal(converted_rgb["b"] - 20)}`);
                                         change_made = true;
                                     }
+                                    if (converted_sheet.includes("112, 160, 255") || converted_sheet.includes("112,160,255")) {
+                                        converted_sheet = converted_sheet
+                                            .replaceAll("112, 160, 255", `${formatRgbVal(converted_rgb["r"] + 50)}, ${formatRgbVal(converted_rgb["g"] + 50)}, ${formatRgbVal(converted_rgb["b"] + 50)}`)
+                                            .replaceAll("112,160,255", `${formatRgbVal(converted_rgb["r"] + 50)}, ${formatRgbVal(converted_rgb["g"] + 50)}, ${formatRgbVal(converted_rgb["b"] + 50)}`);
+                                        change_made = true;
+                                    }
+                                    if (converted_sheet.includes("0, 27, 122") || converted_sheet.includes("0,27,122")) {
+                                        converted_sheet = converted_sheet
+                                            .replaceAll("0, 27, 122", `${formatRgbVal(converted_rgb["r"] - 50)}, ${formatRgbVal(converted_rgb["g"] - 50)}, ${formatRgbVal(converted_rgb["b"] - 50)}`)
+                                            .replaceAll("0,27,122", `${formatRgbVal(converted_rgb["r"] - 50)}, ${formatRgbVal(converted_rgb["g"] - 50)}, ${formatRgbVal(converted_rgb["b"] - 50)}`);
+                                        change_made = true;
+                                    }
                                     if (converted_sheet.includes("#528BFF")) {
                                         converted_sheet = converted_sheet.replaceAll("#528BFF", rgbToHex(formatRgbVal(converted_rgb["r"] + 30), formatRgbVal(converted_rgb["g"] + 30), formatRgbVal(converted_rgb["b"] + 30)));
                                         change_made = true;
@@ -326,6 +338,18 @@ inject.js:
                                                 .replaceAll("20,70,255", `${formatRgbVal(converted_rgb["r"] - 20)}, ${formatRgbVal(converted_rgb["g"] - 20)}, ${formatRgbVal(converted_rgb["b"] - 20)}`);
                                             change_made = true;
                                         }
+                                        if (converted_sheet.includes("112, 160, 255") || converted_sheet.includes("112,160,255")) {
+                                            converted_sheet = converted_sheet
+                                                .replaceAll("112, 160, 255", `${formatRgbVal(converted_rgb["r"] + 50)}, ${formatRgbVal(converted_rgb["g"] + 50)}, ${formatRgbVal(converted_rgb["b"] + 50)}`)
+                                                .replaceAll("112,160,255", `${formatRgbVal(converted_rgb["r"] + 50)}, ${formatRgbVal(converted_rgb["g"] + 50)}, ${formatRgbVal(converted_rgb["b"] + 50)}`);
+                                            change_made = true;
+                                        }
+                                        if (converted_sheet.includes("0, 27, 122") || converted_sheet.includes("0,27,122")) {
+                                            converted_sheet = converted_sheet
+                                                .replaceAll("0, 27, 122", `${formatRgbVal(converted_rgb["r"] - 50)}, ${formatRgbVal(converted_rgb["g"] - 50)}, ${formatRgbVal(converted_rgb["b"] - 50)}`)
+                                                .replaceAll("0,27,122", `${formatRgbVal(converted_rgb["r"] - 50)}, ${formatRgbVal(converted_rgb["g"] - 50)}, ${formatRgbVal(converted_rgb["b"] - 50)}`);
+                                            change_made = true;
+                                        }
                                         if (converted_sheet.includes("#335FFF")) {
                                             converted_sheet = converted_sheet.replaceAll("#335FFF", settings["color"]);
                                             change_made = true;
@@ -365,6 +389,18 @@ inject.js:
                                                 .replaceAll("20,70,255", `${formatRgbVal(converted_rgb["r"] - 20)}, ${formatRgbVal(converted_rgb["g"] - 20)}, ${formatRgbVal(converted_rgb["b"] - 20)}`);
                                             change_made = true;
                                         }
+                                        if (converted_sheet.includes("112, 160, 255") || converted_sheet.includes("112,160,255")) {
+                                            converted_sheet = converted_sheet
+                                                .replaceAll("112, 160, 255", `${formatRgbVal(converted_rgb["r"] + 50)}, ${formatRgbVal(converted_rgb["g"] + 50)}, ${formatRgbVal(converted_rgb["b"] + 50)}`)
+                                                .replaceAll("112,160,255", `${formatRgbVal(converted_rgb["r"] + 50)}, ${formatRgbVal(converted_rgb["g"] + 50)}, ${formatRgbVal(converted_rgb["b"] + 50)}`);
+                                            change_made = true;
+                                        }
+                                        if (converted_sheet.includes("0, 27, 122") || converted_sheet.includes("0,27,122")) {
+                                            converted_sheet = converted_sheet
+                                                .replaceAll("0, 27, 122", `${formatRgbVal(converted_rgb["r"] - 50)}, ${formatRgbVal(converted_rgb["g"] - 50)}, ${formatRgbVal(converted_rgb["b"] - 50)}`)
+                                                .replaceAll("0,27,122", `${formatRgbVal(converted_rgb["r"] - 50)}, ${formatRgbVal(converted_rgb["g"] - 50)}, ${formatRgbVal(converted_rgb["b"] - 50)}`);
+                                            change_made = true;
+                                        }
                                         if (converted_sheet.includes("#335FFF")) {
                                             converted_sheet = converted_sheet.replaceAll("#335FFF", settings["color"]);
                                             change_made = true;
@@ -398,6 +434,18 @@ inject.js:
                                             converted_sheet = converted_sheet
                                                 .replaceAll("20, 70, 255", `${formatRgbVal(converted_rgb["r"] - 20)}, ${formatRgbVal(converted_rgb["g"] - 20)}, ${formatRgbVal(converted_rgb["b"] - 20)}`)
                                                 .replaceAll("20,70,255", `${formatRgbVal(converted_rgb["r"] - 20)}, ${formatRgbVal(converted_rgb["g"] - 20)}, ${formatRgbVal(converted_rgb["b"] - 20)}`);
+                                            change_made = true;
+                                        }
+                                        if (converted_sheet.includes("112, 160, 255") || converted_sheet.includes("112,160,255")) {
+                                            converted_sheet = converted_sheet
+                                                .replaceAll("112, 160, 255", `${formatRgbVal(converted_rgb["r"] + 50)}, ${formatRgbVal(converted_rgb["g"] + 50)}, ${formatRgbVal(converted_rgb["b"] + 50)}`)
+                                                .replaceAll("112,160,255", `${formatRgbVal(converted_rgb["r"] + 50)}, ${formatRgbVal(converted_rgb["g"] + 50)}, ${formatRgbVal(converted_rgb["b"] + 50)}`);
+                                            change_made = true;
+                                        }
+                                        if (converted_sheet.includes("0, 27, 122") || converted_sheet.includes("0,27,122")) {
+                                            converted_sheet = converted_sheet
+                                                .replaceAll("0, 27, 122", `${formatRgbVal(converted_rgb["r"] - 50)}, ${formatRgbVal(converted_rgb["g"] - 50)}, ${formatRgbVal(converted_rgb["b"] - 50)}`)
+                                                .replaceAll("0,27,122", `${formatRgbVal(converted_rgb["r"] - 50)}, ${formatRgbVal(converted_rgb["g"] - 50)}, ${formatRgbVal(converted_rgb["b"] - 50)}`);
                                             change_made = true;
                                         }
                                         if (converted_sheet.includes("#335FFF")) {
@@ -440,6 +488,18 @@ inject.js:
                                                     .replaceAll("20,70,255", `${formatRgbVal(converted_rgb["r"] - 20)}, ${formatRgbVal(converted_rgb["g"] - 20)}, ${formatRgbVal(converted_rgb["b"] - 20)}`);
                                                 change_made = true;
                                             }
+                                            if (converted_sheet.includes("112, 160, 255") || converted_sheet.includes("112,160,255")) {
+                                                converted_sheet = converted_sheet
+                                                    .replaceAll("112, 160, 255", `${formatRgbVal(converted_rgb["r"] + 50)}, ${formatRgbVal(converted_rgb["g"] + 50)}, ${formatRgbVal(converted_rgb["b"] + 50)}`)
+                                                    .replaceAll("112,160,255", `${formatRgbVal(converted_rgb["r"] + 50)}, ${formatRgbVal(converted_rgb["g"] + 50)}, ${formatRgbVal(converted_rgb["b"] + 50)}`);
+                                                change_made = true;
+                                            }
+                                            if (converted_sheet.includes("0, 27, 122") || converted_sheet.includes("0,27,122")) {
+                                                converted_sheet = converted_sheet
+                                                    .replaceAll("0, 27, 122", `${formatRgbVal(converted_rgb["r"] - 50)}, ${formatRgbVal(converted_rgb["g"] - 50)}, ${formatRgbVal(converted_rgb["b"] - 50)}`)
+                                                    .replaceAll("0,27,122", `${formatRgbVal(converted_rgb["r"] - 50)}, ${formatRgbVal(converted_rgb["g"] - 50)}, ${formatRgbVal(converted_rgb["b"] - 50)}`);
+                                                change_made = true;
+                                            }
                                             if (converted_sheet.includes("#335FFF")) {
                                                 converted_sheet = converted_sheet.replaceAll("#335FFF", settings["color"]);
                                                 change_made = true;
@@ -479,6 +539,18 @@ inject.js:
                                                     .replaceAll("20,70,255", `${formatRgbVal(converted_rgb["r"] - 20)}, ${formatRgbVal(converted_rgb["g"] - 20)}, ${formatRgbVal(converted_rgb["b"] - 20)}`);
                                                 change_made = true;
                                             }
+                                            if (converted_sheet.includes("112, 160, 255") || converted_sheet.includes("112,160,255")) {
+                                                converted_sheet = converted_sheet
+                                                    .replaceAll("112, 160, 255", `${formatRgbVal(converted_rgb["r"] + 50)}, ${formatRgbVal(converted_rgb["g"] + 50)}, ${formatRgbVal(converted_rgb["b"] + 50)}`)
+                                                    .replaceAll("112,160,255", `${formatRgbVal(converted_rgb["r"] + 50)}, ${formatRgbVal(converted_rgb["g"] + 50)}, ${formatRgbVal(converted_rgb["b"] + 50)}`);
+                                                change_made = true;
+                                            }
+                                            if (converted_sheet.includes("0, 27, 122") || converted_sheet.includes("0,27,122")) {
+                                                converted_sheet = converted_sheet
+                                                    .replaceAll("0, 27, 122", `${formatRgbVal(converted_rgb["r"] - 50)}, ${formatRgbVal(converted_rgb["g"] - 50)}, ${formatRgbVal(converted_rgb["b"] - 50)}`)
+                                                    .replaceAll("0,27,122", `${formatRgbVal(converted_rgb["r"] - 50)}, ${formatRgbVal(converted_rgb["g"] - 50)}, ${formatRgbVal(converted_rgb["b"] - 50)}`);
+                                                change_made = true;
+                                            }
                                             if (converted_sheet.includes("#335FFF")) {
                                                 converted_sheet = converted_sheet.replaceAll("#335FFF", settings["color"]);
                                                 change_made = true;
@@ -512,6 +584,18 @@ inject.js:
                                                 converted_sheet = converted_sheet
                                                     .replaceAll("20, 70, 255", `${formatRgbVal(converted_rgb["r"] - 20)}, ${formatRgbVal(converted_rgb["g"] - 20)}, ${formatRgbVal(converted_rgb["b"] - 20)}`)
                                                     .replaceAll("20,70,255", `${formatRgbVal(converted_rgb["r"] - 20)}, ${formatRgbVal(converted_rgb["g"] - 20)}, ${formatRgbVal(converted_rgb["b"] - 20)}`);
+                                                change_made = true;
+                                            }
+                                            if (converted_sheet.includes("112, 160, 255") || converted_sheet.includes("112,160,255")) {
+                                                converted_sheet = converted_sheet
+                                                    .replaceAll("112, 160, 255", `${formatRgbVal(converted_rgb["r"] + 50)}, ${formatRgbVal(converted_rgb["g"] + 50)}, ${formatRgbVal(converted_rgb["b"] + 50)}`)
+                                                    .replaceAll("112,160,255", `${formatRgbVal(converted_rgb["r"] + 50)}, ${formatRgbVal(converted_rgb["g"] + 50)}, ${formatRgbVal(converted_rgb["b"] + 50)}`);
+                                                change_made = true;
+                                            }
+                                            if (converted_sheet.includes("0, 27, 122") || converted_sheet.includes("0,27,122")) {
+                                                converted_sheet = converted_sheet
+                                                    .replaceAll("0, 27, 122", `${formatRgbVal(converted_rgb["r"] - 50)}, ${formatRgbVal(converted_rgb["g"] - 50)}, ${formatRgbVal(converted_rgb["b"] - 50)}`)
+                                                    .replaceAll("0,27,122", `${formatRgbVal(converted_rgb["r"] - 50)}, ${formatRgbVal(converted_rgb["g"] - 50)}, ${formatRgbVal(converted_rgb["b"] - 50)}`);
                                                 change_made = true;
                                             }
                                             if (converted_sheet.includes("#335FFF")) {
