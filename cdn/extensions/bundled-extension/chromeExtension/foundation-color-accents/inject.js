@@ -464,7 +464,8 @@ inject.js:
 
                                 if (settings["includeGraphInDashboard"] == true) {
                                     var all_paths_svg = document.getElementsByTagName("path");
-                                    var new_combined_list = Array.prototype.slice.call(all_icons).concat(Array.prototype.slice.call(all_paths_svg));
+                                    var all_span = document.getElementsByTagName("span");
+                                    var new_combined_list = Array.prototype.slice.call(all_span).concat(Array.prototype.slice.call(all_paths_svg));
                                     await loopThroughArrayAsync(new_combined_list, async (_, header) => {
                                         var att_name = "fill"
                                         if (header.getAttribute(att_name) && !(header.getAttribute(att_name).includes(`${converted_rgb["r"]}, ${converted_rgb["g"]}, ${converted_rgb["b"]}`) || header.getAttribute(att_name).includes(settings["color"]))) {
