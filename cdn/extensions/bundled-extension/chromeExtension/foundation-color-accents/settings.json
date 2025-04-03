@@ -18,6 +18,12 @@
             "default": "#56ac72",
             "reset": true
         },
+        "projectedImage": {
+            "text": "Set a color background",
+            "type": "text",
+            "default": "https://empty.efaz.dev",
+            "reset": true
+        },
         "overwriteCreateDashboard": {
             "text": "Change Colors on Creator Dashboard",
             "type": "checkbox",
