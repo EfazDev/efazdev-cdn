@@ -574,6 +574,60 @@ class Main:
         "onRobloxSaved",
         "onNewStudioLaunching"
     ]
+    robloxInstanceTotalLiteralEventNames = typing.Literal[
+        "onRobloxExit",
+        "onRobloxLog",
+        "onRobloxSharedLogLaunch",
+        "onRobloxAppStart",
+        "onRobloxAppLoginFailed",
+        "onRobloxPassedUpdate",
+        "onBloxstrapSDK",
+        "onLoadedFFlags",
+        "onHttpResponse",
+        "onOtherRobloxLog",
+        "onRobloxCrash",
+        "onRobloxChannel",
+        "onRobloxTerminateInstance",
+        "onGameStart",
+        "onGameLoading",
+        "onGameLoadingNormal",
+        "onGameLoadingPrivate",
+        "onGameLoadingReserved",
+        "onGameLoadingParty",
+        "onGameUDMUXLoaded",
+        "onGameAudioDeviceAvailable",
+        "onGameTeleport",
+        "onGameTeleportFailed",
+        "onGameJoinInfo",
+        "onGameJoined",
+        "onGameLeaving",
+        "onGameDisconnected",
+        "onGameLog",
+        "onGameError",
+        "onGameWarning",
+        "onRobloxVoiceChatMute",
+        "onRobloxVoiceChatUnmute",
+        "onRobloxVoiceChatStart",
+        "onRobloxVoiceChatLeft",
+        "onRobloxAudioDeviceStopRecording",
+        "onRobloxAudioDeviceStartRecording",
+        "onPlayTestStart",
+        "onOpeningGame",
+        "onExpiredFlag",
+        "onApplyingFeature",
+        "onPluginLoading",
+        "onRobloxPublishing",
+        "onRobloxLauncherDestroyed",
+        "onPlayTestDisconnected",
+        "onTelemetryLog",
+        "onClosingGame",
+        "onTeamCreateConnect",
+        "onTeamCreateDisconnect",
+        "onCloudPlugins",
+        "onPluginUnloading",
+        "onRobloxSaved",
+        "onNewStudioLaunching"
+    ]
     robloxInstanceEventInfo = {
         # 0 = Safe, 1 = Caution, 2 = Warning, 3 = Dangerous
         "onRobloxExit": {"message": "Allow detecting when Roblox closes", "level": 0, "robloxEvent": True}, 
@@ -791,7 +845,7 @@ class Main:
         await_20_second_log_creation = False
         await_log_creation_attempts = 0
         windows_roblox_starter_launched_roblox = False
-        def __init__(self, main_handler, pid: str, log_file: str="", debug_mode: bool=False, allow_other_logs: bool=False, await_20_second_log_creation=False, created_mutex=None, studio=False):
+        def __init__(self, main_handler, pid: str, log_file: str="", debug_mode: bool=False, allow_other_logs: bool=False, await_20_second_log_creation: bool=False, created_mutex: bool=None, studio: bool=False):
             if type(main_handler) is Main:
                 self.main_handler = main_handler
                 self.pid = pid
@@ -818,7 +872,7 @@ class Main:
                 if (self.main_handler.getIfRobloxIsOpen(pid=self.pid) == False) or self.requested_end_tracking == True or (self.ended_process == True):
                     self.ended_process = True
                     break
-        def setRobloxEventCallback(self, eventName: str, eventCallback):
+        def setRobloxEventCallback(self, eventName: Main.robloxInstanceTotalLiteralEventNames, eventCallback: typing.Callable[[typing.Any], None]):
             if callable(eventCallback):
                 if eventName in self.event_names:
                     for i in self.events:
@@ -826,7 +880,7 @@ class Main:
                     self.events.append({"name": eventName, "callback": eventCallback})
                     if self.watchdog_started == False:
                         self.startActivityTracking()
-        def addRobloxEventCallback(self, eventName: str, eventCallback):
+        def addRobloxEventCallback(self, eventName: Main.robloxInstanceTotalLiteralEventNames, eventCallback: typing.Callable[[typing.Any], None]):
             if callable(eventCallback):
                 if eventName in self.event_names:
                     self.events.append({"name": eventName, "callback": eventCallback})
@@ -877,7 +931,7 @@ class Main:
                     return []
             else:
                 return []
-        def clearRobloxEventCallbacks(self, eventName: str=""):
+        def clearRobloxEventCallbacks(self, eventName: Main.robloxInstanceTotalLiteralEventNames=""):
             if eventName == "":
                 self.events = []
             else:
