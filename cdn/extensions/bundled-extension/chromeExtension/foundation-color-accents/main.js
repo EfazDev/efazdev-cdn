@@ -28,7 +28,7 @@ main.js:
 
     chrome.tabs.onUpdated.addListener(function (tabId, details, tab) {
         try {
-            const storage = chrome.storage.sync;
+            const storage = chrome.storage.local;
             const storage_key = "dev.efaz.roblox_foundation_color_accents"
             storage.get([storage_key], function (items) {
                 var defaultData = { "enabled": true, "color": "#56ac72", "loopSeconds": "100", "overwriteSuccessColor": false, "applyToPrimaryBtn": false, "overwriteCreateDashboard": false, "includeGraphInDashboard": false }
@@ -73,8 +73,8 @@ main.js:
                                         if (roblox_css.ok) {
                                             try {
                                                 var roblox_css_res = await convertLargeResponse(roblox_css);
-                                                if (!(settings["projectedImage"] == "https://empty.efaz.dev" || settings["projectedImage"] == null)) {
-                                                    if (settings["projectedImage"].startsWith("https://")) { roblox_css_res = roblox_css_res.replaceAll("background-color:#335fff", "background:url(" + settings["projectedImage"] + ");background-size: 110% 100%;background-position: -1px") }
+                                                if (!(settings["projectedImage"] == "" ||  settings["projectedImage"] == "https://empty.efaz.dev" || settings["projectedImage"] == null)) {
+                                                    if (settings["projectedImage"].startsWith("https://") || settings["projectedImage"].startsWith("data:")) { roblox_css_res = roblox_css_res.replaceAll("background-color:#335fff", "background:url(" + settings["projectedImage"] + ");background-size: 105% 100%;background-position: 50%") }
                                                 }
                                                 roblox_css_res = roblox_css_res.replaceAll("#335fff", settings["color"].toLowerCase())
                                                 if (settings["overwriteSuccessColor"] == true) {
@@ -288,6 +288,36 @@ main.js:
                                                 .replaceAll("0,27,122", `${formatRgbVal(converted_rgb["r"] - 50)}, ${formatRgbVal(converted_rgb["g"] - 50)}, ${formatRgbVal(converted_rgb["b"] - 50)}`);
                                             change_made = true;
                                         }
+                                        if (converted_sheet.includes("60, 100, 250") || converted_sheet.includes("60,100,250")) {
+                                            converted_sheet = converted_sheet
+                                                .replaceAll("60, 100, 250", `${converted_rgb["r"]}, ${converted_rgb["g"]}, ${converted_rgb["b"]}`)
+                                                .replaceAll("60,100,250", `${converted_rgb["r"]}, ${converted_rgb["g"]}, ${converted_rgb["b"]}`);
+                                            change_made = true;
+                                        }
+                                        if (converted_sheet.includes("0, 34, 255") || converted_sheet.includes("0,34,255")) {
+                                            converted_sheet = converted_sheet
+                                                .replaceAll("0, 34, 255", `${converted_rgb["r"]-50}, ${converted_rgb["g"]-50}, ${converted_rgb["b"]-50}`)
+                                                .replaceAll("0,34,255", `${converted_rgb["r"]-50}, ${converted_rgb["g"]-50}, ${converted_rgb["b"]-50}`);
+                                            change_made = true;
+                                        }
+                                        if (converted_sheet.includes("58, 84, 255") || converted_sheet.includes("58,84,255")) {
+                                            converted_sheet = converted_sheet
+                                                .replaceAll("58, 84, 255", `${converted_rgb["r"]-25}, ${converted_rgb["g"]-25}, ${converted_rgb["b"]-25}`)
+                                                .replaceAll("58,84,255", `${converted_rgb["r"]-25}, ${converted_rgb["g"]-25}, ${converted_rgb["b"]-25}`);
+                                            change_made = true;
+                                        }
+                                        if (converted_sheet.includes("115, 134, 255") || converted_sheet.includes("115,134,255")) {
+                                            converted_sheet = converted_sheet
+                                                .replaceAll("115, 134, 255", `${converted_rgb["r"]+25}, ${converted_rgb["g"]+25}, ${converted_rgb["b"]+25}`)
+                                                .replaceAll("115,134,255", `${converted_rgb["r"]+25}, ${converted_rgb["g"]+25}, ${converted_rgb["b"]+25}`);
+                                            change_made = true;
+                                        }
+                                        if (converted_sheet.includes("173, 183, 255") || converted_sheet.includes("173,183,255")) {
+                                            converted_sheet = converted_sheet
+                                                .replaceAll("173, 183, 255", `${converted_rgb["r"]+50}, ${converted_rgb["g"]+50}, ${converted_rgb["b"]+50}`)
+                                                .replaceAll("173,183,255", `${converted_rgb["r"]+50}, ${converted_rgb["g"]+50}, ${converted_rgb["b"]+50}`);
+                                            change_made = true;
+                                        }
                                         if (converted_sheet.includes("85, 193, 255") || converted_sheet.includes("85,193,255")) {
                                             converted_sheet = converted_sheet
                                                 .replaceAll("85, 193, 255", `${formatRgbVal(converted_rgb["r"] + 60)}, ${formatRgbVal(converted_rgb["g"] + 60)}, ${formatRgbVal(converted_rgb["b"] + 60)}`)
@@ -332,8 +362,6 @@ main.js:
                                         var base_color_res = applyBaseColoring(target_sheet)
                                         var change_made = base_color_res[0] 
                                         var converted_sheet = base_color_res[1]
-                                        console.log(change_made)
-                                        console.log(converted_sheet)
                                         if (change_made == true) {header.innerHTML = converted_sheet}
                                     });
     
@@ -382,7 +410,8 @@ main.js:
                                     if (settings["includeGraphInDashboard"] == true) {
                                         var all_paths_svg = document.getElementsByTagName("path");
                                         var all_span = document.getElementsByTagName("span");
-                                        var new_combined_list = Array.prototype.slice.call(all_span).concat(Array.prototype.slice.call(all_paths_svg));
+                                        var all_rect = document.getElementsByTagName("rect");
+                                        var new_combined_list = Array.prototype.slice.call(all_span).concat(Array.prototype.slice.call(all_paths_svg)).concat(Array.prototype.slice.call(all_rect));
                                         await loopThroughArrayAsync(new_combined_list, async (_, header) => {
                                             var att_name = "fill"
                                             if (header.getAttribute(att_name) && !(header.getAttribute(att_name).includes(`${converted_rgb["r"]}, ${converted_rgb["g"]}, ${converted_rgb["b"]}`) || header.getAttribute(att_name).includes(settings["color"]))) {

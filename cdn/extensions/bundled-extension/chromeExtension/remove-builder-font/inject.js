@@ -301,14 +301,22 @@ inject.js:
                                     if (tries) {
                                         new_tries = tries
                                     }
+                                    async function loopThroughArrayAsync(array, callback) {
+                                        var generated_keys = Object.keys(array);
+                                        for (a = 0; a < generated_keys.length; a++) {
+                                            var key = generated_keys[a];
+                                            var value = array[key];
+                                            await callback(key, value);
+                                        };
+                                    };
                                     var roblox_provided_stylesheets = document.getElementsByTagName("discourse-assets-stylesheets")
                                     var found = false
                                     if (roblox_provided_stylesheets.length > 0) {
                                         roblox_provided_stylesheets = Array.prototype.slice.call(roblox_provided_stylesheets)[0];
                                         if (roblox_provided_stylesheets.children.length > 0) {
                                             var roblox_provided_stylesheets_children = Array.prototype.slice.call(roblox_provided_stylesheets.children);
-                                            roblox_provided_stylesheets_children.forEach((selector) => {
-                                                if (selector && selector.getAttribute("data-theme-id") == "3") {
+                                            loopThroughArrayAsync(roblox_provided_stylesheets_children, async (_, selector) => {
+                                                if (selector && (selector.getAttribute("data-theme-name") == "light" || selector.getAttribute("data-theme-name") == "dark" || selector.getAttribute("data-theme-name") == "roblox dark" || selector.getAttribute("data-theme-name") == "grey amber")) {
                                                     selector.remove()
                                                     if (css) {
                                                         const style = document.createElement("style")

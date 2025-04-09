@@ -31,6 +31,33 @@ function loopThroughArray(array, callback) {
     }
 }
 
+async function getImageFromInput(input) {
+    var files = input.files[0];
+    if (files) {
+        return new Promise((resolve, reject) => {
+            var fileReader = new FileReader();
+            fileReader.readAsDataURL(files);
+            fileReader.onload = function (event) {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = function () {
+                    const canvas = document.createElement("canvas");
+                    const ctx = canvas.getContext("2d");
+                    canvas.width = 300;
+                    canvas.height = 300;
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    resolve(canvas.toDataURL("image/jpeg", 0.8));
+                };
+                img.onerror = reject;
+            };
+        })
+    } else {
+        return new Promise((resolve, reject) => {
+            resolve(null)
+        })
+    }
+}
+
 async function saveData() {
     storage.get([system_settings["name"]], async function (items) {
         if (!(items[system_settings["name"]])) {
@@ -39,6 +66,17 @@ async function saveData() {
         await loopThroughArrayAsync(system_settings["settings"], async (key, val) => {
             if (val["type"] == "checkbox") {
                 items[system_settings["name"]][key] = document.getElementById(key).checked
+            } else if (val["type"] == "file") {
+                try {
+                    var res_file = await getImageFromInput(document.getElementById(key))
+                    if (res_file) {
+                        items[system_settings["name"]][key] = res_file
+                    } else if (document.getElementById(key).getAttribute("file_url")) {
+                        items[system_settings["name"]][key] = document.getElementById(key).getAttribute("file_url")
+                    }
+                } catch (err) {
+                    console.warn("Unable to save image!" + err.toString())
+                }
             } else {
                 items[system_settings["name"]][key] = document.getElementById(key).value
             }
@@ -110,6 +148,8 @@ async function loadChanges() {
                             var main_selection = document.getElementById(key)
                             if (val["type"] == "checkbox") {
                                 main_selection.checked = selected
+                            } else if (val["type"] == "file") {
+                                main_selection.setAttribute("file_url", selected)
                             } else {
                                 main_selection.value = selected
                             }
@@ -131,6 +171,9 @@ async function loadChanges() {
                                     main_selection.checked = val["default"]
                                 } else {
                                     main_selection.value = val["default"]
+                                }
+                                if (val["type"] == "file") {
+                                    main_selection.setAttribute("file_url", null)
                                 }
                                 if ((val["type"] == "checkbox" && !(main_selection.checked == selected)) || !(main_selection.value == selected)) {
                                     changes_made[key] = true

@@ -1,7 +1,7 @@
 {
   "name": "Efaz's Roblox Foundation Color Accents",
   "description": "An extension that allows you to change Roblox's blue button color to any background you want, even to the old green!",
-  "version": "1.2.5",
+  "version": "1.2.7",
   "manifest_version": 3,
   "author": "EfazDev",
   "homepage_url": "https://www.efaz.dev/",
@@ -51,6 +51,7 @@
   },
   "permissions": [
     "storage",
+    "unlimitedStorage",
     "scripting"
   ],
   "host_permissions": [

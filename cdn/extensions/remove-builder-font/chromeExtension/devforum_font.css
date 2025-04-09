@@ -188,3 +188,12 @@ header .header-dropdown-toggle {
 .css-szt25c-Typography-root-Typography-largeLabel2-Typography-colorSecondary {
     font-weight: 500;
 }
+.css-1uyjjhk-Typography-largeLabel2-Typography-colorSecondary-Typography-root {
+    font-weight: 500 !important;
+}
+.css-1m12hz3-Typography-buttonMedium-button-Button-contained-Typography-button-Typography-buttonMedium-button-Button-contained {
+    background-color: var(--quaternary) !important;
+}
+.css-1m12hz3-Typography-buttonMedium-button-Button-contained-Typography-button-Typography-buttonMedium-button-Button-contained > span {
+    color: var(--secondary) !important;
+}

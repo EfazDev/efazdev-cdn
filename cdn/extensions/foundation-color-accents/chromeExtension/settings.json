@@ -20,8 +20,8 @@
         },
         "projectedImage": {
             "text": "Set a color background",
-            "type": "text",
-            "default": "https://empty.efaz.dev",
+            "type": "file",
+            "default": "",
             "reset": true
         },
         "overwriteCreateDashboard": {
@@ -46,7 +46,7 @@
         }
     },
     "bundledDisplayName": "Foundation Color Accents",
-    "typeOfStorage": "sync",
+    "typeOfStorage": "local",
     "chromeWebstoreLinkEnabled": true,
     "uploadedChromeExtensionID": "ofblldaagkkmhajigieajamomjcbohgf",
     "scanForManifestUpdates": true,

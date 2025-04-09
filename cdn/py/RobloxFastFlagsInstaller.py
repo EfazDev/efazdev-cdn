@@ -878,14 +878,12 @@ class Main:
                     for i in self.events:
                         if i and i["name"] == eventName: self.events.remove(i)
                     self.events.append({"name": eventName, "callback": eventCallback})
-                    if self.watchdog_started == False:
-                        self.startActivityTracking()
+                    if self.watchdog_started == False: self.startActivityTracking()
         def addRobloxEventCallback(self, eventName: Main.robloxInstanceTotalLiteralEventNames, eventCallback: typing.Callable[[typing.Any], None]):
             if callable(eventCallback):
                 if eventName in self.event_names:
                     self.events.append({"name": eventName, "callback": eventCallback})
-                    if self.watchdog_started == False:
-                        self.startActivityTracking()
+                    if self.watchdog_started == False: self.startActivityTracking()
         def getWindowsOpened(self) -> "list[Main.RobloxWindow]":
             if self.pid and not (self.pid == "") and self.pid.isnumeric():
                 try:
