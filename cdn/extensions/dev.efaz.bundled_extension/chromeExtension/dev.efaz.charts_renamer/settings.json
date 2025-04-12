@@ -1,0 +1,51 @@
+{
+    "name": "dev.efaz.charts_renamer",
+    "settings": {
+        "enabled": {
+            "text": "Enable Extension",
+            "type": "checkbox",
+            "default": true
+        },
+        "newName": {
+            "text": "Replace Charts with",
+            "type": "text",
+            "default": "Discover",
+            "reset": true,
+            "neededSettings": [
+                "enabled"
+            ]
+        },
+        "replaceURLwithDiscoverURL": {
+            "text": "Replace /charts URL with /discover or /games",
+            "type": "checkbox",
+            "default": true,
+            "neededSettings": [
+                "enabled"
+            ]
+        },
+        "changeTitleHtml": {
+            "text": "Replace Tab Name with New Name",
+            "type": "checkbox",
+            "default": true,
+            "neededSettings": [
+                "enabled"
+            ]
+        },
+        "startTime": {
+            "text": "Start Time (ms)",
+            "type": "number",
+            "default": 75,
+            "neededSettings": [
+                "enabled"
+            ]
+        }
+    },
+    "bundledDisplayName": "Charts Renamer",
+    "typeOfStorage": "sync",
+    "chromeWebstoreLinkEnabled": true,
+    "uploadedChromeExtensionID": "eghkpfdncgmcaifihhfgihcenboakjck",
+    "scanForManifestUpdates": true,
+    "isVersionServer": true,
+    "onlineManifestFile": "https://cdn.efaz.dev/cdn/extensions/versions/public.json",
+    "bundleAssociatedName": "dev.efaz.charts_renamer"
+}
