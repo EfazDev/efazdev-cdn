@@ -11,6 +11,7 @@ inject.js:
 
 (function () { // Prevent changes made using the Inspect console.
     const storage = chrome.storage.sync;
+    const storage_key = "dev.efaz.remove_builder_font"
     var stored_css = ""
     var stored_css2 = ""
     var stored_creator_dashboard_css = ""
@@ -190,9 +191,76 @@ inject.js:
         return text;
     }
 
+    async function loopThroughArrayAsync(array, callback) {
+        if (typeof (array) == "object") {
+            if (Array.isArray(array)) {
+                for (let a = 0; a < array.length; a++) {
+                    var value = array[a]
+                    await callback(a, value)
+                }
+            } else {
+                var generated_keys = Object.keys(array);
+                for (let a = 0; a < generated_keys.length; a++) {
+                    var key = generated_keys[a]
+                    var value = array[key]
+                    await callback(key, value)
+                }
+            }
+        }
+    }
+
+    async function getSettings(storage_key, callback) {
+        if (callback) {
+            fetch(getChromeURL("settings.json")).then((res) => {
+                if (res.ok) {
+                    return res.json();
+                }
+            }).then(jso => {
+                if (jso) {
+                    return storage.get(storage_key).then(async (user_settings) => {
+                        if (!user_settings) {
+                            user_settings = {}
+                        }
+                        if (!(user_settings[storage_key])) {
+                            user_settings[storage_key] = {}
+                        }
+                        await loopThroughArrayAsync(jso["settings"], async (i, v) => {
+                            if (typeof(user_settings[storage_key][i]) == "undefined") {
+                                if (v["default"]) {user_settings[storage_key][i] = v["default"]}
+                            }
+                        })
+                        callback(user_settings)
+                    })
+                }
+            })
+        } else {
+            return fetch(getChromeURL("settings.json")).then((res) => {
+                if (res.ok) {
+                    return res.json();
+                }
+            }).then(jso => {
+                if (jso) {
+                    return storage.get(storage_key).then(async (user_settings) => {
+                        if (!user_settings) {
+                            user_settings = {}
+                        }
+                        if (!(user_settings[storage_key])) {
+                            user_settings[storage_key] = {}
+                        }
+                        await loopThroughArrayAsync(jso["settings"], async (i, v) => {
+                            if (typeof(user_settings[storage_key][i]) == "undefined") {
+                                if (v["default"]) {user_settings[storage_key][i] = v["default"]}
+                            }
+                        })
+                        return user_settings
+                    })
+                }
+            })
+        }
+    }
+
     try {
-        const storage_key = "dev.efaz.remove_builder_font"
-        storage.get([storage_key], function (items) {
+        getSettings(storage_key, function (items) {
             var enabled = true;
             var remoteStyles = false;
             var overwriteCreateDashboard = true;
@@ -302,13 +370,22 @@ inject.js:
                                         new_tries = tries
                                     }
                                     async function loopThroughArrayAsync(array, callback) {
-                                        var generated_keys = Object.keys(array);
-                                        for (a = 0; a < generated_keys.length; a++) {
-                                            var key = generated_keys[a];
-                                            var value = array[key];
-                                            await callback(key, value);
-                                        };
-                                    };
+                                        if (typeof (array) == "object") {
+                                            if (Array.isArray(array)) {
+                                                for (let a = 0; a < array.length; a++) {
+                                                    var value = array[a]
+                                                    await callback(a, value)
+                                                }
+                                            } else {
+                                                var generated_keys = Object.keys(array);
+                                                for (let a = 0; a < generated_keys.length; a++) {
+                                                    var key = generated_keys[a]
+                                                    var value = array[key]
+                                                    await callback(key, value)
+                                                }
+                                            }
+                                        }
+                                    }
                                     var roblox_provided_stylesheets = document.getElementsByTagName("discourse-assets-stylesheets")
                                     var found = false
                                     if (roblox_provided_stylesheets.length > 0) {

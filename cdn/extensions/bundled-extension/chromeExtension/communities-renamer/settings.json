@@ -10,28 +10,43 @@
             "text": "Replace Communities with",
             "type": "text",
             "default": "Groups",
-            "reset": true
+            "reset": true,
+            "neededSettings": [
+                "enabled"
+            ]
         },
         "loopSeconds": {
             "text": "Amount of Miliseconds before looping",
             "type": "number",
             "default": 100,
-            "reset": true
+            "reset": true,
+            "neededSettings": [
+                "enabled"
+            ]
         },
         "replaceURLwithGroupsURL": {
             "text": "Replace /communities URL with /groups",
             "type": "checkbox",
-            "default": true
+            "default": true,
+            "neededSettings": [
+                "enabled"
+            ]
         },
         "massEdit": {
             "text": "Mass Edit HTML Contents with Community or Communities in them.",
             "type": "checkbox",
-            "default": true
+            "default": true,
+            "neededSettings": [
+                "enabled"
+            ]
         },
         "changeTitleHtml": {
             "text": "Replace Tab Name with New Name",
             "type": "checkbox",
-            "default": true
+            "default": true,
+            "neededSettings": [
+                "enabled"
+            ]
         }
     },
     "bundledDisplayName": "Communities Renamer",

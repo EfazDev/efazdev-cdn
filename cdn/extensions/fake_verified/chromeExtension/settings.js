@@ -9,24 +9,69 @@ settings.js:
 
 */
 
-const storage = chrome.storage.local
+var storage = chrome.storage.sync
 var system_settings = {}
 
 async function loopThroughArrayAsync(array, callback) {
-    var generated_keys = Object.keys(array);
-    for (a = 0; a < generated_keys.length; a++) {
-        var key = generated_keys[a]
-        var value = array[key]
-        await callback(key, value)
+    if (typeof (array) == "object") {
+        if (Array.isArray(array)) {
+            for (let a = 0; a < array.length; a++) {
+                let value = array[a]
+                await callback(a, value)
+            }
+        } else {
+            let generated_keys = Object.keys(array);
+            for (let a = 0; a < generated_keys.length; a++) {
+                let key = generated_keys[a]
+                let value = array[key]
+                await callback(key, value)
+            }
+        }
     }
 }
 
 function loopThroughArray(array, callback) {
-    var generated_keys = Object.keys(array);
-    for (a = 0; a < generated_keys.length; a++) {
-        var key = generated_keys[a]
-        var value = array[key]
-        callback(key, value)
+    if (typeof (array) == "object") {
+        if (Array.isArray(array)) {
+            for (let a = 0; a < array.length; a++) {
+                let value = array[a]
+                callback(a, value)
+            }
+        } else {
+            let generated_keys = Object.keys(array);
+            for (let a = 0; a < generated_keys.length; a++) {
+                let key = generated_keys[a]
+                let value = array[key]
+                callback(key, value)
+            }
+        }
+    }
+}
+
+async function getImageFromInput(input) {
+    var files = input.files[0];
+    if (files) {
+        return new Promise((resolve, reject) => {
+            var fileReader = new FileReader();
+            fileReader.readAsDataURL(files);
+            fileReader.onload = function (event) {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = function () {
+                    const canvas = document.createElement("canvas");
+                    const ctx = canvas.getContext("2d");
+                    canvas.width = 300;
+                    canvas.height = 300;
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    resolve(canvas.toDataURL("image/jpeg", 0.8));
+                };
+                img.onerror = reject;
+            };
+        })
+    } else {
+        return new Promise((resolve, reject) => {
+            resolve(null)
+        })
     }
 }
 
@@ -38,6 +83,20 @@ async function saveData() {
         await loopThroughArrayAsync(system_settings["settings"], async (key, val) => {
             if (val["type"] == "checkbox") {
                 items[system_settings["name"]][key] = document.getElementById(key).checked
+            } else if (val["type"] == "file") {
+                try {
+                    var res_file = await getImageFromInput(document.getElementById(key))
+                    if (res_file) {
+                        items[system_settings["name"]][key] = res_file
+                        items[system_settings["name"]][key + "_filename"] = document.getElementById(key).files[0].name
+                    } else if (document.getElementById(key).getAttribute("file_url")) {
+                        items[system_settings["name"]][key] = document.getElementById(key).getAttribute("file_url")
+                    } else {
+                        items[system_settings["name"]][key + "_filename"] = null
+                    }
+                } catch (err) {
+                    console.warn("Unable to save image!" + err.toString())
+                }
             } else {
                 items[system_settings["name"]][key] = document.getElementById(key).value
             }
@@ -71,7 +130,7 @@ function compareVersions(version1, version2) {
 async function loadChanges() {
     fetch("settings.json").then(setting_res => {
         return setting_res.json()
-    }).then(settings => {
+    }).then(async (settings) => {
         system_settings = settings
         if (system_settings["type"]) {
             storage = chrome.storage[system_settings["type"]]   
@@ -80,21 +139,29 @@ async function loadChanges() {
             if (Object.keys(system_settings["settings"]).length == 1) {
                 document.getElementById("extensionSettings").remove()
             } else {
-                loopThroughArray(system_settings["settings"], (key, val) => {
+                loopThroughArrayAsync(system_settings["settings"], async (key, val) => {
                     if (document.getElementById(key) == null) {
-                        var generated_html_element = `<label for="${key}">${val["text"]}: <input type="${val["type"]}" id="${key}" name="${key}">`
+                        var gene_lis = ""
+                        if (val["extraArguments"]) {
+                            await loopThroughArrayAsync(val["extraArguments"], async (i, v) => {
+                                gene_lis = `${gene_lis} ${i}="${v}"`
+                            })
+                        }
+                        var generated_html_element = `<label for="${key}" id="${key}_label">${val["text"]}: <input type="${val["type"]}" id="${key}" name="${key}"${gene_lis}>`
                         var beforeElement = document.getElementById("reviewDetails")
                         if (val["hidden"] == true && !(window.location.href.includes("resize=true"))) {
-                            generated_html_element = `<label style="display: none;" for="${key}">${val["text"]}: <input type="${val["type"]}" id="${key}" name="${key}">`
+                            generated_html_element = `<label style="display: none;" for="${key}" id="${key}_label">${val["text"]}: <input type="${val["type"]}" id="${key}" name="${key}"${gene_lis}>`
                         } else {
+                            if (val["alternateFileInput"] == true && val["type"] == "file") {
+                                generated_html_element = `<label for="${key}" id="${key}_label">${val["text"]}: <input type="${val["type"]}" style="display: none;" id="${key}" name="${key}"${gene_lis}><button id="${key}_triggerButton">No file selected</button>`
+                            }
                             if (val["reset"] == true) {
                                 generated_html_element = `${generated_html_element} <button id="reset_${key}">Reset!</button>`
                             } else {
                                 generated_html_element = `${generated_html_element}`
                             }
                         }
-                        generated_html_element = `${generated_html_element}</label>`
-                        generated_html_element = `${generated_html_element}<br>`
+                        generated_html_element = `${generated_html_element}<br></label>`
                         beforeElement.outerHTML = `${generated_html_element}${document.getElementById("reviewDetails").outerHTML}`
                     }
                     var selected = val["default"]
@@ -108,18 +175,99 @@ async function loadChanges() {
                             var main_selection = document.getElementById(key)
                             if (val["type"] == "checkbox") {
                                 main_selection.checked = selected
+                            } else if (val["type"] == "file") {
+                                main_selection.setAttribute("file_url", selected)
                             } else {
                                 main_selection.value = selected
                             }
                         }
                     }
+                    var main_selection = document.getElementById(key)
+                    if (val["neededSettings"]) {
+                        loopThroughArray(val["neededSettings"], (i, v) => {
+                            let k = document.getElementById(v)
+                            let can_hide = false;
+                            if (k) {
+                                let filled = false
+                                if (system_settings["settings"][v]["type"] == "checkbox") {
+                                    filled = k.checked
+                                } else if (system_settings["settings"][v]["type"] == "file") {
+                                    filled = k.getAttribute("file_url")
+                                } else {
+                                    filled = k.value
+                                }
+                                if (!(filled)) {
+                                    can_hide = true
+                                }
+                            }
+                            if (can_hide == true) {
+                                if (!(val["neededSettings"].length == 0)) {
+                                    document.getElementById(key + "_label").style = "display: none;"
+                                }
+                            }
+                        })
+                    }
+                    main_selection.addEventListener("change", () => {
+                        loopThroughArrayAsync(system_settings["settings"], async (i, v) => {
+                            if (v && v["neededSettings"]) {
+                                let q = document.getElementById(i + "_label");
+                                if (q) {
+                                    let can_hide = false;
+                                    await loopThroughArrayAsync(v["neededSettings"], async (q, e) => {
+                                        var k = document.getElementById(e)
+                                        if (k) {
+                                            let filled = false
+                                            if (system_settings["settings"][e]["type"] == "checkbox") {
+                                                filled = k.checked
+                                            } else if (system_settings["settings"][e]["type"] == "file") {
+                                                filled = k.getAttribute("file_url")
+                                            } else {
+                                                filled = k.value
+                                            }
+                                            if (!(filled)) {
+                                                can_hide = true
+                                            }
+                                        }
+                                    })
+                                    if (can_hide == true) {
+                                        q.style = "display: none;";
+                                    } else {
+                                        q.style = "";
+                                    }
+                                }
+                            }
+                        })
+                    })
+                    if (val["alternateFileInput"] == true && val["type"] == "file") {
+                        if (document.getElementById(`${key}_triggerButton`)) {
+                            let button = document.getElementById(`${key}_triggerButton`)
+                            button.addEventListener("click", () => {
+                                main_selection.click()
+                            })
+                            main_selection.addEventListener("change", () => {
+                                if (main_selection.files.length > 0) {
+                                    button.textContent = main_selection.files[0].name;
+                                } else {
+                                    button.textContent = "No file selected";
+                                }
+                            })
+                            if (items[system_settings["name"]][key + "_filename"]) {
+                                button.textContent = items[system_settings["name"]][key + "_filename"];
+                            }
+                        }
+                    }
                     if (val["reset"] == true) {
                         if (document.getElementById(`reset_${key}`)) {
-                            var button = document.getElementById(`reset_${key}`)
+                            let button = document.getElementById(`reset_${key}`)
                             button.addEventListener("click", () => {
                                 var main_selection = document.getElementById(key)
                                 if (val["type"] == "checkbox") {
                                     main_selection.checked = val["default"]
+                                } else if (val["type"] == "file") {
+                                    items[system_settings["name"]][key + "_filename"] = null
+                                    main_selection.value = val["default"]
+                                    main_selection.setAttribute("file_url", val["default"])
+                                    main_selection.dispatchEvent(new Event("change"))
                                 } else {
                                     main_selection.value = val["default"]
                                 }
@@ -226,36 +374,14 @@ async function loadChanges() {
                 document.getElementById("css").innerHTML = `${document.getElementById("css").innerHTML}
         /* This stylesheet is exported for when your computer has no internet. */
 
-        @media (prefers-color-scheme: light) {
-            body {
-                min-height: 100%;
-                min-width: 100%;
-                background: linear-gradient(60deg, #ff4b00 0%, #dbdb00 40%, #00ce00 60%, #00aad0 100%);
-                background-repeat: repeat-y !important;
-                background-blend-mode: normal !important;
-                background-size: 100vw 100vh;
-                min-height: 100vh;
-                font-family: mainfont;
-                background-repeat: no-repeat;
-                background-attachment: fixed;
-                color: white;
-            }
-        }
-
-        @media (prefers-color-scheme: dark) {
-            body {
-                min-height: 100%;
-                min-width: 100%;
-                background: linear-gradient(60deg, #4e1700 0%, #4e4e00 40%, #004200 60%, #003d4b 100%);
-                background-repeat: repeat-y !important;
-                background-blend-mode: normal !important;
-                background-size: 100vw 100vh;
-                min-height: 100vh;
-                font-family: mainfont;
-                background-repeat: no-repeat;
-                background-attachment: fixed;
-                color: white;
-            }
+        body {
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background: linear-gradient(90deg, #ff4b00 0%, #dddd00 33.33%,  #00db00 66.66%, #00d0ff 100%);
+            font-family: arial !important;
+            color: white;
+            overflow: hidden;
         }
         p,
         h1,
@@ -351,7 +477,11 @@ async function loadChanges() {
                                     /* User has an update available */
                                     document.getElementById("extens_vers").innerHTML = `${document.getElementById("extens_vers").innerHTML} | <button id="openChromeExtensionSettings">Update Available to v${j[settings["name"]]}!</button>`
                                     document.getElementById("openChromeExtensionSettings").addEventListener("click", () => {
-                                        chrome.tabs.create({ url: "chrome://extensions/" });
+                                        if (system_settings["chromeWebstoreLinkEnabled"] == true && !(chrome.runtime.id == system_settings["uploadedChromeExtensionID"])) {
+                                            chrome.tabs.create({ url: `https://chromewebstore.google.com/detail/extension/${system_settings["uploadedChromeExtensionID"]}` });
+                                        } else {
+                                            chrome.tabs.create({ url: "chrome://extensions/" });
+                                        }
                                     });
                                     console.log(`New version found! v${man_json["version"]} > v${j[settings["name"]]}`)
                                 } else {
@@ -368,7 +498,11 @@ async function loadChanges() {
                                     /* User has an update available */
                                     document.getElementById("extens_vers").innerHTML = `${document.getElementById("extens_vers").innerHTML} | <button id="openChromeExtensionSettings">Update Available to v${j["version"]}!</button>`
                                     document.getElementById("openChromeExtensionSettings").addEventListener("click", () => {
-                                        chrome.tabs.create({ url: "chrome://extensions/" });
+                                        if (system_settings["chromeWebstoreLinkEnabled"] == true && !(chrome.runtime.id == system_settings["uploadedChromeExtensionID"])) {
+                                            chrome.tabs.create({ url: `https://chromewebstore.google.com/detail/extension/${system_settings["uploadedChromeExtensionID"]}` });
+                                        } else {
+                                            chrome.tabs.create({ url: "chrome://extensions/" });
+                                        }
                                     });
                                     console.log(`New version found! v${man_json["version"]} > v${j["version"]}`)
                                 } else {

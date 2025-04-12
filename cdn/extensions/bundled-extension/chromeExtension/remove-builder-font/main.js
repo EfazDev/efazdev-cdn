@@ -12,6 +12,7 @@ main.js:
 
 (function () { // Prevent changes made using the Inspect console.
     const storage = chrome.storage.sync;
+    const storage_key = "dev.efaz.remove_builder_font"
     var stored_css = ""
     var stored_css2 = ""
     var stored_creator_dashboard_css = ""
@@ -252,10 +253,77 @@ main.js:
         }
     }
 
+    async function loopThroughArrayAsync(array, callback) {
+        if (typeof (array) == "object") {
+            if (Array.isArray(array)) {
+                for (let a = 0; a < array.length; a++) {
+                    var value = array[a]
+                    await callback(a, value)
+                }
+            } else {
+                var generated_keys = Object.keys(array);
+                for (let a = 0; a < generated_keys.length; a++) {
+                    var key = generated_keys[a]
+                    var value = array[key]
+                    await callback(key, value)
+                }
+            }
+        }
+    }
+
+    async function getSettings(storage_key, callback) {
+        if (callback) {
+            fetch(getChromeURL("settings.json")).then((res) => {
+                if (res.ok) {
+                    return res.json();
+                }
+            }).then(jso => {
+                if (jso) {
+                    return storage.get(storage_key).then(async (user_settings) => {
+                        if (!user_settings) {
+                            user_settings = {}
+                        }
+                        if (!(user_settings[storage_key])) {
+                            user_settings[storage_key] = {}
+                        }
+                        await loopThroughArrayAsync(jso["settings"], async (i, v) => {
+                            if (typeof(user_settings[storage_key][i]) == "undefined") {
+                                if (v["default"]) {user_settings[storage_key][i] = v["default"]}
+                            }
+                        })
+                        callback(user_settings)
+                    })
+                }
+            })
+        } else {
+            return fetch(getChromeURL("settings.json")).then((res) => {
+                if (res.ok) {
+                    return res.json();
+                }
+            }).then(jso => {
+                if (jso) {
+                    return storage.get(storage_key).then(async (user_settings) => {
+                        if (!user_settings) {
+                            user_settings = {}
+                        }
+                        if (!(user_settings[storage_key])) {
+                            user_settings[storage_key] = {}
+                        }
+                        await loopThroughArrayAsync(jso["settings"], async (i, v) => {
+                            if (typeof(user_settings[storage_key][i]) == "undefined") {
+                                if (v["default"]) {user_settings[storage_key][i] = v["default"]}
+                            }
+                        })
+                        return user_settings
+                    })
+                }
+            })
+        }
+    }
+
     chrome.tabs.onUpdated.addListener(function (tabId, details, tab) {
         try {
-            const storage_key = "dev.efaz.remove_builder_font"
-            storage.get([storage_key], function (items) {
+            getSettings(storage_key, function (items) {
                 var enabled = true;
                 var remoteStyles = false;
                 var overwriteCreateDashboard = true;
@@ -402,13 +470,22 @@ main.js:
                                             new_tries = tries
                                         }
                                         async function loopThroughArrayAsync(array, callback) {
-                                            var generated_keys = Object.keys(array);
-                                            for (a = 0; a < generated_keys.length; a++) {
-                                                var key = generated_keys[a];
-                                                var value = array[key];
-                                                await callback(key, value);
-                                            };
-                                        };
+                                            if (typeof (array) == "object") {
+                                                if (Array.isArray(array)) {
+                                                    for (let a = 0; a < array.length; a++) {
+                                                        var value = array[a]
+                                                        await callback(a, value)
+                                                    }
+                                                } else {
+                                                    var generated_keys = Object.keys(array);
+                                                    for (let a = 0; a < generated_keys.length; a++) {
+                                                        var key = generated_keys[a]
+                                                        var value = array[key]
+                                                        await callback(key, value)
+                                                    }
+                                                }
+                                            }
+                                        }
                                         var roblox_provided_stylesheets = document.getElementsByTagName("discourse-assets-stylesheets")
                                         var found = false
                                         if (roblox_provided_stylesheets.length > 0) {
@@ -670,12 +747,11 @@ main.js:
     });
 
     chrome.runtime.onInstalled.addListener(() => {
-        const storage = chrome.storage.local;
         fetch("settings.json").then(setting_res => {
             return setting_res.json();
         }).then(settings => {
             var name = settings["name"];
-            storage.get([name], async function (items) {
+            chrome.storage.local.get([name], async function (items) {
                 if (items[name]) {
                     if (items[name]["thanks"] == true) {
                         console.log("The extension might have updated!")
@@ -685,14 +761,14 @@ main.js:
                         chrome.tabs.create({
                             url: getChromeURL("thank_you.html")
                         })
-                        await storage.set(items);
+                        await chrome.storage.local.set(items);
                     }
                 } else {
                     items[name] = { "thanks": true }
                     chrome.tabs.create({
                         url: getChromeURL("thank_you.html")
                     })
-                    await storage.set(items);
+                    await chrome.storage.local.set(items);
                 }
             });
         })

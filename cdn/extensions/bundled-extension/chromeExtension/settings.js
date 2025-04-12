@@ -10,20 +10,38 @@ settings.js:
 var innerBody, innerHead
 
 async function loopThroughArrayAsync(array, callback) {
-    var generated_keys = Object.keys(array);
-    for (a = 0; a < generated_keys.length; a++) {
-        var key = generated_keys[a]
-        var value = array[key]
-        await callback(key, value)
+    if (typeof (array) == "object") {
+        if (Array.isArray(array)) {
+            for (let a = 0; a < array.length; a++) {
+                var value = array[a]
+                await callback(a, value)
+            }
+        } else {
+            var generated_keys = Object.keys(array);
+            for (let a = 0; a < generated_keys.length; a++) {
+                var key = generated_keys[a]
+                var value = array[key]
+                await callback(key, value)
+            }
+        }
     }
 }
 
 function loopThroughArray(array, callback) {
-    var generated_keys = Object.keys(array);
-    for (a = 0; a < generated_keys.length; a++) {
-        var key = generated_keys[a]
-        var value = array[key]
-        callback(key, value)
+    if (typeof (array) == "object") {
+        if (Array.isArray(array)) {
+            for (let a = 0; a < array.length; a++) {
+                var value = array[a]
+                callback(a, value)
+            }
+        } else {
+            var generated_keys = Object.keys(array);
+            for (let a = 0; a < generated_keys.length; a++) {
+                var key = generated_keys[a]
+                var value = array[key]
+                callback(key, value)
+            }
+        }
     }
 }
 
@@ -85,17 +103,17 @@ async function loadChanges2() {
                     
                     // Run HTML
                     var newElement = new DOMParser().parseFromString(webpage, "text/html")
+                    document.extensionName = exName
                     document.head.innerHTML = newElement.head.innerHTML
                     document.body.innerHTML = newElement.body.innerHTML
-                    document.extensionName = exName
 
                     // Execute Runners
                     var classes = document.getElementsByClassName("reexecute")
                     var con_classes = Array.prototype.slice.call(classes)
-                    con_classes.forEach((v) => {
+                    var r = false
+                    await loopThroughArrayAsync(con_classes, async (i, v) => {
                         var src = v.src
-                        var s, r;
-                        r = false;
+                        var s;
                         s = document.createElement('script');
                         s.type = 'text/javascript';
                         s.src = src;
@@ -247,7 +265,11 @@ div {
                             /* User has an update available */
                             document.getElementById("extens_vers").innerHTML = `${document.getElementById("extens_vers").innerHTML} | <button id="openChromeExtensionSettings">Update Available to v${j[system_settings["id"]]}!</button>`
                             document.getElementById("openChromeExtensionSettings").addEventListener("click", () => {
-                                chrome.tabs.create({ url: "chrome://extensions/" });
+                                if (system_settings["chromeWebstoreLinkEnabled"] == true && !(chrome.runtime.id == system_settings["uploadedChromeExtensionID"])) {
+                                    chrome.tabs.create({ url: `https://chromewebstore.google.com/detail/extension/${system_settings["uploadedChromeExtensionID"]}` });
+                                } else {
+                                    chrome.tabs.create({ url: "chrome://extensions/" });
+                                }
                             });
                             console.log(`New version found! v${man_json["version"]} > v${j[system_settings["name"]]}`)
                         } else {
@@ -264,7 +286,11 @@ div {
                             /* User has an update available */
                             document.getElementById("extens_vers").innerHTML = `${document.getElementById("extens_vers").innerHTML} | <button id="openChromeExtensionSettings">Update Available to v${j["version"]}!</button>`
                             document.getElementById("openChromeExtensionSettings").addEventListener("click", () => {
-                                chrome.tabs.create({ url: "chrome://extensions/" });
+                                if (system_settings["chromeWebstoreLinkEnabled"] == true && !(chrome.runtime.id == system_settings["uploadedChromeExtensionID"])) {
+                                    chrome.tabs.create({ url: `https://chromewebstore.google.com/detail/extension/${system_settings["uploadedChromeExtensionID"]}` });
+                                } else {
+                                    chrome.tabs.create({ url: "chrome://extensions/" });
+                                }
                             });
                             console.log(`New version found! v${man_json["version"]} > v${j["version"]}`)
                         } else {

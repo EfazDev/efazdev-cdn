@@ -9,7 +9,8 @@
         "remoteStyles": {
             "text": "Use Remote Stylesheets (Imported from https://cdn.efaz.dev)",
             "type": "checkbox",
-            "default": false
+            "default": false,
+            "neededSettings": ["enabled"]
         }
     },
     "bundledDisplayName": "Efaz's Theme",

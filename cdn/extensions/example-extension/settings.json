@@ -10,13 +10,15 @@
             "text": "Select a color",
             "type": "color",
             "default": "#0066FF",
-            "reset": true
+            "reset": true,
+            "neededSettings": ["enabled"]
         },
         "donotdisturb": {
             "text": "Would you like us to not disturb you?",
             "type": "checkbox",
             "default": true,
-            "reset": false
+            "reset": false,
+            "neededSettings": ["enabled"]
         }
     },
     "bundledDisplayName": "Example Extension",

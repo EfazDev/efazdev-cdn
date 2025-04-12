@@ -9,43 +9,69 @@
         "allowAlertMessages": {
             "text": "Allow Alerts by Extension",
             "type": "checkbox",
-            "default": false
+            "default": false,
+            "neededSettings": [
+                "enabled"
+            ]
         },
         "color": {
             "text": "Custom Color Checkmark (HEX)",
             "type": "color",
             "default": "#0066FF",
-            "reset": true
+            "reset": true,
+            "neededSettings": [
+                "enabled"
+            ]
         },
         "startTime": {
             "text": "Start Time (ms)",
             "type": "number",
-            "default": 75
+            "default": 75,
+            "neededSettings": [
+                "enabled"
+            ]
         },
         "groupsIncluded": {
             "text": "Include Groups Owned by You",
             "type": "checkbox",
-            "default": true
+            "default": true,
+            "neededSettings": [
+                "enabled"
+            ]
         },
         "verifiedPrompt": {
             "text": "Enable Verified Badge Prompt",
             "type": "checkbox",
-            "default": true
+            "default": true,
+            "neededSettings": [
+                "enabled"
+            ]
         },
         "verifiedBadgeBetweenAccounts": {
             "text": "Enable Verified Badge Between Accounts",
             "type": "checkbox",
-            "default": true
+            "default": true,
+            "neededSettings": [
+                "enabled"
+            ]
         },
         "allowEfazDevApprovedBadges": {
             "text": "Approve Verified Badges on Users Approved by EfazDev",
             "type": "checkbox",
-            "default": false
+            "default": false,
+            "neededSettings": [
+                "verifiedBadgeBetweenAccounts",
+                "enabled"
+            ]
         },
         "useCustomApprovedBadgesByUser": {
             "text": "Enable Customized Approval",
             "type": "checkbox",
-            "default": true
+            "default": true,
+            "neededSettings": [
+                "verifiedBadgeBetweenAccounts",
+                "enabled"
+            ]
         }
     },
     "bundledDisplayName": "Verified Badge Add-on",

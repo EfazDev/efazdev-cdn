@@ -10,39 +10,56 @@
             "text": "Amount of Miliseconds before looping",
             "type": "number",
             "default": 100,
-            "reset": true
+            "reset": true,
+            "neededSettings": ["enabled"]
         },
         "color": {
             "text": "Choose an accent color",
             "type": "color",
             "default": "#56ac72",
-            "reset": true
+            "reset": true,
+            "neededSettings": ["enabled"]
+        },
+        "enableImageBackground": {
+            "text": "Enable Image Background",
+            "type": "checkbox",
+            "default": false,
+            "neededSettings": ["enabled"]
         },
         "projectedImage": {
-            "text": "Set a color background",
+            "text": "Set Image Background",
             "type": "file",
             "default": "",
-            "reset": true
+            "extraArguments": {
+                "accept": "image/*"
+            },
+            "neededSettings": ["enableImageBackground", "enabled"],
+            "reset": true,
+            "alternateFileInput": true
         },
         "overwriteCreateDashboard": {
             "text": "Change Colors on Creator Dashboard",
             "type": "checkbox",
-            "default": false
+            "default": false,
+            "neededSettings": ["enabled"]
         },
         "includeGraphInDashboard": {
             "text": "Include Graphs on Creator Dashboard",
             "type": "checkbox",
-            "default": false
+            "default": false,
+            "neededSettings": ["enabled"]
         },
         "overwriteSuccessColor": {
             "text": "Overwrite Success Color",
             "type": "checkbox",
-            "default": false
+            "default": false,
+            "neededSettings": ["enabled"]
         },
         "applyToPrimaryBtn": {
             "text": "Apply to Primary Buttons",
             "type": "checkbox",
-            "default": false
+            "default": false,
+            "neededSettings": ["enabled"]
         }
     },
     "bundledDisplayName": "Foundation Color Accents",

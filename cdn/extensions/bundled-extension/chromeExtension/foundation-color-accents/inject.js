@@ -10,6 +10,8 @@ inject.js:
 */
 
 (function () {
+    const storage = chrome.storage.local;
+    const storage_key = "dev.efaz.roblox_foundation_color_accents"
     function getChromeURL(resource) {
         try {
             // This is for Efaz's Roblox Extension support
@@ -25,10 +27,76 @@ inject.js:
         }
     }
 
+    async function loopThroughArrayAsync(array, callback) {
+        if (typeof (array) == "object") {
+            if (Array.isArray(array)) {
+                for (let a = 0; a < array.length; a++) {
+                    var value = array[a]
+                    await callback(a, value)
+                }
+            } else {
+                var generated_keys = Object.keys(array);
+                for (let a = 0; a < generated_keys.length; a++) {
+                    var key = generated_keys[a]
+                    var value = array[key]
+                    await callback(key, value)
+                }
+            }
+        }
+    }
+
+    async function getSettings(storage_key, callback) {
+        if (callback) {
+            fetch(getChromeURL("settings.json")).then((res) => {
+                if (res.ok) {
+                    return res.json();
+                }
+            }).then(jso => {
+                if (jso) {
+                    return storage.get(storage_key).then(async (user_settings) => {
+                        if (!user_settings) {
+                            user_settings = {}
+                        }
+                        if (!(user_settings[storage_key])) {
+                            user_settings[storage_key] = {}
+                        }
+                        await loopThroughArrayAsync(jso["settings"], async (i, v) => {
+                            if (typeof(user_settings[storage_key][i]) == "undefined") {
+                                if (v["default"]) {user_settings[storage_key][i] = v["default"]}
+                            }
+                        })
+                        callback(user_settings)
+                    })
+                }
+            })
+        } else {
+            return fetch(getChromeURL("settings.json")).then((res) => {
+                if (res.ok) {
+                    return res.json();
+                }
+            }).then(jso => {
+                if (jso) {
+                    return storage.get(storage_key).then(async (user_settings) => {
+                        if (!user_settings) {
+                            user_settings = {}
+                        }
+                        if (!(user_settings[storage_key])) {
+                            user_settings[storage_key] = {}
+                        }
+                        await loopThroughArrayAsync(jso["settings"], async (i, v) => {
+                            if (typeof(user_settings[storage_key][i]) == "undefined") {
+                                if (v["default"]) {user_settings[storage_key][i] = v["default"]}
+                            }
+                        })
+                        return user_settings
+                    })
+                }
+            })
+        }
+    }
+
     try {
-        const storage = chrome.storage.local;
-        const storage_key = "dev.efaz.roblox_foundation_color_accents"
-        storage.get([storage_key], function (items) {
+        getSettings(storage_key, function (items) {
             var defaultData = { "enabled": true, "color": "#56ac72", "loopSeconds": "100", "overwriteSuccessColor": false, "applyToPrimaryBtn": false, "overwriteCreateDashboard": false, "includeGraphInDashboard": false }
             if (!(items[storage_key])) {
                 items[storage_key] = defaultData
@@ -43,13 +111,22 @@ inject.js:
                             var all_links = document.getElementsByTagName("link")
 
                             async function loopThroughArrayAsync(array, callback) {
-                                var generated_keys = Object.keys(array);
-                                for (a = 0; a < generated_keys.length; a++) {
-                                    var key = generated_keys[a];
-                                    var value = array[key];
-                                    await callback(key, value);
-                                };
-                            };
+                                if (typeof (array) == "object") {
+                                    if (Array.isArray(array)) {
+                                        for (let a = 0; a < array.length; a++) {
+                                            var value = array[a]
+                                            await callback(a, value)
+                                        }
+                                    } else {
+                                        var generated_keys = Object.keys(array);
+                                        for (let a = 0; a < generated_keys.length; a++) {
+                                            var key = generated_keys[a]
+                                            var value = array[key]
+                                            await callback(key, value)
+                                        }
+                                    }
+                                }
+                            }
                             async function convertLargeResponse(response) {
                                 const reader = response.body.getReader();
                                 let decoder = new TextDecoder();
@@ -73,8 +150,10 @@ inject.js:
                                     if (roblox_css.ok) {
                                         try {
                                             var roblox_css_res = await convertLargeResponse(roblox_css);
-                                            if (!(settings["projectedImage"] == "" || settings["projectedImage"] == "https://empty.efaz.dev" || settings["projectedImage"] == null)) {
-                                                if (settings["projectedImage"].startsWith("https://") || settings["projectedImage"].startsWith("data:")) { roblox_css_res = roblox_css_res.replaceAll("background-color:#335fff", "background:url(" + settings["projectedImage"] + ");background-size: 105% 100%;background-position: 50%") }
+                                            if (settings["enableImageBackground"] == true) {
+                                                if (!(settings["projectedImage"] == "" || settings["projectedImage"] == "https://empty.efaz.dev" || settings["projectedImage"] == null)) {
+                                                    if (settings["projectedImage"].startsWith("https://") || settings["projectedImage"].startsWith("data:")) { roblox_css_res = roblox_css_res.replaceAll("background-color:#335fff", "background:url(" + settings["projectedImage"] + ");background-size: 105% 100%;background-position: 50%") }
+                                                }
                                             }
                                             roblox_css_res = roblox_css_res.replaceAll("#335fff", settings["color"].toLowerCase())
                                             if (settings["overwriteSuccessColor"] == true) {
@@ -206,21 +285,22 @@ inject.js:
                                 var amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100;
 
                                 async function loopThroughArrayAsync(array, callback) {
-                                    var generated_keys = Object.keys(array);
-                                    for (a = 0; a < generated_keys.length; a++) {
-                                        var key = generated_keys[a];
-                                        var value = array[key];
-                                        await callback(key, value);
-                                    };
-                                };
-                                function loopThroughArray(array, callback) {
-                                    var generated_keys = Object.keys(array);
-                                    for (a = 0; a < generated_keys.length; a++) {
-                                        var key = generated_keys[a];
-                                        var value = array[key];
-                                        callback(key, value);
-                                    };
-                                };
+                                    if (typeof (array) == "object") {
+                                        if (Array.isArray(array)) {
+                                            for (let a = 0; a < array.length; a++) {
+                                                var value = array[a]
+                                                await callback(a, value)
+                                            }
+                                        } else {
+                                            var generated_keys = Object.keys(array);
+                                            for (let a = 0; a < generated_keys.length; a++) {
+                                                var key = generated_keys[a]
+                                                var value = array[key]
+                                                await callback(key, value)
+                                            }
+                                        }
+                                    }
+                                }
                                 function sheetToString(sheet) {
                                     function stringifyRule(rule) {
                                         return rule.cssText || ''
