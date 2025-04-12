@@ -251,7 +251,7 @@ async function loadChanges() {
                                     button.textContent = "No file selected";
                                 }
                             })
-                            if (items[system_settings["name"]][key + "_filename"]) {
+                            if (items[system_settings["name"]] && items[system_settings["name"]][key + "_filename"]) {
                                 button.textContent = items[system_settings["name"]][key + "_filename"];
                             }
                         }
@@ -264,6 +264,7 @@ async function loadChanges() {
                                 if (val["type"] == "checkbox") {
                                     main_selection.checked = val["default"]
                                 } else if (val["type"] == "file") {
+                                    if (!(items[system_settings["name"]])) { items[system_settings["name"]] = {} }
                                     items[system_settings["name"]][key + "_filename"] = null
                                     main_selection.value = val["default"]
                                     main_selection.setAttribute("file_url", val["default"])
