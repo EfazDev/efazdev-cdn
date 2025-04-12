@@ -47,9 +47,7 @@ for i in os.listdir(extension_path):
 printWarnMessage("--- Finding Available Extensions ---")
 extensions_added = []
 for i in os.listdir(extensions_folder):
-    if not (
-        i == "dev.efaz.bundled_extension" or i == "dev.efaz.example_extension" or i == "versions" or i == "dev.efaz.efaz_roblox_theme"
-    ) and os.path.isdir(os.path.join(extensions_folder, i)):
+    if not (i == "dev.efaz.bundled_extension" or i == "dev.efaz.example_extension" or i == "versions" or i == "dev.efaz.efaz_roblox_theme") and os.path.isdir(os.path.join(extensions_folder, i)) and not os.path.islink(os.path.join(extensions_folder, i)):
         printMainMessage(f"Copying {i} Extension..")
         shutil.copytree(
             os.path.join(extensions_folder, i, "chromeExtension"),

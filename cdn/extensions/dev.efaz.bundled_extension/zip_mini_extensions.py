@@ -37,9 +37,7 @@ printMainMessage(f"Extensions Location: {extensions_folder}")
 printWarnMessage("--- Ziping Available Extensions ---")
 extensions_added = []
 for i in os.listdir(extensions_folder):
-    if not (
-        i == "dev.efaz.bundled_extension" or i == "versions"
-    ) and os.path.isdir(os.path.join(extensions_folder, i)):
+    if not (i == "dev.efaz.bundled_extension" or i == "versions") and os.path.isdir(os.path.join(extensions_folder, i)) and not os.path.islink(os.path.join(extensions_folder, i)):
         printMainMessage(f"Ziping {i} Extension..")
         if os.path.exists(os.path.join(extensions_folder, i, "zip", "chromeExtension.zip")): os.remove(os.path.join(extensions_folder, i, "zip", "chromeExtension.zip"))
         subprocess.run(
