@@ -1,4 +1,5 @@
-# EfazDev Website CDN
+<h1 align="center"><img align="center" src="https://github.com/EfazDev/efazdev-cdn/blob/main/cdn/png/logo.png?raw=true" width="40" height="40"> EfazDev Website CDN</h1>
+
 CDN of efaz.dev<br/>
 <br/>
 Accessible at https://cdn.efaz.dev<br/>
