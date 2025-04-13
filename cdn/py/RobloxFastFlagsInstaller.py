@@ -73,14 +73,13 @@ class pip:
         res = {}
         generated_list = []
         for i in packages:
-            if type(i) is str:
-                generated_list.append(i)
+            if type(i) is str: generated_list.append(i)
         if len(generated_list) > 0:
             try:
                 subprocess.check_call([self.executable, "-m", "pip", "install"] + generated_list, stdout=self.debug == True and subprocess.PIPE or subprocess.DEVNULL, stderr=self.debug == True and subprocess.PIPE or subprocess.DEVNULL)
-                res[i] = {"success": True}
+                return {"success": True}
             except Exception as e:
-                res[i] = {"success": False}
+                return {"success": False}
         return res
     def uninstall(self, packages: typing.List[str]):
         import subprocess
@@ -194,6 +193,7 @@ class pip:
         import platform
         import tempfile
         import time
+        import re
         ma_os = platform.system()
         ma_arch = platform.architecture()
         ma_processor = platform.machine()
@@ -201,9 +201,11 @@ class pip:
         if not version:
             if self.debug == True: print("Failed to download Python installer.")
             return
+        version_url_folder = version
+        if beta == True: version_url_folder = re.match(r'^\d+\.\d+\.\d+', version).group()
         if ma_os == "Darwin":
-            url = f"https://www.python.org/ftp/python/{version}/python-{version}-macos11.pkg"
-            pkg_file_path = tempfile.mktemp(suffix=".pkg")
+            url = f"https://www.python.org/ftp/python/{version_url_folder}/python-{version}-macos11.pkg"
+            with tempfile.NamedTemporaryFile(suffix=".pkg", delete=False) as temp_file: pkg_file_path = temp_file.name
             result = subprocess.run(["curl", "-o", pkg_file_path, url], stdout=self.debug == True and subprocess.PIPE or subprocess.DEVNULL, stderr=self.debug == True and subprocess.PIPE or subprocess.DEVNULL)            
             if result.returncode == 0:
                 subprocess.run(["open", pkg_file_path], stdout=self.debug == True and subprocess.PIPE or subprocess.DEVNULL, stderr=self.debug == True and subprocess.PIPE or subprocess.DEVNULL, check=True)
@@ -214,11 +216,11 @@ class pip:
                 if self.debug == True: print("Failed to download Python installer.")
         elif ma_os == "Windows":
             if ma_arch[0] == "64bit":
-                if ma_processor.lower() == "arm64": url = f"https://www.python.org/ftp/python/{version}/python-{version}-arm64.exe"
-                else: url = f"https://www.python.org/ftp/python/{version}/python-{version}-amd64.exe"
+                if ma_processor.lower() == "arm64": url = f"https://www.python.org/ftp/python/{version_url_folder}/python-{version}-arm64.exe"
+                else: url = f"https://www.python.org/ftp/python/{version_url_folder}/python-{version}-amd64.exe"
             else:
-                url = f"https://www.python.org/ftp/python/{version}/python-{version}.exe"
-            exe_file_path = tempfile.mktemp(suffix=".exe")
+                url = f"https://www.python.org/ftp/python/{version_url_folder}/python-{version}.exe"
+            with tempfile.NamedTemporaryFile(suffix=".exe", delete=False) as temp_file: exe_file_path = temp_file.name
             result = subprocess.run(["curl", "-o", exe_file_path, url], stdout=self.debug == True and subprocess.PIPE or subprocess.DEVNULL, stderr=self.debug == True and subprocess.PIPE or subprocess.DEVNULL)            
             if result.returncode == 0:
                 subprocess.run([exe_file_path], stdout=self.debug == True and subprocess.PIPE or subprocess.DEVNULL, stderr=self.debug == True and subprocess.PIPE or subprocess.DEVNULL, check=True)
@@ -240,14 +242,13 @@ class pip:
         sys.exit(0)
     def importModule(self, module_name: str, install_module_if_not_found: bool=False):
         import importlib
-        import subprocess
         try:
             return importlib.import_module(module_name)
         except ModuleNotFoundError:
             try:
                 if install_module_if_not_found == True and self.isSameRunningPythonExecutable(): self.install([module_name])
                 return importlib.import_module(module_name)
-            except subprocess.CalledProcessError as e:
+            except Exception as e:
                 raise ImportError(f'Unable to find module "{module_name}" in Python {self.getCurrentPythonVersion()} environment.')
     def copyTreeWithMetadata(self, src: str, dst: str, symlinks=False, ignore=None, dirs_exist_ok=False, ignore_if_not_exist=False):
         import shutil
