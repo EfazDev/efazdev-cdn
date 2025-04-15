@@ -393,7 +393,7 @@ async function loadChanges() {
             body {
                 min-height: 100%;
                 min-width: 100%;
-                background: linear-gradient(60deg, #ff4b00 0%, #dbdb00 40%, #00ce00 60%, #00aad0 100%);
+                background: linear-gradient(60deg, #ff4b00 0%, #dbdb00 50%, #00ce00 100%);
                 background-repeat: repeat-y !important;
                 background-blend-mode: normal !important;
                 background-size: 100vw 100vh;
@@ -409,7 +409,7 @@ async function loadChanges() {
             body {
                 min-height: 100%;
                 min-width: 100%;
-                background: linear-gradient(60deg, #4e1700 0%, #4e4e00 40%, #004200 60%, #003d4b 100%);
+                background: linear-gradient(60deg, #4e1700 0%, #4e4e00 50%, #004200 100%);
                 background-repeat: repeat-y !important;
                 background-blend-mode: normal !important;
                 background-size: 100vw 100vh;
