@@ -349,7 +349,7 @@ async function loadChanges() {
                 button {
                     border: 1px solid white;
                     border-radius: 8px;
-                    background-color: #00b1ff;
+                    background-color: #00ed00;
                     color: rgb(255, 255, 255);
                     font-family: mainfont;
                 }
@@ -360,7 +360,7 @@ async function loadChanges() {
                     text-align: center;
                     margin-left: auto;
                     border-radius: 8px;
-                    background-color: #00b1ff;
+                    background-color: #00ed00;
                     color: rgb(255, 255, 255);
                     vertical-align: middle;
                     justify-content: center;
@@ -441,7 +441,7 @@ async function loadChanges() {
             text-align: center;
             margin-left: auto;
             border-radius: 8px;
-            background-color: #00b1ff;
+            background-color: #00ed00;
             color: rgb(255, 255, 255);
             vertical-align: middle;
             justify-content: center;
