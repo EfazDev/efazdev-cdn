@@ -56,7 +56,7 @@ body * {
 @media (prefers-color-scheme: dark) {
     .container-main {
         background: rgb(255, 75, 0);
-        background-image: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)), url("https://tr.rbxcdn.com/10750d1bfea40d0363ebf599b258db2b/420/420/Image/Png") !important;
+        background-image: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)), url("https://tr.rbxcdn.com/180DAY-0969bd6250d24a5d50b27ffd5888a009/420/420/Image/Png/noFilter") !important;
         background-repeat: repeat-y !important;
         background-blend-mode: normal !important;
         background-size: 100vw 100vh;
@@ -67,7 +67,7 @@ body * {
 
 .dark-theme {
     background: rgb(255, 75, 0);
-    background-image: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)), url("https://tr.rbxcdn.com/10750d1bfea40d0363ebf599b258db2b/420/420/Image/Png") !important;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)), url("https://tr.rbxcdn.com/180DAY-0969bd6250d24a5d50b27ffd5888a009/420/420/Image/Png/noFilter") !important;
     background-repeat: repeat-y !important;
     background-blend-mode: normal !important;
     background-size: 100vw 100vh;

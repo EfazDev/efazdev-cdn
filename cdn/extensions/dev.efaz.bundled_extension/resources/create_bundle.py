@@ -29,7 +29,7 @@ def isRequestClose(text):
 
 # Preparing Generation
 printWarnMessage("--- Preparing Generation ---")
-current_path_location = os.path.dirname(os.path.abspath(__file__))
+current_path_location = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../")
 extension_path = os.path.join(current_path_location, "chromeExtension")
 extensions_folder = os.path.join(current_path_location, "..")
 printMainMessage(f"Python File Location: {current_path_location}")
