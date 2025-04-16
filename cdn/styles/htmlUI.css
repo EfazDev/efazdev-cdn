@@ -111,7 +111,7 @@ button[id="hide_group_main"] {
     text-align: center;
     margin-left: auto;
     border-radius: 8px;
-    background-color: #ff8000;
+    background-color: #ff4b00;
     color: rgb(255, 255, 255);
     vertical-align: middle;
     justify-content: center;
@@ -125,7 +125,7 @@ button[id="hide_group_roblox"] {
     text-align: center;
     margin-left: auto;
     border-radius: 8px;
-    background-color: #dcda00;
+    background-color: #ff9000;
     color: rgb(255, 255, 255);
     vertical-align: middle;
     justify-content: center;
@@ -139,7 +139,7 @@ button[id="hide_group_account"] {
     text-align: center;
     margin-left: auto;
     border-radius: 8px;
-    background-color: #43cd00;
+    background-color: #d0d000;
     color: rgb(255, 255, 255);
     vertical-align: middle;
     justify-content: center;
@@ -195,7 +195,7 @@ button[id="hide_reporting"] {
     text-align: center;
     margin-left: auto;
     border-radius: 8px;
-    background-color: #00afff;
+    background-color: #6dcd00;
     color: rgb(255, 255, 255);
     vertical-align: middle;
     justify-content: center;
