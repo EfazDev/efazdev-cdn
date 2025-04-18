@@ -30,60 +30,63 @@ submitStatus = None # Modify this when running the script
 # Customizable Variables
 
 # Typing Literals
-robloxInstanceTotalLiteralEventNames = typing.Literal[
-    "onRobloxExit",
-    "onRobloxLog",
-    "onRobloxSharedLogLaunch",
-    "onRobloxAppStart",
-    "onRobloxAppLoginFailed",
-    "onRobloxPassedUpdate",
-    "onBloxstrapSDK",
-    "onLoadedFFlags",
-    "onHttpResponse",
-    "onOtherRobloxLog",
-    "onRobloxCrash",
-    "onRobloxChannel",
-    "onRobloxTerminateInstance",
-    "onGameStart",
-    "onGameLoading",
-    "onGameLoadingNormal",
-    "onGameLoadingPrivate",
-    "onGameLoadingReserved",
-    "onGameLoadingParty",
-    "onGameUDMUXLoaded",
-    "onGameAudioDeviceAvailable",
-    "onGameTeleport",
-    "onGameTeleportFailed",
-    "onGameJoinInfo",
-    "onGameJoined",
-    "onGameLeaving",
-    "onGameDisconnected",
-    "onGameLog",
-    "onGameError",
-    "onGameWarning",
-    "onRobloxVoiceChatMute",
-    "onRobloxVoiceChatUnmute",
-    "onRobloxVoiceChatStart",
-    "onRobloxVoiceChatLeft",
-    "onRobloxAudioDeviceStopRecording",
-    "onRobloxAudioDeviceStartRecording",
-    "onPlayTestStart",
-    "onOpeningGame",
-    "onExpiredFlag",
-    "onApplyingFeature",
-    "onPluginLoading",
-    "onRobloxPublishing",
-    "onRobloxLauncherDestroyed",
-    "onPlayTestDisconnected",
-    "onTelemetryLog",
-    "onClosingGame",
-    "onTeamCreateConnect",
-    "onTeamCreateDisconnect",
-    "onCloudPlugins",
-    "onPluginUnloading",
-    "onRobloxSaved",
-    "onNewStudioLaunching"
-]
+if sys.version_info >= (3, 8, 0):
+    robloxInstanceTotalLiteralEventNames = typing.Literal[
+        "onRobloxExit",
+        "onRobloxLog",
+        "onRobloxSharedLogLaunch",
+        "onRobloxAppStart",
+        "onRobloxAppLoginFailed",
+        "onRobloxPassedUpdate",
+        "onBloxstrapSDK",
+        "onLoadedFFlags",
+        "onHttpResponse",
+        "onOtherRobloxLog",
+        "onRobloxCrash",
+        "onRobloxChannel",
+        "onRobloxTerminateInstance",
+        "onGameStart",
+        "onGameLoading",
+        "onGameLoadingNormal",
+        "onGameLoadingPrivate",
+        "onGameLoadingReserved",
+        "onGameLoadingParty",
+        "onGameUDMUXLoaded",
+        "onGameAudioDeviceAvailable",
+        "onGameTeleport",
+        "onGameTeleportFailed",
+        "onGameJoinInfo",
+        "onGameJoined",
+        "onGameLeaving",
+        "onGameDisconnected",
+        "onGameLog",
+        "onGameError",
+        "onGameWarning",
+        "onRobloxVoiceChatMute",
+        "onRobloxVoiceChatUnmute",
+        "onRobloxVoiceChatStart",
+        "onRobloxVoiceChatLeft",
+        "onRobloxAudioDeviceStopRecording",
+        "onRobloxAudioDeviceStartRecording",
+        "onPlayTestStart",
+        "onOpeningGame",
+        "onExpiredFlag",
+        "onApplyingFeature",
+        "onPluginLoading",
+        "onRobloxPublishing",
+        "onRobloxLauncherDestroyed",
+        "onPlayTestDisconnected",
+        "onTelemetryLog",
+        "onClosingGame",
+        "onTeamCreateConnect",
+        "onTeamCreateDisconnect",
+        "onCloudPlugins",
+        "onPluginUnloading",
+        "onRobloxSaved",
+        "onNewStudioLaunching"
+    ]
+else:
+    robloxInstanceTotalLiteralEventNames = typing.AnyStr
 # Typing Literals
 
 def printMainMessage(mes): print(f"\033[38;5;255m{mes}\033[0m")
@@ -100,7 +103,7 @@ def printLog(mes):
     else: print(mes)
 def makedirs(a): os.makedirs(a,exist_ok=True)
 if os.path.exists("Main.py") and os.path.exists("PipHandler.py") and os.path.exists("OrangeAPI.py"): orangeblox_mode = True
-fast_flag_installer_version = "2.0.5"
+fast_flag_installer_version = "2.0.6"
 sys.dont_write_bytecode = True
 
 class __ReadingLineResponse__():
@@ -3826,298 +3829,322 @@ class Main:
             if submitStatus: submitStatus.submit("\033ERR[INSTALL] RobloxFastFlagsInstaller is only supported for macOS and Windows.", 100)
     def installRobloxBundle(self, installPath="", appPath="", channel="LIVE", debug=False, verify=False):
         if self.__main_os__ == "Darwin" or self.__main_os__ == "Windows":
-            if submitStatus: submitStatus.submit("[BUNDLE] Fetching Latest Player Version..", 0)
-            cur_vers = self.getLatestClientVersion(debug, channel)
-            if cur_vers and cur_vers.get("success") == True:
-                try:
-                    import requests
-                except Exception as e:
-                    pip().install(["requests"])
-                    requests = pip().importModule("requests")
-                    printSuccessMessage("Successfully installed modules!")
-                if self.getIfRobloxIsOpen():
-                    if submitStatus: submitStatus.submit("[BUNDLE] Closing Roblox..", 5)
-                    if debug == True: printDebugMessage(f"Closing Roblox to prevent issues during download..")
-                    self.endRoblox()
-                if submitStatus: submitStatus.submit("[BUNDLE] Fetching Bootstrap Settings..", 15)
-                bootstrapper_settings = self.getLatestRobloxStudioAppSettings(debug=debug, bootstrapper=True, bucket=channel)
-                if bootstrapper_settings["success"] == True:
-                    starter_url = ""
-                    bootstrapper_settings = bootstrapper_settings["application_settings"]
-                    if bootstrapper_settings.get("FFlagReplaceChannelNameForDownload"):
-                        starter_url = "channel/common/"
-                    else:
-                        starter_url = f"channel/{channel.lower()}/"
-                    if self.__main_os__ == "Windows":
-                        if submitStatus: submitStatus.submit("[BUNDLE] Fetching Package Manifest..", 30)
-                        if debug == True: printDebugMessage(f"Fetching Latest Package Manifest from Roblox's servers..")
-                        rbx_manifest_link = f'https://setup.rbxcdn.com/{starter_url}{cur_vers.get("client_version")}-rbxPkgManifest.txt'
-                        rbx_hashes_link = f'https://setup.rbxcdn.com/{starter_url}{cur_vers.get("client_version")}-rbxManifest.txt'
-                        rbx_man_req = requests.get(rbx_manifest_link)
-                        rbx_hashes_link = requests.get(rbx_hashes_link)
-                        if rbx_man_req.ok:
-                            rbx_man_res = rbx_man_req.text
-                            rbx_lines = rbx_man_res.splitlines()
-                            def is_filename(rbx_line):
-                                return not rbx_line.isdigit() and not re.fullmatch(r'[a-fA-F0-9]{32}', rbx_line) and rbx_line != "v0"
-                            marked_install_files = [rbx_line for rbx_line in rbx_lines if is_filename(rbx_line)]
-                            rbx_hashes_res = rbx_hashes_link.text.strip().split("\n")
-                            rbx_hash_dict = {}
-                            for i in range(0, len(rbx_hashes_res), 2):
-                                file_path = rbx_hashes_res[i].strip()
-                                file_hash = rbx_hashes_res[i + 1].strip()
-                                rbx_hash_dict[file_path] = file_hash
-                            per_step = 0
-                            if submitStatus: submitStatus.submit("[BUNDLE] Downloading Packages..", 40)
-                            for i in marked_install_files:
-                                per_step += 1
-                                if not i == "":
-                                    if debug == True: printDebugMessage(f"Downloading from Roblox's server: {i} [{round((per_step/(len(marked_install_files)*2))*100, 2)}/100]")
-                                    urllib.request.urlretrieve(f'https://setup.rbxcdn.com/{starter_url}{cur_vers.get("client_version")}-{i}', os.path.join(installPath, i))
-                                    if self.robloxBundleExportFiles.get(i):
-                                        export_destination = self.robloxBundleExportFiles.get(i)
-                                        makedirs(f'{installPath}{export_destination}')
-                                        zip_extract = subprocess.run(["tar", "-xf", f"{os.path.join(installPath, i)}", "-C", f'{installPath}{export_destination}'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+            try:
+                if submitStatus: submitStatus.submit("[BUNDLE] Fetching Latest Player Version..", 0)
+                cur_vers = self.getLatestClientVersion(debug, channel)
+                if cur_vers and cur_vers.get("success") == True:
+                    try:
+                        import requests
+                    except Exception as e:
+                        pip().install(["requests"])
+                        requests = pip().importModule("requests")
+                        printSuccessMessage("Successfully installed modules!")
+                    if self.getIfRobloxIsOpen():
+                        if submitStatus: submitStatus.submit("[BUNDLE] Closing Roblox..", 5)
+                        if debug == True: printDebugMessage(f"Closing Roblox to prevent issues during download..")
+                        self.endRoblox()
+                    if submitStatus: submitStatus.submit("[BUNDLE] Fetching Bootstrap Settings..", 15)
+                    bootstrapper_settings = self.getLatestRobloxStudioAppSettings(debug=debug, bootstrapper=True, bucket=channel)
+                    if bootstrapper_settings["success"] == True:
+                        starter_url = ""
+                        bootstrapper_settings = bootstrapper_settings["application_settings"]
+                        if bootstrapper_settings.get("FFlagReplaceChannelNameForDownload"):
+                            starter_url = "channel/common/"
+                        else:
+                            starter_url = f"channel/{channel.lower()}/"
+                        if self.__main_os__ == "Windows":
+                            if submitStatus: submitStatus.submit("[BUNDLE] Fetching Package Manifest..", 30)
+                            if debug == True: printDebugMessage(f"Fetching Latest Package Manifest from Roblox's servers..")
+                            rbx_manifest_link = f'https://setup.rbxcdn.com/{starter_url}{cur_vers.get("client_version")}-rbxPkgManifest.txt'
+                            rbx_hashes_link = f'https://setup.rbxcdn.com/{starter_url}{cur_vers.get("client_version")}-rbxManifest.txt'
+                            rbx_man_req = requests.get(rbx_manifest_link)
+                            rbx_hashes_link = requests.get(rbx_hashes_link)
+                            if rbx_man_req.ok:
+                                rbx_man_res = rbx_man_req.text
+                                rbx_lines = rbx_man_res.splitlines()
+                                def is_filename(rbx_line):
+                                    return not rbx_line.isdigit() and not re.fullmatch(r'[a-fA-F0-9]{32}', rbx_line) and rbx_line != "v0"
+                                marked_install_files = [rbx_line for rbx_line in rbx_lines if is_filename(rbx_line)]
+                                rbx_hashes_res = rbx_hashes_link.text.strip().split("\n")
+                                rbx_hash_dict = {}
+                                for i in range(0, len(rbx_hashes_res), 2):
+                                    file_path = rbx_hashes_res[i].strip()
+                                    file_hash = rbx_hashes_res[i + 1].strip()
+                                    rbx_hash_dict[file_path] = file_hash
+                                per_step = 0
+                                if submitStatus: submitStatus.submit("[BUNDLE] Downloading Packages..", 40)
+                                try:
+                                    for i in marked_install_files:
                                         per_step += 1
-                                        if submitStatus: submitStatus.submit(f"[BUNDLE] Downloading Packages [{i}]..", round((per_step/(len(marked_install_files)*2))*100, 2))
-                                        if zip_extract.returncode == 0:
-                                            os.remove(os.path.join(installPath, i))
-                                            if debug == True: printDebugMessage(f"Successfully exported {i}! [{round((per_step/(len(marked_install_files)*2))*100, 2)}/100]")
-                                        else:
-                                            if debug == True: printDebugMessage(f"Unable to export: {i} [{round((per_step/(len(marked_install_files)*2))*100, 2)}/100]")
-                                    elif i.endswith(".zip"):
-                                        export_destination = "/"
-                                        makedirs(f'{installPath}{export_destination}')
-                                        zip_extract = subprocess.run(["tar", "-xf", f"{os.path.join(installPath, i)}", "-C", f'{installPath}{export_destination}'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
-                                        if zip_extract.returncode == 0:
-                                            os.remove(os.path.join(installPath, i))
-                                            if debug == True: printDebugMessage(f"Successfully exported {i}!")
-                                        else:
-                                            if debug == True: printDebugMessage(f"Unable to export: {i}")
-                            if verify == True:
-                                if submitStatus: submitStatus.submit(f"[BUNDLE] Verifying Roblox Install..", 80)
-                                if debug == True: printDebugMessage(f"Verifying Roblox Install..")
-                                def calculate_rbx_hash(file_path):
-                                    try:
-                                        with open(file_path, "rb") as f:
-                                            hasher = hashlib.md5()
-                                            chunk = f.read(8192)
-                                            while chunk: 
-                                                hasher.update(chunk)
-                                                chunk = f.read(8192)
-                                        return hasher.hexdigest()
-                                    except Exception:
-                                        return None
-                                verified = True
-                                for rbx_file, hash_value in rbx_hash_dict.items():
-                                    if os.path.exists(os.path.join(installPath, rbx_file)):
-                                        calculated_hash = calculate_rbx_hash(os.path.join(installPath, rbx_file))
-                                        if calculated_hash == None:
-                                            if debug == True: printDebugMessage(f"Unable to verify file: {rbx_file}")
-                                            continue
-                                        elif not (calculated_hash == hash_value):
-                                            if debug == True: printDebugMessage(f"Unable to verify file: {hash_value} => {calculated_hash}")
-                                            verified = False
-                                            break
-                                if verified == False:
-                                    printErrorMessage(f"Unable to install Roblox due to a verification error.")
-                                    return
-                            with open(os.path.join(installPath, "RobloxVersion.json"), "w") as f:
-                                json.dump({"ClientVersion": cur_vers.get("client_version", "version-000000000000"), "AppVersion": cur_vers.get("short_version", "0.000.0.0000000")}, f, indent=4)
-                            with open(os.path.join(installPath, "AppSettings.xml"), "w") as f:
-                                f.write('<?xml version="1.0" encoding="UTF-8"?><Settings><ContentFolder>content</ContentFolder><BaseUrl>http://www.roblox.com</BaseUrl></Settings>')
-                            if submitStatus: submitStatus.submit(f"[BUNDLE] Successfully installed Roblox Bundle!", 100)
-                            if debug == True: printDebugMessage(f"Successfully installed Roblox to: {installPath} [Client: {cur_vers.get('client_version')}]")
-                        else:
-                            if debug == True: printDebugMessage(f"Unable to download Roblox manifest due to an http error. Code: {rbx_man_req.status_code}")
-                            if submitStatus: submitStatus.submit("\033ERR[INSTALL] Unable to fetch Roblox manifest file!", 100)
-                    elif self.__main_os__ == "Darwin":
-                        if platform.machine() == "arm64":
-                            roblox_player_down = f'https://setup.rbxcdn.com/{starter_url}mac/arm64/{cur_vers.get("client_version")}-RobloxPlayer.zip'
-                        else:
-                            roblox_player_down = f'https://setup.rbxcdn.com/{starter_url}mac/{cur_vers.get("client_version")}-RobloxPlayer.zip'
-                        if submitStatus: submitStatus.submit(f"[BUNDLE] Downloading Roblox App!", 0)
-                        if debug == True: printDebugMessage(f"Downloading Player from Roblox's server: {roblox_player_down}")
-                        urllib.request.urlretrieve(roblox_player_down, os.path.join(installPath, "RobloxPlayer.zip"))
-                        if os.path.exists(os.path.join(installPath, "RobloxPlayer.zip")):
-                            if os.path.exists(os.path.join(installPath, "RobloxPlayer")) or os.path.exists(appPath):
-                                if debug == True: printDebugMessage(f"Cleaning before install..")
-                                if os.path.exists(os.path.join(installPath, "RobloxPlayer")): shutil.rmtree(os.path.join(installPath, "RobloxPlayer"), ignore_errors=True)
-                                if os.path.exists(os.path.join(appPath)): shutil.rmtree(os.path.join(appPath), ignore_errors=True)
-                            if submitStatus: submitStatus.submit(f"[BUNDLE] Extracting Roblox App!", 30)
-                            if debug == True: printDebugMessage(f"Extracting Player from Downloaded ZIP: {os.path.join(installPath, 'RobloxPlayer.zip')}")
-                            zip_extract = subprocess.run(["unzip", "-o", os.path.join(installPath, "RobloxPlayer.zip"), "-d", os.path.join(installPath, "RobloxPlayer")], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
-                            if zip_extract.returncode == 0:
-                                if submitStatus: submitStatus.submit(f"[BUNDLE] Moving Player!", 60)
-                                if debug == True: printDebugMessage(f"Moving Player..")
-                                pip().copyTreeWithMetadata(os.path.join(installPath, "RobloxPlayer", "RobloxPlayer.app"), appPath, dirs_exist_ok=True, symlinks=True)
-                                if submitStatus: submitStatus.submit(f"[BUNDLE] Cleaning up Player!", 80)
-                                if debug == True: printDebugMessage(f"Cleaning up..")
-                                shutil.rmtree(os.path.join(installPath, "RobloxPlayer"), ignore_errors=True)
-                                os.remove(os.path.join(installPath, "RobloxPlayer.zip"))
-                                if submitStatus: submitStatus.submit(f"[BUNDLE] Successfully installed Roblox Bundle!", 100)
-                                if debug == True: printDebugMessage(f"Successfully installed Roblox to: {installPath} [Client: {cur_vers.get('client_version')}]")
+                                        if not i == "":
+                                            if debug == True: printDebugMessage(f"Downloading from Roblox's server: {i} [{round((per_step/(len(marked_install_files)*2))*100, 2)}/100]")
+                                            urllib.request.urlretrieve(f'https://setup.rbxcdn.com/{starter_url}{cur_vers.get("client_version")}-{i}', os.path.join(installPath, i))
+                                            if self.robloxBundleExportFiles.get(i):
+                                                export_destination = self.robloxBundleExportFiles.get(i)
+                                                makedirs(f'{installPath}{export_destination}')
+                                                zip_extract = subprocess.run(["tar", "-xf", f"{os.path.join(installPath, i)}", "-C", f'{installPath}{export_destination}'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+                                                per_step += 1
+                                                if submitStatus: submitStatus.submit(f"[BUNDLE] Downloading Packages [{i}]..", round((per_step/(len(marked_install_files)*2))*100, 2))
+                                                if zip_extract.returncode == 0:
+                                                    os.remove(os.path.join(installPath, i))
+                                                    if debug == True: printDebugMessage(f"Successfully exported {i}! [{round((per_step/(len(marked_install_files)*2))*100, 2)}/100]")
+                                                else:
+                                                    if debug == True: printDebugMessage(f"Unable to export: {i} [{round((per_step/(len(marked_install_files)*2))*100, 2)}/100]")
+                                            elif i.endswith(".zip"):
+                                                export_destination = "/"
+                                                makedirs(f'{installPath}{export_destination}')
+                                                zip_extract = subprocess.run(["tar", "-xf", f"{os.path.join(installPath, i)}", "-C", f'{installPath}{export_destination}'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+                                                if zip_extract.returncode == 0:
+                                                    os.remove(os.path.join(installPath, i))
+                                                    if debug == True: printDebugMessage(f"Successfully exported {i}!")
+                                                else:
+                                                    if debug == True: printDebugMessage(f"Unable to export: {i}")
+                                    if verify == True:
+                                        if submitStatus: submitStatus.submit(f"[BUNDLE] Verifying Roblox Install..", 80)
+                                        if debug == True: printDebugMessage(f"Verifying Roblox Install..")
+                                        def calculate_rbx_hash(file_path):
+                                            try:
+                                                with open(file_path, "rb") as f:
+                                                    hasher = hashlib.md5()
+                                                    chunk = f.read(8192)
+                                                    while chunk: 
+                                                        hasher.update(chunk)
+                                                        chunk = f.read(8192)
+                                                return hasher.hexdigest()
+                                            except Exception:
+                                                return None
+                                        verified = True
+                                        for rbx_file, hash_value in rbx_hash_dict.items():
+                                            if os.path.exists(os.path.join(installPath, rbx_file)):
+                                                calculated_hash = calculate_rbx_hash(os.path.join(installPath, rbx_file))
+                                                if calculated_hash == None:
+                                                    if debug == True: printDebugMessage(f"Unable to verify file: {rbx_file}")
+                                                    continue
+                                                elif not (calculated_hash == hash_value):
+                                                    if debug == True: printDebugMessage(f"Unable to verify file: {hash_value} => {calculated_hash}")
+                                                    verified = False
+                                                    break
+                                        if verified == False:
+                                            printErrorMessage(f"Unable to install Roblox due to a verification error.")
+                                            return
+                                    with open(os.path.join(installPath, "RobloxVersion.json"), "w") as f:
+                                        json.dump({"ClientVersion": cur_vers.get("client_version", "version-000000000000"), "AppVersion": cur_vers.get("short_version", "0.000.0.0000000")}, f, indent=4)
+                                    with open(os.path.join(installPath, "AppSettings.xml"), "w") as f:
+                                        f.write('<?xml version="1.0" encoding="UTF-8"?><Settings><ContentFolder>content</ContentFolder><BaseUrl>http://www.roblox.com</BaseUrl></Settings>')
+                                    if submitStatus: submitStatus.submit(f"[BUNDLE] Successfully installed Roblox Bundle!", 100)
+                                    if debug == True: printDebugMessage(f"Successfully installed Roblox to: {installPath} [Client: {cur_vers.get('client_version')}]")
+                                except Exception as e:
+                                    if submitStatus: submitStatus.submit(f"\033ERR[BUNDLE] Unable to download and install Roblox Bundle!", 100)
+                                    if debug == True: printDebugMessage(f"Unable to install Roblox Bundle: {str(e)}")
                             else:
-                                if debug == True: printDebugMessage(f"Unable to extract Player: {zip_extract.returncode}")
-                                if submitStatus: submitStatus.submit("\033ERR[INSTALL] Failed to extract Roblox Player.", 100)
-                        else:
-                            if debug == True: printDebugMessage(f"Unable to download the Roblox Player.")
-                            if submitStatus: submitStatus.submit("\033ERR[INSTALL] Failed to download Roblox Player.", 100)
+                                if debug == True: printDebugMessage(f"Unable to download Roblox manifest due to an http error. Code: {rbx_man_req.status_code}")
+                                if submitStatus: submitStatus.submit("\033ERR[BUNDLE] Unable to fetch Roblox manifest file!", 100)
+                        elif self.__main_os__ == "Darwin":
+                            if platform.machine() == "arm64":
+                                roblox_player_down = f'https://setup.rbxcdn.com/{starter_url}mac/arm64/{cur_vers.get("client_version")}-RobloxPlayer.zip'
+                            else:
+                                roblox_player_down = f'https://setup.rbxcdn.com/{starter_url}mac/{cur_vers.get("client_version")}-RobloxPlayer.zip'
+                            if submitStatus: submitStatus.submit(f"[BUNDLE] Downloading Roblox App!", 0)
+                            if debug == True: printDebugMessage(f"Downloading Player from Roblox's server: {roblox_player_down}")
+                            try:
+                                urllib.request.urlretrieve(roblox_player_down, os.path.join(installPath, "RobloxPlayer.zip"))
+                                if os.path.exists(os.path.join(installPath, "RobloxPlayer.zip")):
+                                    if os.path.exists(os.path.join(installPath, "RobloxPlayer")) or os.path.exists(appPath):
+                                        if debug == True: printDebugMessage(f"Cleaning before install..")
+                                        if os.path.exists(os.path.join(installPath, "RobloxPlayer")): shutil.rmtree(os.path.join(installPath, "RobloxPlayer"), ignore_errors=True)
+                                        if os.path.exists(os.path.join(appPath)): shutil.rmtree(os.path.join(appPath), ignore_errors=True)
+                                    if submitStatus: submitStatus.submit(f"[BUNDLE] Extracting Roblox App!", 30)
+                                    if debug == True: printDebugMessage(f"Extracting Player from Downloaded ZIP: {os.path.join(installPath, 'RobloxPlayer.zip')}")
+                                    zip_extract = subprocess.run(["unzip", "-o", os.path.join(installPath, "RobloxPlayer.zip"), "-d", os.path.join(installPath, "RobloxPlayer")], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+                                    if zip_extract.returncode == 0:
+                                        if submitStatus: submitStatus.submit(f"[BUNDLE] Moving Player!", 60)
+                                        if debug == True: printDebugMessage(f"Moving Player..")
+                                        pip().copyTreeWithMetadata(os.path.join(installPath, "RobloxPlayer", "RobloxPlayer.app"), appPath, dirs_exist_ok=True, symlinks=True)
+                                        if submitStatus: submitStatus.submit(f"[BUNDLE] Cleaning up Player!", 80)
+                                        if debug == True: printDebugMessage(f"Cleaning up..")
+                                        shutil.rmtree(os.path.join(installPath, "RobloxPlayer"), ignore_errors=True)
+                                        os.remove(os.path.join(installPath, "RobloxPlayer.zip"))
+                                        if submitStatus: submitStatus.submit(f"[BUNDLE] Successfully installed Roblox Bundle!", 100)
+                                        if debug == True: printDebugMessage(f"Successfully installed Roblox to: {installPath} [Client: {cur_vers.get('client_version')}]")
+                                    else:
+                                        if debug == True: printDebugMessage(f"Unable to extract Player: {zip_extract.returncode}")
+                                        if submitStatus: submitStatus.submit("\033ERR[BUNDLE] Failed to extract Roblox Player.", 100)
+                                else:
+                                    if debug == True: printDebugMessage(f"Unable to download the Roblox Player.")
+                                    if submitStatus: submitStatus.submit("\033ERR[BUNDLE] Failed to download Roblox Player.", 100)
+                            except Exception as e:
+                                if debug == True: printDebugMessage(f"Unable to download and install the Roblox Player.")
+                                if submitStatus: submitStatus.submit("\033ERR[BUNDLE] Failed to download and install Roblox Player.", 100)
+                    else:
+                        if debug == True: printDebugMessage(f"Unable to fetch install bootstrapper settings from Roblox.")
+                        if submitStatus: submitStatus.submit("\033ERR[BUNDLE] Unable to fetch bootstrapper settings.", 100)
                 else:
-                    if debug == True: printDebugMessage(f"Unable to fetch install bootstrapper settings from Roblox.")
-                    if submitStatus: submitStatus.submit("\033ERR[INSTALL] Unable to fetch bootstrapper settings.", 100)
-            else:
-                if debug == True: printDebugMessage(f"Unable to fetch Roblox manifest file due to an http error.")
-                if submitStatus: submitStatus.submit("\033ERR[INSTALL] Unable to fetch Roblox manifest file!", 100)
+                    if debug == True: printDebugMessage(f"Unable to fetch Roblox manifest file due to an http error.")
+                    if submitStatus: submitStatus.submit("\033ERR[BUNDLE] Unable to fetch Roblox manifest file!", 100)
+            except Exception as e:
+                if debug == True: printDebugMessage(f"Unable to download and install Roblox Bundle. Error: {str(e)}")
+                if submitStatus: submitStatus.submit("\033ERR[INSTALL] Unable to download and install Roblox Bundle!", 100)
         else:
             printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
-            if submitStatus: submitStatus.submit("\033ERR[INSTALL] RobloxFastFlagsInstaller is only supported for macOS and Windows.", 100)
+            if submitStatus: submitStatus.submit("\033ERR[BUNDLE] RobloxFastFlagsInstaller is only supported for macOS and Windows.", 100)
     def installRobloxStudioBundle(self, installPath="", appPath="", channel="LIVE", debug=False, verify=False):
         if self.__main_os__ == "Darwin" or self.__main_os__ == "Windows":
-            if submitStatus: submitStatus.submit("[BUNDLE] Fetching Latest Studio Version..", 0)
-            cur_vers = self.getLatestStudioClientVersion(debug, channel)
-            if cur_vers and cur_vers.get("success") == True:
-                try:
-                    import requests
-                except Exception as e:
-                    pip().install(["requests"])
-                    requests = pip().importModule("requests")
-                    printSuccessMessage("Successfully installed modules!")
-                if self.getIfRobloxIsOpen():
-                    if submitStatus: submitStatus.submit("[BUNDLE] Closing Roblox Studio..", 5)
-                    if debug == True: printDebugMessage(f"Closing Roblox to prevent issues during download..")
-                    self.endRobloxStudio()
-                if submitStatus: submitStatus.submit("[BUNDLE] Fetching Bootstrap Settings..", 15)
-                bootstrapper_settings = self.getLatestRobloxStudioAppSettings(debug=debug, bootstrapper=True, bucket=channel)
-                if bootstrapper_settings["success"] == True:
-                    starter_url = ""
-                    bootstrapper_settings = bootstrapper_settings["application_settings"]
-                    if bootstrapper_settings.get("FFlagReplaceChannelNameForDownload"):
-                        starter_url = "channel/common/"
-                    else:
-                        starter_url = f"channel/{channel.lower()}/"
-                    if self.__main_os__ == "Windows":
-                        if submitStatus: submitStatus.submit("[BUNDLE] Fetching Package Manifest..", 30)
-                        if debug == True: printDebugMessage(f"Fetching Latest Package Manifest from Roblox's servers..")
-                        rbx_manifest_link = f'https://setup.rbxcdn.com/{starter_url}{cur_vers.get("client_version")}-rbxPkgManifest.txt'
-                        rbx_hashes_link = f'https://setup.rbxcdn.com/{starter_url}{cur_vers.get("client_version")}-rbxManifest.txt'
-                        rbx_man_req = requests.get(rbx_manifest_link)
-                        rbx_hashes_link = requests.get(rbx_hashes_link)
-                        if rbx_man_req.ok:
-                            rbx_man_res = rbx_man_req.text
-                            rbx_lines = rbx_man_res.splitlines()
-                            def is_filename(rbx_line):
-                                return not rbx_line.isdigit() and not re.fullmatch(r'[a-fA-F0-9]{32}', rbx_line) and rbx_line != "v0"
-                            marked_install_files = [rbx_line for rbx_line in rbx_lines if is_filename(rbx_line)]
-                            rbx_hashes_res = rbx_hashes_link.text.strip().split("\n")
-                            rbx_hash_dict = {}
-                            for i in range(0, len(rbx_hashes_res), 2):
-                                file_path = rbx_hashes_res[i].strip()
-                                file_hash = rbx_hashes_res[i + 1].strip()
-                                rbx_hash_dict[file_path] = file_hash
-                            per_step = 0
-                            if submitStatus: submitStatus.submit("[BUNDLE] Downloading Packages..", 40)
-                            for i in marked_install_files:
-                                per_step += 1
-                                if not i == "":
-                                    if debug == True: printDebugMessage(f"Downloading from Roblox's server: {i} [{round((per_step/(len(marked_install_files)*2))*100, 2)}/100]")
-                                    urllib.request.urlretrieve(f'https://setup.rbxcdn.com/{starter_url}{cur_vers.get("client_version")}-{i}', os.path.join(installPath, i))
-                                    if self.robloxStudioBundleExportFiles.get(i):
-                                        export_destination = self.robloxStudioBundleExportFiles.get(i)
-                                        makedirs(f'{installPath}{export_destination}')
-                                        zip_extract = subprocess.run(["tar", "-xf", f"{os.path.join(installPath, i)}", "-C", f'{installPath}{export_destination}'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+            try:
+                if submitStatus: submitStatus.submit("[BUNDLE] Fetching Latest Studio Version..", 0)
+                cur_vers = self.getLatestStudioClientVersion(debug, channel)
+                if cur_vers and cur_vers.get("success") == True:
+                    try:
+                        import requests
+                    except Exception as e:
+                        pip().install(["requests"])
+                        requests = pip().importModule("requests")
+                        printSuccessMessage("Successfully installed modules!")
+                    if self.getIfRobloxIsOpen():
+                        if submitStatus: submitStatus.submit("[BUNDLE] Closing Roblox Studio..", 5)
+                        if debug == True: printDebugMessage(f"Closing Roblox to prevent issues during download..")
+                        self.endRobloxStudio()
+                    if submitStatus: submitStatus.submit("[BUNDLE] Fetching Bootstrap Settings..", 15)
+                    bootstrapper_settings = self.getLatestRobloxStudioAppSettings(debug=debug, bootstrapper=True, bucket=channel)
+                    if bootstrapper_settings["success"] == True:
+                        starter_url = ""
+                        bootstrapper_settings = bootstrapper_settings["application_settings"]
+                        if bootstrapper_settings.get("FFlagReplaceChannelNameForDownload"):
+                            starter_url = "channel/common/"
+                        else:
+                            starter_url = f"channel/{channel.lower()}/"
+                        if self.__main_os__ == "Windows":
+                            if submitStatus: submitStatus.submit("[BUNDLE] Fetching Package Manifest..", 30)
+                            if debug == True: printDebugMessage(f"Fetching Latest Package Manifest from Roblox's servers..")
+                            rbx_manifest_link = f'https://setup.rbxcdn.com/{starter_url}{cur_vers.get("client_version")}-rbxPkgManifest.txt'
+                            rbx_hashes_link = f'https://setup.rbxcdn.com/{starter_url}{cur_vers.get("client_version")}-rbxManifest.txt'
+                            rbx_man_req = requests.get(rbx_manifest_link)
+                            rbx_hashes_link = requests.get(rbx_hashes_link)
+                            if rbx_man_req.ok:
+                                rbx_man_res = rbx_man_req.text
+                                rbx_lines = rbx_man_res.splitlines()
+                                def is_filename(rbx_line):
+                                    return not rbx_line.isdigit() and not re.fullmatch(r'[a-fA-F0-9]{32}', rbx_line) and rbx_line != "v0"
+                                marked_install_files = [rbx_line for rbx_line in rbx_lines if is_filename(rbx_line)]
+                                rbx_hashes_res = rbx_hashes_link.text.strip().split("\n")
+                                rbx_hash_dict = {}
+                                for i in range(0, len(rbx_hashes_res), 2):
+                                    file_path = rbx_hashes_res[i].strip()
+                                    file_hash = rbx_hashes_res[i + 1].strip()
+                                    rbx_hash_dict[file_path] = file_hash
+                                per_step = 0
+                                if submitStatus: submitStatus.submit("[BUNDLE] Downloading Packages..", 40)
+                                try:
+                                    for i in marked_install_files:
                                         per_step += 1
-                                        if submitStatus: submitStatus.submit(f"[BUNDLE] Downloading Packages [{i}]..", round((per_step/(len(marked_install_files)*2))*100, 2))
-                                        if zip_extract.returncode == 0:
-                                            os.remove(os.path.join(installPath, i))
-                                            if debug == True: printDebugMessage(f"Successfully exported {i}! [{round((per_step/(len(marked_install_files)*2))*100, 2)}/100]")
-                                        else:
-                                            if debug == True: printDebugMessage(f"Unable to export: {i} [{round((per_step/(len(marked_install_files)*2))*100, 2)}/100]")
-                                    elif i.endswith(".zip"):
-                                        export_destination = "/"
-                                        makedirs(f'{installPath}{export_destination}')
-                                        zip_extract = subprocess.run(["tar", "-xf", f"{os.path.join(installPath, i)}", "-C", f'{installPath}{export_destination}'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
-                                        if zip_extract.returncode == 0:
-                                            os.remove(os.path.join(installPath, i))
-                                            if debug == True: printDebugMessage(f"Successfully exported {i}!")
-                                        else:
-                                            if debug == True: printDebugMessage(f"Unable to export: {i}")
-                            if verify == True:
-                                if submitStatus: submitStatus.submit(f"[BUNDLE] Verifying Roblox Studio Install..", 80)
-                                if debug == True: printDebugMessage(f"Verifying Roblox Studio Install..")
-                                def calculate_md5_hash(file_path):
-                                    try:
-                                        with open(file_path, "rb") as f:
-                                            hasher = hashlib.md5()
-                                            chunk = f.read(8192)
-                                            while chunk: 
-                                                hasher.update(chunk)
-                                                chunk = f.read(8192)
-                                        return hasher.hexdigest()
-                                    except Exception as e:
-                                        if debug == True: printDebugMessage(f"There was an issue trying to get hash: {str(e)}")
-                                        return None
-                                verified = True
-                                for rbx_file, hash_value in rbx_hash_dict.items():
-                                    if os.path.exists(os.path.join(installPath, rbx_file)):
-                                        calculated_hash = calculate_md5_hash(os.path.join(installPath, rbx_file))
-                                        if calculated_hash == None:
-                                            if debug == True: printDebugMessage(f"Unable to verify file: {rbx_file}")
-                                            continue
-                                        elif not (calculated_hash == hash_value):
-                                            if debug == True: printDebugMessage(f"Unable to verify file: {hash_value} => {calculated_hash}")
-                                            verified = False
-                                            break
-                                if verified == False:
-                                    printErrorMessage(f"Unable to install Roblox Studio due to a verification error.")
-                                    return
-                            with open(os.path.join(installPath, "RobloxVersion.json"), "w") as f:
-                                json.dump({"ClientVersion": cur_vers.get("client_version", "version-000000000000"), "AppVersion": cur_vers.get("short_version", "0.000.0.0000000")}, f, indent=4)
-                            with open(os.path.join(installPath, "AppSettings.xml"), "w") as f:
-                                f.write('<?xml version="1.0" encoding="UTF-8"?><Settings><ContentFolder>content</ContentFolder><BaseUrl>http://www.roblox.com</BaseUrl></Settings>')
-                            if submitStatus: submitStatus.submit(f"[BUNDLE] Successfully installed Roblox Studio Bundle!", 100)
-                            if debug == True: printDebugMessage(f"Successfully installed Roblox Studio to: {installPath} [Client: {cur_vers.get('client_version')}]")
-                        else:
-                            if debug == True: printDebugMessage(f"Unable to download Roblox manifest due to an http error. Code: {rbx_man_req.status_code}")
-                            if submitStatus: submitStatus.submit("\033ERR[INSTALL] Unable to fetch Roblox manifest file!", 100)
-                    elif self.__main_os__ == "Darwin":
-                        if platform.machine() == "arm64":
-                            roblox_studio_down = f'https://setup.rbxcdn.com/{starter_url}mac/arm64/{cur_vers.get("client_version")}-RobloxStudioApp.zip'
-                        else:
-                            roblox_studio_down = f'https://setup.rbxcdn.com/{starter_url}mac/{cur_vers.get("client_version")}-RobloxStudioApp.zip'
-                        if submitStatus: submitStatus.submit(f"[BUNDLE] Downloading Roblox Studio App!", 0)
-                        if debug == True: printDebugMessage(f"Downloading Studio from Roblox's server: {roblox_studio_down}")
-                        urllib.request.urlretrieve(roblox_studio_down, os.path.join(installPath, "RobloxStudioApp.zip"))
-                        if os.path.exists(os.path.join(installPath, "RobloxStudioApp.zip")):
-                            if os.path.exists(os.path.join(installPath, "RobloxStudioApp")) or os.path.exists(appPath):
-                                if debug == True: printDebugMessage(f"Cleaning before install..")
-                                if os.path.exists(os.path.join(installPath, "RobloxStudioApp")): shutil.rmtree(os.path.join(installPath, "RobloxStudioApp"), ignore_errors=True)
-                                if os.path.exists(os.path.join(appPath)): shutil.rmtree(os.path.join(appPath), ignore_errors=True)
-                            if submitStatus: submitStatus.submit(f"[BUNDLE] Extracting Roblox Studio App!", 30)
-                            if debug == True: printDebugMessage(f"Extracting Studio from Downloaded ZIP: {os.path.join(installPath, 'RobloxStudioApp.zip')}")
-                            zip_extract = subprocess.run(["unzip", "-o", os.path.join(installPath, "RobloxStudioApp.zip"), "-d", os.path.join(installPath, "RobloxStudioApp")], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
-                            if zip_extract.returncode == 0:
-                                if submitStatus: submitStatus.submit(f"[BUNDLE] Moving Studio!", 60)
-                                if debug == True: printDebugMessage(f"Moving Studio..")
-                                pip().copyTreeWithMetadata(os.path.join(installPath, "RobloxStudioApp", "RobloxStudio.app"), appPath, dirs_exist_ok=True, symlinks=True)
-                                if submitStatus: submitStatus.submit(f"[BUNDLE] Cleaning up Studio!", 80)
-                                if debug == True: printDebugMessage(f"Cleaning up..")
-                                shutil.rmtree(os.path.join(installPath, "RobloxStudioApp"), ignore_errors=True)
-                                os.remove(os.path.join(installPath, "RobloxStudioApp.zip"))
-                                if submitStatus: submitStatus.submit(f"[BUNDLE] Successfully installed Roblox Studio Bundle!", 100)
-                                if debug == True: printDebugMessage(f"Successfully installed Roblox Studio to: {installPath} [Client: {cur_vers.get('client_version')}]")
+                                        if not i == "":
+                                            if debug == True: printDebugMessage(f"Downloading from Roblox's server: {i} [{round((per_step/(len(marked_install_files)*2))*100, 2)}/100]")
+                                            urllib.request.urlretrieve(f'https://setup.rbxcdn.com/{starter_url}{cur_vers.get("client_version")}-{i}', os.path.join(installPath, i))
+                                            if self.robloxStudioBundleExportFiles.get(i):
+                                                export_destination = self.robloxStudioBundleExportFiles.get(i)
+                                                makedirs(f'{installPath}{export_destination}')
+                                                zip_extract = subprocess.run(["tar", "-xf", f"{os.path.join(installPath, i)}", "-C", f'{installPath}{export_destination}'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+                                                per_step += 1
+                                                if submitStatus: submitStatus.submit(f"[BUNDLE] Downloading Packages [{i}]..", round((per_step/(len(marked_install_files)*2))*100, 2))
+                                                if zip_extract.returncode == 0:
+                                                    os.remove(os.path.join(installPath, i))
+                                                    if debug == True: printDebugMessage(f"Successfully exported {i}! [{round((per_step/(len(marked_install_files)*2))*100, 2)}/100]")
+                                                else:
+                                                    if debug == True: printDebugMessage(f"Unable to export: {i} [{round((per_step/(len(marked_install_files)*2))*100, 2)}/100]")
+                                            elif i.endswith(".zip"):
+                                                export_destination = "/"
+                                                makedirs(f'{installPath}{export_destination}')
+                                                zip_extract = subprocess.run(["tar", "-xf", f"{os.path.join(installPath, i)}", "-C", f'{installPath}{export_destination}'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+                                                if zip_extract.returncode == 0:
+                                                    os.remove(os.path.join(installPath, i))
+                                                    if debug == True: printDebugMessage(f"Successfully exported {i}!")
+                                                else:
+                                                    if debug == True: printDebugMessage(f"Unable to export: {i}")
+                                    if verify == True:
+                                        if submitStatus: submitStatus.submit(f"[BUNDLE] Verifying Roblox Studio Install..", 80)
+                                        if debug == True: printDebugMessage(f"Verifying Roblox Studio Install..")
+                                        def calculate_md5_hash(file_path):
+                                            try:
+                                                with open(file_path, "rb") as f:
+                                                    hasher = hashlib.md5()
+                                                    chunk = f.read(8192)
+                                                    while chunk: 
+                                                        hasher.update(chunk)
+                                                        chunk = f.read(8192)
+                                                return hasher.hexdigest()
+                                            except Exception as e:
+                                                if debug == True: printDebugMessage(f"There was an issue trying to get hash: {str(e)}")
+                                                return None
+                                        verified = True
+                                        for rbx_file, hash_value in rbx_hash_dict.items():
+                                            if os.path.exists(os.path.join(installPath, rbx_file)):
+                                                calculated_hash = calculate_md5_hash(os.path.join(installPath, rbx_file))
+                                                if calculated_hash == None:
+                                                    if debug == True: printDebugMessage(f"Unable to verify file: {rbx_file}")
+                                                    continue
+                                                elif not (calculated_hash == hash_value):
+                                                    if debug == True: printDebugMessage(f"Unable to verify file: {hash_value} => {calculated_hash}")
+                                                    verified = False
+                                                    break
+                                        if verified == False:
+                                            printErrorMessage(f"Unable to install Roblox Studio due to a verification error.")
+                                            return
+                                    with open(os.path.join(installPath, "RobloxVersion.json"), "w") as f:
+                                        json.dump({"ClientVersion": cur_vers.get("client_version", "version-000000000000"), "AppVersion": cur_vers.get("short_version", "0.000.0.0000000")}, f, indent=4)
+                                    with open(os.path.join(installPath, "AppSettings.xml"), "w") as f:
+                                        f.write('<?xml version="1.0" encoding="UTF-8"?><Settings><ContentFolder>content</ContentFolder><BaseUrl>http://www.roblox.com</BaseUrl></Settings>')
+                                    if submitStatus: submitStatus.submit(f"[BUNDLE] Successfully installed Roblox Studio Bundle!", 100)
+                                    if debug == True: printDebugMessage(f"Successfully installed Roblox Studio to: {installPath} [Client: {cur_vers.get('client_version')}]")
+                                except Exception as e:
+                                    if submitStatus: submitStatus.submit(f"\033ERR[BUNDLE] Unable to download and install Roblox Studio Bundle!", 100)
+                                    if debug == True: printDebugMessage(f"Unable to install Roblox Studio Bundle: {str(e)}")
                             else:
-                                if debug == True: printDebugMessage(f"Unable to extract Studio: {zip_extract.returncode}")
-                                if submitStatus: submitStatus.submit("\033ERR[INSTALL] Failed to extract Roblox Studio.", 100)
-                        else:
-                            if debug == True: printDebugMessage(f"Unable to download the Roblox Studio.")
-                            if submitStatus: submitStatus.submit("\033ERR[INSTALL] Failed to download Roblox Studio.", 100)
+                                if debug == True: printDebugMessage(f"Unable to download Roblox manifest due to an http error. Code: {rbx_man_req.status_code}")
+                                if submitStatus: submitStatus.submit("\033ERR[INSTALL] Unable to fetch Roblox manifest file!", 100)
+                        elif self.__main_os__ == "Darwin":
+                            if platform.machine() == "arm64":
+                                roblox_studio_down = f'https://setup.rbxcdn.com/{starter_url}mac/arm64/{cur_vers.get("client_version")}-RobloxStudioApp.zip'
+                            else:
+                                roblox_studio_down = f'https://setup.rbxcdn.com/{starter_url}mac/{cur_vers.get("client_version")}-RobloxStudioApp.zip'
+                            if submitStatus: submitStatus.submit(f"[BUNDLE] Downloading Roblox Studio App!", 0)
+                            if debug == True: printDebugMessage(f"Downloading Studio from Roblox's server: {roblox_studio_down}")
+                            try:
+                                urllib.request.urlretrieve(roblox_studio_down, os.path.join(installPath, "RobloxStudioApp.zip"))
+                                if os.path.exists(os.path.join(installPath, "RobloxStudioApp.zip")):
+                                    if os.path.exists(os.path.join(installPath, "RobloxStudioApp")) or os.path.exists(appPath):
+                                        if debug == True: printDebugMessage(f"Cleaning before install..")
+                                        if os.path.exists(os.path.join(installPath, "RobloxStudioApp")): shutil.rmtree(os.path.join(installPath, "RobloxStudioApp"), ignore_errors=True)
+                                        if os.path.exists(os.path.join(appPath)): shutil.rmtree(os.path.join(appPath), ignore_errors=True)
+                                    if submitStatus: submitStatus.submit(f"[BUNDLE] Extracting Roblox Studio App!", 30)
+                                    if debug == True: printDebugMessage(f"Extracting Studio from Downloaded ZIP: {os.path.join(installPath, 'RobloxStudioApp.zip')}")
+                                    zip_extract = subprocess.run(["unzip", "-o", os.path.join(installPath, "RobloxStudioApp.zip"), "-d", os.path.join(installPath, "RobloxStudioApp")], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+                                    if zip_extract.returncode == 0:
+                                        if submitStatus: submitStatus.submit(f"[BUNDLE] Moving Studio!", 60)
+                                        if debug == True: printDebugMessage(f"Moving Studio..")
+                                        pip().copyTreeWithMetadata(os.path.join(installPath, "RobloxStudioApp", "RobloxStudio.app"), appPath, dirs_exist_ok=True, symlinks=True)
+                                        if submitStatus: submitStatus.submit(f"[BUNDLE] Cleaning up Studio!", 80)
+                                        if debug == True: printDebugMessage(f"Cleaning up..")
+                                        shutil.rmtree(os.path.join(installPath, "RobloxStudioApp"), ignore_errors=True)
+                                        os.remove(os.path.join(installPath, "RobloxStudioApp.zip"))
+                                        if submitStatus: submitStatus.submit(f"[BUNDLE] Successfully installed Roblox Studio Bundle!", 100)
+                                        if debug == True: printDebugMessage(f"Successfully installed Roblox Studio to: {installPath} [Client: {cur_vers.get('client_version')}]")
+                                    else:
+                                        if debug == True: printDebugMessage(f"Unable to extract Studio: {zip_extract.returncode}")
+                                        if submitStatus: submitStatus.submit("\033ERR[INSTALL] Failed to extract Roblox Studio.", 100)
+                                else:
+                                    if debug == True: printDebugMessage(f"Unable to download the Roblox Studio.")
+                                    if submitStatus: submitStatus.submit("\033ERR[INSTALL] Failed to download Roblox Studio.", 100)
+                            except:
+                                if debug == True: printDebugMessage(f"Unable to download and install the Roblox Studio.")
+                                if submitStatus: submitStatus.submit("\033ERR[INSTALL] Failed to download and install Roblox Studio.", 100)
+                    else:
+                        if debug == True: printDebugMessage(f"Unable to fetch install bootstrapper settings from Roblox.")
+                        if submitStatus: submitStatus.submit("\033ERR[INSTALL] Unable to fetch bootstrapper settings.", 100)
                 else:
-                    if debug == True: printDebugMessage(f"Unable to fetch install bootstrapper settings from Roblox.")
-                    if submitStatus: submitStatus.submit("\033ERR[INSTALL] Unable to fetch bootstrapper settings.", 100)
-            else:
-                if debug == True: printDebugMessage(f"Unable to fetch Roblox manifest file due to an http error.")
-                if submitStatus: submitStatus.submit("\033ERR[INSTALL] Unable to fetch Roblox manifest file!", 100)
+                    if debug == True: printDebugMessage(f"Unable to fetch Roblox manifest file due to an http error.")
+                    if submitStatus: submitStatus.submit("\033ERR[INSTALL] Unable to fetch Roblox manifest file!", 100)
+            except Exception as e:
+                if debug == True: printDebugMessage(f"Unable to download and install Roblox Studio Bundle. Error: {str(e)}")
+                if submitStatus: submitStatus.submit("\033ERR[INSTALL] Unable to download and install Roblox Studio Bundle!", 100)
         else:
             printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
             if submitStatus: submitStatus.submit("\033ERR[INSTALL] RobloxFastFlagsInstaller is only supported for macOS and Windows.", 100)
@@ -4406,7 +4433,10 @@ if __name__ == "__main__":
     generated_json = {}
     is_studio = getIfStudio()
 
-    # Studio Start
+    # Setup Information
+    printWarnMessage("--- Setup Information ---")
+    printMainMessage(f"Roblox User ID: {user_id}")
+    printMainMessage(f"Install to Studio: {is_studio==True}")
     if is_studio == True: printMainMessage("Alright! So, we will start with flags that are available for the Roblox player to be run in the playtest window!")
 
     # FPS Unlocker
