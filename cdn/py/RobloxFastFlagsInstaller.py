@@ -1,3 +1,11 @@
+# 
+# Roblox Fast Flags Installer
+# Made by Efaz from efaz.dev
+# v2.1.0
+# 
+# Fulfill your Roblox needs and configuration through Python!
+# 
+
 import os
 import platform
 import json
@@ -26,7 +34,7 @@ windows_dir = os.path.join(os.getenv('LOCALAPPDATA') or "", "Roblox") # This is 
 windows_versions_dir = os.path.join(windows_dir, "Versions") # This is the Roblox versions folder path
 windows_player_folder_name = "" # This is the version folder name for Roblox Player
 windows_studio_folder_name = "" # This is the version folder name for Roblox Studio
-submitStatus = None # Modify this when running the script
+submitStatus = None # This is a SubmitStatus handler class used for alerting status of functions.
 # Customizable Variables
 
 # Typing Literals
@@ -83,7 +91,8 @@ if sys.version_info >= (3, 8, 0):
         "onCloudPlugins",
         "onPluginUnloading",
         "onRobloxSaved",
-        "onNewStudioLaunching"
+        "onNewStudioLaunching",
+        "onStudioInstallerLaunched"
     ]
 else:
     robloxInstanceTotalLiteralEventNames = typing.AnyStr
@@ -102,16 +111,11 @@ def printLog(mes):
     if __name__ == "__main__": printMainMessage(mes)
     else: print(mes)
 def makedirs(a): os.makedirs(a,exist_ok=True)
+
 if os.path.exists("Main.py") and os.path.exists("PipHandler.py") and os.path.exists("OrangeAPI.py"): orangeblox_mode = True
 fast_flag_installer_version = "2.1.0"
 sys.dont_write_bytecode = True
 
-class __ReadingLineResponse__():
-    class EndRoblox(): code=0
-    class EndWatchdog(): code=1
-class InvalidRobloxHandlerException(Exception):
-    def __init__(self):            
-        super().__init__("Please make sure you're providing the RobloxFastFlagsInstaller.Main class!")
 class pip:
     executable = None
     debug = False
@@ -137,10 +141,11 @@ class pip:
                 generated_list.append(i)
         if len(generated_list) > 0:
             try:
-                subprocess.check_call([self.executable, "-m", "pip", "install"] + generated_list, stdout=self.debug == False and subprocess.DEVNULL, stderr=self.debug == False and subprocess.DEVNULL)
-                return {"success": True}
+                a = subprocess.call([self.executable, "-m", "pip", "install"] + generated_list, stdout=(not self.debug) and subprocess.DEVNULL or None, stderr=(not self.debug) and subprocess.DEVNULL or None)
+                if a == 0: return {"success": True, "message": "Successfully installed modules!"}
+                else: return {"success": False, "message": f"Command has failed!"}
             except Exception as e:
-                return {"success": False}
+                return {"success": False, "message": str(e)}
         return res
     def uninstall(self, packages: typing.List[str]):
         import subprocess
@@ -151,7 +156,7 @@ class pip:
                 generated_list.append(i)
         if len(generated_list) > 0:
             try:
-                subprocess.check_call([self.executable, "-m", "pip", "uninstall"] + generated_list, stdout=self.debug == False and subprocess.DEVNULL, stderr=self.debug == False and subprocess.DEVNULL)
+                subprocess.call([self.executable, "-m", "pip", "uninstall", "-y"] + generated_list, stdout=self.debug == False and subprocess.DEVNULL or None, stderr=self.debug == False and subprocess.DEVNULL or None)
                 res[i] = {"success": True}
             except Exception as e:
                 res[i] = {"success": False}
@@ -160,17 +165,17 @@ class pip:
         import subprocess
         sub = subprocess.run([self.executable, "-m", "pip", "list"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         line_splits = sub.stdout.decode().splitlines()[2:]
-        installed_packages = [package.split()[0] for package in line_splits if package.strip()]
+        installed_packages = [package.split()[0].lower() for package in line_splits if package.strip()]
         installed_checked = {}
         all_installed = True
         if len(packages) == 0:
             return installed_packages
         elif len(packages) == 1:
-            return packages[0] in installed_packages
+            return packages[0].lower() in installed_packages
         else:
             for i in packages:
                 try:
-                    if i in installed_packages:
+                    if i.lower() in installed_packages:
                         installed_checked[i] = True
                     else:
                         installed_checked[i] = False
@@ -302,8 +307,7 @@ class pip:
     def pythonInstalled(self, computer=False):
         import os
         if computer == True:
-            ex = self.findPython()
-            if ex and os.path.exists(ex): return True
+            if self.findPython(): return True
             else: return False
         else:
             if not self.executable: return False
@@ -369,7 +373,8 @@ class pip:
         import sys
         import subprocess
         import os
-        subprocess.run(f'"{self.executable}" {os.path.join(os.path.dirname(os.path.abspath(__file__)), scriptname)} {" ".join(argv)}', shell=True)
+        argv.pop(0)
+        subprocess.run(f'"{self.executable}" {os.path.join(os.path.dirname(os.path.abspath(__file__)), scriptname)}{" ".join(argv)}', shell=True)
         sys.exit(0)
     def importModule(self, module_name: str, install_module_if_not_found: bool=False):
         import importlib
@@ -688,6 +693,7 @@ class Main:
         "onPluginLoading",
         "onRobloxPublishing",
         "onRobloxCrash",
+        "onBloxstrapSDK",
         "onRobloxAudioDeviceStopRecording",
         "onRobloxAudioDeviceStartRecording",
         "onRobloxLauncherDestroyed",
@@ -704,7 +710,8 @@ class Main:
         "onCloudPlugins",
         "onPluginUnloading",
         "onRobloxSaved",
-        "onNewStudioLaunching"
+        "onNewStudioLaunching",
+        "onStudioInstallerLaunched"
     ]
     robloxInstanceEventInfo = {
         # 0 = Safe, 1 = Caution, 2 = Warning, 3 = Dangerous
@@ -780,10 +787,11 @@ class Main:
         "configureAvatarMaps": {"message": "Configure your avatar maps", "level": 1, "detection": "AvatarEditorMaps"},
         "generateModsManifest": {"message": "Get information about all your installed mods", "level": 0},
         "displayNotification": {"message": "Send notifications through the bootstrap", "level": 1},
-        "getRobloxAppSettings": {"message": "Get information about the Roblox client such as the logged in user, accessible polciies and settings.", "level": 2},
+        "getRobloxAppSettings": {"message": "Get information about the Roblox client such as the logged in user, accessible policies and settings.", "level": 2},
         "getRobloxLogFolderSize": {"message": "Get current size of the Roblox Logs folder", "level": 0},
         "grantFileEditing": {"message": "Grant permissions to read/edit other files", "level": 3},
         "allowAccessingPythonFiles": {"message": "Allow access to other Python files", "level": 2},
+        "sendDiscordWebhookMessage": {"message": "Send messages through your Discord Webhooks", "level": 1},
         "sendBloxstrapRPC": {"message": "Send requests through Bloxstrap RPC", "level": 2},
         "getLatestRobloxVersion": {"message": "Get the latest Roblox version", "level": 0},
         "getInstalledRobloxVersion": {"message": "Get the currently installed Roblox version", "level": 1},
@@ -799,7 +807,9 @@ class Main:
         "getOpenedRobloxPids": {"message": "Get all the currently opened Roblox PIDs", "level": 1},
         "changeRobloxWindowSizeAndPosition": {"message": "Change the Roblox Window Size and Position", "level": 2},
         "setRobloxWindowTitle": {"message": "Set the Roblox Window Title [Windows Only]", "level": 1},
+        "setRobloxWindowIcon": {"message": "Set the Roblox Window Icon [Windows Only]", "level": 1},
         "focusRobloxWindow": {"message": "Focus the Roblox Window to the top window", "level": 2},
+        "reprepareRoblox": {"message": "Receive the ability to restart preparation when Roblox is not opened.", "level": 2},
         "getConfiguration": {"message": "Get data in a separate configuration", "level": 0, "free": True},
         "setConfiguration": {"message": "Store data in a separate configuration", "level": 0, "free": True},
         "getDebugMode": {"message": "Get if the bootstrap is in Debug Mode", "level": 0, "free": True},
@@ -874,6 +884,13 @@ class Main:
     }
     
     # System Functions 
+    class WatchdogLineResponse():
+        code: int=None
+        def __init__(self, code: int): self.code = code
+        class EndRoblox(): code=0
+        class EndWatchdog(): code=1
+    class InvalidRobloxHandlerException(Exception):
+        def __init__(self): super().__init__("Please make sure you're providing the RobloxFastFlagsInstaller.Main class!")
     class RobloxInstance():
         events = []
         pid = ""
@@ -944,7 +961,7 @@ class Main:
                     self.main_log_file = log_file
                 self.startActivityTracking()
             else:
-                raise InvalidRobloxHandlerException()
+                raise Main.InvalidRobloxHandlerException()
         def awaitRobloxClosing(self):
             while True:
                 time.sleep(1)
@@ -1083,7 +1100,7 @@ class Main:
                                         submitToThread(eventName="onPlayTestStart", data=generated_data, isLine=False)
                                 elif "[FLog::StudioKeyEvents] open place" in line:
                                     def generate_arg():
-                                        pattern = r"identifier\s*=\s*(\d+)"
+                                        pattern = r"identifier\s*=\s*(\/[^\)\s]+|\d+)"
                                         match = re.search(pattern, line)
                                         if not match:
                                             pattern = r"(?:[a-zA-Z]:\\|\/)(?:[^\/\\\n]+[\/\\])*[^\/\\\n]+"
@@ -1104,7 +1121,7 @@ class Main:
                                     generated_data = generate_arg()
                                     if generated_data:
                                         submitToThread(eventName="onOpeningGame", data=generated_data, isLine=False)
-                                elif "[FLog::StudioKeyEvents] close IDE doc" in line:
+                                elif "[FLog::RobloxIDEDoc] RobloxIDEDoc::doClose" in line:
                                     submitToThread(eventName="onClosingGame", data=line, isLine=True)
                                 elif "[FLog::StudioKeyEvents] starting Qt main event loop" in line:
                                     submitToThread(eventName="onRobloxAppStart", data=line, isLine=True)
@@ -1126,6 +1143,8 @@ class Main:
                                     generated_data = generate_arg()
                                     if generated_data:
                                         submitToThread(eventName="onCloudPlugins", data=generated_data, isLine=False)
+                                elif "[FLog::Output] UpdateUtils::requestInstallerUpdate - Launching Installer for update:" in line:
+                                    submitToThread(eventName="onStudioInstallerLaunched", data=line, isLine=True)
                                 elif "[FLog::Network] UDMUX Address = " in line:
                                     def generate_arg():
                                         pattern = re.compile(
@@ -1293,6 +1312,20 @@ class Main:
                                     generated_data = generate_arg()
                                     if generated_data:
                                         submitToThread(eventName="onPluginUnloading", data=generated_data, isLine=False)
+                                elif "[FLog::Output] [BloxstrapRPC]" in line:
+                                    def generate_arg():
+                                        json_start_index = line.find('[BloxstrapRPC]') + len('[BloxstrapRPC] ')
+                                        if json_start_index == -1:
+                                            return None
+                                        json_str = line[json_start_index:].strip()
+                                        try:
+                                            return json.loads(json_str)
+                                        except json.JSONDecodeError as e:
+                                            if self.debug_mode == True: printDebugMessage(str(e))
+                                            return None
+                                    generated_data = generate_arg()
+                                    if generated_data:
+                                        submitToThread(eventName="onBloxstrapSDK", data=generated_data, isLine=False)
                                 elif "[FLog::StudioTimingLog] ======== Studio Publish Place Times =======" in line:
                                     submitToThread(eventName="onRobloxPublishing", data=line, isLine=True)
                                 elif "[FLog::StudioTimingLog] ======== Studio Save To Cloud Times =======" in line:
@@ -1307,7 +1340,7 @@ class Main:
                                     if self.windows_roblox_starter_launched_roblox == False:
                                         submitToThread(eventName="onRobloxExit", data=line)
                                         submitToThread(eventName="onRobloxSharedLogLaunch", data=line)
-                                        return __ReadingLineResponse__.EndWatchdog()
+                                        return self.main_handler.WatchdogLineResponse.EndWatchdog()
                                     else:
                                         submitToThread(eventName="onRobloxLauncherDestroyed", data=line)
                                 elif "[FLog::Network] Client:Disconnect" in line:
@@ -1361,7 +1394,7 @@ class Main:
                                     if self.windows_roblox_starter_launched_roblox == False:
                                         submitToThread(eventName="onRobloxExit", data=line)
                                         submitToThread(eventName="onRobloxSharedLogLaunch", data=line)
-                                        return __ReadingLineResponse__.EndWatchdog()
+                                        return self.main_handler.WatchdogLineResponse.EndWatchdog()
                                     else:
                                         submitToThread(eventName="onRobloxLauncherDestroyed", data=line)
                                 elif "[FLog::UpdateController] Update check thread: updateRequired FALSE" in line:
@@ -2147,17 +2180,17 @@ class Main:
         elif self.__main_os__ == "Darwin":
             if pid == "" or pid == None:
                 if installer == False:
-                    if subprocess.run(f"pgrep -f {os.path.join(macOS_dir, macOS_beforeClientServices, 'RobloxPlayer')} > /dev/null 2>&1", shell=True).returncode == 0:
+                    if subprocess.run(["pgrep", "-f", f"{os.path.join(macOS_dir, macOS_beforeClientServices, 'RobloxPlayer')}"], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL).returncode == 0:
                         return True
                     else:
                         return False
                 else:
-                    if subprocess.run(f"pgrep -f {os.path.join(macOS_dir, macOS_beforeClientServices, 'RobloxPlayerInstaller')} > /dev/null 2>&1", shell=True).returncode == 0:
+                    if subprocess.run(["pgrep", "-f", f"{os.path.join(macOS_dir, macOS_beforeClientServices, 'RobloxPlayerInstaller')}"], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL).returncode == 0:
                         return True
                     else:
                         return False
             else:
-                if subprocess.run(f"ps -p {pid} > /dev/null 2>&1", shell=True).returncode == 0:
+                if subprocess.run(["ps", "-p", f"{pid}"], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL).returncode == 0:
                     return True
                 else:
                     return False
@@ -2189,17 +2222,17 @@ class Main:
         elif self.__main_os__ == "Darwin":
             if pid == "" or pid == None:
                 if installer == False:
-                    if subprocess.run(f"pgrep -f {os.path.join(macOS_studioDir, macOS_beforeClientServices, 'RobloxStudio')} > /dev/null 2>&1", shell=True).returncode == 0:
+                    if subprocess.run(["pgrep", "-f", f"{os.path.join(macOS_studioDir, macOS_beforeClientServices, 'RobloxStudio')}"], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL).returncode == 0:
                         return True
                     else:
                         return False
                 else:
-                    if subprocess.run(f"pgrep -f {os.path.join(macOS_studioDir, macOS_beforeClientServices, 'RobloxStudioInstaller')} > /dev/null 2>&1", shell=True).returncode == 0:
+                    if subprocess.run(["pgrep", "-f", f"{os.path.join(macOS_studioDir, macOS_beforeClientServices, 'RobloxStudioInstaller')}"], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL).returncode == 0:
                         return True
                     else:
                         return False
             else:
-                if subprocess.run(f"ps -p {pid} > /dev/null 2>&1", shell=True).returncode == 0:
+                if subprocess.run(["ps", "-p", f"{pid}"], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL).returncode == 0:
                     return True
                 else:
                     return False
@@ -2234,7 +2267,7 @@ class Main:
                     jso = res.json()
                     if jso.get("clientVersionUpload") and jso.get("version"):
                         if debug == True: printDebugMessage(f"Called ({res.url}): {res.text}")
-                        return {"success": True, "client_version": jso.get("clientVersionUpload"), "short_version": jso.get("version"), "attempted_channel": channel or "LIVE"}
+                        return {"success": True, "client_version": jso.get("clientVersionUpload"), "hash": jso.get("version"), "attempted_channel": channel or "LIVE"}
                     else:
                         if debug == True: printDebugMessage(f"Something went wrong: {res.text}")
                         return {"success": False, "message": "Something went wrong."}
@@ -2255,7 +2288,7 @@ class Main:
                     jso = res.json()
                     if jso.get("clientVersionUpload") and jso.get("version"):
                         if debug == True: printDebugMessage(f"Called ({res.url}): {res.text}")
-                        return {"success": True, "client_version": jso.get("clientVersionUpload"), "short_version": jso.get("version"), "attempted_channel": channel or "LIVE"}
+                        return {"success": True, "client_version": jso.get("clientVersionUpload"), "hash": jso.get("version"), "attempted_channel": channel or "LIVE"}
                     else:
                         if debug == True: printDebugMessage(f"Something went wrong: {res.text}")
                         return {"success": False, "message": "Something went wrong."}
@@ -2353,7 +2386,7 @@ class Main:
                     jso = res.json()
                     if jso.get("clientVersionUpload") and jso.get("version"):
                         if debug == True: printDebugMessage(f"Called ({res.url}): {res.text}")
-                        return {"success": True, "client_version": jso.get("clientVersionUpload"), "short_version": jso.get("version"), "attempted_channel": channel or "LIVE"}
+                        return {"success": True, "client_version": jso.get("clientVersionUpload"), "hash": jso.get("version"), "attempted_channel": channel or "LIVE"}
                     else:
                         if debug == True: printDebugMessage(f"Something went wrong: {res.text}")
                         return {"success": False, "message": "Something went wrong."}
@@ -2375,7 +2408,7 @@ class Main:
                     jso = res.json()
                     if jso.get("clientVersionUpload") and jso.get("version"):
                         if debug == True: printDebugMessage(f"Called ({res.url}): {res.text}")
-                        return {"success": True, "client_version": jso.get("clientVersionUpload"), "short_version": jso.get("version"), "attempted_channel": channel or "LIVE"}
+                        return {"success": True, "client_version": jso.get("clientVersionUpload"), "hash": jso.get("version"), "attempted_channel": channel or "LIVE"}
                     else:
                         if debug == True: printDebugMessage(f"Something went wrong: {res.text}")
                         return {"success": False, "message": "Something went wrong."}
@@ -2907,6 +2940,12 @@ class Main:
         else:
             printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
             return False
+    def parseRobloxURL(self, url: str=""):
+        p = url.split('+')[1:]
+        data = {}
+        for s in p:
+            if ':' in s: key, value = s.split(':', 1); data[key] = value
+        return data
     def openRoblox(self, forceQuit=False, makeDupe=False, startData="", debug=False, attachInstance=False, allowRobloxOtherLogDebug=False, mainLogFile="") -> "RobloxInstance | None":
         if self.getIfRobloxIsOpen():
             if forceQuit == True:
@@ -2923,7 +2962,7 @@ class Main:
                         if attachInstance == True:
                             cur_open_pid = self.getLatestOpenedRobloxPid()
                             start_time = datetime.datetime.now(tz=datetime.UTC).timestamp()
-                            test_instance = self.RobloxInstance(self, pid=cur_open_pid, debug_mode=debug, allow_other_logs=allowRobloxOtherLogDebug, await_20_second_log_creation=False)
+                            test_instance = self.RobloxInstance(self, pid=cur_open_pid, debug_mode=False, allow_other_logs=allowRobloxOtherLogDebug, await_20_second_log_creation=False)
                             while True:
                                 if test_instance.ended_process == True:
                                     break
@@ -3003,7 +3042,7 @@ class Main:
                             if self.getIfRobloxIsOpen() == True:
                                 cur_open_pid = self.getLatestOpenedRobloxPid()
                                 start_time = datetime.datetime.now(tz=datetime.UTC).timestamp()
-                                test_instance = self.RobloxInstance(self, pid=cur_open_pid, debug_mode=debug, allow_other_logs=allowRobloxOtherLogDebug, await_20_second_log_creation=False)
+                                test_instance = self.RobloxInstance(self, pid=cur_open_pid, debug_mode=False, allow_other_logs=allowRobloxOtherLogDebug, await_20_second_log_creation=False)
                                 while True:
                                     if test_instance.ended_process == True:
                                         break
@@ -3027,7 +3066,7 @@ class Main:
                             if self.getIfRobloxIsOpen() == True:
                                 cur_open_pid = self.getLatestOpenedRobloxPid()
                                 start_time = datetime.datetime.now(tz=datetime.UTC).timestamp()
-                                test_instance = self.RobloxInstance(self, pid=cur_open_pid, debug_mode=debug, allow_other_logs=allowRobloxOtherLogDebug, await_20_second_log_creation=False)
+                                test_instance = self.RobloxInstance(self, pid=cur_open_pid, debug_mode=False, allow_other_logs=allowRobloxOtherLogDebug, await_20_second_log_creation=False)
                                 while True:
                                     if test_instance.ended_process == True:
                                         break
@@ -3098,7 +3137,7 @@ class Main:
                             if self.getIfRobloxStudioIsOpen() == True:
                                 cur_open_pid = self.getLatestOpenedRobloxStudioPid()
                                 start_time = datetime.datetime.now(tz=datetime.UTC).timestamp()
-                                test_instance = self.RobloxInstance(self, pid=cur_open_pid, debug_mode=debug, allow_other_logs=allowRobloxOtherLogDebug, await_20_second_log_creation=False, studio=True)
+                                test_instance = self.RobloxInstance(self, pid=cur_open_pid, debug_mode=False, allow_other_logs=allowRobloxOtherLogDebug, await_20_second_log_creation=False, studio=True)
                                 while True:
                                     if test_instance.ended_process == True:
                                         break
@@ -3122,7 +3161,7 @@ class Main:
                             if self.getIfRobloxStudioIsOpen() == True:
                                 cur_open_pid = self.getLatestOpenedRobloxStudioPid()
                                 start_time = datetime.datetime.now(tz=datetime.UTC).timestamp()
-                                test_instance = self.RobloxInstance(self, pid=cur_open_pid, debug_mode=debug, allow_other_logs=allowRobloxOtherLogDebug, await_20_second_log_creation=False, studio=True)
+                                test_instance = self.RobloxInstance(self, pid=cur_open_pid, debug_mode=False, allow_other_logs=allowRobloxOtherLogDebug, await_20_second_log_creation=False, studio=True)
                                 while True:
                                     if test_instance.ended_process == True:
                                         break
@@ -3999,7 +4038,7 @@ class Main:
                                             printErrorMessage(f"Unable to install Roblox due to a verification error.")
                                             return
                                     with open(os.path.join(installPath, "RobloxVersion.json"), "w", encoding="utf-8") as f:
-                                        json.dump({"ClientVersion": cur_vers.get("client_version", "version-000000000000"), "AppVersion": cur_vers.get("short_version", "0.000.0.0000000")}, f, indent=4)
+                                        json.dump({"ClientVersion": cur_vers.get("client_version", "version-000000000000"), "AppVersion": cur_vers.get("hash", "0.000.0.0000000")}, f, indent=4)
                                     with open(os.path.join(installPath, "AppSettings.xml"), "w", encoding="utf-8") as f:
                                         f.write('<?xml version="1.0" encoding="UTF-8"?><Settings><ContentFolder>content</ContentFolder><BaseUrl>http://www.roblox.com</BaseUrl></Settings>')
                                     if submitStatus: submitStatus.submit(f"[BUNDLE] Successfully installed Roblox Bundle!", 100)
@@ -4036,7 +4075,7 @@ class Main:
                                         shutil.rmtree(os.path.join(installPath, "RobloxPlayer"), ignore_errors=True)
                                         os.remove(os.path.join(installPath, "RobloxPlayer.zip"))
                                         with open(os.path.join(appPath, "Contents", "MacOS", "RobloxVersion.json"), "w", encoding="utf-8") as f:
-                                            json.dump({"ClientVersion": cur_vers.get("client_version", "version-000000000000"), "AppVersion": cur_vers.get("short_version", "0.000.0.0000000")}, f, indent=4)
+                                            json.dump({"ClientVersion": cur_vers.get("client_version", "version-000000000000"), "AppVersion": cur_vers.get("hash", "0.000.0.0000000")}, f, indent=4)
                                         if submitStatus: submitStatus.submit(f"[BUNDLE] Successfully installed Roblox Bundle!", 100)
                                         if debug == True: printDebugMessage(f"Successfully installed Roblox to: {installPath} [Client: {cur_vers.get('client_version')}]")
                                     else:
@@ -4162,7 +4201,7 @@ class Main:
                                             printErrorMessage(f"Unable to install Roblox Studio due to a verification error.")
                                             return
                                     with open(os.path.join(installPath, "RobloxVersion.json"), "w", encoding="utf-8") as f:
-                                        json.dump({"ClientVersion": cur_vers.get("client_version", "version-000000000000"), "AppVersion": cur_vers.get("short_version", "0.000.0.0000000")}, f, indent=4)
+                                        json.dump({"ClientVersion": cur_vers.get("client_version", "version-000000000000"), "AppVersion": cur_vers.get("hash", "0.000.0.0000000")}, f, indent=4)
                                     with open(os.path.join(installPath, "AppSettings.xml"), "w", encoding="utf-8") as f:
                                         f.write('<?xml version="1.0" encoding="UTF-8"?><Settings><ContentFolder>content</ContentFolder><BaseUrl>http://www.roblox.com</BaseUrl></Settings>')
                                     if submitStatus: submitStatus.submit(f"[BUNDLE] Successfully installed Roblox Studio Bundle!", 100)
@@ -4199,7 +4238,7 @@ class Main:
                                         shutil.rmtree(os.path.join(installPath, "RobloxStudioApp"), ignore_errors=True)
                                         os.remove(os.path.join(installPath, "RobloxStudioApp.zip"))
                                         with open(os.path.join(appPath, "Contents", "MacOS", "RobloxVersion.json"), "w", encoding="utf-8") as f:
-                                            json.dump({"ClientVersion": cur_vers.get("client_version", "version-000000000000"), "AppVersion": cur_vers.get("short_version", "0.000.0.0000000")}, f, indent=4)
+                                            json.dump({"ClientVersion": cur_vers.get("client_version", "version-000000000000"), "AppVersion": cur_vers.get("hash", "0.000.0.0000000")}, f, indent=4)
                                         if submitStatus: submitStatus.submit(f"[BUNDLE] Successfully installed Roblox Studio Bundle!", 100)
                                         if debug == True: printDebugMessage(f"Successfully installed Roblox Studio to: {installPath} [Client: {cur_vers.get('client_version')}]")
                                     else:
@@ -4507,6 +4546,11 @@ if __name__ == "__main__":
     user_id = getUserId()
     generated_json = {}
     is_studio = getIfStudio()
+
+    # Important Information
+    printWarnMessage("--- Important Information ---")
+    printMainMessage("May 2nd, 2025 - v2.1.0")
+    printMainMessage("As of some updates from Roblox, some FFlags may not work in the future. Other functions such as Roblox Opening and Activity Tracking is still available from this module.")
 
     # Setup Information
     printWarnMessage("--- Setup Information ---")
