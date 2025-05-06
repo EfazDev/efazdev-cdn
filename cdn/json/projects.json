@@ -20,6 +20,16 @@
         "description": "An API that can help with using Roblox or selected platform APIs!"
     },
     {
+        "name": "OrangeBlox",
+        "url": "https://www.efaz.dev/orangeblox",
+        "download_url": "https://cdn.efaz.dev/cdn/download?project=orangeblox",
+        "discontinued": false,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
+        "dateDiscontinued": "None",
+        "description": "A program heavily inspired by Bloxstrap but using Python!"
+    },
+    {
         "name": "Efaz's Builder Font Remover",
         "url": "https://www.efaz.dev/remove-builder-font",
         "download_url": "https://chromewebstore.google.com/detail/efazs-builder-font-remove/hapbigglmmihgdmpficddjdmfgikalcp",
@@ -38,16 +48,6 @@
         "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
         "dateDiscontinued": "None",
         "description": "Have a Roblox Verified Badge next to your name!"
-    },
-    {
-        "name": "Efaz's Roblox Bootstrap",
-        "url": "https://www.efaz.dev/roblox-bootstrap",
-        "download_url": "https://cdn.efaz.dev/cdn/download?project=roblox-bootstrap",
-        "discontinued": false,
-        "showInProjectsPage": true,
-        "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
-        "dateDiscontinued": "None",
-        "description": "A program heavily inspired by Bloxstrap but using Python!"
     },
     {
         "name": "Efaz's Cookie Destroyer",

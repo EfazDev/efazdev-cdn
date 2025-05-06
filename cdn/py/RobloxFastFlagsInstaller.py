@@ -754,6 +754,7 @@ class Main:
         "onGameDisconnected": {"message": "Allow detecting when you disconnect from a game", "level": 0, "robloxEvent": True},
         
         "onPlayTestStart": {"message": "Allow detecting when you started a playtest", "level": 0, "robloxEvent": True},
+        "onStudioLoginSuccess": {"message": "Allow detecting when you have logged into studio successfully", "level": 1, "robloxEvent": True},
         "onOpeningGame": {"message": "Allow detecting when you loaded a place/document", "level": 1, "robloxEvent": True},
         "onExpiredFlag": {"message": "Allow detecting when a flag in your studio data has expired", "level": 1, "robloxEvent": True},
         "onApplyingFeature": {"message": "Allow detecting when a feature in your studio data is loading", "level": 1, "robloxEvent": True},
@@ -766,7 +767,7 @@ class Main:
         "onTeamCreateConnect": {"message": "Allow detecting when you connect to a team connect server.", "level": 1, "robloxEvent": True},
         "onTeamCreateDisconnect": {"message": "Allow detecting when you disconnect to a team connect server.", "level": 1, "robloxEvent": True},
         "onPluginUnloading": {"message": "Allow detecting when a plugin is unloading", "level": 1, "robloxEvent": True},
-        "onGameSaved": {"message": "Allow detecting when Roblox has saved to Roblox", "level": 1, "robloxEvent": True},
+        "onRobloxSaved": {"message": "Allow detecting when Roblox has saved to Roblox", "level": 1, "robloxEvent": True},
         "onNewStudioLaunching": {"message": "Allow detecting when a new Roblox Studio window is created", "level": 1, "robloxEvent": True},
 
         # OrangeBlox Permissions
