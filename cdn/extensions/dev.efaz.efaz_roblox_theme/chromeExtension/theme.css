@@ -23,17 +23,17 @@
     */
 
 #header {
-    background-color: rgb(255, 75, 0);
-    border-color: rgb(228, 67, 0);
+    /* background-color: rgb(255, 75, 0); */
+    /* border-color: rgb(228, 67, 0); */
 }
 
 .container-footer {
-    background-color: rgb(255, 75, 0);
-    border-color: rgb(228, 67, 0);
+    /* background-color: rgb(255, 75, 0); */
+    /* border-color: rgb(228, 67, 0); */
 }
 
 #navigation {
-    background-color: rgb(255, 75, 0);
+    /* background-color: rgb(255, 75, 0); */
 }
 
 body * {
@@ -66,7 +66,7 @@ body * {
 */
 
 .dark-theme {
-    background: rgb(255, 75, 0);
+    /* background: rgb(255, 75, 0); */
     background-image: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)), url("https://tr.rbxcdn.com/180DAY-0969bd6250d24a5d50b27ffd5888a009/420/420/Image/Png/noFilter") !important;
     background-repeat: repeat-y !important;
     background-blend-mode: normal !important;
