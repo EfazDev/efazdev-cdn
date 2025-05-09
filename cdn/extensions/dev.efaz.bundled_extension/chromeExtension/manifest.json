@@ -1,7 +1,7 @@
 {
     "name": "Efaz's Roblox Extension",
     "description": "An extension that holds all of Efaz's mini Roblox extensions in one!",
-    "version": "1.1.6",
+    "version": "1.1.7",
     "manifest_version": 3,
     "author": "EfazDev",
     "homepage_url": "https://www.efaz.dev/roblox-extension",
@@ -24,6 +24,7 @@
             "all_frames": true,
             "js": [
                 "dev.efaz.communities_renamer/inject.js",
+                "dev.efaz.roblox_logo_changer/inject.js",
                 "dev.efaz.charts_renamer/inject.js",
                 "dev.efaz.remove_builder_font/inject.js",
                 "dev.efaz.verified_badge_add_on/fake_verified_loader.js",
@@ -43,6 +44,7 @@
             ],
             "resources": [
                 "dev.efaz.communities_renamer/settings.json",
+                "dev.efaz.roblox_logo_changer/settings.json",
                 "dev.efaz.charts_renamer/settings.json",
                 "dev.efaz.remove_builder_font/change_font.css",
                 "dev.efaz.remove_builder_font/change_font2.css",

@@ -47,6 +47,6 @@ for i in os.listdir(extensions_folder):
         )
         extensions_added.append(i)
 printSuccessMessage("SUCCESS!")
-printSuccessMessage("Successfully recreated bundle from existing extensions made in folder!")
+printSuccessMessage("Successfully recreated ZIP files from existing extensions made!")
 printSuccessMessage(f"Extensions Path: {extensions_folder}")
-printSuccessMessage(f"Chrome Extensions: {json.dumps(extensions_added)}")
+printSuccessMessage(f"Chrome Extensions: {', '.join(extensions_added)}")

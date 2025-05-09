@@ -55,10 +55,17 @@ async function getImageFromInput(input) {
                 img.onload = function () {
                     const canvas = document.createElement("canvas");
                     const ctx = canvas.getContext("2d");
-                    canvas.width = 300;
-                    canvas.height = 300;
+                    const originalWidth = img.width; const originalHeight = img.height;
+                    const aspectRatio = originalWidth / originalHeight;
+
+                    let targetWidth = system_settings["customExportPhotoRes"] || 300;
+                    let targetHeight = (system_settings["customExportPhotoRes"] || 300) / aspectRatio;
+                    if (targetHeight > (system_settings["customExportPhotoRes"] || 300)) { targetHeight = (system_settings["customExportPhotoRes"] || 300); targetWidth = (system_settings["customExportPhotoRes"] || 300) * aspectRatio;}
+                    canvas.width = targetWidth;
+                    canvas.height = targetHeight;
+                    
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    resolve(canvas.toDataURL("image/jpeg", 0.8));
+                    if (system_settings["customExportFileType"]) { resolve(canvas.toDataURL(system_settings["customExportFileType"], 0.8)); } else { resolve(canvas.toDataURL("image/jpeg", 0.8)); }
                 };
                 img.onerror = reject;
             };
@@ -105,6 +112,7 @@ async function saveData() {
 }
 
 function compareVersions(version1, version2) {
+    if (!version1 || !version2) { return 0 };
     const parts1 = version1.split('.').map(Number);
     const parts2 = version2.split('.').map(Number);
 

@@ -185,8 +185,7 @@ if not (os.name == "nt"):
 
 # Done!
 printSuccessMessage("SUCCESS!")
-printSuccessMessage(
-    "Successfully recreated bundle from existing extensions made in folder!"
-)
+printSuccessMessage("Successfully recreated bundle from existing extensions made in folder!")
 printSuccessMessage(f"Exported from Path: {extensions_folder}")
 printSuccessMessage(f"Chrome Extension Bundle: {extension_path}")
+printSuccessMessage(f"Extensions: {', '.join(extensions_added)}")

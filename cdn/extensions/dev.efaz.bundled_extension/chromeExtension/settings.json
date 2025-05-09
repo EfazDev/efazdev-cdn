@@ -3,6 +3,7 @@
     "name": "dev.efaz.bundled_extension",
     "extensions": [
         "dev.efaz.communities_renamer",
+        "dev.efaz.roblox_logo_changer",
         "dev.efaz.charts_renamer",
         "dev.efaz.remove_builder_font",
         "dev.efaz.verified_badge_add_on",

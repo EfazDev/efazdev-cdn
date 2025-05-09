@@ -46,6 +46,7 @@ function loopThroughArray(array, callback) {
 }
 
 function compareVersions(version1, version2) {
+    if (!version1 || !version2) { return 0 };
     const parts1 = version1.split('.').map(Number);
     const parts2 = version2.split('.').map(Number);
 

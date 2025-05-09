@@ -68,7 +68,7 @@ async function getImageFromInput(input) {
                     if (targetHeight > (system_settings["customExportPhotoRes"] || 300)) { targetHeight = (system_settings["customExportPhotoRes"] || 300); targetWidth = (system_settings["customExportPhotoRes"] || 300) * aspectRatio;}
                     canvas.width = targetWidth;
                     canvas.height = targetHeight;
-                    
+
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                     if (system_settings["customExportFileType"]) { resolve(canvas.toDataURL(system_settings["customExportFileType"], 0.8)); } else { resolve(canvas.toDataURL("image/jpeg", 0.8)); }
                 };
