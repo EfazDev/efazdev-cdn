@@ -86,6 +86,10 @@ body * {
     background-color: #23252700 !important;
 }
 
+.dark-theme #catalog-react-container .sticky .catalog-header {
+    background-color: #23252700 !important;
+}
+
 .dark-theme .catalog-container .sticky .topic-container {
     background-color: #2325276d !important;
     border-radius: 10px !important;
