@@ -87,7 +87,7 @@ body * {
 }
 
 .dark-theme #catalog-react-container .sticky .catalog-header {
-    background-color: #23252750 !important;
+    background-color: #23252700 !important;
 }
 
 .dark-theme .catalog-container .sticky .topic-container {
@@ -106,7 +106,7 @@ body * {
 }
 
 .dark-theme .content {
-    background-color: #191b1d00 !important;
+    background-color: #191b1d75 !important;
 }
 
 .dark-theme .container-footer {
