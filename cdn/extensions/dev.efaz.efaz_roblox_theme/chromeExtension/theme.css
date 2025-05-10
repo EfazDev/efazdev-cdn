@@ -23,16 +23,19 @@
     */
 
 #header {
+    content:none;
     /* background-color: rgb(255, 75, 0); */
     /* border-color: rgb(228, 67, 0); */
 }
 
 .container-footer {
+    content:none;
     /* background-color: rgb(255, 75, 0); */
     /* border-color: rgb(228, 67, 0); */
 }
 
 #navigation {
+    content:none;
     /* background-color: rgb(255, 75, 0); */
 }
 
@@ -112,6 +115,10 @@ body * {
 .dark-theme .container-footer {
     background-color: #23252722 !important;
     border-radius: 10px !important;
+}
+
+.filter-select .selected .btn-primary-md .btn-min-width {
+    background-color: #00ff0050 !important;
 }
 
 button.btn-primary-xs span {
