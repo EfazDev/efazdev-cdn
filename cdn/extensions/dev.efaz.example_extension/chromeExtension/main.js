@@ -1,3 +1,14 @@
+/* 
+
+Efaz's Example Extension
+By: EfazDev
+Website: https://www.efaz.dev/
+
+inject.js:
+    - Content script that does whatever the extension is tasked to do.
+
+*/
+
 function getChromeURL(resource) {
     try {
         // This is for Efaz's Roblox Extension support

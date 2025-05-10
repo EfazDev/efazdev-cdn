@@ -35,6 +35,18 @@
             "use_dynamic_url": true
         }
     ],
+    "content_scripts": [
+        {
+            "all_frames": true,
+            "js": [
+                "inject.js"
+            ],
+            "matches": [
+                "*://*.roblox.com/*"
+            ],
+            "run_at": "document_start"
+        }
+    ],
     "content_security_policy": {
         "sandbox": "sandbox allow-scripts; script-src * 'wasm-unsafe-eval';"
     },
