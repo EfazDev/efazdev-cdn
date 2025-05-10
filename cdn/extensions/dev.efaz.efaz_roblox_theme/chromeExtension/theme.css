@@ -117,7 +117,7 @@ body * {
     border-radius: 10px !important;
 }
 
-.filter-select .selected .btn-primary-md .btn-min-width {
+button.filter-select.selected.btn-primary-md.btn-min-width {
     background-color: #00ff0050 !important;
 }
 
