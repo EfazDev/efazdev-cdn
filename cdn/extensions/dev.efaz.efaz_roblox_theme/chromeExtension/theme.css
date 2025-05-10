@@ -121,6 +121,10 @@ button.filter-select.selected.btn-primary-md.btn-min-width {
     background-color: #00ff0050 !important;
 }
 
+button.filter-select.btn-primary-md.btn-min-width {
+    background-color: rgba(0, 255, 0, 0.5) !important;
+}
+
 button.btn-primary-xs span {
     color: #232527 !important;
 }
