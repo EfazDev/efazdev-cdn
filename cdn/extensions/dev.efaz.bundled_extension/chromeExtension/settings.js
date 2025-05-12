@@ -264,7 +264,7 @@ div {
                             console.log("This user is currently at the latest version!")
                         } else if (compared == -1) {
                             /* User has an update available */
-                            document.getElementById("extens_vers").innerHTML = `${document.getElementById("extens_vers").innerHTML} | <button id="openChromeExtensionSettings">Update Available to v${j[system_settings["id"]]}!</button>`
+                            document.getElementById("extens_vers").innerHTML = `${document.getElementById("extens_vers").innerHTML} | <button id="openChromeExtensionSettings">Update Available to v${j[system_settings["name"]]}!</button>`
                             document.getElementById("openChromeExtensionSettings").addEventListener("click", () => {
                                 if (system_settings["chromeWebstoreLinkEnabled"] == true && !(chrome.runtime.id == system_settings["uploadedChromeExtensionID"])) {
                                     chrome.tabs.create({ url: `https://chromewebstore.google.com/detail/extension/${system_settings["uploadedChromeExtensionID"]}` });
