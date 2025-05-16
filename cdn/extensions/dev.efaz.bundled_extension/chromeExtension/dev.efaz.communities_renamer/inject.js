@@ -230,6 +230,17 @@ inject.js:
                                 }
                             }
 
+                            var amount_text_summary = document.getElementsByClassName("amount")
+                            for (let i = 0; i < amount_text_summary.length; i++) {
+                                var header = amount_text_summary[i]
+                                if (!(header.innerHTML.includes(newNameWithoutEndingS)) && header.innerHTML.includes("Community")) {
+                                    if (header.href && settings["replaceURLwithGroupsURL"] == true) {
+                                        header.href = header.href.replace("communities", "groups")
+                                    }
+                                    header.innerHTML = header.innerHTML.replace("Community", newNameWithoutEndingS)
+                                }
+                            }
+
                             var selected_labels = document.getElementsByClassName("rbx-selection-label")
                             for (let i = 0; i < selected_labels.length; i++) {
                                 var header = selected_labels[i]
@@ -302,7 +313,9 @@ inject.js:
 
                             if (settings["replaceURLwithGroupsURL"] == true) {
                                 if (window.location.pathname.includes("/communities")) {
-                                    window.history.pushState({ id: "100" }, newName, window.location.href.replace("/communities", "/groups"));
+                                    if (!(window.location.href.includes("/configure"))) {
+                                        window.history.pushState({ id: "100" }, newName, window.location.href.replace("/communities", "/groups"));
+                                    }
                                 }
                             }
 
