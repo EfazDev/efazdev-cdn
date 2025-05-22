@@ -97,7 +97,11 @@ inject.js:
 
     try {
         getSettings(storage_key, function (items) {
-            var defaultData = { "enabled": true, "loopSeconds": "100", "projectedImage": null }
+            var defaultData = { 
+                "enabled": true, 
+                "loopSeconds": "100", 
+                "projectedImage": null 
+            }
             if (!(items[storage_key])) {
                 items[storage_key] = defaultData
             }

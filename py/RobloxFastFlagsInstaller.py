@@ -1,7 +1,7 @@
 # 
 # Roblox Fast Flags Installer
 # Made by Efaz from efaz.dev
-# v2.1.0
+# v2.1.1
 # 
 # Fulfill your Roblox needs and configuration through Python!
 # 
@@ -688,6 +688,7 @@ class Main:
         "onRobloxVoiceChatLeft",
         "onRobloxAudioDeviceStopRecording",
         "onRobloxAudioDeviceStartRecording",
+        "onWatchdogReconnection"
     ]
     robloxStudioInstanceEventNames = [
         "onRobloxExit", 
@@ -723,7 +724,8 @@ class Main:
         "onPluginUnloading",
         "onRobloxSaved",
         "onNewStudioLaunching",
-        "onStudioInstallerLaunched"
+        "onStudioInstallerLaunched",
+        "onWatchdogReconnection"
     ]
     robloxInstanceEventInfo = {
         # 0 = Safe, 1 = Caution, 2 = Warning, 3 = Dangerous
@@ -764,6 +766,7 @@ class Main:
         "onGameJoined": {"message": "Allow detecting when Roblox loads a game fully", "level": 0, "robloxEvent": True}, 
         "onGameLeaving": {"message": "Allow detecting when you leave a game", "level": 0, "robloxEvent": True}, 
         "onGameDisconnected": {"message": "Allow detecting when you disconnect from a game", "level": 0, "robloxEvent": True},
+        "onWatchdogReconnection": {"message": "Allow detecting when watchdog was reconnected", "level": 0, "robloxEvent": True},
         
         "onPlayTestStart": {"message": "Allow detecting when you started a playtest", "level": 0, "robloxEvent": True},
         "onStudioLoginSuccess": {"message": "Allow detecting when you have logged into studio successfully", "level": 1, "robloxEvent": True},
@@ -899,70 +902,74 @@ class Main:
         "extracontent-models.zip": "/ExtraContent/models",
         "extracontent-textures.zip": "/ExtraContent/textures"
     }
-    
+    disconnect_code_list = {
+        "103": "The Roblox experience you are trying to join is currently not available.",
+        "256": "Developer has shut down all game servers or game server has shut down for other reasons, please reconnect.",
+        "260": "There was a problem receiving data, please reconnect.",
+        "261": "Error while receiving data, please reconnect.",
+        "262": "There was a problem sending data, please reconnect.",
+        "264": "Same account launched experience from different device. Leave the experience from the other device and try again.",
+        "266": "Your connection timed out. Check your internet connection and try again.",
+        "267": "You were kicked from this experience.",
+        "268": "You have been kicked due to unexpected client behavior.",
+        "271": "You have been kicked by server, please reconnect.",
+        "272": "Lost connection due to an error.",
+        "273": "Same account launched experience from different device. Reconnect if you prefer to use this device.",
+        "274": "The experience's developer has temporarily shut down the experience server. Please try again.",
+        "275": "Roblox has shut down the server for maintenance. Please try again.",
+        "277": "Please check your internet connection and try again.",
+        "278": "You were disconnected for being idle 20 minutes.",
+        "279": "Failed to connect to the Game. (ID = 17: Connection attempt failed.)",
+        "280": "Your version of Roblox may be out of date. Please update Roblox and try again.",
+        "282": "Disconnected from game, please reconnect.",
+        "284": "A fatal error occurred while running this game.",
+        "285": "Client/User issued disconnect.",
+        "286": "Your device does not have enough memory to run this experience. Exit back to the app.",
+        "291": "Player has been removed from the DataModel.",
+        "292": "Your device's memory is low. Leaving now will preserve your state and prevent Roblox from crashing.",
+        "517": "This game is currently unavailable. Please try again later.",
+        "522": "The user you attempted to join has left the game.",
+        "523": "The status of the experience has changed and you no longer have access. Please try again later.",
+        "524": "You do not have permission to join this experience.",
+        "525": "The server is currently busy. Please try again.",
+        "528": "Your party is too large to join this experience. Try joining a different experience.",
+        "529": "A Http error has occurred. Please close the client and try again.",
+        "533": "Your privacy settings prevent you from joining this server.",
+        "600": "You were banned from this experience by the creator.",
+        "610": "Unable to join game instance.",
+        "770": "Game's root place is not active."
+    }
+
     # System Functions 
     class WatchdogLineResponse():
         code: int=None
         def __init__(self, code: int): self.code = code
         class EndRoblox(): code=0
         class EndWatchdog(): code=1
+        class ReconnectWatchdog(): code=2
     class InvalidRobloxHandlerException(Exception):
         def __init__(self): super().__init__("Please make sure you're providing the RobloxFastFlagsInstaller.Main class!")
     class RobloxInstance():
-        events = []
+        __events__ = []
         pid = ""
         watchdog_started = False
         ended_process = False
         main_handler = None
-        main_log_file = ""
+        log_file = ""
         debug_mode = False
         disconnect_cooldown = False
-        requested_end_tracking = False
-        disconnect_code_list = {
-            "103": "The Roblox experience you are trying to join is currently not available.",
-            "256": "Developer has shut down all game servers or game server has shut down for other reasons, please reconnect.",
-            "260": "There was a problem receiving data, please reconnect.",
-            "261": "Error while receiving data, please reconnect.",
-            "262": "There was a problem sending data, please reconnect.",
-            "264": "Same account launched experience from different device. Leave the experience from the other device and try again.",
-            "266": "Your connection timed out. Check your internet connection and try again.",
-            "267": "You were kicked from this experience.",
-            "268": "You have been kicked due to unexpected client behavior.",
-            "271": "You have been kicked by server, please reconnect.",
-            "272": "Lost connection due to an error.",
-            "273": "Same account launched experience from different device. Reconnect if you prefer to use this device.",
-            "274": "The experience's developer has temporarily shut down the experience server. Please try again.",
-            "275": "Roblox has shut down the server for maintenance. Please try again.",
-            "277": "Please check your internet connection and try again.",
-            "278": "You were disconnected for being idle 20 minutes.",
-            "279": "Failed to connect to the Game. (ID = 17: Connection attempt failed.)",
-            "280": "Your version of Roblox may be out of date. Please update Roblox and try again.",
-            "282": "Disconnected from game, please reconnect.",
-            "284": "A fatal error occurred while running this game.",
-            "285": "Client/User issued disconnect.",
-            "286": "Your device does not have enough memory to run this experience. Exit back to the app.",
-            "291": "Player has been removed from the DataModel.",
-            "292": "Your device's memory is low. Leaving now will preserve your state and prevent Roblox from crashing.",
-            "517": "This game is currently unavailable. Please try again later.",
-            "522": "The user you attempted to join has left the game.",
-            "523": "The status of the experience has changed and you no longer have access. Please try again later.",
-            "524": "You do not have permission to join this experience.",
-            "525": "The server is currently busy. Please try again.",
-            "528": "Your party is too large to join this experience. Try joining a different experience.",
-            "529": "A Http error has occurred. Please close the client and try again.",
-            "533": "Your privacy settings prevent you from joining this server.",
-            "600": "You were banned from this experience by the creator.",
-            "610": "Unable to join game instance.",
-            "770": "Game's root place is not active."
-        }
-        event_names = None
+        end_tracking = False
+        connected_to_game = False
+        validating_disconnect = False
         created_mutex = False
         is_studio = False
         await_log_creation = False
         await_log_creation_attempts = 0
         one_threaded = True
-        windows_roblox_starter_launched_roblox = False
-        def __init__(self, main_handler, pid: str, log_file: str="", debug_mode: bool=False, allow_other_logs: bool=False, await_log_creation: bool=False, created_mutex: bool=None, studio: bool=False, one_threaded: bool=True):
+        roblox_starter_launched = False
+        daemon = False
+
+        def __init__(self, main_handler, pid: str, log_file: str="", debug_mode: bool=False, allow_other_logs: bool=False, await_log_creation: bool=False, created_mutex: bool=None, studio: bool=False, one_threaded: bool=True, daemon: bool=False):
             if type(main_handler) is Main:
                 self.main_handler = main_handler
                 self.pid = pid
@@ -972,35 +979,26 @@ class Main:
                 self.is_studio = studio
                 self.await_log_creation = await_log_creation
                 self.one_threaded = one_threaded
-                if studio == True:
-                    self.event_names = main_handler.robloxStudioInstanceEventNames
-                else:
-                    self.event_names = main_handler.robloxInstanceEventNames
-                if log_file == "" or os.path.exists(log_file):
-                    self.main_log_file = log_file
+                self.daemon = daemon
+                if log_file != "" and os.path.exists(log_file): self.log_file = log_file
                 self.startActivityTracking()
-            else:
-                raise Main.InvalidRobloxHandlerException()
+            else: raise Main.InvalidRobloxHandlerException()
         def awaitRobloxClosing(self):
             while True:
                 time.sleep(1)
-                if not self.pid:
-                    self.ended_process = True
-                    break
-                if (self.main_handler.getIfRobloxIsOpen(pid=self.pid) == False) or self.requested_end_tracking == True or (self.ended_process == True):
-                    self.ended_process = True
-                    break
+                if not self.pid: self.ended_process = True; break
+                if (self.main_handler.getIfRobloxIsOpen(pid=self.pid) == False) or self.end_tracking == True or (self.ended_process == True): self.ended_process = True; break
         def setRobloxEventCallback(self, eventName: robloxInstanceTotalLiteralEventNames, eventCallback: typing.Callable[[typing.Any], None]):
             if callable(eventCallback):
-                if eventName in self.event_names:
-                    for i in self.events:
-                        if i and i["name"] == eventName: self.events.remove(i)
-                    self.events.append({"name": eventName, "callback": eventCallback})
+                if eventName in self.getAvailableEventNames():
+                    for i in self.__events__:
+                        if i and i["name"] == eventName: self.__events__.remove(i)
+                    self.__events__.append({"name": eventName, "callback": eventCallback})
                     if self.watchdog_started == False: self.startActivityTracking()
         def addRobloxEventCallback(self, eventName: robloxInstanceTotalLiteralEventNames, eventCallback: typing.Callable[[typing.Any], None]):
             if callable(eventCallback):
-                if eventName in self.event_names:
-                    self.events.append({"name": eventName, "callback": eventCallback})
+                if eventName in self.getAvailableEventNames():
+                    self.__events__.append({"name": eventName, "callback": eventCallback})
                     if self.watchdog_started == False: self.startActivityTracking()
         def getWindowsOpened(self) -> "list[Main.RobloxWindow]":
             if self.pid and not (self.pid == "") and self.pid.isnumeric():
@@ -1048,32 +1046,28 @@ class Main:
             else:
                 return []
         def clearRobloxEventCallbacks(self, eventName: robloxInstanceTotalLiteralEventNames=""):
-            if eventName == "":
-                self.events = []
+            if eventName == "": self.__events__ = []
             else:
-                for i in self.events:
-                    if i and i["name"] == eventName: self.events.remove(i)
-        def requestThreadClosing(self):
-            self.requested_end_tracking = True
+                for i in self.__events__:
+                    if i and i["name"] == eventName: self.__events__.remove(i)
+        def requestThreadClosing(self): self.end_tracking = True
         def newestFile(self, path):
             files = os.listdir(path)
             paths = []
             for basename in files:
-                if self.is_studio == False and "Player" in basename:
-                    paths.append(os.path.join(path, basename))
-                elif self.is_studio == True and "Studio" in basename:
-                    paths.append(os.path.join(path, basename))
+                if self.is_studio == False and "Player" in basename: paths.append(os.path.join(path, basename))
+                elif self.is_studio == True and "Studio" in basename: paths.append(os.path.join(path, basename))
             if len(paths) > 0: return max(paths, key=os.path.getctime)
+        def getAvailableEventNames(self):
+            if self.is_studio == True: return self.main_handler.robloxStudioInstanceEventNames
+            else: return self.main_handler.robloxInstanceEventNames
         def fileCreatedRecently(self, file_path):
             try:
                 creation_time = os.path.getctime(file_path)
                 current_time = time.time()
-                if (current_time - creation_time) <= 10:
-                    return True
-                else:
-                    return False
-            except:
-                return False
+                if (current_time - creation_time) <= 10: return True
+                else: return False
+            except: return False
         def getLatestLogFile(self):
             logs_path = None
             if main_os == "Darwin": logs_path = os.path.join(user_folder, "Library", "Logs", "Roblox")
@@ -1116,9 +1110,8 @@ class Main:
                 return main_log
         def cleanLogs(self):
             if self.debug_mode == True: printDebugMessage(f"Cleaning logs from session..")
-            with open(self.main_log_file, "r", encoding="utf-8", errors="ignore") as file:
-                lines = file.readlines()
-            with open(self.main_log_file, "w", encoding="utf-8", errors="ignore") as write_file:
+            with open(self.log_file, "r", encoding="utf-8", errors="ignore") as file: lines = file.readlines()
+            with open(self.log_file, "w", encoding="utf-8", errors="ignore") as write_file:
                 end_lines = []
                 current_log = ""
                 for line in lines:
@@ -1151,12 +1144,12 @@ class Main:
                                             if self.allow_other_logs == True: printDebugMessage(f'Event triggered: {eventName}, Data: {data}')
                                         else:
                                             printDebugMessage(f'Event triggered: {eventName}, Data: {data}')
-                            for i in self.events:
+                            for i in self.__events__:
                                 if i and callable(i.get("callback")) and i.get("name") == eventName: 
                                     if self.one_threaded == True:
                                         try: i.get("callback")(data)
                                         except Exception as e: printErrorMessage(e)
-                                    else: threading.Thread(target=i.get("callback"), args=[data]).start()
+                                    else: threading.Thread(target=i.get("callback"), args=[data], daemon=self.daemon).start()
                         def handleLine(line=""):
                             if self.is_studio == True:
                                 if "[FLog::Output] LoadClientSettingsFromLocal" in line:
@@ -1203,7 +1196,7 @@ class Main:
                                     if generated_data:
                                         submitToThread(eventName="onOpeningGame", data=generated_data, isLine=False)
                                 elif "[FLog::RobloxIDEDoc] RobloxIDEDoc::doClose" in line:
-                                    submitToThread(eventName="onClosingGame", data=line, isLine=True)
+                                    submitToThread(eventName="onClosingGame", data=line, isLine=True); self.connected_to_game = False
                                 elif "[FLog::StudioKeyEvents] starting Qt main event loop" in line:
                                     submitToThread(eventName="onRobloxAppStart", data=line, isLine=True)
                                 elif "[FLog::StudioKeyEvents] login [end][success]" in line:
@@ -1259,8 +1252,7 @@ class Main:
                                             }
                                         
                                     generated_data = generate_arg()
-                                    if generated_data:
-                                        submitToThread(eventName="onGameJoined", data=generated_data, isLine=False)
+                                    if generated_data: submitToThread(eventName="onGameJoined", data=generated_data, isLine=False); self.connected_to_game = True
                                 elif "HttpResponse(" in line:
                                     def generate_arg():
                                         try:
@@ -1291,13 +1283,10 @@ class Main:
                                             else:
                                                 return None
                                         except Exception as e:
-                                            return None
-                                        
+                                            return None                 
                                     generated_data = generate_arg()
-                                    if generated_data:
-                                        submitToThread(eventName="onHttpResponse", data=generated_data, isLine=False)
-                                    else:
-                                        submitToThread(eventName="onHttpResponse", data=line, isLine=True)
+                                    if generated_data: submitToThread(eventName="onHttpResponse", data=generated_data, isLine=False)
+                                    else: submitToThread(eventName="onHttpResponse", data=line, isLine=True)
                                 elif "[FLog::Error] Redundant Flag ID:" in line:
                                     def generate_arg():
                                         pattern = r"Redundant Flag ID:\s+([\w\d_]+)"
@@ -1343,7 +1332,7 @@ class Main:
                                     generated_data = generate_arg()
                                     if generated_data:
                                         submitToThread(eventName="onRobloxChannel", data=generated_data, isLine=False)
-                                        self.windows_roblox_starter_launched_roblox = True
+                                        self.roblox_starter_launched = True
                                 elif "[FLog::Audio] InputDevice" in line:
                                     def generate_arg():
                                         pattern = re.compile(
@@ -1418,7 +1407,7 @@ class Main:
                                 elif "RobloxAudioDevice::StartRecording" in line:
                                     submitToThread(eventName="onRobloxAudioDeviceStartRecording", data=line, isLine=True)
                                 elif "[FLog::Output] About to exit the application, doing cleanup." in line:
-                                    if self.windows_roblox_starter_launched_roblox == False:
+                                    if self.roblox_starter_launched == False:
                                         submitToThread(eventName="onRobloxExit", data=line)
                                         submitToThread(eventName="onRobloxSharedLogLaunch", data=line)
                                         return self.main_handler.WatchdogLineResponse.EndWatchdog()
@@ -1472,7 +1461,7 @@ class Main:
                                     submitToThread(eventName="onOtherRobloxLog", data=line, isLine=True)
                             else:
                                 if "[FLog::RobloxStarter] RobloxStarter destroyed" in line:
-                                    if self.windows_roblox_starter_launched_roblox == False:
+                                    if self.roblox_starter_launched == False:
                                         submitToThread(eventName="onRobloxExit", data=line)
                                         submitToThread(eventName="onRobloxSharedLogLaunch", data=line)
                                         return self.main_handler.WatchdogLineResponse.EndWatchdog()
@@ -1498,8 +1487,7 @@ class Main:
                                         return None
                                     
                                     generated_data = generate_arg()
-                                    if generated_data:
-                                        submitToThread(eventName="onGameStart", data=generated_data, isLine=False)
+                                    if generated_data: submitToThread(eventName="onGameStart", data=generated_data, isLine=False); self.connected_to_game = True
                                 elif "[FLog::SingleSurfaceApp] launchUGCGameInternal" in line:
                                     submitToThread(eventName="onGameLoading", data=line, isLine=True)
                                 elif "[FLog::GameJoinUtil] GameJoinUtil::initiateTeleportToPlace" in line:
@@ -1622,7 +1610,7 @@ class Main:
                                     generated_data = generate_arg()
                                     if generated_data:
                                         submitToThread(eventName="onRobloxChannel", data=generated_data, isLine=False)
-                                        self.windows_roblox_starter_launched_roblox = True
+                                        self.roblox_starter_launched = True
                                 elif "[FLog::Warning] WebLogin authentication is failed and App is quitting" in line or "[FLog::Warning] (RobloxPlayerAppDelegate) WebLogin authentication failure" in line:
                                     submitToThread(eventName="onRobloxAppLoginFailed", data=line, isLine=True)
                                 elif "[FLog::UgcExperienceController] UgcExperienceController: doTeleport: joinScriptUrl" in line:
@@ -1811,10 +1799,8 @@ class Main:
                                     generated_data = generate_arg()
                                     if generated_data:
                                         submitToThread(eventName="onGameJoined", data=generated_data, isLine=False)
-                                elif "[FLog::SingleSurfaceApp] leaveUGCGameInternal" in line:
-                                    submitToThread(eventName="onGameLeaving", data=line, isLine=True)
-                                elif "RBXCRASH:" in line or "[FLog::CrashReportLog] Terminated" in line:
-                                    submitToThread(eventName="onRobloxCrash", data=line, isLine=True)
+                                elif "[FLog::SingleSurfaceApp] leaveUGCGameInternal" in line: submitToThread(eventName="onGameLeaving", data=line, isLine=True)
+                                elif "RBXCRASH:" in line or "[FLog::CrashReportLog] Terminated" in line: submitToThread(eventName="onRobloxCrash", data=line, isLine=True); self.connected_to_game = False
                                 elif "Roblox::terminateWaiter" in line:
                                     submitToThread(eventName="onRobloxTerminateInstance", data=line, isLine=True)
                                 elif "[FLog::Network] Sending disconnect with reason" in line:
@@ -1828,9 +1814,12 @@ class Main:
                                                 self.disconnect_cooldown = False
                                             threading.Thread(target=b, daemon=True).start()
                                             code_message = "Unknown"
-                                            if self.disconnect_code_list.get(str(main_code)):
-                                                code_message = self.disconnect_code_list.get(str(main_code))
-                                            submitToThread(eventName="onGameDisconnected", data={"code": main_code, "message": code_message}, isLine=False)
+                                            if self.main_handler.disconnect_code_list.get(str(main_code)):
+                                                code_message = self.main_handler.disconnect_code_list.get(str(main_code))
+                                            submitToThread(eventName="onGameDisconnected", data={"code": main_code, "message": code_message}, isLine=False); self.connected_to_game = False; self.validating_disconnect = True
+                                elif "[FLog::SingleSurfaceApp] leaveUGCGame: (stage:LuaApp) blocking=0" in line:
+                                    if self.validating_disconnect == False: return self.main_handler.WatchdogLineResponse.ReconnectWatchdog()
+                                    else: self.validating_disconnect = False
                                 elif "[FLog::Output]" in line:
                                     def generate_arg():
                                         output = line.find('[FLog::Output]') + len('[FLog::Output] ')
@@ -1860,12 +1849,12 @@ class Main:
                                         submitToThread(eventName="onGameWarning", data=generated_data, isLine=False)
                                 else:
                                     submitToThread(eventName="onOtherRobloxLog", data=line, isLine=True)
-                        if self.main_log_file == "":
+                        if self.log_file == "":
                             self.await_log_creation_attempts = 0
                             main_log = self.getLatestLogFile()
-                            self.main_log_file = main_log
+                            self.log_file = main_log
                         else:
-                            main_log = self.main_log_file
+                            main_log = self.log_file
 
                         with open(main_log, "r", encoding="utf-8", errors="ignore") as file:
                             while True:
@@ -1895,6 +1884,12 @@ class Main:
                                                             elif res.code == 1:
                                                                 self.ended_process = True
                                                                 return
+                                                            elif res.code == 2:
+                                                                self.watchdog_started = False
+                                                                submitToThread("onWatchdogReconnection", None, isLine=False)
+                                                                self.startActivityTracking()
+                                                                return
+                                                            
                                             except Exception as e:
                                                 if self.debug_mode == True: printDebugMessage(f"Unable to read log: {str(e)}")
                                     else:
@@ -1906,6 +1901,11 @@ class Main:
                                                 break     
                                             elif res.code == 1:
                                                 self.ended_process = True
+                                                return
+                                            elif res.code == 2:
+                                                self.watchdog_started = False
+                                                submitToThread("onWatchdogReconnection", None, isLine=False)
+                                                self.startActivityTracking()
                                                 return
                             file.seek(0, os.SEEK_END)
                             while True:
@@ -1935,7 +1935,12 @@ class Main:
                                                             break     
                                                         elif res.code == 1:
                                                             self.ended_process = True
-                                                            return  
+                                                            return 
+                                                        elif res.code == 2:
+                                                            self.watchdog_started = False
+                                                            submitToThread("onWatchdogReconnection", None, isLine=False)
+                                                            self.startActivityTracking()
+                                                            return 
                                         else:
                                             res = handleLine(line)
                                             if res:
@@ -1946,6 +1951,11 @@ class Main:
                                                 elif res.code == 1:
                                                     self.ended_process = True
                                                     return
+                                                elif res.code == 2:
+                                                    self.watchdog_started = False
+                                                    submitToThread("onWatchdogReconnection", None, isLine=False)
+                                                    self.startActivityTracking()
+                                                    return
                                     else:
                                         res = handleLine(line)
                                         if res:
@@ -1955,9 +1965,14 @@ class Main:
                                                 break     
                                             elif res.code == 1:
                                                 self.ended_process = True
-                                                return                           
-                threading.Thread(target=watchDog).start()
-                threading.Thread(target=self.awaitRobloxClosing).start()
+                                                return  
+                                            elif res.code == 2:
+                                                self.watchdog_started = False
+                                                submitToThread("onWatchdogReconnection", None, isLine=False)
+                                                self.startActivityTracking()
+                                                return                         
+                threading.Thread(target=watchDog, daemon=self.daemon).start()
+                threading.Thread(target=self.awaitRobloxClosing, daemon=self.daemon).start()
     class RobloxWindow():
         pid = None
         system_handler = None
