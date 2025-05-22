@@ -155,7 +155,7 @@ async function loadChanges2() {
         style.rel = "stylesheet";
         style.type = "text/css";
         style.media = "all";
-        style.href = "https://cdn.efaz.dev/cdn/styles/htmlUI.css"
+        style.href = "https://cdn.efaz.dev/styles/htmlUI.css"
         document.head.append(style)
     } else if (navigator.onLine == false && (window.location.href.includes("resize=true"))) {
         /* User is offline and came from Thank you page */

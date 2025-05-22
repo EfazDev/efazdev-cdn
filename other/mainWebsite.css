@@ -1,6 +1,6 @@
 @font-face {
     font-family: mainfont;
-    src: url("https://cdn.efaz.dev/cdn/styles/mainFont.ttf");
+    src: url("https://cdn.efaz.dev/styles/mainFont.ttf");
     font-weight: bold;
 }
 
@@ -199,7 +199,7 @@ m {
 }
 
 .topbar-ui img[alt="EfazDev"] {
-    content: url("https://cdn.efaz.dev/cdn/png/logo.png");
+    content: url("https://cdn.efaz.dev/png/logo.png");
     width: 48px;
     height: 48px;
 }
@@ -209,7 +209,7 @@ m {
 }
 
 .topbar-ui img[alt="Swagger UI"] {
-    content: url("https://cdn.efaz.dev/cdn/png/logo.png");
+    content: url("https://cdn.efaz.dev/png/logo.png");
     width: 48px;
     height: 48px;
 }

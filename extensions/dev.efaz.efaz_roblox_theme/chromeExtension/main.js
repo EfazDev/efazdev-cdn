@@ -118,7 +118,7 @@ inject.js:
                                         style.rel = "stylesheet";
                                         style.type = "text/css";
                                         style.media = "all";
-                                        style.href = "https://cdn.efaz.dev/cdn/extensions/dev.efaz.efaz_roblox_theme/chromeExtension/theme.css"
+                                        style.href = "https://cdn.efaz.dev/extensions/dev.efaz.efaz_roblox_theme/chromeExtension/theme.css"
                                         document.head.append(style)
                                     }
 

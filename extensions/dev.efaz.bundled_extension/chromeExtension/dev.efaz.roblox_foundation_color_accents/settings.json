@@ -86,6 +86,6 @@
     "scanForManifestUpdates": true,
     "customExportFileType": "image/png",
     "isVersionServer": true,
-    "onlineManifestFile": "https://cdn.efaz.dev/cdn/extensions/versions/public.json",
+    "onlineManifestFile": "https://cdn.efaz.dev/extensions/versions/public.json",
     "bundleAssociatedName": "dev.efaz.roblox_foundation_color_accents"
 }

@@ -276,7 +276,7 @@ inject.js:
                 if (typeof (items[storage_key]["overwriteDevForum"]) == "boolean") { devForum = items[storage_key]["overwriteDevForum"] };
                 if (typeof (items[storage_key]["overwriteOtherSubdomains"]) == "boolean") { otherSub = items[storage_key]["overwriteOtherSubdomains"] };
                 if (typeof (items[storage_key]["onlyUseOldFontOnMainWebsite"]) == "boolean") { oldFontOnOtherSub = items[storage_key]["onlyUseOldFontOnMainWebsite"] };
-                if (typeof (items[storage_key]["resourcesUrl"]) == "string") { if (items[storage_key]["resourcesUrl"] == "https://cdn.efaz.dev/cdn/extensions/remove-builder-font/resources/" || items[storage_key]["resourcesUrl"] == "https://cdn2.efaz.dev/cdn/remove-builder-font/") { items[storage_key]["resourcesUrl"] = trusted_source; storage.set(items); } trusted_source = items[storage_key]["resourcesUrl"] };
+                if (typeof (items[storage_key]["resourcesUrl"]) == "string") { if (items[storage_key]["resourcesUrl"] == "https://cdn.efaz.dev/extensions/remove-builder-font/resources/" || items[storage_key]["resourcesUrl"] == "https://cdn2.efaz.dev/cdn/remove-builder-font/") { items[storage_key]["resourcesUrl"] = trusted_source; storage.set(items); } trusted_source = items[storage_key]["resourcesUrl"] };
             }
             if (enabled == true) {
                 var tab = window.location
@@ -300,7 +300,7 @@ inject.js:
                             })
                         } else {
                             if (remoteStyles == true) {
-                                fetch("https://cdn.efaz.dev/cdn/extensions/dev.efaz.remove_builder_font/chromeExtension/change_font.css").then(res => { return res.text() }).then(fetched => {
+                                fetch("https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/chromeExtension/change_font.css").then(res => { return res.text() }).then(fetched => {
                                     stored_css = fetched
                                     overwriteResourcesUrl(fetched, trusted_source, 1, oldFontOnOtherSub).then(a => {
                                         injectCSS(a)
@@ -346,7 +346,7 @@ inject.js:
                             })
                         } else {
                             if (remoteStyles == true) {
-                                fetch("https://cdn.efaz.dev/cdn/extensions/dev.efaz.remove_builder_font/chromeExtension/change_font2.css").then(res => { return res.text() }).then(fetched => {
+                                fetch("https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/chromeExtension/change_font2.css").then(res => { return res.text() }).then(fetched => {
                                     stored_css2 = fetched
                                     overwriteResourcesUrl(fetched, trusted_source, 3, oldFontOnOtherSub).then(a => {
                                         injectCSS2(a)
@@ -422,7 +422,7 @@ inject.js:
                                 })
                             } else {
                                 if (remoteStyles == true) {
-                                    fetch("https://cdn.efaz.dev/cdn/extensions/dev.efaz.remove_builder_font/chromeExtension/devforum_font.css").then(res => { return res.text() }).then(fetched => {
+                                    fetch("https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/chromeExtension/devforum_font.css").then(res => { return res.text() }).then(fetched => {
                                         stored_devforum_css = fetched
                                         overwriteResourcesUrl(fetched, trusted_source, 2, oldFontOnOtherSub).then(a => {
                                             injectCSS(a)
@@ -483,7 +483,7 @@ inject.js:
                                 })
                             } else {
                                 if (remoteStyles == true) {
-                                    fetch("https://cdn.efaz.dev/cdn/extensions/dev.efaz.remove_builder_font/chromeExtension/creator_dashboard.css").then(res => { return res.text() }).then(fetched => {
+                                    fetch("https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/chromeExtension/creator_dashboard.css").then(res => { return res.text() }).then(fetched => {
                                         stored_creator_dashboard_css = fetched
                                         overwriteResourcesUrl(fetched, trusted_source, 3, oldFontOnOtherSub).then(a => {
                                             injectCSS(a)
@@ -541,7 +541,7 @@ inject.js:
                                 })
                             } else {
                                 if (remoteStyles == true) {
-                                    fetch("https://cdn.efaz.dev/cdn/extensions/dev.efaz.remove_builder_font/chromeExtension/global_font.css").then(res => { return res.text() }).then(fetched => {
+                                    fetch("https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/chromeExtension/global_font.css").then(res => { return res.text() }).then(fetched => {
                                         stored_creator_dashboard_css = fetched
                                         overwriteResourcesUrl(fetched, trusted_source, 4, oldFontOnOtherSub).then(a => {
                                             injectCSS(a)

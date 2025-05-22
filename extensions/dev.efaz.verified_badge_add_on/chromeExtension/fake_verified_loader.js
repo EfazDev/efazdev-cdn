@@ -1692,7 +1692,7 @@ async function loader() { // Script Loader
             }
             if (window.verifiedCheckmarkSettings["allowEfazDevApprovedBadges"] == true) {
                 try {
-                    var appr_json = await fetch("https://cdn.efaz.dev/cdn/extensions/dev.efaz.verified_badge_add_on/resources/approved_users.json").then(appr_res => {
+                    var appr_json = await fetch("https://cdn.efaz.dev/extensions/dev.efaz.verified_badge_add_on/resources/approved_users.json").then(appr_res => {
                         if (appr_res.ok) {
                             return appr_res.json()
                         } else {
@@ -1748,7 +1748,7 @@ async function loader() { // Script Loader
             }
         }
         if (window.verifiedCheckmarkSettings["allowEfazDevApprovedBadges"] == true) {
-            fetch("https://cdn.efaz.dev/cdn/extensions/dev.efaz.verified_badge_add_on/resources/approved_users.json").then(appr_res => {
+            fetch("https://cdn.efaz.dev/extensions/dev.efaz.verified_badge_add_on/resources/approved_users.json").then(appr_res => {
                 if (appr_res.ok) {
                     return appr_res.json()
                 } else {

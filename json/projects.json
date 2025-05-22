@@ -22,7 +22,7 @@
     {
         "name": "OrangeBlox",
         "url": "https://www.efaz.dev/orangeblox",
-        "download_url": "https://cdn.efaz.dev/cdn/download?project=orangeblox",
+        "download_url": "https://cdn.efaz.dev/download?project=orangeblox",
         "discontinued": false,
         "showInProjectsPage": true,
         "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
@@ -52,7 +52,7 @@
     {
         "name": "Efaz's Cookie Destroyer",
         "url": "https://www.efaz.dev/cookiedestroyer",
-        "download_url": "https://cdn.efaz.dev/cdn/py/download?fileName=CookieDestroyer.py",
+        "download_url": "https://cdn.efaz.dev/py/download?fileName=CookieDestroyer.py",
         "discontinued": false,
         "showInProjectsPage": true,
         "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
@@ -62,7 +62,7 @@
     {
         "name": "Efaz's Roblox In-Game UGC Tracer",
         "url": "https://www.efaz.dev/ingameugctracer",
-        "download_url": "https://cdn.efaz.dev/cdn/py/download?fileName=RobloxInGameUGCTracer.py",
+        "download_url": "https://cdn.efaz.dev/py/download?fileName=RobloxInGameUGCTracer.py",
         "discontinued": false,
         "showInProjectsPage": true,
         "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
@@ -72,7 +72,7 @@
     {
         "name": "Efaz's Roblox Account Bulk Verifier",
         "url": "https://www.efaz.dev/bulkrobloxverifier",
-        "download_url": "https://cdn.efaz.dev/cdn/py/download?fileName=VerifyAllRobloxAccounts.py",
+        "download_url": "https://cdn.efaz.dev/py/download?fileName=VerifyAllRobloxAccounts.py",
         "discontinued": false,
         "showInProjectsPage": true,
         "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
@@ -162,7 +162,7 @@
     {
         "name": "Merch Code System",
         "url": "https://www.efaz.dev/merch-code-system",
-        "download_url": "https://cdn.efaz.dev/cdn/download?project=merch-code-system",
+        "download_url": "https://cdn.efaz.dev/download?project=merch-code-system",
         "discontinued": true,
         "showInProjectsPage": true,
         "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
@@ -172,7 +172,7 @@
     {
         "name": "hazem.gg Auto Redeemer",
         "url": "https://www.efaz.dev/hazemggredeemer",
-        "download_url": "https://cdn.efaz.dev/cdn/js/download?fileName=HazemGGAutoRedeemer.js",
+        "download_url": "https://cdn.efaz.dev/js/download?fileName=HazemGGAutoRedeemer.js",
         "discontinued": true,
         "showInProjectsPage": true,
         "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
@@ -182,7 +182,7 @@
     {
         "name": "Item Fixer",
         "url": "https://www.efaz.dev/item-fixer",
-        "download_url": "https://cdn.efaz.dev/cdn/py/download?fileName=ItemFixer-v1.5.1.py",
+        "download_url": "https://cdn.efaz.dev/py/download?fileName=ItemFixer-v1.5.1.py",
         "discontinued": true,
         "showInProjectsPage": true,
         "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
@@ -192,7 +192,7 @@
     {
         "name": "Ban Service",
         "url": "https://www.efaz.dev/banservice",
-        "download_url": "https://cdn.efaz.dev/cdn/rbxm/download?fileName=BanService.rbxm",
+        "download_url": "https://cdn.efaz.dev/rbxm/download?fileName=BanService.rbxm",
         "discontinued": true,
         "showInProjectsPage": true,
         "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
@@ -202,7 +202,7 @@
     {
         "name": "Efaz's Developer Product to Item Game",
         "url": "https://www.efaz.dev/devproduct-to-item",
-        "download_url": "https://cdn.efaz.dev/cdn/rbxl/download?fileName=DeveloperProductItem.rbxl",
+        "download_url": "https://cdn.efaz.dev/rbxl/download?fileName=DeveloperProductItem.rbxl",
         "discontinued": true,
         "showInProjectsPage": true,
         "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
@@ -212,7 +212,7 @@
     {
         "name": "Twitter Verification System",
         "url": "https://www.efaz.dev/twitterverificationsystem",
-        "download_url": "https://cdn.efaz.dev/cdn/download?project=twitter-verification",
+        "download_url": "https://cdn.efaz.dev/download?project=twitter-verification",
         "discontinued": true,
         "showInProjectsPage": true,
         "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
@@ -222,7 +222,7 @@
     {
         "name": "Logger Detector",
         "url": "https://www.efaz.dev/logger-detector",
-        "download_url": "https://cdn.efaz.dev/cdn/py/download?fileName=LoggerDetector.py",
+        "download_url": "https://cdn.efaz.dev/py/download?fileName=LoggerDetector.py",
         "discontinued": true,
         "showInProjectsPage": true,
         "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
@@ -232,7 +232,7 @@
     {
         "name": "Logger Detector (JSON)",
         "url": "https://www.efaz.dev/logger-detector",
-        "download_url": "https://cdn.efaz.dev/cdn/json/download?fileName=logger_word.json",
+        "download_url": "https://cdn.efaz.dev/json/download?fileName=logger_word.json",
         "discontinued": true,
         "showInProjectsPage": false,
         "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Blacklist JSON!"},
@@ -242,7 +242,7 @@
     {
         "name": "Logger Detector (Combined)",
         "url": "https://www.efaz.dev/logger-detector",
-        "download_url": "https://cdn.efaz.dev/cdn/zip/download?fileName=LoggerDetector.zip",
+        "download_url": "https://cdn.efaz.dev/zip/download?fileName=LoggerDetector.zip",
         "discontinued": true,
         "showInProjectsPage": false,
         "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Both!"},

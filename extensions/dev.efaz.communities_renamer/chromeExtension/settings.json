@@ -45,5 +45,5 @@
     "uploadedChromeExtensionID": "afaoamnkmjkkpheiblblbinpmdnacipm",
     "scanForManifestUpdates": true,
     "isVersionServer": true,
-    "onlineManifestFile": "https://cdn.efaz.dev/cdn/extensions/versions/public.json"
+    "onlineManifestFile": "https://cdn.efaz.dev/extensions/versions/public.json"
 }

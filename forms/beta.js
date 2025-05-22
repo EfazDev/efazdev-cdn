@@ -447,7 +447,7 @@ function start_system() {
     refreshVariables();
     var disabled_system = false;
     var title = "Error while loading Form JSON. If you're a visitor, please contact the site owner to manage the JSON correctly.";
-    var icon_url = "https://cdn.efaz.dev/cdn/png/logo.png";
+    var icon_url = "https://cdn.efaz.dev/png/logo.png";
     if (system_json["title"] == null) {
         disabled_system = true;
     } else {

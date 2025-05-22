@@ -23,13 +23,13 @@
 }
 
 .swagger-ui img[alt="EfazDev"] {
-    content: url("https://cdn.efaz.dev/cdn/png/logo.png");
+    content: url("https://cdn.efaz.dev/png/logo.png");
     width: 48px;
     height: 48px;
 }
 
 .swagger-ui img[alt="Swagger UI"] {
-    content: url("https://cdn.efaz.dev/cdn/png/logo.png");
+    content: url("https://cdn.efaz.dev/png/logo.png");
     width: 48px;
     height: 48px;
 }

@@ -20,14 +20,14 @@ function main_swagger() {
             var b = document.createElement('link');
             b.type = 'image/png';
             b.rel = 'icon';
-            b.href = 'https://cdn.efaz.dev/cdn/png/logo32.png';
+            b.href = 'https://cdn.efaz.dev/png/logo32.png';
             b.sizes = '32x32';
             document.getElementsByTagName('head')[0].appendChild(b);
 
             var c = document.createElement('link');
             c.type = 'image/png';
             c.rel = 'icon';
-            c.href = 'https://cdn.efaz.dev/cdn/png/logo16.png';
+            c.href = 'https://cdn.efaz.dev/png/logo16.png';
             c.sizes = '16x16';
             document.getElementsByTagName('head')[0].appendChild(c);
 
