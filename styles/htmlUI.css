@@ -111,7 +111,7 @@ button[id="hide_group_main"] {
     text-align: center;
     margin-left: auto;
     border-radius: 8px;
-    background: linear-gradient(90deg, #FF4B00 0%, #FF9200 100%);
+    background: linear-gradient(90deg, #ff4d00ba 0%, #FF9200ba 100%);
     color: rgb(255, 255, 255);
     vertical-align: middle;
     justify-content: center;
@@ -125,7 +125,7 @@ button[id="hide_group_roblox"] {
     text-align: center;
     margin-left: auto;
     border-radius: 8px;
-    background: linear-gradient(90deg, #FF9200 0%, #FFDC00 100%);
+    background: linear-gradient(90deg, #FF9200ba 0%, #FFDC00ba 100%);
     color: rgb(255, 255, 255);
     vertical-align: middle;
     justify-content: center;
@@ -139,7 +139,7 @@ button[id="hide_group_account"] {
     text-align: center;
     margin-left: auto;
     border-radius: 8px;
-    background: linear-gradient(90deg, #FFDC00 0%, #CDFF00 100%);
+    background: linear-gradient(90deg, #FFDC00ba 0%, #CDFF00ba 100%);
     color: rgb(255, 255, 255);
     vertical-align: middle;
     justify-content: center;
@@ -153,7 +153,7 @@ button[id="hide_reporting"] {
     text-align: center;
     margin-left: auto;
     border-radius: 8px;
-    background: linear-gradient(90deg, #CDFF00 0%, #64FF00 100%);
+    background: linear-gradient(90deg, #CDFF00ba 0%, #64FF00ba 100%);
     color: rgb(255, 255, 255);
     vertical-align: middle;
     justify-content: center;
@@ -167,7 +167,7 @@ button[id="hide_paid"] {
     text-align: center;
     margin-left: auto;
     border-radius: 8px;
-    background: linear-gradient(90deg, #64FF00 0%, #00FF00 100%);
+    background: linear-gradient(90deg, #64FF00ba 0%, #00FF00ba 100%);
     color: rgb(255, 255, 255);
     vertical-align: middle;
     justify-content: center;
