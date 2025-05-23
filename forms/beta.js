@@ -87,10 +87,10 @@ async function getImageFromInput(input) {
 }
 
 async function get_values() {
-    var new_table = {};
+    let new_table = {};
     for (let a = 0; a < questions.length; a++) {
-        var valueInfo = questions[a];
-        var new_obj = document.getElementById(valueInfo["jsonName"] + "_input");
+        let valueInfo = questions[a];
+        let new_obj = document.getElementById(valueInfo["jsonName"] + "_input");
         if (new_obj.value) {
             if (new_obj.type == "file") {
                 await getImageFromInput(new_obj).then(res => {
@@ -105,9 +105,9 @@ async function get_values() {
 }
 
 async function getModeInfo(mode_name) {
-    var new_table = { "success": false };
+    let new_table = { "success": false };
     for (let a = 0; a < modes.length; a++) {
-        var newMode = modes[a];
+        let newMode = modes[a];
         if (newMode["name"] == mode_name) {
             return { "success": true, "response": newMode };
         }
@@ -123,10 +123,10 @@ function refreshVariables() {
 }
 
 function view_main_menu() {
-    var obj1 = document.getElementById("main_menu");
-    var obj2 = document.getElementById("success");
-    var obj3 = document.getElementById("failed");
-    var obj4 = document.getElementById("awaiting");
+    let obj1 = document.getElementById("main_menu");
+    let obj2 = document.getElementById("success");
+    let obj3 = document.getElementById("failed");
+    let obj4 = document.getElementById("awaiting");
 
     obj1.style = "display: block;";
     obj2.style = "display: none;";
@@ -139,18 +139,18 @@ function returnFromMessageAndClear() {
 }
 
 function view_success_menu(mode, message) {
-    var obj1 = document.getElementById("main_menu");
-    var obj2 = document.getElementById("success");
-    var obj3 = document.getElementById("failed");
-    var obj6 = document.getElementById("awaiting");
+    let obj1 = document.getElementById("main_menu");
+    let obj2 = document.getElementById("success");
+    let obj3 = document.getElementById("failed");
+    let obj6 = document.getElementById("awaiting");
 
     obj1.style = "display: none;";
     obj2.style = "display: block;";
     obj3.style = "display: none;";
     obj6.style = "display: none;";
 
-    var obj4 = document.getElementById("message2");
-    var obj5 = document.getElementById("reloadButton");
+    let obj4 = document.getElementById("message2");
+    let obj5 = document.getElementById("reloadButton");
     if (message == null) {
         message = "No message was given.";
     };
@@ -173,25 +173,25 @@ function view_success_menu(mode, message) {
 }
 
 function view_error_menu(text) {
-    var obj1 = document.getElementById("main_menu");
-    var obj2 = document.getElementById("success");
-    var obj3 = document.getElementById("failed");
-    var obj5 = document.getElementById("awaiting");
+    let obj1 = document.getElementById("main_menu");
+    let obj2 = document.getElementById("success");
+    let obj3 = document.getElementById("failed");
+    let obj5 = document.getElementById("awaiting");
 
     obj1.style = "display: none;";
     obj2.style = "display: none;";
     obj3.style = "display: block;";
     obj5.style = "display: none;";
 
-    var obj4 = document.getElementById("message1");
+    let obj4 = document.getElementById("message1");
     obj4.innerHTML = text;
 }
 
 function view_awaiting_menu() {
-    var obj1 = document.getElementById("main_menu");
-    var obj2 = document.getElementById("success");
-    var obj3 = document.getElementById("failed");
-    var obj4 = document.getElementById("awaiting");
+    let obj1 = document.getElementById("main_menu");
+    let obj2 = document.getElementById("success");
+    let obj3 = document.getElementById("failed");
+    let obj4 = document.getElementById("awaiting");
 
     obj1.style = "display: none;";
     obj2.style = "display: none;";
@@ -206,8 +206,8 @@ function set_mode(mode) {
             main_mode_details = response["response"];
 
             if (system_json["showCurrentMode"] && document.getElementById("current_mode")) {
-                var obj1 = document.getElementById("current_mode");
-                var obj2 = document.getElementById("sendButton");
+                let obj1 = document.getElementById("current_mode");
+                let obj2 = document.getElementById("sendButton");
                 obj1.innerHTML = 'Current Mode: ' + mode;
 
                 if (specific_settings["showModeInButtonText"] == false) {
@@ -216,12 +216,12 @@ function set_mode(mode) {
                     obj2.innerHTML = 'Send ' + mode + "!";
                 }
 
-                var questions = system_json["questions"];
+                let questions = system_json["questions"];
                 if (specific_settings["showAllQuestionsInAllModes"] == true) {
                     for (let a = 0; a < questions.length; a++) {
-                        var main_question = questions[a];
+                        let main_question = questions[a];
                         if (!(main_question["autofilled"] == true)) {
-                            var object = document.getElementById(main_question["jsonName"] + '_input');
+                            let object = document.getElementById(main_question["jsonName"] + '_input');
                             if (object) {
                                 if (object.parentNode.tagName == "DIV") {
                                     object.style.display = "";
@@ -233,9 +233,9 @@ function set_mode(mode) {
                     }
                 } else {
                     for (let a = 0; a < questions.length; a++) {
-                        var main_question = questions[a];
+                        let main_question = questions[a];
                         if (!(main_question["autofilled"] == true)) {
-                            var object = document.getElementById(main_question["jsonName"] + '_input');
+                            let object = document.getElementById(main_question["jsonName"] + '_input');
                             if (object) {
                                 if (object.parentNode.tagName == "DIV") {
                                     object.style.display = "none";
@@ -245,7 +245,7 @@ function set_mode(mode) {
                             };
 
                             for (let b = 0; b < main_mode_details["formatted"].length; b++) {
-                                var question_a_details = main_mode_details["formatted"][b];
+                                let question_a_details = main_mode_details["formatted"][b];
                                 if (question_a_details["jsonName"] == main_question["jsonName"]) {
                                     if (object) {
                                         if (object.parentNode.tagName == "DIV") {
@@ -260,7 +260,7 @@ function set_mode(mode) {
                     }
                 }
             } else {
-                var obj2 = document.getElementById("sendButton");
+                let obj2 = document.getElementById("sendButton");
                 obj2.innerHTML = 'Send Form!';
             };
         }
@@ -312,18 +312,17 @@ function send_response(verification_key) {
                     getModeInfo(selected_mode).then(mode_response => {
                         if (mode_response["success"] == true) {
                             mode_response = mode_response["response"];
-                            var new_formated_values = {};
-                            var new_api_url = mode_response["api_url"];
-                            var listOfKeysProvided = Object.keys(values);
-                            var appliedAtSymbol = false;
-
-                            var listOfEmptyRequiredVariables = [];
+                            let new_formated_values = {};
+                            let new_api_url = mode_response["api_url"];
+                            let listOfKeysProvided = Object.keys(values);
+                            let appliedAtSymbol = false;
+                            let listOfEmptyRequiredVariables = [];
 
                             for (let c = 0; c < listOfKeysProvided.length; c++) {
-                                var key = listOfKeysProvided[c];
-                                var main_val = values[key];
+                                let key = listOfKeysProvided[c];
+                                let main_val = values[key];
                                 for (let d = 0; d < mode_response["formatted"].length; d++) {
-                                    var main_val2 = mode_response["formatted"][d];
+                                    let main_val2 = mode_response["formatted"][d];
                                     if (main_val2["jsonName"] == key) {
                                         if (main_val2["in"] == "Body") {
                                             new_formated_values[key] = main_val;
@@ -340,12 +339,12 @@ function send_response(verification_key) {
                             };
 
                             for (let e = 0; e < questions.length; e++) {
-                                var question = questions[e];
+                                let question = questions[e];
                                 if (question["required"] == true) {
                                     if (getIfResponseIsEmpty(new_formated_values[question["jsonName"]])) {
                                         if (mode_response["formatted"]) {
                                             for (let h = 0; h < mode_response["formatted"].length; h++) {
-                                                var lista = mode_response["formatted"][h];
+                                                let lista = mode_response["formatted"][h];
                                                 if (lista["jsonName"] == question["jsonName"]) {
                                                     listOfEmptyRequiredVariables.push(question["name"]);
                                                 }
@@ -358,12 +357,12 @@ function send_response(verification_key) {
                             };
 
                             if (listOfEmptyRequiredVariables.length > 0) {
-                                var new_string_g = (listOfEmptyRequiredVariables[0] || "null").toString();
-                                var remove = false;
+                                let new_string_g = (listOfEmptyRequiredVariables[0] || "null").toString();
+                                let remove = false;
                                 for (let f = 0; f < listOfEmptyRequiredVariables.length + 1; f++) {
                                     if (remove == true) {
                                         if (listOfEmptyRequiredVariables[f]) {
-                                            var val_h = listOfEmptyRequiredVariables[f];
+                                            let val_h = listOfEmptyRequiredVariables[f];
                                             new_string_g = new_string_g + ", " + (val_h || "null").toString();
                                         };
                                     } else {
@@ -379,12 +378,12 @@ function send_response(verification_key) {
                                         new_formated_values[cloudflare_captcha["jsonName"]] = captcha_key[1];
                                     };
 
-                                    var converted_json_string = JSON.stringify(new_formated_values);
+                                    let converted_json_string = JSON.stringify(new_formated_values);
                                     try {
                                         if (!(mode_response["type_of_api"] == "POST" || mode_response["type_of_api"] == "PUT" || mode_response["type_of_api"] == "PATCH")) {
                                             mode_response["type_of_api"] = "POST"
                                         };
-                                        var include_credentials = "omit";
+                                        let include_credentials = "omit";
                                         if (specific_settings["include_cookies"] == true) {
                                             include_credentials = "include"
                                         };
@@ -445,9 +444,9 @@ function send_response(verification_key) {
 
 function start_system() {
     refreshVariables();
-    var disabled_system = false;
-    var title = "Error while loading Form JSON. If you're a visitor, please contact the site owner to manage the JSON correctly.";
-    var icon_url = "https://cdn.efaz.dev/png/logo.png";
+    let disabled_system = false;
+    let title = "Error while loading Form JSON. If you're a visitor, please contact the site owner to manage the JSON correctly.";
+    let icon_url = "https://cdn.efaz.dev/png/logo.png";
     if (system_json["title"] == null) {
         disabled_system = true;
     } else {
@@ -477,13 +476,13 @@ function start_system() {
 
     if (disabled_system == false) {
         try {
-            var main_menu = document.getElementById("main_menu");
+            let main_menu = document.getElementById("main_menu");
             if (!(specific_settings["hideIcon"] == true)) {
                 if (specific_settings["resize_logo"]) {
-                    var new_html = '<img src="' + icon_url + '" height="' + specific_settings["resize_logo"]["height"] + '" width="' + specific_settings["resize_logo"]["width"] + '" class="center">';
+                    let new_html = '<img src="' + icon_url + '" height="' + specific_settings["resize_logo"]["height"] + '" width="' + specific_settings["resize_logo"]["width"] + '" class="center">';
                     main_menu.innerHTML = new_html + main_menu.innerHTML;
                 } else {
-                    var new_html = '<img src="' + icon_url + '" height="64" width="64" class="center">';
+                    let new_html = '<img src="' + icon_url + '" height="64" width="64" class="center">';
                     main_menu.innerHTML = new_html + main_menu.innerHTML;
                 };
             };
@@ -491,9 +490,9 @@ function start_system() {
                 main_menu.innerHTML = main_menu.innerHTML + specific_settings["add_html_slot1"];
             };
             for (let a = 0; a < questions.length; a++) {
-                var newQuestion = questions[a];
+                let newQuestion = questions[a];
                 if (newQuestion["type"] == "Short Response" || newQuestion["type"] == "SR") {
-                    var new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + 
+                    let new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + 
                                 '" type="text" class="' + newQuestion["custom_class"] + 
                                 '" id="' + newQuestion["jsonName"] + '_input"';
                     if (newQuestion["required"] == true) {
@@ -507,7 +506,7 @@ function start_system() {
                     new_html = new_html + '</p>';
                     main_menu.innerHTML = main_menu.innerHTML + new_html;
                 } else if (newQuestion["type"] == "Detailed Message" || newQuestion["type"] == "DM") {
-                    var new_html = '<p>' + newQuestion["name"] + ': </p><textarea placeholder="' + newQuestion["placeholder"] + '" type="text" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input" cols="40" rows="10"';
+                    let new_html = '<p>' + newQuestion["name"] + ': </p><textarea placeholder="' + newQuestion["placeholder"] + '" type="text" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input" cols="40" rows="10"';
                     if (newQuestion["required"] == true) {
                         new_html = new_html + " required></textarea>";
                         if (specific_settings["showRequiredText"] == true) {
@@ -518,7 +517,7 @@ function start_system() {
                     };
                     main_menu.innerHTML = main_menu.innerHTML + new_html;
                 } else if (newQuestion["type"] == "Integer" || newQuestion["type"] == "INT") {
-                    var new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="number" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
+                    let new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="number" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
                     if (newQuestion["required"] == true) {
                         new_html = new_html + ' required></input>';
                         if (specific_settings["showRequiredText"] == true) {
@@ -530,7 +529,7 @@ function start_system() {
                     new_html = new_html + '</p>';
                     main_menu.innerHTML = main_menu.innerHTML + new_html;
                 } else if (newQuestion["type"] == "Email" || newQuestion["type"] == "EMAIL") {
-                    var new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="email" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
+                    let new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="email" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
                     if (newQuestion["required"] == true) {
                         new_html = new_html + ' required></input>';
                         if (specific_settings["showRequiredText"] == true) {
@@ -542,7 +541,7 @@ function start_system() {
                     new_html = new_html + '</p>';
                     main_menu.innerHTML = main_menu.innerHTML + new_html;
                 } else if (newQuestion["type"] == "Password" || newQuestion["type"] == "PW") {
-                    var new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="password" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
+                    let new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="password" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
                     if (newQuestion["required"] == true) {
                         new_html = new_html + ' required></input>';
                         if (specific_settings["showRequiredText"] == true) {
@@ -554,7 +553,7 @@ function start_system() {
                     new_html = new_html + '</p>';
                     main_menu.innerHTML = main_menu.innerHTML + new_html;
                 } else if (newQuestion["type"] == "Time" || newQuestion["type"] == "TIME") {
-                    var new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="time" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
+                    let new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="time" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
                     if (newQuestion["required"] == true) {
                         new_html = new_html + ' required></input>';
                         if (specific_settings["showRequiredText"] == true) {
@@ -566,7 +565,7 @@ function start_system() {
                     new_html = new_html + '</p>';
                     main_menu.innerHTML = main_menu.innerHTML + new_html;
                 } else if (newQuestion["type"] == "Datetime Local" || newQuestion["type"] == "DTLocal") {
-                    var new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="datetime-local" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
+                    let new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="datetime-local" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
                     if (newQuestion["required"] == true) {
                         new_html = new_html + ' required></input>';
                         if (specific_settings["showRequiredText"] == true) {
@@ -578,7 +577,7 @@ function start_system() {
                     new_html = new_html + '</p>';
                     main_menu.innerHTML = main_menu.innerHTML + new_html;
                 } else if (newQuestion["type"] == "Color" || newQuestion["type"] == "HEX") {
-                    var new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="color" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
+                    let new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="color" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
                     if (newQuestion["required"] == true) {
                         new_html = new_html + ' required></input>';
                         if (specific_settings["showRequiredText"] == true) {
@@ -590,12 +589,12 @@ function start_system() {
                     new_html = new_html + '</p>';
                     main_menu.innerHTML = main_menu.innerHTML + new_html;
                 } else if (newQuestion["type"] == "Selection" || newQuestion["type"] == "SELECT") {
-                    var new_html = '<p>' + newQuestion["name"] + ': <select class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
+                    let new_html = '<p>' + newQuestion["name"] + ': <select class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
                     if (newQuestion["required"] == true) {
                         new_html = new_html + ' required>';
 
                         for (let d_k = 0; d_k < newQuestion["placeholder"].length; d_k++) {
-                            var sel = newQuestion["placeholder"][d_k];
+                            let sel = newQuestion["placeholder"][d_k];
                             new_html = new_html + '<option value="' + sel["value"]+ '">' + sel["name"] + '</option>';
                         };
 
@@ -607,7 +606,7 @@ function start_system() {
                     } else {
                         new_html = new_html + '>';
                         for (let d_k = 0; d_k < newQuestion["placeholder"].length; d_k++) {
-                            var sel = newQuestion["placeholder"][d_k];
+                            let sel = newQuestion["placeholder"][d_k];
                             new_html = new_html + '<option value="' + sel["value"]+ '">' + sel["name"] + '</option>';
                         };
                         new_html = new_html + '</select>';
@@ -615,7 +614,7 @@ function start_system() {
                     new_html = new_html + '</p>';
                     main_menu.innerHTML = main_menu.innerHTML + new_html;
                 } else if (newQuestion["type"] == "Image" || newQuestion["type"] == "IMG") {
-                    var new_html = '<p>' + newQuestion["name"] + ': <input accept="image/*" type="file" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
+                    let new_html = '<p>' + newQuestion["name"] + ': <input accept="image/*" type="file" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
                     if (newQuestion["required"] == true) {
                         new_html = new_html + ' required></input>';
                         if (specific_settings["showRequiredText"] == true) {
@@ -627,7 +626,7 @@ function start_system() {
                     new_html = new_html + '</p>';
                     main_menu.innerHTML = main_menu.innerHTML + new_html;
                 } else if (newQuestion["type"] == "Video" || newQuestion["type"] == "VID") {
-                    var new_html = '<p>' + newQuestion["name"] + ': <input accept="video/*" type="file" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
+                    let new_html = '<p>' + newQuestion["name"] + ': <input accept="video/*" type="file" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
                     if (newQuestion["required"] == true) {
                         new_html = new_html + ' required></input>';
                         if (specific_settings["showRequiredText"] == true) {
@@ -639,7 +638,7 @@ function start_system() {
                     new_html = new_html + '</p>';
                     main_menu.innerHTML = main_menu.innerHTML + new_html;
                 } else if (newQuestion["type"] == "Audio" || newQuestion["type"] == "AUD") {
-                    var new_html = '<p>' + newQuestion["name"] + ': <input accept="audio/*" type="file" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
+                    let new_html = '<p>' + newQuestion["name"] + ': <input accept="audio/*" type="file" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
                     if (newQuestion["required"] == true) {
                         new_html = new_html + ' required></input>';
                         if (specific_settings["showRequiredText"] == true) {
@@ -651,7 +650,7 @@ function start_system() {
                     new_html = new_html + '</p>';
                     main_menu.innerHTML = main_menu.innerHTML + new_html;
                 } else if (newQuestion["type"] == "Date" || newQuestion["type"] == "DATE") {
-                    var new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="date" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
+                    let new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="date" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
                     if (newQuestion["required"] == true) {
                         new_html = new_html + ' required></input>';
                         if (specific_settings["showRequiredText"] == true) {
@@ -663,11 +662,11 @@ function start_system() {
                     new_html = new_html + '</p>';
                     main_menu.innerHTML = main_menu.innerHTML + new_html;
                 } else {
-                    var new_html = '<p>' + newQuestion["name"] + ': Failed to create question. Please ask the owner of this form to correct the question type.</p>"';
+                    let new_html = '<p>' + newQuestion["name"] + ': Failed to create question. Please ask the owner of this form to correct the question type.</p>"';
                     main_menu.innerHTML = main_menu.innerHTML + new_html;
                 };
                 if (document.getElementById(newQuestion["jsonName"] + '_input')) {
-                    var object = document.getElementById(newQuestion["jsonName"] + '_input');
+                    let object = document.getElementById(newQuestion["jsonName"] + '_input');
                     if (object.tagName.toLowerCase() == "input") {
                         if (newQuestion["autofilled"] == true) {
                             object.parentNode.style.display = "none";
@@ -678,15 +677,15 @@ function start_system() {
                 };
             };
             if (system_json["hideModeSelection"] == false) {
-                var new_html = '<p>Modes: ';
+                let new_html = '<p>Modes: ';
                 for (let b = 0; b < modes.length; b++) {
-                    var new_mode = modes[b];
+                    let new_mode = modes[b];
                     new_html = new_html + '<button type="button" id="modeButton" onclick="set_mode(\'' + new_mode["name"] + '\')">' + new_mode["name"] + '</button> ';
                 };
                 main_menu.innerHTML = main_menu.innerHTML + new_html;
             };
             if (system_json["showCurrentMode"] == true) {
-                var new_html = '<p id="current_mode">Current Mode: ' + selected_mode + '</p>';
+                let new_html = '<p id="current_mode">Current Mode: ' + selected_mode + '</p>';
                 if (specific_settings["add_html_slot2"]) {
                     new_html = new_html + specific_settings["add_html_slot2"];
                 };
@@ -708,7 +707,7 @@ function start_system() {
                 main_menu.innerHTML = main_menu.innerHTML + specific_settings["add_html_slot3"];
             };
             if (google_captcha["enabled"] == true && cloudflare_captcha["enabled"] == false) {
-                var new_html = '<input type="hidden" id="' + google_captcha["jsonName"] + '_input" name="' + google_captcha["jsonName"] + '_input"></input>';
+                let new_html = '<input type="hidden" id="' + google_captcha["jsonName"] + '_input" name="' + google_captcha["jsonName"] + '_input"></input>';
                 main_menu.innerHTML = main_menu.innerHTML + new_html;
 
                 try {
@@ -718,14 +717,14 @@ function start_system() {
                         });
                         google_captcha_enabled = true;
 
-                        var new_html = '<p class="footer">This form uses and is protected by reCAPTCHA that is used by Google\'s <a href="https://policies.google.com/privacy?hl=en-US">Privacy Policy</a> and <a href="https://policies.google.com/terms?hl=en-US">Terms of Service</a>.</p>';
+                        let new_html = '<p class="footer">This form uses and is protected by reCAPTCHA that is used by Google\'s <a href="https://policies.google.com/privacy?hl=en-US">Privacy Policy</a> and <a href="https://policies.google.com/terms?hl=en-US">Terms of Service</a>.</p>';
                         document.body.innerHTML = document.body.innerHTML + new_html;
                     });
                 } catch (err) {
                     console.warn("Google Captcha failed to load due to an error. Please make sure to use Google Captcha v3 and is in your head object!");
                 }
             } else if (google_captcha["enabled"] == false && cloudflare_captcha["enabled"] == true) {
-                var new_html = '<input type="hidden" id="' + cloudflare_captcha["jsonName"] + '_input" name="' + cloudflare_captcha["jsonName"] + '_input"></input>';
+                let new_html = '<input type="hidden" id="' + cloudflare_captcha["jsonName"] + '_input" name="' + cloudflare_captcha["jsonName"] + '_input"></input>';
                 main_menu.innerHTML = main_menu.innerHTML + new_html;
 
                 try {
@@ -745,7 +744,7 @@ function start_system() {
                 console.warn("You can't have both CAPTCHAs enabled at the same time. Disable one in your JSON settings!");
             };
             if (specific_settings["custom_css"] && (!(getIfResponseIsEmpty(specific_settings["custom_css"])))) {
-                var custom_css_url = specific_settings["custom_css"];
+                let custom_css_url = specific_settings["custom_css"];
                 if (document.getElementById("css_spreadsheet")) {
                     document.getElementById("css_spreadsheet").setAttribute("href", custom_css_url);
                 }
