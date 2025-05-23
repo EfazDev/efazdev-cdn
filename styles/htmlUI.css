@@ -111,7 +111,7 @@ button[id="hide_group_main"] {
     text-align: center;
     margin-left: auto;
     border-radius: 8px;
-    background-color: #ff4b00;
+    background: linear-gradient(90deg, #FF4B00 0%, #FF9200 100%);
     color: rgb(255, 255, 255);
     vertical-align: middle;
     justify-content: center;
@@ -125,7 +125,7 @@ button[id="hide_group_roblox"] {
     text-align: center;
     margin-left: auto;
     border-radius: 8px;
-    background-color: #ff9000;
+    background: linear-gradient(90deg, #FF9200 0%, #FFDC00 100%);
     color: rgb(255, 255, 255);
     vertical-align: middle;
     justify-content: center;
@@ -139,7 +139,35 @@ button[id="hide_group_account"] {
     text-align: center;
     margin-left: auto;
     border-radius: 8px;
-    background-color: #d0d000;
+    background: linear-gradient(90deg, #FFDC00 0%, #CDFF00 100%);
+    color: rgb(255, 255, 255);
+    vertical-align: middle;
+    justify-content: center;
+    font-family: mainfont;
+    margin-right: auto;
+}
+
+button[id="hide_reporting"] {
+    border: 1px solid white;
+    border-collapse: collapse;
+    text-align: center;
+    margin-left: auto;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #CDFF00 0%, #64FF00 100%);
+    color: rgb(255, 255, 255);
+    vertical-align: middle;
+    justify-content: center;
+    font-family: mainfont;
+    margin-right: auto;
+}
+
+button[id="hide_paid"] {
+    border: 1px solid white;
+    border-collapse: collapse;
+    text-align: center;
+    margin-left: auto;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #64FF00 0%, #00FF00 100%);
     color: rgb(255, 255, 255);
     vertical-align: middle;
     justify-content: center;
@@ -182,20 +210,6 @@ button[onclick="logOut('this')"] {
     margin-left: auto;
     border-radius: 8px;
     background-color: #34a000;
-    color: rgb(255, 255, 255);
-    vertical-align: middle;
-    justify-content: center;
-    font-family: mainfont;
-    margin-right: auto;
-}
-
-button[id="hide_reporting"] {
-    border: 1px solid white;
-    border-collapse: collapse;
-    text-align: center;
-    margin-left: auto;
-    border-radius: 8px;
-    background-color: #6dcd00;
     color: rgb(255, 255, 255);
     vertical-align: middle;
     justify-content: center;
