@@ -18,8 +18,8 @@ window.onload = function () {
                     "name": "Dashboard API"
                 },
                 {
-                    "url": "https://glitch.efaz.dev/api/swagger",
-                    "name": "Glitch API"
+                    "url": "https://railway.efaz.dev/api/swagger",
+                    "name": "Railway API"
                 }
             ],
             "default": "Main API",
@@ -44,18 +44,18 @@ window.onload = function () {
                 "name": "Main API"
             },
             {
-                "url": "https://glitch.efaz.dev/api/swagger",
-                "name": "Glitch API"
+                "url": "https://railway.efaz.dev/api/swagger",
+                "name": "Railway API"
             }
         ]
-    } else if (window.location.href.includes("?urls.primaryName=Glitch%20API")) {
-        options["customOptions"]["default"] = "Glitch API"
-        options["customOptions"]["launchUrl"] = "https://glitch.efaz.dev/api/swagger"
-        options["customOptions"]["configUrl"] = "https://glitch.efaz.dev/api/swagger"
+    } else if (window.location.href.includes("?urls.primaryName=Railway%20API")) {
+        options["customOptions"]["default"] = "Railway API"
+        options["customOptions"]["launchUrl"] = "https://railway.efaz.dev/api/swagger"
+        options["customOptions"]["configUrl"] = "https://railway.efaz.dev/api/swagger"
         options["customOptions"]["urls"] = [
             {
-                "url": "https://glitch.efaz.dev/api/swagger",
-                "name": "Glitch API"
+                "url": "https://railway.efaz.dev/api/swagger",
+                "name": "Railway API"
             },
             {
                 "url": "https://api.efaz.dev/api/swagger",
