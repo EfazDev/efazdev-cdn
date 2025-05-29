@@ -392,26 +392,12 @@ main.js:
 
                             // This is for new WebBlox objects that were added in 2025.
                             async function injectCSS2(css) {
-                                function sheetToString(sheet) {
-                                    function stringifyRule(rule) {
-                                        return rule.cssText || ''
-                                    }
-                                    var text = sheet.cssRules
-                                        ? Array.from(sheet.cssRules)
-                                            .map(rule => stringifyRule(rule))
-                                            .join('\n')
-                                        : ''
-                                    return text;
-                                }
                                 if (css) {
                                     var selectors = document.getElementsByTagName("style")
                                     selectors = Array.prototype.slice.call(selectors);
                                     selectors.forEach((selector) => {
                                         var sheet_text = sheetToString(selector.sheet)
-                                        if (!(selector.innerHTML == "")) {
-                                            sheet_text = selector.innerHTML;
-                                        }
-                                        if (selector.getAttribute("data-emotion") == "web-blox-css-mui-global" && sheet_text.includes("@font-face")) {
+                                        if ((selector.getAttribute("data-emotion") == "web-blox-css-mui-global" || selector.getAttribute("data-emotion") == "web-blox-css-mui") && sheet_text.includes("@font-face")) {
                                             if (!(selector.innerHTML.includes("Efaz's Builder Font Remover"))) {
                                                 if (selector.innerHTML == "") {
                                                     selector.innerHTML = `${sheet_text.replaceAll("Builder Sans", "BuilderRemove").replaceAll("Builder Mono", "BuilderMono")} \n\n${css}`
@@ -419,17 +405,46 @@ main.js:
                                                     selector.innerHTML = `${sheet_text.replaceAll("Builder Sans", "BuilderRemove").replaceAll("Builder Mono", "BuilderMono")} \n\n${css}`
                                                 }
                                             }
-                                        } else if (selector.getAttribute("data-emotion") == "web-blox-css-tss") {
+                                        } else if (selector.getAttribute("data-emotion") == "web-blox-css-tss" || selector.getAttribute("data-emotion") == "web-blox-css-mui") {
+                                            if (selector.innerHTML == "") { selector.innerHTML = sheet_text }
                                             if (selector.innerHTML.includes("Builder Sans")) {
                                                 selector.innerHTML = `${selector.innerHTML.replaceAll("Builder Sans", "BuilderRemove").replaceAll("Builder Mono", "BuilderMono")} \n\n${css}`
                                             }
                                         }
                                     })
+
+                                    if (document.getElementById("remove-builder-font-2") == null) {
+                                        if (css) {
+                                            const style = document.createElement("style")
+                                            style.id = "remove-builder-font-2";
+                                            style.media = "all";
+                                            style.innerHTML = css
+                                            document.head.append(style)
+                                        }
+                                    }
+
+                                    var all_links = document.getElementsByTagName("link")
+                                    all_links = Array.prototype.slice.call(all_links);
+                                    async function loopThroughArrayAsync(array, callback) {
+                                        var generated_keys = Object.keys(array);
+                                        for (a = 0; a < generated_keys.length; a++) {
+                                            var key = generated_keys[a];
+                                            var value = array[key];
+                                            await callback(key, value);
+                                        };
+                                    };
+                                    loopThroughArrayAsync(all_links, async (_, header) => {
+                                        var affect_bundles = ["Builder"]
+                                        if (header.rel && header.rel == "stylesheet" && (affect_bundles.includes(header.getAttribute("data-bundlename"))) && header.href) {
+                                            header.remove()
+                                        }
+                                    })
+
                                     setTimeout(() => { injectCSS2(css) }, 500)
                                 }
                             }
                             if (stored_css2) {
-                                overwriteResourcesUrl(stored_css2, trusted_source, 3, oldFontOnOtherSub).then(generated_css => {
+                                overwriteResourcesUrl(stored_css2, trusted_source, 1, oldFontOnOtherSub).then(generated_css => {
                                     chrome.scripting.executeScript({
                                         target: { tabId: tabId, allFrames: true },
                                         func: injectCSS2,
@@ -440,7 +455,7 @@ main.js:
                                 if (remoteStyles == true) {
                                     fetch("https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/chromeExtension/change_font2.css").then(res => { return res.text() }).then(fetched => {
                                         stored_css2 = fetched
-                                        overwriteResourcesUrl(fetched, trusted_source, 3, oldFontOnOtherSub).then(generated_css => {
+                                        overwriteResourcesUrl(fetched, trusted_source, 1, oldFontOnOtherSub).then(generated_css => {
                                             chrome.scripting.executeScript({
                                                 target: { tabId: tabId, allFrames: true },
                                                 func: injectCSS2,
@@ -451,7 +466,7 @@ main.js:
                                 } else {
                                     fetch(getChromeURL("change_font2.css")).then(res => { return res.text() }).then(fetched => {
                                         stored_css2 = fetched
-                                        overwriteResourcesUrl(fetched, trusted_source, 3, oldFontOnOtherSub).then(generated_css => {
+                                        overwriteResourcesUrl(fetched, trusted_source, 1, oldFontOnOtherSub).then(generated_css => {
                                             chrome.scripting.executeScript({
                                                 target: { tabId: tabId, allFrames: true },
                                                 func: injectCSS2,

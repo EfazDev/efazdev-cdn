@@ -142,7 +142,7 @@ inject.js:
                             // Normal Elements
                             all_links = Array.prototype.slice.call(all_links);
                             await loopThroughArrayAsync(all_links, async (_, header) => {
-                                var affect_bundles = ["StyleGuide", "Catalog", "Chat", "PlacesList", "ItemDetailsInfo", "UserSettings", "ItemPurchaseUpsell", "GameCarousel", "NotificationStream", "AccountSecurityPrompt"]
+                                var affect_bundles = ["StyleGuide", "Catalog", "Chat", "PlacesList", "ItemDetailsInfo", "UserSettings", "ItemPurchaseUpsell", "GameCarousel", "NotificationStream", "AccountSecurityPrompt", "FoundationCss"]
                                 if (header.rel && header.rel == "stylesheet" && (affect_bundles.includes(header.getAttribute("data-bundlename"))) && header.href) {
                                     var fetchLink = header.href
                                     header.setAttribute("data-bundlename", header.getAttribute("data-bundlename") + "_Accented")
