@@ -1641,7 +1641,6 @@ class Main:
             else:
                 for i in self.__events__:
                     if i and i["name"] == eventName: self.__events__.remove(i)
-        def requestThreadClosing(self): self.end_tracking = True
         def endInstance(self): 
             if self.is_studio == True: self.main_handler.endRobloxStudio(self.pid)
             else: self.main_handler.endRoblox(self.pid)
@@ -2212,7 +2211,6 @@ class Main:
                                 return json.loads(a)
                             except Exception as e:
                                 return None
-                            
                         def extract_ticket_info(ticket):
                             decoded_ticket = (urllib.parse.unquote(ticket)) + '}'
                             try:
@@ -2278,8 +2276,7 @@ class Main:
                                                 "followUserId": ticket_json.get("FollowUserId")
                                             }
                                         except Exception as e:
-                                            return None
-                                    
+                                            return None         
                         json_str = json_str + '"'
                         json_obj = fix_json_string(json_str + "}")
                         if json_obj:
@@ -2305,18 +2302,19 @@ class Main:
                                     "isTeleport": None,
                                     "followUserId": None
                                 }
-                    
-                    first_try = False
-                    try:
-                        json.loads(line)
-                        first_try = True
-                    except Exception as e:
-                        first_try = False
-                    
-                    if first_try == False:
-                        generated_data = generate_arg(line)
-                        if generated_data:
-                            self.submitEvent(eventName="onGameTeleport", data=generated_data, isLine=False)
+                        else:
+                            return {
+                                "placeId": None,
+                                "jobId": None,
+                                "username": None,
+                                "userId": None,
+                                "displayName": None,
+                                "universeId": None,
+                                "isTeleport": None,
+                                "followUserId": None
+                            }
+                    generated_data = generate_arg(line)
+                    if generated_data: self.submitEvent(eventName="onGameTeleport", data=generated_data, isLine=False)
                 elif "[DFLog::HttpTraceError] HttpResponse(" in line:
                     def generate_arg():
                         try:
@@ -2679,6 +2677,7 @@ class Main:
                                                 return                         
                 threading.Thread(target=watchDog, daemon=self.daemon).start()
                 threading.Thread(target=self.awaitRobloxClosing, daemon=self.daemon).start()
+        def requestThreadClosing(self): self.end_tracking = True
     class RobloxWindow():
         pid = None
         system_handler = None
@@ -3388,34 +3387,6 @@ class Main:
         else:
             return {"success": False, "message": "Unable to find settings file."} 
     def getBestRobloxDownloadServer(self): return self.optimal_download_location
-    def temporaryResetCustomizableVariables(self):
-        global macOS_dir
-        global macOS_studioDir
-        global macOS_beforeClientServices
-        global macOS_installedPath
-        global windows_dir
-        global windows_versions_dir
-        global windows_player_folder_name
-        global windows_studio_folder_name
-
-        org_macOS_dir = macOS_dir
-        org_macOS_studioDir = macOS_studioDir
-        org_macOS_beforeClientServices = macOS_beforeClientServices
-        org_macOS_installedPath = macOS_installedPath
-        org_windows_dir = windows_dir
-        org_windows_versions_dir = windows_versions_dir
-        org_windows_player_folder_name = windows_player_folder_name
-        org_windows_studio_folder_name = windows_studio_folder_name
-
-        macOS_dir = os.path.join(getInstallableApplicationsFolder(), "Roblox.app")
-        macOS_studioDir = os.path.join(getInstallableApplicationsFolder(), "RobloxStudio.app")
-        macOS_beforeClientServices = os.path.join("Contents", "MacOS")
-        macOS_installedPath = os.path.join(getInstallableApplicationsFolder())
-        windows_dir = os.path.join(os.getenv('LOCALAPPDATA') or "", "Roblox")
-        windows_versions_dir = os.path.join(windows_dir, "Versions")
-        windows_player_folder_name = ""
-        windows_studio_folder_name = ""
-        return self.CustomizableVariables(org_macOS_dir, org_macOS_studioDir, org_macOS_beforeClientServices, org_macOS_installedPath, org_windows_dir, org_windows_versions_dir, org_windows_player_folder_name, org_windows_studio_folder_name)
     def getLatestRobloxAppSettings(self, debug=False, bootstrapper=False, bucket=""):
         # Mac: https://clientsettingscdn.roblox.com/v2/settings/application/MacDesktopPlayer
         # Windows: https://clientsettingscdn.roblox.com/v2/settings/application/PCDesktopClient
@@ -3563,6 +3534,34 @@ class Main:
         for s in p:
             if ':' in s: key, value = s.split(':', 1); data[key] = value
         return data
+    def temporaryResetCustomizableVariables(self):
+        global macOS_dir
+        global macOS_studioDir
+        global macOS_beforeClientServices
+        global macOS_installedPath
+        global windows_dir
+        global windows_versions_dir
+        global windows_player_folder_name
+        global windows_studio_folder_name
+
+        org_macOS_dir = macOS_dir
+        org_macOS_studioDir = macOS_studioDir
+        org_macOS_beforeClientServices = macOS_beforeClientServices
+        org_macOS_installedPath = macOS_installedPath
+        org_windows_dir = windows_dir
+        org_windows_versions_dir = windows_versions_dir
+        org_windows_player_folder_name = windows_player_folder_name
+        org_windows_studio_folder_name = windows_studio_folder_name
+
+        macOS_dir = os.path.join(getInstallableApplicationsFolder(), "Roblox.app")
+        macOS_studioDir = os.path.join(getInstallableApplicationsFolder(), "RobloxStudio.app")
+        macOS_beforeClientServices = os.path.join("Contents", "MacOS")
+        macOS_installedPath = os.path.join(getInstallableApplicationsFolder())
+        windows_dir = os.path.join(os.getenv('LOCALAPPDATA') or "", "Roblox")
+        windows_versions_dir = os.path.join(windows_dir, "Versions")
+        windows_player_folder_name = ""
+        windows_studio_folder_name = ""
+        return self.CustomizableVariables(org_macOS_dir, org_macOS_studioDir, org_macOS_beforeClientServices, org_macOS_installedPath, org_windows_dir, org_windows_versions_dir, org_windows_player_folder_name, org_windows_studio_folder_name)
     def openRoblox(self, forceQuit=False, makeDupe=False, startData: typing.Union[list, str]="", debug=False, attachInstance=False, allowRobloxOtherLogDebug=False, mainLogFile="", oneThreadedInstance=True) -> "RobloxInstance | None":
         if self.getIfRobloxIsOpen():
             if forceQuit == True:
@@ -4906,26 +4905,6 @@ class Main:
         else:
             printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
             if submit_status: submit_status.submit("\033ERR[INSTALL] RobloxFastFlagsInstaller is only supported for macOS and Windows.", 100)
-    def reinstallRoblox(self, debug=False, clearUserData=True, disableRobloxAutoOpen=False, copyRobloxInstallerPath="", downloadInstaller=False):
-        if self.__main_os__ == "Darwin" or self.__main_os__ == "Windows":
-            if self.getIfRobloxIsOpen():
-                self.endRoblox()
-                if debug == True: printDebugMessage("Ending Roblox Instances..")
-
-            channel = "LIVE"
-            if downloadInstaller == True:
-                channel_res = self.getCurrentClientVersion()
-                if channel_res.get("success") == True:
-                    channel = channel_res.get("channel", "LIVE")
-                    
-            if submit_status: submit_status.submit("Uninstalling Roblox", 0)
-            self.uninstallRoblox(debug=debug, clearUserData=clearUserData)
-            if submit_status: submit_status.submit("Installing Roblox", 50)
-            self.installRoblox(debug=debug, disableRobloxAutoOpen=disableRobloxAutoOpen, copyRobloxInstallerPath=copyRobloxInstallerPath, downloadInstaller=downloadInstaller, downloadChannel=channel)
-            if submit_status: submit_status.submit("Successfully reinstalled Roblox Player!", 100)
-        else:
-            printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
-            if submit_status: submit_status.submit("\033ERR[INSTALL] RobloxFastFlagsInstaller is only supported for macOS and Windows.", 100)
     def uninstallRobloxStudio(self, clearUserData=True, debug=False):
         if self.getIfRobloxStudioIsOpen():
             self.endRobloxStudio()
@@ -4990,6 +4969,26 @@ class Main:
                 if submit_status: submit_status.submit("[UNINSTALL] Successfully uninstalled Roblox Studio!", 100)
             except Exception as e:
                 printErrorMessage(f"Something went wrong starting Roblox Installer: {str(e)}")
+        else:
+            printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
+            if submit_status: submit_status.submit("\033ERR[INSTALL] RobloxFastFlagsInstaller is only supported for macOS and Windows.", 100)
+    def reinstallRoblox(self, debug=False, clearUserData=True, disableRobloxAutoOpen=False, copyRobloxInstallerPath="", downloadInstaller=False):
+        if self.__main_os__ == "Darwin" or self.__main_os__ == "Windows":
+            if self.getIfRobloxIsOpen():
+                self.endRoblox()
+                if debug == True: printDebugMessage("Ending Roblox Instances..")
+
+            channel = "LIVE"
+            if downloadInstaller == True:
+                channel_res = self.getCurrentClientVersion()
+                if channel_res.get("success") == True:
+                    channel = channel_res.get("channel", "LIVE")
+                    
+            if submit_status: submit_status.submit("Uninstalling Roblox", 0)
+            self.uninstallRoblox(debug=debug, clearUserData=clearUserData)
+            if submit_status: submit_status.submit("Installing Roblox", 50)
+            self.installRoblox(debug=debug, disableRobloxAutoOpen=disableRobloxAutoOpen, copyRobloxInstallerPath=copyRobloxInstallerPath, downloadInstaller=downloadInstaller, downloadChannel=channel)
+            if submit_status: submit_status.submit("Successfully reinstalled Roblox Player!", 100)
         else:
             printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
             if submit_status: submit_status.submit("\033ERR[INSTALL] RobloxFastFlagsInstaller is only supported for macOS and Windows.", 100)
