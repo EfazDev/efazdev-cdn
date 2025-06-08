@@ -13,7 +13,6 @@ import json
 import time
 import zlib
 import ctypes
-import ctypes.wintypes
 import shutil
 import typing
 import hashlib
@@ -161,10 +160,10 @@ def makedirs(a): os.makedirs(a,exist_ok=True)
 class request:
     class Response:
         text: str = ""
-        json: typing.Union[dict, list, None] = None
-        ipv4: list[str] = []
-        ipv6: list[str] = []
-        redirected_urls: list[str] = []
+        json: typing.Union[typing.Dict, typing.List, None] = None
+        ipv4: typing.List[str] = []
+        ipv6: typing.List[str] = []
+        redirected_urls: typing.List[str] = []
         port: int = 0
         host: str = ""
         attempted_ip: str = ""
@@ -173,7 +172,7 @@ class request:
         ssl_issuer: str = ""
         ssl_subject: str = ""
         tls_version: str = ""
-        headers: dict[str, str] = {}
+        headers: typing.Dict[str, str] = {}
         http_version: str = ""
         path: str = ""
         url: str = ""
@@ -196,10 +195,10 @@ class request:
         def __init__(self, val): self.val = val
         def __enter__(self): return self.val
         def __exit__(self, exc_type, exc_val, exc_tb): pass
-    __DATA__ = typing.Union[dict, list, str]
-    __AUTH__ = list[str]
-    __HEADERS__ = dict[str, str]
-    __COOKIES__ = typing.Union[dict[str, str], str]
+    __DATA__ = typing.Union[typing.Dict, typing.List, str]
+    __AUTH__ = typing.List[str]
+    __HEADERS__ = typing.Dict[str, str]
+    __COOKIES__ = typing.Union[typing.Dict[str, str], str]
     def get(self, url: str, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], timeout: float=30.0, follow_redirects: bool=False) -> Response:
         import subprocess
         import json
@@ -458,21 +457,21 @@ class request:
         else: return "curl"
     def get_if_ok(self, code: int): return int(code) < 300 and int(code) >= 200
     def get_if_redirect(self, code: int): return int(code) < 400 and int(code) >= 300
-    def format_headers(self, headers: dict[str, str]={}):
+    def format_headers(self, headers: typing.Dict[str, str]={}):
         formatted = []
         for i, v in headers.items(): formatted.append("-H"); formatted.append(f"{i}: {v}")
         return formatted
-    def format_cookies(self, cookies: typing.Union[dict[str, str], str]={}):
+    def format_cookies(self, cookies: typing.Union[typing.Dict[str, str], str]={}):
         if type(cookies) is str:
             return cookies
         else:
             formatted = []
             for i, v in cookies.items(): formatted.append("-b"); formatted.append(f"{i}={v}")
             return formatted
-    def format_auth(self, auth: list[str]):
+    def format_auth(self, auth: typing.List[str]):
         if len(auth) == 2: return ["-u", f"{auth[0]}:{auth[1]}"]
         else: return []
-    def format_data(self, data: typing.Union[dict, list, str]):
+    def format_data(self, data: typing.Union[typing.Dict, typing.List, str]):
         import json
         is_json = False
         if type(data) is dict or type(data) is list: data = json.dumps(data); is_json = True
@@ -480,7 +479,7 @@ class request:
             if is_json == True: return ["-d", data, "-H", "Content-Type: application/json"]
             return ["-d", data]
         else: return []
-    def format_params(self, data: dict[str, str]={}):
+    def format_params(self, data: typing.Dict[str, str]={}):
         mai_query = ""
         if len(data.keys()) > 0:
             mai_query = "?"
@@ -756,9 +755,7 @@ class pip:
                 links = {}
                 for i in generated_list:
                     urll = f"https://pypi.org/pypi/{i}/json"
-                    if self.getIfConnectedToInternet() == False:
-                        return {"success": False}
-                    self.installLocalPythonCertificates()
+                    if self.getIfConnectedToInternet() == False: return {"success": False}
                     response = self.requests.get(urll)
                     if response.ok:
                         data = response.json
@@ -773,7 +770,6 @@ class pip:
         import re
         url = "https://www.python.org/downloads/"
         if beta == True: url = "https://www.python.org/download/pre-releases/"
-        self.installLocalPythonCertificates()
         response = self.requests.get(url)
         if response.ok: html = response.text
         else: html = ""
@@ -984,7 +980,6 @@ class pip:
                     install_to_py = subprocess.run([self.executable, pypi_download_path], stdout=self.debug == False and subprocess.DEVNULL, stderr=self.debug == False and subprocess.DEVNULL)
                     if install_to_py.returncode == 0:
                         if self.debug == True: print(f"Successfully installed pip to Python executable!")
-                        self.installLocalPythonCertificates()
                         return True
                     else: return False
                 else: return False
@@ -1276,7 +1271,6 @@ try:
     elif main_os == "Windows":
         win32com = pip_class.importModule("win32com")
 except Exception as e:
-    pip_class.installLocalPythonCertificates()
     pip_class.install(["psutil"])
     if main_os == "Darwin": pip_class.install(["posix-ipc", "pyobjc-core", "pyobjc-framework-Quartz", "pyobjc-framework-Cocoa"])
     elif main_os == "Windows": pip_class.install(["pywin32"])
@@ -3510,6 +3504,7 @@ class Main:
                 if debug == True: printDebugMessage(f"Roblox Single Instance Semaphore does not exist. You may launch Roblox without any problems!")
                 return True
         elif self.__main_os__ == "Windows":
+            import ctypes.wintypes
             kernel32 = ctypes.windll.kernel32
             mutex = kernel32.OpenMutexA(0x1F0001, ctypes.wintypes.BOOL(True), "ROBLOX_singletonMutex")
             if not (mutex == 0): 
