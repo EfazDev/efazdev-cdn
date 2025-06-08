@@ -287,8 +287,8 @@ main.js:
                             user_settings[storage_key] = {}
                         }
                         await loopThroughArrayAsync(jso["settings"], async (i, v) => {
-                            if (typeof(user_settings[storage_key][i]) == "undefined") {
-                                if (v["default"]) {user_settings[storage_key][i] = v["default"]}
+                            if (typeof (user_settings[storage_key][i]) == "undefined") {
+                                if (v["default"]) { user_settings[storage_key][i] = v["default"] }
                             }
                         })
                         callback(user_settings)
@@ -310,8 +310,8 @@ main.js:
                             user_settings[storage_key] = {}
                         }
                         await loopThroughArrayAsync(jso["settings"], async (i, v) => {
-                            if (typeof(user_settings[storage_key][i]) == "undefined") {
-                                if (v["default"]) {user_settings[storage_key][i] = v["default"]}
+                            if (typeof (user_settings[storage_key][i]) == "undefined") {
+                                if (v["default"]) { user_settings[storage_key][i] = v["default"] }
                             }
                         })
                         return user_settings
@@ -393,9 +393,18 @@ main.js:
                             // This is for new WebBlox objects that were added in 2025.
                             async function injectCSS2(css) {
                                 if (css) {
+                                    async function loopThroughArrayAsync(array, callback) {
+                                        var generated_keys = Object.keys(array);
+                                        for (a = 0; a < generated_keys.length; a++) {
+                                            var key = generated_keys[a];
+                                            var value = array[key];
+                                            await callback(key, value);
+                                        };
+                                    };
+
                                     var selectors = document.getElementsByTagName("style")
                                     selectors = Array.prototype.slice.call(selectors);
-                                    selectors.forEach((selector) => {
+                                    await loopThroughArrayAsync(selectors, async (_, selector) => {
                                         var sheet_text = sheetToString(selector.sheet)
                                         if ((selector.getAttribute("data-emotion") == "web-blox-css-mui-global" || selector.getAttribute("data-emotion") == "web-blox-css-mui") && sheet_text.includes("@font-face")) {
                                             if (!(selector.innerHTML.includes("Efaz's Builder Font Remover"))) {
@@ -406,8 +415,8 @@ main.js:
                                                 }
                                             }
                                         } else if (selector.getAttribute("data-emotion") == "web-blox-css-tss" || selector.getAttribute("data-emotion") == "web-blox-css-mui") {
-                                            if (selector.innerHTML == "") { selector.innerHTML = sheet_text }
-                                            if (selector.innerHTML.includes("Builder Sans")) {
+                                            if (sheet_text != "" && selector.getAttribute("applied_font") == "true") { selector.innerHTML = selector.innerHTML + sheet_text; selector.setAttribute("applied_font", "true") }
+                                            if (selector.innerHTML.includes("Builder Sans") && !(selector.innerHTML.includes("Efaz's Builder Font Remover"))) {
                                                 selector.innerHTML = `${selector.innerHTML.replaceAll("Builder Sans", "BuilderRemove").replaceAll("Builder Mono", "BuilderMono")} \n\n${css}`
                                             }
                                         }
@@ -425,14 +434,6 @@ main.js:
 
                                     var all_links = document.getElementsByTagName("link")
                                     all_links = Array.prototype.slice.call(all_links);
-                                    async function loopThroughArrayAsync(array, callback) {
-                                        var generated_keys = Object.keys(array);
-                                        for (a = 0; a < generated_keys.length; a++) {
-                                            var key = generated_keys[a];
-                                            var value = array[key];
-                                            await callback(key, value);
-                                        };
-                                    };
                                     loopThroughArrayAsync(all_links, async (_, header) => {
                                         var affect_bundles = ["Builder"]
                                         if (header.rel && header.rel == "stylesheet" && (affect_bundles.includes(header.getAttribute("data-bundlename"))) && header.href) {

@@ -107,8 +107,8 @@ inject.js:
                     var urlObj = window.location
                     if (urlObj.hostname == "www.roblox.com") {
                         async function injectCSS(settings) {
-                            var amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
-                            var all_links = document.getElementsByTagName("link")
+                            let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
+                            let all_links = document.getElementsByTagName("link")
 
                             async function loopThroughArrayAsync(array, callback) {
                                 if (typeof (array) == "object") {
@@ -142,11 +142,11 @@ inject.js:
                             // Normal Elements
                             all_links = Array.prototype.slice.call(all_links);
                             await loopThroughArrayAsync(all_links, async (_, header) => {
-                                var affect_bundles = ["StyleGuide", "Catalog", "Chat", "PlacesList", "ItemDetailsInfo", "UserSettings", "ItemPurchaseUpsell", "GameCarousel", "NotificationStream", "AccountSecurityPrompt", "FoundationCss"]
+                                let affect_bundles = ["StyleGuide", "Catalog", "Chat", "PlacesList", "ItemDetailsInfo", "UserSettings", "ItemPurchaseUpsell", "GameCarousel", "NotificationStream", "AccountSecurityPrompt", "FoundationCss"]
                                 if (header.rel && header.rel == "stylesheet" && (affect_bundles.includes(header.getAttribute("data-bundlename"))) && header.href) {
-                                    var fetchLink = header.href
+                                    let fetchLink = header.href
                                     header.setAttribute("data-bundlename", header.getAttribute("data-bundlename") + "_Accented")
-                                    var roblox_css = await fetch(fetchLink)
+                                    let roblox_css = await fetch(fetchLink)
                                     if (roblox_css.ok) {
                                         try {
                                             var roblox_css_res = await convertLargeResponse(roblox_css);
@@ -217,12 +217,12 @@ inject.js:
                                 }
                             };
 
-                            var converted_rgb = hexToRgb(settings["color"]);
-                            var all_styles = document.getElementsByTagName("style");
+                            let converted_rgb = hexToRgb(settings["color"]);
+                            let all_styles = document.getElementsByTagName("style");
                             all_styles = Array.prototype.slice.call(all_styles);
                             await loopThroughArrayAsync(all_styles, async (_, header) => {
-                                var change_made = false;
-                                var converted_sheet = "";
+                                let change_made = false;
+                                let converted_sheet = "";
                                 if (header.innerHTML == "") {
                                     converted_sheet = sheetToString(header.sheet);
                                 } else {

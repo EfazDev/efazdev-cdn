@@ -26,7 +26,7 @@
         "startTime": {
             "text": "Start Time (ms)",
             "type": "number",
-            "default": 75,
+            "default": 125,
             "neededSettings": [
                 "enabled"
             ]
