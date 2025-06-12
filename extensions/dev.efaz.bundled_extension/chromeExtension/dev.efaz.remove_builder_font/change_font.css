@@ -56,7 +56,7 @@ CSS is based on Roblox's servers and archive.org for old files.
 }
 
 * {
-  font-family: "BuilderRemove", sans-serif !important;
+  font-family: BuilderRemove, sans-serif !important;
 }
 
 .builder-font {
@@ -197,28 +197,27 @@ CSS is based on Roblox's servers and archive.org for old files.
 }
 
 .light-theme {
-    --config-text-font: 'BuilderRemove' !important;
+    --config-text-font: BuilderRemove !important;
 }
 
 .dark-theme {
-    --config-text-font: 'BuilderRemove' !important;
+    --config-text-font: BuilderRemove !important;
 }
 
 .system-theme {
-    --config-text-font: 'BuilderRemove' !important;
+    --config-text-font: BuilderRemove !important;
 }
 
-.text-label-large, .text-caption-large, .text-body-large {
-    font-weight: 500 !important;
-    font-size: 18px !important;
+.text-label-large, .text-caption-large, .text-body-large, .text-heading-large {
+    font-weight: 600 !important;
 }
 
-.text-label-medium, .text-caption-medium, .text-body-medium {
+.text-label-medium, .text-caption-medium, .text-body-medium, .text-heading-medium {
     font-weight: 500 !important;
     font-size: 15px !important;
 }
 
-.text-label-small, .text-caption-small, .text-body-small {
+.text-label-small, .text-caption-small, .text-body-small, .text-heading-small {
     font-weight: 500 !important;
     font-size: 15px !important;
 }

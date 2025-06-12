@@ -11,46 +11,6 @@ CSS is created based on Roblox's servers for old files. Styles using specific cl
 
 /* [Create font faces based on the files.] */
 @font-face {
-    font-family: BuilderRemove;
-    font-weight: 300;
-    font-style: normal;
-    src: url("https://css.rbxcdn.com/6eafc48312528e2515d622428b6b95cc-GothamSSm-Book.woff2") format("woff2"), url("https://css.rbxcdn.com/713e0b3a604ff4e44f55f9d1c100e8b5-GothamSSm-Book.woff") format("woff");
-    font-display: swap;
-}
-
-@font-face {
-    font-family: BuilderRemove;
-    font-weight: 325;
-    font-style: normal;
-    src: url("https://css.rbxcdn.com/6eafc48312528e2515d622428b6b95cc-GothamSSm-Book.woff2") format("woff2"), url("https://css.rbxcdn.com/713e0b3a604ff4e44f55f9d1c100e8b5-GothamSSm-Book.woff") format("woff");
-    font-display: swap;
-}
-
-@font-face {
-    font-family: BuilderRemove;
-    font-weight: 500;
-    font-style: normal;
-    src: url("https://css.rbxcdn.com/66d562e3299ee732a53db150038c026e-GothamSSm-Medium.woff2") format("woff2"), url("https://css.rbxcdn.com/2ed7693f8cf4d79466dd604c35502f76-GothamSSm-Medium.woff") format("woff");
-    font-display: swap;
-}
-
-@font-face {
-    font-family: BuilderRemove;
-    font-weight: 800;
-    font-style: normal;
-    src: url("https://css.rbxcdn.com/3c102ace52ea35b16da4383819acfa38-GothamSSm-Bold.woff2") format("woff2"), url("https://css.rbxcdn.com/fe0e9885efc341b17f7e600781493f69-GothamSSm-Bold.woff") format("woff");
-    font-display: swap;
-}
-
-@font-face {
-    font-family: BuilderMono;
-    font-weight: 400;
-    font-style: normal;
-    src: url("https://fonts.roblox.com/firamono/FiraMono-Regular.woff2") format("woff2"), url("https://fonts.roblox.com/firamono/FiraMono-Regular.woff") format("woff") !important;
-    font-display: swap;
-}
-
-@font-face {
     font-family: "Builder Sans";
     font-weight: 300;
     font-style: normal;
@@ -105,7 +65,7 @@ html {
 }
 
 * {
-  font-family: "BuilderRemove", sans-serif !important;
+  font-family: BuilderRemove, sans-serif !important;
 }
 
 strong,
@@ -248,32 +208,31 @@ span.foundation-web-button-content.relative {
 }
 
 .web-blox-css-tss-jc8j2r-message {
-    font-family: 'BuilderRemove' !important;
+    font-family: BuilderRemove !important;
 }
 
 .light-theme {
-    --config-text-font: 'BuilderRemove' !important;
+    --config-text-font: BuilderRemove !important;
 }
 
 .dark-theme {
-    --config-text-font: 'BuilderRemove' !important;
+    --config-text-font: BuilderRemove !important;
 }
 
 .system-theme {
-    --config-text-font: 'BuilderRemove' !important;
+    --config-text-font: BuilderRemove !important;
 }
 
-.text-label-large, .text-caption-large, .text-body-large {
-    font-weight: 500 !important;
-    font-size: 18px !important;
+.text-label-large, .text-caption-large, .text-body-large, .text-heading-large {
+    font-weight: 600 !important;
 }
 
-.text-label-medium, .text-caption-medium, .text-body-medium {
+.text-label-medium, .text-caption-medium, .text-body-medium, .text-heading-medium {
     font-weight: 500 !important;
     font-size: 15px !important;
 }
 
-.text-label-small, .text-caption-small, .text-body-small {
+.text-label-small, .text-caption-small, .text-body-small, .text-heading-small {
     font-weight: 500 !important;
     font-size: 15px !important;
 }
