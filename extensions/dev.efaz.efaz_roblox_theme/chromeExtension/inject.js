@@ -63,7 +63,7 @@ inject.js:
                         }
                         await loopThroughArrayAsync(jso["settings"], async (i, v) => {
                             if (typeof(user_settings[storage_key][i]) == "undefined") {
-                                if (v["default"]) {user_settings[storage_key][i] = v["default"]}
+                                if (!(typeof(v["default"]) == "undefined")) {user_settings[storage_key][i] = v["default"]}
                             }
                         })
                         callback(user_settings)
@@ -86,7 +86,7 @@ inject.js:
                         }
                         await loopThroughArrayAsync(jso["settings"], async (i, v) => {
                             if (typeof(user_settings[storage_key][i]) == "undefined") {
-                                if (v["default"]) {user_settings[storage_key][i] = v["default"]}
+                                if (!(typeof(v["default"]) == "undefined")) {user_settings[storage_key][i] = v["default"]}
                             }
                         })
                         return user_settings

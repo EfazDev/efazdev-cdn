@@ -25,7 +25,7 @@ if os.path.exists("logger_word.json"):
         # Latest Version of JSON
         if data["UseOnlineJSON"] == True:
             result = requests.get(
-                "https://raw.githubusercontent.com/EfazDev/efazdev-website-cdn.github.io/main/cdn/json/logger_word.json"
+                "https://raw.githubusercontent.com/EfazDev/efazdev-cdn/main/json/logger_word.json"
             )
             result = result.json()
             blacklisted_words = result["BlacklistedWords"]

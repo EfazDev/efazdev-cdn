@@ -6,6 +6,12 @@
             "type": "checkbox",
             "default": true
         },
+        "startTime": {
+            "text": "Start Loop Time (ms)",
+            "type": "number",
+            "default": 125,
+            "neededSettings": ["enabled"]
+        },
         "remoteStyles": {
             "text": "Use Remote Stylesheets (Stored on https://cdn.efaz.dev)",
             "type": "checkbox",

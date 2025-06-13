@@ -14,19 +14,19 @@
                 "enabled"
             ]
         },
+        "startTime": {
+            "text": "Start Loop Time (ms)",
+            "type": "number",
+            "default": 125,
+            "neededSettings": [
+                "enabled"
+            ]
+        },
         "color": {
             "text": "Custom Color Checkmark (HEX)",
             "type": "color",
             "default": "#0066FF",
             "reset": true,
-            "neededSettings": [
-                "enabled"
-            ]
-        },
-        "startTime": {
-            "text": "Start Time (ms)",
-            "type": "number",
-            "default": 125,
             "neededSettings": [
                 "enabled"
             ]

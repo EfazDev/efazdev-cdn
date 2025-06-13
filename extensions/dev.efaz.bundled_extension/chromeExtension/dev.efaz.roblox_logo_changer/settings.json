@@ -7,7 +7,7 @@
             "default": true
         },
         "loopSeconds": {
-            "text": "Amount of Miliseconds before looping",
+            "text": "Start Loop Time (ms)",
             "type": "number",
             "default": 100,
             "reset": true,

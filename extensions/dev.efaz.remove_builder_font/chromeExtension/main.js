@@ -288,7 +288,7 @@ main.js:
                         }
                         await loopThroughArrayAsync(jso["settings"], async (i, v) => {
                             if (typeof (user_settings[storage_key][i]) == "undefined") {
-                                if (v["default"]) { user_settings[storage_key][i] = v["default"] }
+                                if (!(typeof(v["default"]) == "undefined")) { user_settings[storage_key][i] = v["default"] }
                             }
                         })
                         callback(user_settings)
@@ -311,7 +311,7 @@ main.js:
                         }
                         await loopThroughArrayAsync(jso["settings"], async (i, v) => {
                             if (typeof (user_settings[storage_key][i]) == "undefined") {
-                                if (v["default"]) { user_settings[storage_key][i] = v["default"] }
+                                if (!(typeof(v["default"]) == "undefined")) { user_settings[storage_key][i] = v["default"] }
                             }
                         })
                         return user_settings
@@ -345,7 +345,7 @@ main.js:
                     if (tab.url || tab.pendingUrl) {
                         var urlObj = new URL(tab.url || tab.pendingUrl)
                         if (urlObj.hostname == "www.roblox.com") {
-                            async function injectCSS(css) {
+                            async function injectCSS(css, settings) {
                                 if (document.getElementById("remove-builder-font") == null) {
                                     if (css) {
                                         const style = document.createElement("style")
@@ -361,7 +361,7 @@ main.js:
                                     chrome.scripting.executeScript({
                                         target: { tabId: tabId, allFrames: true },
                                         func: injectCSS,
-                                        args: [generated_css]
+                                        args: [generated_css, items[storage_key]]
                                     })
                                 })
                             } else {
@@ -372,7 +372,7 @@ main.js:
                                             chrome.scripting.executeScript({
                                                 target: { tabId: tabId, allFrames: true },
                                                 func: injectCSS,
-                                                args: [generated_css]
+                                                args: [generated_css, items[storage_key]]
                                             })
                                         })
                                     })
@@ -383,7 +383,7 @@ main.js:
                                             chrome.scripting.executeScript({
                                                 target: { tabId: tabId, allFrames: true },
                                                 func: injectCSS,
-                                                args: [generated_css]
+                                                args: [generated_css, items[storage_key]]
                                             })
                                         })
                                     })
@@ -391,7 +391,7 @@ main.js:
                             }
 
                             // This is for new WebBlox objects that were added in 2025.
-                            async function injectCSS2(css) {
+                            async function injectCSS2(css, settings) {
                                 if (css) {
                                     async function loopThroughArrayAsync(array, callback) {
                                         var generated_keys = Object.keys(array);
@@ -441,7 +441,7 @@ main.js:
                                         }
                                     })
 
-                                    setTimeout(() => { injectCSS2(css) }, 500)
+                                    setTimeout(() => { injectCSS2(css, settings) }, settings["startTime"])
                                 }
                             }
                             if (stored_css2) {
@@ -449,7 +449,7 @@ main.js:
                                     chrome.scripting.executeScript({
                                         target: { tabId: tabId, allFrames: true },
                                         func: injectCSS2,
-                                        args: [generated_css]
+                                        args: [generated_css, items[storage_key]]
                                     })
                                 })
                             } else {
@@ -460,7 +460,7 @@ main.js:
                                             chrome.scripting.executeScript({
                                                 target: { tabId: tabId, allFrames: true },
                                                 func: injectCSS2,
-                                                args: [generated_css]
+                                                args: [generated_css, items[storage_key]]
                                             })
                                         })
                                     })
@@ -471,7 +471,7 @@ main.js:
                                             chrome.scripting.executeScript({
                                                 target: { tabId: tabId, allFrames: true },
                                                 func: injectCSS2,
-                                                args: [generated_css]
+                                                args: [generated_css, items[storage_key]]
                                             })
                                         })
                                     })
@@ -479,7 +479,7 @@ main.js:
                             }
                         } else if (urlObj.hostname == "devforum.roblox.com") {
                             if (devForum == true) {
-                                async function injectCSS(css, tries) {
+                                async function injectCSS(css, tries, settings) {
                                     if (css) {
                                         var new_tries = 0
                                         if (tries) {
@@ -522,13 +522,13 @@ main.js:
                                                     }
                                                 })
                                                 if (found == false) {
-                                                    setTimeout(() => { injectCSS(css, new_tries + 1) }, 100)
+                                                    setTimeout(() => { injectCSS(css, new_tries + 1, settings) }, settings["startTime"])
                                                 }
                                             } else {
-                                                setTimeout(() => { injectCSS(css, new_tries + 1) }, 100)
+                                                setTimeout(() => { injectCSS(css, new_tries + 1, settings) }, settings["startTime"])
                                             }
                                         } else {
-                                            setTimeout(() => { injectCSS(css, new_tries + 1) }, 100)
+                                            setTimeout(() => { injectCSS(css, new_tries + 1, settings) }, settings["startTime"])
                                         }
                                     }
                                 }
@@ -537,7 +537,7 @@ main.js:
                                         chrome.scripting.executeScript({
                                             target: { tabId: tabId, allFrames: true },
                                             func: injectCSS,
-                                            args: [generated_css]
+                                            args: [generated_css, 0, items[storage_key]]
                                         })
                                     })
                                 } else {
@@ -548,7 +548,7 @@ main.js:
                                                 chrome.scripting.executeScript({
                                                     target: { tabId: tabId, allFrames: true },
                                                     func: injectCSS,
-                                                    args: [generated_css]
+                                                    args: [generated_css, 0, items[storage_key]]
                                                 })
                                             })
                                         })
@@ -559,7 +559,7 @@ main.js:
                                                 chrome.scripting.executeScript({
                                                     target: { tabId: tabId, allFrames: true },
                                                     func: injectCSS,
-                                                    args: [generated_css]
+                                                    args: [generated_css, 0, items[storage_key]]
                                                 })
                                             })
                                         })
@@ -568,18 +568,7 @@ main.js:
                             }
                         } else if (urlObj.hostname == "create.roblox.com") {
                             if (overwriteCreateDashboard == true) {
-                                async function injectCSS(css, tries) {
-                                    function sheetToString(sheet) {
-                                        function stringifyRule(rule) {
-                                            return rule.cssText || ''
-                                        }
-                                        var text = sheet.cssRules
-                                            ? Array.from(sheet.cssRules)
-                                                .map(rule => stringifyRule(rule))
-                                                .join('\n')
-                                            : ''
-                                        return text;
-                                    }
+                                async function injectCSS(css, tries, settings) {
                                     if (css) {
                                         var new_tries = 0
                                         if (tries) {
@@ -599,7 +588,6 @@ main.js:
                                             }
                                         } else {
                                             var selectors = document.head.getElementsByTagName("style")
-                                            var found = false
                                             for (q = 0; q < selectors.length; q++) {
                                                 let selector = selectors[q]
                                                 let sheet_text = sheetToString(selector.sheet)
@@ -607,16 +595,14 @@ main.js:
                                                     if (!(selector.innerHTML.includes("Efaz's Builder Font Remover"))) {
                                                         if (selector.innerHTML == "") {
                                                             selector.innerHTML = `${sheet_text} \n\n${css}`
-                                                            found = true
                                                         } else if (selector.innerHTML.includes("/fonts/builder-sans/")) {
                                                             selector.innerHTML = `${sheet_text} \n\n${css}`
-                                                            found = true
                                                         }
                                                     }
                                                 }
                                             }
                                         }
-                                        setTimeout(() => { injectCSS(css, new_tries + 1) }, 500)
+                                        setTimeout(() => { injectCSS(css, new_tries + 1, settings) }, settings["startTime"])
                                     }
                                 }
                                 if (stored_creator_dashboard_css) {
@@ -624,7 +610,7 @@ main.js:
                                         chrome.scripting.executeScript({
                                             target: { tabId: tabId, allFrames: true },
                                             func: injectCSS,
-                                            args: [generated_css, 0]
+                                            args: [generated_css, 0, items[storage_key]]
                                         })
                                     })
                                 } else {
@@ -635,7 +621,7 @@ main.js:
                                                 chrome.scripting.executeScript({
                                                     target: { tabId: tabId, allFrames: true },
                                                     func: injectCSS,
-                                                    args: [generated_css, 0]
+                                                    args: [generated_css, 0, items[storage_key]]
                                                 })
                                             })
                                         })
@@ -646,7 +632,7 @@ main.js:
                                                 chrome.scripting.executeScript({
                                                     target: { tabId: tabId, allFrames: true },
                                                     func: injectCSS,
-                                                    args: [generated_css, 0]
+                                                    args: [generated_css, 0, items[storage_key]]
                                                 })
                                             })
                                         })
@@ -655,48 +641,21 @@ main.js:
                             }
                         } else if (urlObj.hostname.includes(".roblox.com")) {
                             if (otherSub == true && !(urlObj.hostname.includes("create.roblox.com"))) {
-                                async function injectCSS(css, tries) {
-                                    function sheetToString(sheet) {
-                                        function stringifyRule(rule) {
-                                            return rule.cssText || ''
-                                        }
-                                        var text = sheet.cssRules
-                                            ? Array.from(sheet.cssRules)
-                                                .map(rule => stringifyRule(rule))
-                                                .join('\n')
-                                            : ''
-                                        return text;
-                                    }
+                                async function injectCSS(css, tries, settings) {
                                     if (css) {
-                                        function sheetToString(sheet) {
-                                            function stringifyRule(rule) {
-                                                return rule.cssText || ''
-                                            }
-                                            var text = sheet.cssRules
-                                                ? Array.from(sheet.cssRules)
-                                                    .map(rule => stringifyRule(rule))
-                                                    .join('\n')
-                                                : ''
-                                            return text;
-                                        }
-
                                         var new_tries = 0
                                         if (tries) {
                                             new_tries = tries
                                         }
-                                        if (new_tries > 75) {
-                                            return
-                                        }
+
                                         if (document.querySelector("head > style:nth-child(1)")) {
                                             var selector = document.querySelector("head > style:nth-child(1)");
-                                            if (selector.sheet.cssRules[7].cssText.includes("font-face")) {
+                                            if (sheetToString(selector.sheet).includes("@font-face")) {
                                                 if (selector.innerHTML == "") {
-                                                    selector.innerHTML = css
-                                                } else if (selector.innerHTML.includes("/fonts/builder-sans/")) {
                                                     selector.innerHTML = css
                                                 }
                                             } else {
-                                                setTimeout(() => { injectCSS(css, new_tries + 1) }, 100)
+                                                setTimeout(() => { injectCSS(css, new_tries + 1) }, settings["startTime"])
                                             }
                                         } else {
                                             var selectors = document.head.getElementsByTagName("style")
@@ -707,14 +666,11 @@ main.js:
                                                     if (selector.innerHTML == "") {
                                                         selector.innerHTML = css
                                                         found = true
-                                                    } else if (selector.innerHTML.includes("/fonts/builder-sans/")) {
-                                                        selector.innerHTML = css
-                                                        found = true
                                                     }
                                                 }
                                             }
                                             if (found == false) {
-                                                setTimeout(() => { injectCSS(css, new_tries + 1) }, 100)
+                                                setTimeout(() => { injectCSS(css, new_tries + 1, settings) }, settings["startTime"])
                                             }
                                         }
                                     }
@@ -724,7 +680,7 @@ main.js:
                                         chrome.scripting.executeScript({
                                             target: { tabId: tabId, allFrames: true },
                                             func: injectCSS,
-                                            args: [generated_css, 0]
+                                            args: [generated_css, 0, items[storage_key]]
                                         })
                                     })
                                 } else {
@@ -735,7 +691,7 @@ main.js:
                                                 chrome.scripting.executeScript({
                                                     target: { tabId: tabId, allFrames: true },
                                                     func: injectCSS,
-                                                    args: [generated_css, 0]
+                                                    args: [generated_css, 0, items[storage_key]]
                                                 })
                                             })
                                         })
@@ -746,7 +702,7 @@ main.js:
                                                 chrome.scripting.executeScript({
                                                     target: { tabId: tabId, allFrames: true },
                                                     func: injectCSS,
-                                                    args: [generated_css, 0]
+                                                    args: [generated_css, 0, items[storage_key]]
                                                 })
                                             })
                                         })

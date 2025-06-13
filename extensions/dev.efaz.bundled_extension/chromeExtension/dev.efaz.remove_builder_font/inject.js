@@ -226,7 +226,7 @@ inject.js:
                         }
                         await loopThroughArrayAsync(jso["settings"], async (i, v) => {
                             if (typeof(user_settings[storage_key][i]) == "undefined") {
-                                if (v["default"]) {user_settings[storage_key][i] = v["default"]}
+                                if (!(typeof(v["default"]) == "undefined")) {user_settings[storage_key][i] = v["default"]}
                             }
                         })
                         callback(user_settings)
@@ -249,7 +249,7 @@ inject.js:
                         }
                         await loopThroughArrayAsync(jso["settings"], async (i, v) => {
                             if (typeof(user_settings[storage_key][i]) == "undefined") {
-                                if (v["default"]) {user_settings[storage_key][i] = v["default"]}
+                                if (!(typeof(v["default"]) == "undefined")) {user_settings[storage_key][i] = v["default"]}
                             }
                         })
                         return user_settings
@@ -283,7 +283,7 @@ inject.js:
                 if (tab.href) {
                     var urlObj = window.location
                     if (urlObj.hostname == "www.roblox.com") {
-                        async function injectCSS(css) {
+                        async function injectCSS(css, settings) {
                             if (document.getElementById("remove-builder-font") == null) {
                                 if (css) {
                                     const style = document.createElement("style")
@@ -296,28 +296,28 @@ inject.js:
                         }
                         if (stored_css) {
                             overwriteResourcesUrl(stored_css, trusted_source, 1, oldFontOnOtherSub).then(a => {
-                                injectCSS(a)
+                                injectCSS(a, items[storage_key])
                             })
                         } else {
                             if (remoteStyles == true) {
                                 fetch("https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/chromeExtension/change_font.css").then(res => { return res.text() }).then(fetched => {
                                     stored_css = fetched
                                     overwriteResourcesUrl(fetched, trusted_source, 1, oldFontOnOtherSub).then(a => {
-                                        injectCSS(a)
+                                        injectCSS(a, items[storage_key])
                                     })
                                 })
                             } else {
                                 fetch(getChromeURL("change_font.css")).then(res => { return res.text() }).then(fetched => {
                                     stored_css = fetched
                                     overwriteResourcesUrl(fetched, trusted_source, 1, oldFontOnOtherSub).then(a => {
-                                        injectCSS(a)
+                                        injectCSS(a, items[storage_key])
                                     })
                                 })
                             }
                         }
 
                         // This is for new WebBlox objects that were added in 2025.
-                        async function injectCSS2(css) {
+                        async function injectCSS2(css, settings) {
                             if (css) {
                                 async function loopThroughArrayAsync(array, callback) {
                                     var generated_keys = Object.keys(array);
@@ -367,33 +367,33 @@ inject.js:
                                     }
                                 })
 
-                                setTimeout(() => { injectCSS2(css) }, 500)
+                                setTimeout(() => { injectCSS2(css, settings) }, settings["startTime"])
                             }
                         }
                         if (stored_css2) {
                             overwriteResourcesUrl(stored_css2, trusted_source, 1, oldFontOnOtherSub).then(a => {
-                                injectCSS2(a)
+                                injectCSS2(a, items[storage_key])
                             })
                         } else {
                             if (remoteStyles == true) {
                                 fetch("https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/chromeExtension/change_font2.css").then(res => { return res.text() }).then(fetched => {
                                     stored_css2 = fetched
                                     overwriteResourcesUrl(fetched, trusted_source, 1, oldFontOnOtherSub).then(a => {
-                                        injectCSS2(a)
+                                        injectCSS2(a, items[storage_key])
                                     })
                                 })
                             } else {
                                 fetch(getChromeURL("change_font2.css")).then(res => { return res.text() }).then(fetched => {
                                     stored_css2 = fetched
                                     overwriteResourcesUrl(fetched, trusted_source, 1, oldFontOnOtherSub).then(a => {
-                                        injectCSS2(a)
+                                        injectCSS2(a, items[storage_key])
                                     })
                                 })
                             }
                         }
                     } else if (urlObj.hostname == "devforum.roblox.com") {
                         if (devForum == true) {
-                            async function injectCSS(css, tries) {
+                            async function injectCSS(css, tries, settings) {
                                 if (css) {
                                     var new_tries = 0
                                     if (tries) {
@@ -436,33 +436,33 @@ inject.js:
                                                 }
                                             })
                                             if (found == false) {
-                                                setTimeout(() => { injectCSS(css, new_tries + 1) }, 100)
+                                                setTimeout(() => { injectCSS(css, new_tries + 1, settings) }, settings["startTime"])
                                             }
                                         } else {
-                                            setTimeout(() => { injectCSS(css, new_tries + 1) }, 100)
+                                            setTimeout(() => { injectCSS(css, new_tries + 1, settings) }, settings["startTime"])
                                         }
                                     } else {
-                                        setTimeout(() => { injectCSS(css, new_tries + 1) }, 100)
+                                        setTimeout(() => { injectCSS(css, new_tries + 1, settings) }, settings["startTime"])
                                     }
                                 }
                             }
                             if (stored_devforum_css) {
                                 overwriteResourcesUrl(stored_devforum_css, trusted_source, 2, oldFontOnOtherSub).then(a => {
-                                    injectCSS(a)
+                                    injectCSS(a, 0, items[storage_key])
                                 })
                             } else {
                                 if (remoteStyles == true) {
                                     fetch("https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/chromeExtension/devforum_font.css").then(res => { return res.text() }).then(fetched => {
                                         stored_devforum_css = fetched
                                         overwriteResourcesUrl(fetched, trusted_source, 2, oldFontOnOtherSub).then(a => {
-                                            injectCSS(a)
+                                            injectCSS(a, 0, items[storage_key])
                                         })
                                     })
                                 } else {
                                     fetch(getChromeURL("devforum_font.css")).then(res => { return res.text() }).then(fetched => {
                                         stored_devforum_css = fetched
                                         overwriteResourcesUrl(fetched, trusted_source, 2, oldFontOnOtherSub).then(a => {
-                                            injectCSS(a)
+                                            injectCSS(a, 0, items[storage_key])
                                         })
                                     })
                                 }
@@ -470,7 +470,7 @@ inject.js:
                         }
                     } else if (urlObj.hostname == "create.roblox.com") {
                         if (overwriteCreateDashboard == true) {
-                            async function injectCSS(css, tries) {
+                            async function injectCSS(css, tries, settings) {
                                 if (css) {
                                     var new_tries = 0
                                     if (tries) {
@@ -504,26 +504,26 @@ inject.js:
                                             }
                                         }
                                     }
-                                    setTimeout(() => { injectCSS(css, new_tries + 1) }, 500)
+                                    setTimeout(() => { injectCSS(css, new_tries + 1, settings) }, settings["startTime"])
                                 }
                             }
                             if (stored_creator_dashboard_css) {
                                 overwriteResourcesUrl(stored_creator_dashboard_css, trusted_source, 3, oldFontOnOtherSub).then(a => {
-                                    injectCSS(a)
+                                    injectCSS(a, 0, items[storage_key])
                                 })
                             } else {
                                 if (remoteStyles == true) {
                                     fetch("https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/chromeExtension/creator_dashboard.css").then(res => { return res.text() }).then(fetched => {
                                         stored_creator_dashboard_css = fetched
                                         overwriteResourcesUrl(fetched, trusted_source, 3, oldFontOnOtherSub).then(a => {
-                                            injectCSS(a)
+                                            injectCSS(a, 0, items[storage_key])
                                         })
                                     })
                                 } else {
                                     fetch(getChromeURL("creator_dashboard.css")).then(res => { return res.text() }).then(fetched => {
                                         stored_creator_dashboard_css = fetched
                                         overwriteResourcesUrl(fetched, trusted_source, 3, oldFontOnOtherSub).then(a => {
-                                            injectCSS(a)
+                                            injectCSS(a, 0, items[storage_key])
                                         })
                                     })
                                 }
@@ -531,7 +531,7 @@ inject.js:
                         }
                     } else if (urlObj.hostname.includes(".roblox.com")) {
                         if (otherSub == true && !(urlObj.hostname.includes("create.roblox.com"))) {
-                            async function injectCSS(css, tries) {
+                            async function injectCSS(css, tries, settings) {
                                 if (css) {
                                     var new_tries = 0
                                     if (tries) {
@@ -545,7 +545,7 @@ inject.js:
                                                 selector.innerHTML = css
                                             }
                                         } else {
-                                            setTimeout(() => { injectCSS(css, new_tries + 1) }, 100)
+                                            setTimeout(() => { injectCSS(css, new_tries + 1, settings) }, settings["startTime"])
                                         }
                                     } else {
                                         var selectors = document.head.getElementsByTagName("style")
@@ -560,28 +560,28 @@ inject.js:
                                             }
                                         }
                                         if (found == false) {
-                                            setTimeout(() => { injectCSS(css, new_tries + 1) }, 100)
+                                            setTimeout(() => { injectCSS(css, new_tries + 1, settings) }, settings["startTime"])
                                         }
                                     }
                                 }
                             }
                             if (stored_creator_dashboard_css) {
                                 overwriteResourcesUrl(stored_creator_dashboard_css, trusted_source, 4, oldFontOnOtherSub).then(a => {
-                                    injectCSS(a)
+                                    injectCSS(a, 0, items[storage_key])
                                 })
                             } else {
                                 if (remoteStyles == true) {
                                     fetch("https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/chromeExtension/global_font.css").then(res => { return res.text() }).then(fetched => {
                                         stored_creator_dashboard_css = fetched
                                         overwriteResourcesUrl(fetched, trusted_source, 4, oldFontOnOtherSub).then(a => {
-                                            injectCSS(a)
+                                            injectCSS(a, 0, items[storage_key])
                                         })
                                     })
                                 } else {
                                     fetch(getChromeURL("global_font.css")).then(res => { return res.text() }).then(fetched => {
                                         stored_creator_dashboard_css = fetched
                                         overwriteResourcesUrl(fetched, trusted_source, 4, oldFontOnOtherSub).then(a => {
-                                            injectCSS(a)
+                                            injectCSS(a, 0, items[storage_key])
                                         })
                                     })
                                 }

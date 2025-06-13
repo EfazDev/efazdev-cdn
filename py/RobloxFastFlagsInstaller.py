@@ -12,7 +12,6 @@ import sys
 import json
 import time
 import zlib
-import ctypes
 import shutil
 import typing
 import hashlib
@@ -179,7 +178,6 @@ class request:
         method: str = ""
         scheme: str = ""
         redirected: bool = False
-        success: bool = False
         ok: bool = False
     class FileDownload(Response):
         returncode = 0
@@ -452,9 +450,27 @@ class request:
                 for i, v in processed_stderr.items(): setattr(s, i, v)
                 return s
     def get_curl(self):
+        import urllib.request
         import platform
-        if platform.system() == "Darwin": return "/usr/bin/curl"
-        else: return "curl"
+        import shutil
+        import os
+        pos_which = shutil.which("curl")
+        if os.path.exists(pos_which): return pos_which
+        elif platform.system() == "Windows" and os.path.exists(os.path.join(current_path_location, "curl")): return os.path.join(current_path_location, "curl", "curl.exe")
+        elif os.path.exists(os.path.join(current_path_location, "curl")): return os.path.join(current_path_location, "curl", "curl")
+        else: 
+            current_path_location = os.path.dirname(os.path.abspath(__file__))
+            if platform.system() == "Darwin": return None
+            elif platform.system() == "Windows":
+                pip_class = pip()
+                if platform.architecture()[0] == "32bit": urllib.request.urlretrieve("https://curl.se/windows/latest.cgi?p=win32-mingw.zip", os.path.join(current_path_location, "curl_download.zip"))
+                else: urllib.request.urlretrieve("https://curl.se/windows/latest.cgi?p=win64-mingw.zip", os.path.join(current_path_location, "curl_download.zip"))
+                if os.path.exists(os.path.join(current_path_location, "curl_download.zip")):
+                    unzip_res = pip_class.unzipFile(os.path.join(current_path_location, "curl_download.zip"), os.path.join(current_path_location, "curl"), ["curl.exe"])
+                    if unzip_res.returncode == 0: return os.path.join(current_path_location, "curl", "curl.exe")
+                    else: return None 
+                else: return None 
+            else: return None
     def get_if_ok(self, code: int): return int(code) < 300 and int(code) >= 200
     def get_if_redirect(self, code: int): return int(code) < 400 and int(code) >= 300
     def format_headers(self, headers: typing.Dict[str, str]={}):
@@ -504,7 +520,6 @@ class request:
             "path": "",
             "method": "",
             "scheme": "",
-            "success": False,
             "ok": False
         }
         for i in lines:
@@ -564,7 +579,7 @@ class request:
                     if len(sl) > 1: 
                         sl.pop(0)
                         data["status_code"] = int(sl[0].split(" ")[0])
-                        if self.get_if_ok(data["status_code"]): data["success"] = True; data["ok"] = True
+                        if self.get_if_ok(data["status_code"]): data["ok"] = True
                 elif "< " in i:
                     sl = i.replace("< ", "", 1).split(": ")
                     if len(sl) > 1: data["headers"][sl[0]] = sl[1]
@@ -605,6 +620,8 @@ class pip:
     debug = False
     ignore_same = False
     requests: request = None
+    
+    # Pip Functionalities
     def __init__(self, command: list=[], executable: str=None, debug: bool=False, find: bool=False, opposite: bool=False):
         import sys
         import os
@@ -618,9 +635,9 @@ class pip:
                 if os.path.isfile(executable): self.executable = executable
                 else: self.executable = self.findPython(opposite_arch=opposite) if find == True else sys.executable
             else: self.executable = self.findPython(opposite_arch=opposite) if find == True else sys.executable
-        if type(command) is list and len(command) > 0: self.ensurePip(); subprocess.check_call([self.executable, "-m", "pip"] + command)
-    def install(self, packages: typing.List[str]):
-        self.ensurePip()
+        if type(command) is list and len(command) > 0: self.ensure(); subprocess.check_call([self.executable, "-m", "pip"] + command)
+    def install(self, packages: typing.List[str], upgrade: bool=False):
+        self.ensure()
         import subprocess
         res = {}
         generated_list = []
@@ -629,14 +646,14 @@ class pip:
                 generated_list.append(i)
         if len(generated_list) > 0:
             try:
-                a = subprocess.call([self.executable, "-m", "pip", "install"] + generated_list, stdout=(not self.debug) and subprocess.DEVNULL or None, stderr=(not self.debug) and subprocess.DEVNULL or None)
+                a = subprocess.call([self.executable, "-m", "pip", "install"] + (["--upgrade"] if upgrade == True else []) + generated_list, stdout=(not self.debug) and subprocess.DEVNULL or None, stderr=(not self.debug) and subprocess.DEVNULL or None)
                 if a == 0: return {"success": True, "message": "Successfully installed modules!"}
                 else: return {"success": False, "message": f"Command has failed!"}
             except Exception as e:
                 return {"success": False, "message": str(e)}
         return res
     def uninstall(self, packages: typing.List[str]):
-        self.ensurePip()
+        self.ensure()
         import subprocess
         res = {}
         generated_list = []
@@ -651,7 +668,7 @@ class pip:
                 res[i] = {"success": False}
         return res
     def installed(self, packages: typing.List[str]=[], boolonly: bool=False):
-        self.ensurePip()
+        self.ensure()
         import subprocess
         import importlib.metadata
         if self.isSameRunningPythonExecutable() and not len(packages) == 0:
@@ -735,7 +752,7 @@ class pip:
                     down_path = os.path.join(current_path_location, '-'.join(generated_list) + "_download")
                     if os.path.isdir(down_path): shutil.rmtree(down_path, ignore_errors=True)
                     os.makedirs(down_path)
-                    self.ensurePip()
+                    self.ensure()
                     subprocess.check_call([self.executable, "-m", "pip", "download", "--no-binary", ":all:"] + generated_list, stdout=self.debug == False and subprocess.DEVNULL, stderr=self.debug == False and subprocess.DEVNULL, cwd=down_path)
                     a = []
                     for e in os.listdir(down_path): a.append(os.path.join(down_path, e))
@@ -744,6 +761,43 @@ class pip:
                 print(e)
                 return {"success": False}
         return {"success": False}
+    def update(self):
+        self.ensure()
+        import subprocess
+        try:
+            a = subprocess.call([self.executable, "-m", "pip", "install", "--upgrade", "pip"], stdout=(not self.debug) and subprocess.DEVNULL or None, stderr=(not self.debug) and subprocess.DEVNULL or None)
+            if a == 0: return {"success": True, "message": "Successfully installed latest version of pip!"}
+            else: return {"success": False, "message": f"Command has failed!"}
+        except Exception as e:
+            return {"success": False, "message": str(e)}
+    def ensure(self):
+        import subprocess
+        import tempfile
+        import ssl
+        if not self.executable: return False
+        ssl._create_default_https_context = ssl._create_stdlib_context
+        check_for_pip_pro = subprocess.run([self.executable, "-m", "pip"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        if check_for_pip_pro.returncode == 0:
+            return True
+        else:
+            if self.getIfConnectedToInternet() == True:
+                if self.debug == True: print(f"Downloading pip from pypi..")
+                with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as temp_file: pypi_download_path = temp_file.name
+                if self.pythonSupported(3,9,0): download_res = self.requests.download("https://bootstrap.pypa.io/get-pip.py", pypi_download_path)      
+                else: current_python_version = self.getCurrentPythonVersion(); download_res = self.requests.download(f"https://bootstrap.pypa.io/pip/{current_python_version.split('.')[0]}.{current_python_version.split('.')[1]}/get-pip.py", pypi_download_path)
+                if download_res.returncode == 0:
+                    if self.debug == True: print(f"Successfully downloaded pip! Installing to Python..")
+                    install_to_py = subprocess.run([self.executable, pypi_download_path], stdout=self.debug == False and subprocess.DEVNULL, stderr=self.debug == False and subprocess.DEVNULL)
+                    if install_to_py.returncode == 0:
+                        if self.debug == True: print(f"Successfully installed pip to Python executable!")
+                        return True
+                    else: return False
+                else: return False
+            else:
+                if self.debug == True: print(f"Unable to download pip due to no internet access.")
+                return False
+    
+    # Pypi Packages
     def getGitHubRepository(self, packages: typing.List[str]):
         import json
         res = {}
@@ -766,6 +820,8 @@ class pip:
             except Exception as e:
                 return {"success": False}
         return {"success": False}
+    
+    # Python Management
     def getLatestPythonVersion(self, beta: bool=False):
         import re
         url = "https://www.python.org/downloads/"
@@ -867,7 +923,7 @@ class pip:
             result = self.requests.download(url, pkg_file_path)            
             if result.returncode == 0:
                 subprocess.run(["open", pkg_file_path], stdout=self.debug == False and subprocess.DEVNULL, stderr=self.debug == False and subprocess.DEVNULL, check=True)
-                while self.getIfProcessIsOpened("Installer") == True:
+                while self.getIfProcessIsOpened("Installer.app") == True:
                     time.sleep(0.1)
                 if self.debug == True: print(f"Python installer has been executed: {pkg_file_path}")
             else:
@@ -885,6 +941,119 @@ class pip:
                 if self.debug == True: print(f"Python installer has been executed: {exe_file_path}")
             else:
                 if self.debug == True: print("Failed to download Python installer.")
+    def installLocalPythonCertificates(self):
+        import subprocess
+        import platform
+        import ssl
+        import os
+        if platform.system() == "Darwin":
+            ssl._create_default_https_context = ssl._create_stdlib_context
+            with open("./install_local_python_certs.py", "w") as f: f.write("""import os; import os.path; import ssl; import stat; import subprocess; import sys; STAT_0o775 = ( stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP | stat.S_IWGRP | stat.S_IXGRP | stat.S_IROTH |  stat.S_IXOTH ); openssl_dir, openssl_cafile = os.path.split(ssl.get_default_verify_paths().openssl_cafile); print(" -- pip install --upgrade certifi"); subprocess.check_call([sys.executable, "-E", "-s", "-m", "pip", "install", "--upgrade", "certifi"]); import certifi; os.chdir(openssl_dir); relpath_to_certifi_cafile = os.path.relpath(certifi.where()); print(" -- removing any existing file or link"); os.remove(openssl_cafile); print(" -- creating symlink to certifi certificate bundle"); os.symlink(relpath_to_certifi_cafile, openssl_cafile); print(" -- setting permissions"); os.chmod(openssl_cafile, STAT_0o775); print(" -- update complete");""")
+            s = subprocess.run(f'"{self.executable}" ./install_local_python_certs.py', shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            os.remove("./install_local_python_certs.py")
+            if not (s.returncode == 0) and self.debug == True: print(f"Unable to install local python certificates!")
+    def findPython(self, opposite_arch=False, latest=True):
+        import os
+        import glob
+        import platform
+        ma_os = platform.system()
+        ma_arch = platform.machine()
+        if ma_os == "Darwin":
+            target_name = "python3"
+            if opposite_arch == True and ma_arch == "arm64": target_name = "python3-intel64"
+            if os.path.exists(f"/usr/local/bin/{target_name}") and os.path.islink(f"/usr/local/bin/{target_name}"):
+                return f"/usr/local/bin/{target_name}"
+            else:
+                paths = [
+                    "/usr/local/bin/python*",
+                    "/opt/homebrew/bin/python*",
+                    "/Library/Frameworks/Python.framework/Versions/*/bin/python*",
+                    os.path.expanduser("~/Library/Python/*/bin/python*"),
+                    os.path.expanduser("~/.pyenv/versions/*/bin/python*"),
+                    os.path.expanduser("~/opt/anaconda*/bin/python*")
+                ]
+                found_paths = []
+                for path_pattern in paths:
+                    found_paths.extend(glob.glob(path_pattern))
+                if latest == True: found_paths = sorted(found_paths, reverse=True, key=lambda x: x.split("/")[-2] if "Versions" in x else x)
+                for path in found_paths:
+                    if os.path.isfile(path):
+                        if not (opposite_arch == True) and not (ma_arch.lower() == "arm64" and "intel64" in path): return path
+                        elif opposite_arch == True and ma_arch.lower() == "arm64" and "intel64" in path: return path
+                return None
+        elif ma_os == "Windows":
+            paths = [
+                os.path.expandvars(r'%LOCALAPPDATA%\\Programs\\Python\\Python*'),
+                os.path.expandvars(r'%LOCALAPPDATA%\\Programs\\Python\\Python*\\python.exe'),
+                os.path.expandvars(r'%PROGRAMFILES%\\Python*\\python.exe'),
+                os.path.expandvars(r'%PROGRAMFILES(x86)%\\Python*\\python.exe')
+            ]
+            found_paths = []
+            for path_pattern in paths:
+                found_paths.extend(glob.glob(path_pattern))
+            if latest == True: found_paths = sorted(found_paths, reverse=True, key=lambda x: x if x.endswith("python.exe") else x + "\\python.exe")
+            for path in found_paths:
+                if os.path.isfile(path):
+                    if opposite_arch == True and "-32" not in os.path.dirname(path): continue
+                    return path
+            return None
+    def findPythons(self, opposite_arch=False):
+        import os
+        import glob
+        import platform
+        ma_os = platform.system()
+        ma_arch = platform.machine()
+        founded_pythons = []
+        if ma_os == "Darwin":
+            paths = [
+                "/usr/local/bin/python*",
+                "/opt/homebrew/bin/python*",
+                "/Library/Frameworks/Python.framework/Versions/*/bin/python*",
+                os.path.expanduser("~/Library/Python/*/bin/python*"),
+                os.path.expanduser("~/.pyenv/versions/*/bin/python*"),
+                os.path.expanduser("~/opt/anaconda*/bin/python*")
+            ]
+            for path_pattern in paths:
+                for path in glob.glob(path_pattern):
+                    if os.path.isfile(path):
+                        if not (opposite_arch == True) and not (ma_arch.lower() == "arm64" and "intel64" in path): 
+                            if path.endswith("t") or path.endswith("config") or path.endswith("m") or os.path.basename(path).startswith("pythonw"): continue
+                            pip_class_for_py = pip(executable=path)
+                            founded_pythons.append(pip_class_for_py)
+                        elif ma_arch.lower() == "arm64" and "intel64" in path and opposite_arch == True:
+                            if path.endswith("t") or path.endswith("config") or path.endswith("m") or os.path.basename(path).startswith("pythonw"): continue
+                            pip_class_for_py = pip(executable=path)
+                            founded_pythons.append(pip_class_for_py)
+        elif ma_os == "Windows":
+            paths = [
+                os.path.expandvars(r'%LOCALAPPDATA%\\Programs\\Python\\Python*'),
+                os.path.expandvars(r'%LOCALAPPDATA%\\Programs\\Python\\Python*\\python.exe'),
+                os.path.expandvars(r'%PROGRAMFILES%\\Python*\\python.exe'),
+                os.path.expandvars(r'%PROGRAMFILES(x86)%\\Python*\\python.exe')
+            ]
+            for path_pattern in paths:
+                for path in glob.glob(path_pattern):
+                    if os.path.isfile(path):
+                        if opposite_arch == True and not (os.path.dirname(path).endswith("-32")): continue
+                        pip_class_for_py = pip(executable=path)
+                        founded_pythons.append(pip_class_for_py)
+        return founded_pythons
+    def isSameRunningPythonExecutable(self):
+        import os
+        import sys
+        if self.ignore_same == True: return False
+        return os.path.samefile(self.executable, sys.executable)
+    def isOppositeArchitecture(self):
+        import platform
+        import os
+        ma_os = platform.system()
+        ma_arch = platform.machine()
+        if not self.executable: return False
+        if ma_os == "Windows" and os.path.dirname(self.executable).endswith("-32"): return True
+        elif ma_os == "Darwin" and ma_arch.lower() == "arm64" and self.executable.endswith("-intel64"): return True
+        return False
+    
+    # Python Functions
     def getLocalAppData(self):
         import platform
         import os
@@ -893,11 +1062,8 @@ class pip:
         elif ma_os == "Darwin": return f'{os.path.expanduser("~")}/Library/'
         else: return f'{os.path.expanduser("~")}/'
     def getUserFolder(self):
-        import platform
         import os
-        ma_os = platform.system()
-        if ma_os == "Windows": return os.path.basename(os.path.basename(os.path.expandvars(r'%LOCALAPPDATA%')))
-        else: return os.path.expanduser("~")
+        return os.path.expanduser("~")
     def getIfLoggedInIsMacOSAdmin(self):
         import subprocess
         import platform
@@ -925,8 +1091,8 @@ class pip:
         import subprocess
         import os
         argv.pop(0)
-        subprocess.run([self.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), scriptname)] + argv)
-        sys.exit(0)
+        res = subprocess.run([self.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), scriptname)] + argv)
+        sys.exit(res.returncode)
     def endProcess(self, name="", pid=""):
         import subprocess
         import platform
@@ -949,43 +1115,6 @@ class pip:
                 return importlib.import_module(module_name)
             except Exception as e:
                 raise ImportError(f'Unable to find module "{module_name}" in Python {self.getCurrentPythonVersion()} environment.')
-    def installLocalPythonCertificates(self):
-        import subprocess
-        import platform
-        import ssl
-        import os
-        if platform.system() == "Darwin":
-            ssl._create_default_https_context = ssl._create_stdlib_context
-            with open("./install_local_python_certs.py", "w") as f: f.write("""import os; import os.path; import ssl; import stat; import subprocess; import sys; STAT_0o775 = ( stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP | stat.S_IWGRP | stat.S_IXGRP | stat.S_IROTH |  stat.S_IXOTH ); openssl_dir, openssl_cafile = os.path.split(ssl.get_default_verify_paths().openssl_cafile); print(" -- pip install --upgrade certifi"); subprocess.check_call([sys.executable, "-E", "-s", "-m", "pip", "install", "--upgrade", "certifi"]); import certifi; os.chdir(openssl_dir); relpath_to_certifi_cafile = os.path.relpath(certifi.where()); print(" -- removing any existing file or link"); os.remove(openssl_cafile); print(" -- creating symlink to certifi certificate bundle"); os.symlink(relpath_to_certifi_cafile, openssl_cafile); print(" -- setting permissions"); os.chmod(openssl_cafile, STAT_0o775); print(" -- update complete");""")
-            s = subprocess.run(f'"{self.executable}" ./install_local_python_certs.py', shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-            os.remove("./install_local_python_certs.py")
-            if not (s.returncode == 0) and self.debug == True: print(f"Unable to install local python certificates!")
-    def ensurePip(self):
-        import subprocess
-        import tempfile
-        import ssl
-        if not self.executable: return False
-        ssl._create_default_https_context = ssl._create_stdlib_context
-        check_for_pip_pro = subprocess.run([self.executable, "-m", "pip"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        if check_for_pip_pro.returncode == 0:
-            return True
-        else:
-            if self.getIfConnectedToInternet() == True:
-                if self.debug == True: print(f"Downloading pip from pypi..")
-                with tempfile.NamedTemporaryFile(suffix=".py", delete=False) as temp_file: pypi_download_path = temp_file.name
-                if self.pythonSupported(3,9,0): download_res = self.requests.download("https://bootstrap.pypa.io/get-pip.py", pypi_download_path)      
-                else: current_python_version = self.getCurrentPythonVersion(); download_res = self.requests.download(f"https://bootstrap.pypa.io/pip/{current_python_version.split('.')[0]}.{current_python_version.split('.')[1]}/get-pip.py", pypi_download_path)
-                if download_res.returncode == 0:
-                    if self.debug == True: print(f"Successfully downloaded pip! Installing to Python..")
-                    install_to_py = subprocess.run([self.executable, pypi_download_path], stdout=self.debug == False and subprocess.DEVNULL, stderr=self.debug == False and subprocess.DEVNULL)
-                    if install_to_py.returncode == 0:
-                        if self.debug == True: print(f"Successfully installed pip to Python executable!")
-                        return True
-                    else: return False
-                else: return False
-            else:
-                if self.debug == True: print(f"Unable to download pip due to no internet access.")
-                return False
     def unzipFile(self, path: str, output: str, look_for: list=[], export_out: list=[], either: bool=False, check: bool=True):
         import subprocess
         import platform
@@ -1097,7 +1226,7 @@ class pip:
             return True
         except Exception as e:
             return False
-    def is32BitWindows(self): 
+    def getIf32BitWindows(self): 
         import subprocess
         if not self.executable: return False
         if self.isSameRunningPythonExecutable():
@@ -1107,20 +1236,6 @@ class pip:
             a = subprocess.run([self.executable, "-c", 'import platform; print(platform.system() == "Windows" and platform.architecture()[0] == "32bit")'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             final = a.stdout.decode()
             return final.replace("\n", "") == "True"
-    def isOppositeArchitecture(self):
-        import platform
-        import os
-        ma_os = platform.system()
-        ma_arch = platform.machine()
-        if not self.executable: return False
-        if ma_os == "Windows" and os.path.dirname(self.executable).endswith("-32"): return True
-        elif ma_os == "Darwin" and ma_arch.lower() == "arm64" and self.executable.endswith("-intel64"): return True
-        return False
-    def isSameRunningPythonExecutable(self):
-        import os
-        import sys
-        if self.ignore_same == True: return False
-        return os.path.samefile(self.executable, sys.executable)
     def getProcessWindows(self, pid: int):
         import platform
         if (type(pid) is str and pid.isnumeric()) or type(pid) is int:
@@ -1158,106 +1273,30 @@ class pip:
                 return []
         else:
             return []
-    def findPython(self, opposite_arch=False, latest=True):
-        import os
-        import glob
-        import platform
-        ma_os = platform.system()
-        ma_arch = platform.machine()
-        if ma_os == "Darwin":
-            target_name = "python3"
-            if opposite_arch == True and ma_arch == "arm64": target_name = "python3-intel64"
-            if os.path.exists(f"/usr/local/bin/{target_name}") and os.path.islink(f"/usr/local/bin/{target_name}"):
-                return f"/usr/local/bin/{target_name}"
-            else:
-                paths = [
-                    "/usr/local/bin/python*",
-                    "/Library/Frameworks/Python.framework/Versions/*/bin/python*",
-                    os.path.expanduser("~/Library/Python/*/bin/python*")
-                ]
-                found_paths = []
-                for path_pattern in paths:
-                    found_paths.extend(glob.glob(path_pattern))
-                if latest == True: found_paths = sorted(found_paths, reverse=True, key=lambda x: x.split("/")[-2] if "Versions" in x else x)
-                for path in found_paths:
-                    if os.path.isfile(path):
-                        if not (opposite_arch == True) and not (ma_arch.lower() == "arm64" and "intel64" in path): return path
-                        elif opposite_arch == True and ma_arch.lower() == "arm64" and "intel64" in path: return path
-                return None
-        elif ma_os == "Windows":
-            paths = [
-                os.path.expandvars(r'%LOCALAPPDATA%\\Programs\\Python\\Python*'),
-                os.path.expandvars(r'%LOCALAPPDATA%\\Programs\\Python\\Python*\\python.exe'),
-                os.path.expandvars(r'%PROGRAMFILES%\\Python*\\python.exe'),
-                os.path.expandvars(r'%PROGRAMFILES(x86)%\\Python*\\python.exe')
-            ]
-
-            found_paths = []
-            for path_pattern in paths:
-                found_paths.extend(glob.glob(path_pattern))
-            if latest == True: found_paths = sorted(found_paths, reverse=True, key=lambda x: x if x.endswith("python.exe") else x + "\\python.exe")
-            for path in found_paths:
-                if os.path.isfile(path):
-                    if opposite_arch == True and "-32" not in os.path.dirname(path): continue
-                    return path
-            return None
-    def findPythons(self, opposite_arch=False):
-        import os
-        import glob
-        import platform
-        ma_os = platform.system()
-        ma_arch = platform.machine()
-        founded_pythons = []
-        if ma_os == "Darwin":
-            paths = [
-                "/usr/local/bin/python*",
-                "/Library/Frameworks/Python.framework/Versions/*/bin/python*",
-                "~/Library/Python/*/bin/python*"
-            ]
-            for path_pattern in paths:
-                for path in glob.glob(path_pattern):
-                    if os.path.isfile(path):
-                        if not (opposite_arch == True) and not (ma_arch.lower() == "arm64" and "intel64" in path): 
-                            if path.endswith("t") or path.endswith("config") or path.endswith("m") or os.path.basename(path).startswith("pythonw"): continue
-                            pip_class_for_py = pip(executable=path)
-                            founded_pythons.append(pip_class_for_py)
-                        elif ma_arch.lower() == "arm64" and "intel64" in path and opposite_arch == True:
-                            if path.endswith("t") or path.endswith("config") or path.endswith("m") or os.path.basename(path).startswith("pythonw"): continue
-                            pip_class_for_py = pip(executable=path)
-                            founded_pythons.append(pip_class_for_py)
-        elif ma_os == "Windows":
-            paths = [
-                os.path.expandvars(r'%LOCALAPPDATA%\\Programs\\Python\\Python*'),
-                os.path.expandvars(r'%LOCALAPPDATA%\\Programs\\Python\\Python*\\python.exe'),
-                os.path.expandvars(r'%PROGRAMFILES%\\Python*\\python.exe'),
-                os.path.expandvars(r'%PROGRAMFILES(x86)%\\Python*\\python.exe')
-            ]
-            for path_pattern in paths:
-                for path in glob.glob(path_pattern):
-                    if os.path.isfile(path):
-                        if opposite_arch == True and not (os.path.dirname(path).endswith("-32")): continue
-                        pip_class_for_py = pip(executable=path)
-                        founded_pythons.append(pip_class_for_py)
-        return founded_pythons
 class plist:
     def readPListFile(self, path: str):
         import os
         if os.path.exists(path):
             import plistlib
-            with open(path, "rb") as f:
-                plist_data = plistlib.load(f)
+            with open(path, "rb") as f: plist_data = plistlib.load(f)
             return plist_data
         else:
             return {}
-    def writePListFile(self, path: str, data: typing.Union[dict, str, int, float], binary: bool=False):
+    def writePListFile(self, path: str, data: typing.Union[dict, str, int, float], binary: bool=False, ns_mode: bool=False):
         try:
             import plistlib
+            import subprocess
+            import platform
+            import os
+            if ns_mode == True and platform.system() == "Darwin":
+                domain = os.path.basename(path).replace(".plist", "", 1)
+                for i, v in data.items(): subprocess.run(["defaults", "write", domain, i, str(v)], check=True)
             with open(path, "wb") as f:
                 if binary == True: plistlib.dump(data, f, fmt=plistlib.FMT_BINARY)
                 else: plistlib.dump(data, f)
             return {"success": True, "message": "Success!", "data": data}
         except Exception as e:
-            return {"success": False, "message": "Something went wrong.", "data": ""}
+            return {"success": False, "message": "Something went wrong.", "data": e}
 pip_class = pip()
 requests = request()
 plist_class = plist()
@@ -3041,7 +3080,7 @@ class Main:
                         return {"success": False, "message": "Something went wrong."}
             elif self.__main_os__ == "Windows":
                 if debug == True: printDebugMessage("Sending Request to Roblox Servers..") 
-                is32Bit = pip_class.is32BitWindows()
+                is32Bit = pip_class.getIf32BitWindows()
                 if channel:
                     res = requests.get(f"https://clientsettingscdn.roblox.com/v2/client-version/WindowsStudio{is32Bit == True and '' or '64'}/channel/{channel}")
                 else:

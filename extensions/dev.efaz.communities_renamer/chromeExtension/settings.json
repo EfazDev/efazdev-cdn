@@ -14,7 +14,7 @@
             "neededSettings": ["enabled"]
         },
         "loopSeconds": {
-            "text": "Amount of Miliseconds before looping",
+            "text": "Start Loop Time (ms)",
             "type": "number",
             "default": 100,
             "reset": true,
@@ -27,7 +27,7 @@
             "neededSettings": ["enabled"]
         },
         "massEdit": {
-            "text": "Mass Edit HTML Contents with Community or Communities in them.",
+            "text": "Mass Edit HTML Contents with Community or Communities Text",
             "type": "checkbox",
             "default": true,
             "neededSettings": ["enabled"]
