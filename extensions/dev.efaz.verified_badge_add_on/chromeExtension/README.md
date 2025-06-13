@@ -1,5 +1,5 @@
 ## Installation
-Download Here: https://github.com/EfazDev/efazdev-cdn/raw/main/cdn/extensions/dev.efaz.verified_badge_add_on/zip/chromeExtension.zip
+Download Here: https://github.com/EfazDev/efazdev-cdn/raw/main/extensions/dev.efaz.verified_badge_add_on/zip/chromeExtension.zip
 ### 1. Download the ZIP file.
 Download the ZIP file from above from GitHub.
 ### 2. Extract the file
