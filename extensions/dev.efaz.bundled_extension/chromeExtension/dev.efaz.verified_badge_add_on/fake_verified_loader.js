@@ -31,7 +31,7 @@ function start() {
         return res
     }
 
-    function applyChangesToHTML(json) {
+    function applyChangesToHTML(json, user_checkmark_color) {
         /* All of these HTML variables are extracted from the Roblox Website and modified to be functioned like the actual badge. */
         var profile_html = `<span efaz-verified-badge-addon="true" role="button" tabindex="0" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="jss16"><img class="profile-verified-badge-icon" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="[input_id]" alt="[input_id]"></span>`;
         var profile2_html = `<span efaz-verified-badge-addon="true" role="button" tabindex="0" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="jss4"><img class="profile-verified-badge-icon" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="[input_id]" alt="[input_id]"></span>`
@@ -47,6 +47,7 @@ function start() {
         var group_name_verified_html = `<span efaz-verified-badge-addon="true" role="button" tabindex="0" data-rblx-verified-badge-icon="" replicate-badge-addon-prompt="${json["id"]}_true" data-rblx-badge-icon="true" class="jss250"><img class="verified-badge-icon-group-name-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span>`;
         var group_owner_name_html = `<span><span efaz-verified-badge-addon="true" role="button" tabindex="0" data-rblx-verified-badge-icon="" replicate-badge-addon-prompt="${json["id"]}_true" data-rblx-badge-icon="true" class="verified-badge-icon-group-owner-container"><img class="verified-badge-icon-group-owner-rendered" style="margin-left: 4px;" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span></span>`;
         var reseller_html = `<span><span efaz-verified-badge-addon="true" role="button" tabindex="0" data-rblx-verified-badge-icon="" replicate-badge-addon-prompt="${json["id"]}_true" data-rblx-badge-icon="true" class="jss22"><img class="verified-badge-icon-item-resellers-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span></span>`;
+        var friends_scroll_html = `<div class="friend-tile-verified-badge"><div class="friend-tile-spacer"></div><span role="button" tabindex="0" efaz-verified-badge-addon="true" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="verified-badge jss40" style="margin-top: -2px;"><img class=" jss38" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span></div>`;
         /* All of these HTML variables are extracted from the Roblox Website and modified to be functioned like the actual badge. */
 
         /* Apply color changes to HTML above */
@@ -62,6 +63,7 @@ function start() {
             group_name_verified_html = group_name_verified_html.replace("%230066FF", user_checkmark_color);
             group_owner_name_html = group_owner_name_html.replace("%230066FF", user_checkmark_color);
             reseller_html = reseller_html.replace("%230066FF", user_checkmark_color);
+            friends_scroll_html = friends_scroll_html.replace("%230066FF", user_checkmark_color);
         } else if (approved_efazdev_users[json["id"]] && approved_efazdev_users[json["id"]]["hexColor"]) { // If the main user has selected the default, has EfazDev Approved Users enabled, and there's a color attached to the approved user.
             var hex_color = approved_efazdev_users[json["id"]]["hexColor"]
             hex_color = hex_color.replace("#", "%23");
@@ -78,6 +80,7 @@ function start() {
             group_owner_name_html = group_owner_name_html.replace("%230066FF", hex_color);
             reseller_html = reseller_html.replace("%230066FF", hex_color);
             efaz_approved_prompt_html = efaz_approved_prompt_html.replace("%23FF4B00", hex_color);
+            friends_scroll_html = friends_scroll_html.replace("%230066FF", hex_color);
         } else if (approved_by_user_users[json["id"]] && approved_by_user_users[json["id"]]["hexColor"]) { // If the main user has selected the default, has EfazDev Approved Users enabled, and there's a color attached to the approved user.
             var hex_color = approved_by_user_users[json["id"]]["hexColor"]
             hex_color = hex_color.replace("#", "%23");
@@ -94,6 +97,7 @@ function start() {
             group_owner_name_html = group_owner_name_html.replace("%230066FF", hex_color);
             reseller_html = reseller_html.replace("%230066FF", hex_color);
             efaz_approved_prompt_html = efaz_approved_prompt_html.replace("%23FF4B00", hex_color);
+            friends_scroll_html = friends_scroll_html.replace("%230066FF", hex_color);
         }
         /* Apply color changes to HTML above */
         if (!(cached_html_text[json["id"]])) {
@@ -110,7 +114,10 @@ function start() {
                 group_name_verified_html, 
                 group_owner_name_html, 
                 reseller_html, 
-                efaz_approved_prompt_html
+                efaz_approved_prompt_html,
+                prompt_html,
+                user_approved_prompt_html,
+                friends_scroll_html
             ]
         }
         return cached_html_text[json["id"]]
@@ -284,7 +291,7 @@ function start() {
                     })
                     .then((json) => {
                         if (json && json["id"]) {
-                            let fetched_html_elements = applyChangesToHTML(json)
+                            let fetched_html_elements = applyChangesToHTML(json, user_checkmark_color)
                             let hex_color = fetched_html_elements[0] 
                             let profile_html = fetched_html_elements[1] 
                             let profile2_html = fetched_html_elements[2] 
@@ -298,6 +305,9 @@ function start() {
                             let group_owner_name_html = fetched_html_elements[10] 
                             let reseller_html = fetched_html_elements[11] 
                             let efaz_approved_prompt_html = fetched_html_elements[12]
+                            let prompt_html = fetched_html_elements[13]
+                            let user_approved_prompt_html = fetched_html_elements[14]
+                            let friends_scroll_html = fetched_html_elements[15] 
 
                             let include_groups = false;
                             let userId = json["id"];
@@ -1512,6 +1522,24 @@ function start() {
                                                                 user_container.children[1].innerHTML = user_container.children[1].innerHTML.replaceAll(`class="hide"`, "")
                                                             }
                                                         }
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    }
+
+                                    var friends_scroll_containers = document.getElementsByClassName("friends-carousel-tile-labels");
+                                    friends_scroll_containers = Array.prototype.slice.call(friends_scroll_containers);
+                                    if (friends_scroll_containers.length > 0) {
+                                        friends_scroll_containers.forEach((user_container) => {
+                                            if (user_container.href && user_container.className == "friends-carousel-tile-labels") {
+                                                var userIdd = user_container.href.match(/[0-9]+/)[0];
+                                                if (json["id"] == userIdd) {
+                                                    if (user_container.children[0] && user_container.children[0].children[0]) {
+                                                        if (verifiedBadgePlacedAlready(user_container.children[0].children[0].outerHTML)) {
+                                                            return;
+                                                        }
+                                                        user_container.children[0].children[0].innerHTML = `${user_container.children[0].children[0].innerHTML} ${generateVerifiedIcon(friends_scroll_html, null, 28, 28, null, 16, 16).replace(`width='28'`, `width='16'`).replace(`height='28'`, `height='16'`)}`;
                                                     }
                                                 }
                                             }
