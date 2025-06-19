@@ -1,7 +1,7 @@
 # 
 # Roblox Fast Flags Installer
 # Made by Efaz from efaz.dev
-# v2.2.0
+# v2.2.1
 # 
 # Fulfill your Roblox needs and configuration through Python!
 # 
@@ -29,7 +29,7 @@ main_os = platform.system()
 current_path_location = os.path.dirname(os.path.abspath(__file__))
 user_folder = (main_os == "Darwin" and os.path.expanduser("~") or os.getenv('LOCALAPPDATA'))
 orangeblox_mode = os.path.exists("Main.py") and os.path.exists("PipHandler.py") and os.path.exists("OrangeAPI.py")
-script_version = "2.2.0"
+script_version = "2.2.1"
 def getLocalAppData():
     import platform
     import os
@@ -87,6 +87,7 @@ if sys.version_info >= (3, 8, 0):
         "onRobloxPassedUpdate",
         "onBloxstrapSDK",
         "onLoadedFFlags",
+        "onSaveRobloxChannel",
         "onHttpResponse",
         "onOtherRobloxLog",
         "onRobloxCrash",
@@ -198,7 +199,7 @@ class request:
         import subprocess
         import json
         try:
-            curl_res = subprocess.run([self.get_curl(), "-v", "-X", "GET", "--compressed"] + self.format_headers(headers) + self.format_auth(auth) + self.format_cookies(cookies) + [url], text=True, capture_output=True, timeout=timeout, encoding="utf-8")
+            curl_res = subprocess.run([self.get_curl(), "-v", "--compressed"] + self.format_headers(headers) + self.format_auth(auth) + self.format_cookies(cookies) + [url], text=True, capture_output=True, timeout=timeout, encoding="utf-8")
             if type(curl_res) is subprocess.CompletedProcess:
                 new_response = self.Response()
                 processed_stderr = self.process_stderr(curl_res.stderr)
@@ -207,6 +208,9 @@ class request:
                 except Exception: pass
                 new_response.url = url
                 new_response.text = curl_res.stdout
+                new_response.method = "GET"
+                new_response.scheme = self.get_url_scheme(url)
+                new_response.path = self.get_url_path(url)
                 new_response.redirected_urls = [url]
                 if self.get_if_redirect(new_response.status_code) and follow_redirects == True and new_response.headers.get("location"): 
                     req = self.get(new_response.headers.get("location"), headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True)
@@ -233,6 +237,9 @@ class request:
                 except Exception: pass
                 new_response.url = url
                 new_response.text = curl_res.stdout
+                new_response.method = "POST"
+                new_response.scheme = self.get_url_scheme(url)
+                new_response.path = self.get_url_path(url)
                 new_response.redirected_urls = [url]
                 if self.get_if_redirect(new_response.status_code) and follow_redirects == True and new_response.headers.get("location"): 
                     req = self.post(new_response.headers.get("location"), data, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True)
@@ -259,6 +266,9 @@ class request:
                 except Exception: pass
                 new_response.url = url
                 new_response.text = curl_res.stdout
+                new_response.method = "PATCH"
+                new_response.scheme = self.get_url_scheme(url)
+                new_response.path = self.get_url_path(url)
                 new_response.redirected_urls = [url]
                 if self.get_if_redirect(new_response.status_code) and follow_redirects == True and new_response.headers.get("location"): 
                     req = self.patch(new_response.headers.get("location"), data, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True)
@@ -285,6 +295,9 @@ class request:
                 except Exception: pass
                 new_response.url = url
                 new_response.text = curl_res.stdout
+                new_response.method = "PUT"
+                new_response.scheme = self.get_url_scheme(url)
+                new_response.path = self.get_url_path(url)
                 new_response.redirected_urls = [url]
                 if self.get_if_redirect(new_response.status_code) and follow_redirects == True and new_response.headers.get("location"):
                     req = self.put(new_response.headers.get("location"), data, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True)
@@ -311,6 +324,9 @@ class request:
                 except Exception: pass
                 new_response.url = url
                 new_response.text = curl_res.stdout
+                new_response.method = "DELETE"
+                new_response.scheme = self.get_url_scheme(url)
+                new_response.path = self.get_url_path(url)
                 new_response.redirected_urls = [url]
                 if self.get_if_redirect(new_response.status_code) and follow_redirects == True and new_response.headers.get("location"): 
                     req = self.delete(new_response.headers.get("location"), headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True)
@@ -337,6 +353,9 @@ class request:
                 except Exception: pass
                 new_response.url = url
                 new_response.text = curl_res.stdout
+                new_response.method = "HEAD"
+                new_response.scheme = self.get_url_scheme(url)
+                new_response.path = self.get_url_path(url)
                 new_response.redirected_urls = [url]
                 if self.get_if_redirect(new_response.status_code) and follow_redirects == True and new_response.headers.get("location"): 
                     req = self.head(new_response.headers.get("location"), headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True)
@@ -363,6 +382,9 @@ class request:
                 except Exception: pass
                 new_response.url = url
                 new_response.text = curl_res.stdout
+                new_response.method = method.upper()
+                new_response.scheme = self.get_url_scheme(url)
+                new_response.path = self.get_url_path(url)
                 new_response.redirected_urls = [url]
                 if self.get_if_redirect(new_response.status_code) and follow_redirects == True and new_response.headers.get("location"): 
                     req = self.custom(new_response.headers.get("location"), method, data, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True)
@@ -428,6 +450,15 @@ class request:
             else: return None
     def get_if_ok(self, code: int): return int(code) < 300 and int(code) >= 200
     def get_if_redirect(self, code: int): return int(code) < 400 and int(code) >= 300
+    def get_url_scheme(self, url: str): 
+        from urllib.parse import urlparse
+        obj = urlparse(url)
+        return obj.scheme
+    def get_url_path(self, url: str):
+        from urllib.parse import urlparse
+        obj = urlparse(url)
+        if obj.query == "": return obj.path
+        else: return obj.path + "?" + obj.query
     def format_headers(self, headers: typing.Dict[str, str]={}):
         formatted = []
         for i, v in headers.items(): formatted.append("-H"); formatted.append(f"{i}: {v}")
@@ -457,6 +488,7 @@ class request:
         return mai_query
     def process_stderr(self, stderr: str):
         import platform
+        import re
         lines = stderr.split("\n")
         data = {
             "ipv4": [],
@@ -471,20 +503,16 @@ class request:
             "tls_version": "",
             "headers": {},
             "http_version": "",
-            "path": "",
-            "method": "",
-            "scheme": "",
             "ok": False
         }
         for i in lines:
             if platform.system() == "Darwin": # OpenSSL based cUrl
-                if f"< HTTP/{data['http_version']} " in i:
-                    sl = i.split(f"< HTTP/{data['http_version']} ")
-                    if len(sl) > 1: 
-                        sl.pop(0)
-                        data["status_code"] = int(sl[0])
-                        if self.get_if_ok(data["status_code"]): data["success"] = True; data["ok"] = True
-                elif "< " in i:
+                status_line_match = re.match(r"< HTTP/([\d.]+) (\d+)", i)
+                if status_line_match:
+                    data["http_version"] = status_line_match.group(1)
+                    data["status_code"] = int(status_line_match.group(2))
+                    data["ok"] = self.get_if_ok(data["status_code"])
+                elif i.startswith("< "):
                     sl = i.replace("< ", "", 1).split(": ")
                     if len(sl) > 1: data["headers"][sl[0]] = sl[1]
                 elif i.startswith("* IPv4: "):
@@ -514,39 +542,20 @@ class request:
                 elif "*  subject: " in i:
                     sl = i.split("*  subject: ")
                     if len(sl) > 1: sl.pop(0); data["ssl_subject"] = sl[0]
-                elif "[HTTP/" in i:
-                    sl = i.split("[HTTP/")
-                    if len(sl) > 1: sl.pop(0); data["http_version"] = sl[0].split("]")[0]
-                    if ":scheme:" in i:
-                        sl = i.split("[:scheme: ")
-                        if len(sl) > 1: sl.pop(0); data["scheme"] = sl[0].split("]")[0]
-                    elif ":method:" in i:
-                        sl = i.split("[:method: ")
-                        if len(sl) > 1: sl.pop(0); data["method"] = sl[0].split("]")[0]
-                    elif ":path:" in i:
-                        sl = i.split("[:path: ")
-                        if len(sl) > 1: sl.pop(0); data["path"] = sl[0].split("]")[0]
             else: # Schannel based cUrl
-                if f"< HTTP/{data['http_version']} " in i:
-                    sl = i.split(f"< HTTP/{data['http_version']} ")
-                    if len(sl) > 1: 
-                        sl.pop(0)
-                        data["status_code"] = int(sl[0].split(" ")[0])
-                        if self.get_if_ok(data["status_code"]): data["ok"] = True
-                elif "< " in i:
+                status_line_match = re.match(r"< HTTP/([\d.]+) (\d+)", i)
+                if status_line_match:
+                    data["http_version"] = status_line_match.group(1)
+                    data["status_code"] = int(status_line_match.group(2))
+                    data["ok"] = self.get_if_ok(data["status_code"])
+                elif i.startswith("< "):
                     sl = i.replace("< ", "", 1).split(": ")
                     if len(sl) > 1: data["headers"][sl[0]] = sl[1]
-                elif "schannel: SSL/TLS connection renegotiated" in i:
+                elif i == "* schannel: SSL/TLS connection renegotiated":
                     data["ssl_verified"] = True
-                    data["ssl_issuer"] = "Schannel Placeholder Certificate"
-                    data["ssl_subject"] = data["host"]
+                    data["ssl_issuer"] = "CN=Schannel Placeholder Certificate"
+                    data["ssl_subject"] = f'CN={data["host"]}'
                     data["tls_version"] = "1.2"
-                elif i.startswith("> ") and "HTTP/" in i:
-                    sl = i.replace("> ", "").split(" ")
-                    if len(sl) > 2: 
-                        data["method"] = sl[0]
-                        data["path"] = sl[1]
-                        data["http_version"] = sl[2].split("HTTP/")[1]
                 elif i.startswith("* IPv4: "):
                     sl = i.split("* IPv4: ")
                     if len(sl) > 1: 
@@ -559,10 +568,7 @@ class request:
                         if data["ipv6"][0] == "(none)": data["ipv6"] = []
                 elif i.startswith("* Connected to ") and "port" in i:
                     sl = i.split("port ")
-                    if len(sl) > 1: 
-                        sl.pop(0); data["port"] = int(sl[0])
-                        if data["port"] == 443: data["scheme"] = "https"
-                        elif data["port"] == 80 or data["port"] == 8080: data["scheme"] = "http"
+                    if len(sl) > 1: sl.pop(0); data["port"] = int(sl[0])
                     sl = i.split("Connected to ")
                     if len(sl) > 1: sl.pop(0); data["host"] = sl[0].split(" ")[0]
                     sl = i.split("(")
@@ -1258,6 +1264,7 @@ class Main:
         "onRobloxPassedUpdate", 
         "onBloxstrapSDK", 
         "onLoadedFFlags", 
+        "onSaveRobloxChannel",
         "onHttpResponse", 
         "onOtherRobloxLog",
         "onRobloxCrash",
@@ -1292,6 +1299,7 @@ class Main:
         "onRobloxExit", 
         "onRobloxLog",
         "onLoadedFFlags",
+        "onSaveRobloxChannel",
         "onPlayTestStart",
         "onOpeningGame",
         "onGameUDMUXLoaded",
@@ -1338,6 +1346,7 @@ class Main:
         "onRobloxPassedUpdate": {"message": "Allow detecting when Roblox passes update checks", "level": 0, "robloxEvent": True}, 
         "onBloxstrapSDK": {"message": "Allow detecting when BloxstrapRPC is triggered", "level": 1, "robloxEvent": True}, 
         "onLoadedFFlags": {"message": "Allow detecting when FFlags are loaded", "level": 0, "robloxEvent": True}, 
+        "onSaveRobloxChannel": {"message": "Allow detecting when Roblox Channel is saved", "level": 1, "robloxEvent": True}, 
         "onHttpResponse": {"message": "Allow detecting when Roblox HttpResponses are ran", "level": 2, "robloxEvent": True}, 
         "onOtherRobloxLog": {"message": "Allow detecting when Unknown Roblox Handlers are detected", "level": 3, "robloxEvent": True},
         "onRobloxCrash": {"message": "Allow detecting when Roblox crashes", "level": 1, "robloxEvent": True},
@@ -1688,6 +1697,21 @@ class Main:
                     
                     generated_data = generate_arg()
                     if generated_data: self.submitEvent(eventName="onPlayTestStart", data=generated_data, isLine=False)
+                elif "[FLog::Output] Saved channel" in line:
+                    def generate_arg():
+                        pattern = re.compile(r"(?P<timestamp>[^\s]+),(?P<unknown_value>[^\s]+),(?P<unknown_hex>[^\s]+),(?P<unknown_number>[^\s]+) \[FLog::Output\] Saved channel '(?P<channel>[^']*)' to '(?P<name>[^']*)' for baseUrl '(?P<baseUrl>[^']*)'")
+                        match = pattern.search(line)
+                        if not match: return None
+                        data = match.groupdict()
+                        result = {
+                            "channel": data.get("channel"),
+                            "name": data.get("name"),
+                            "baseUrl": data.get("baseUrl")
+                        }
+                        if result["channel"] == "production" or result["channel"] == "": result["channel"] = "LIVE"
+                        return result
+                    generated_data = generate_arg()
+                    if generated_data: self.submitEvent(eventName="onSaveRobloxChannel", data=generated_data, isLine=False)
                 elif "[FLog::Output] Web returned cloud plugins:" in line:
                     def generate_arg():
                         match = re.search(r'\[([\d,\s]+)\]', line)
@@ -1955,6 +1979,21 @@ class Main:
                             return None
                     generated_data = generate_arg()
                     if generated_data: self.submitEvent(eventName="onBloxstrapSDK", data=generated_data, isLine=False)
+                elif "[FLog::Output] Saved channel" in line:
+                    def generate_arg():
+                        pattern = re.compile(r"(?P<timestamp>[^\s]+),(?P<unknown_value>[^\s]+),(?P<unknown_hex>[^\s]+),(?P<unknown_number>[^\s]+) \[FLog::Output\] Saved channel '(?P<channel>[^']*)' to '(?P<name>[^']*)' for baseUrl '(?P<baseUrl>[^']*)'")
+                        match = pattern.search(line)
+                        if not match: return None
+                        data = match.groupdict()
+                        result = {
+                            "channel": data.get("channel"),
+                            "name": data.get("name"),
+                            "baseUrl": data.get("baseUrl")
+                        }
+                        if result["channel"] == "production" or result["channel"] == "": result["channel"] = "LIVE"
+                        return result
+                    generated_data = generate_arg()
+                    if generated_data: self.submitEvent(eventName="onSaveRobloxChannel", data=generated_data, isLine=False)
                 elif "[FLog::Output] LoadClientSettingsFromLocal" in line: self.submitEvent(eventName="onLoadedFFlags", data=line, isLine=True)
                 elif "RobloxAudioDevice::SetMicrophoneMute true" in line: self.submitEvent(eventName="onRobloxVoiceChatMute", data=line, isLine=True)
                 elif "RobloxAudioDevice::SetMicrophoneMute false" in line: self.submitEvent(eventName="onRobloxVoiceChatUnmute", data=line, isLine=True)
@@ -2720,14 +2759,14 @@ class Main:
                         if debug == True: printDebugMessage(f"Called ({res.url}): {res.text}")
                         return {"success": True, "client_version": jso.get("clientVersionUpload"), "hash": jso.get("version"), "attempted_channel": channel or "LIVE"}
                     else:
-                        if debug == True: printDebugMessage(f"Something went wrong: {res.text}")
+                        if debug == True: printDebugMessage(f"Something went wrong: {res.text} | {res.status_code}")
                         return {"success": False, "message": "Something went wrong."}
                 else:
                     if not (channel == "LIVE"):
                         if debug == True: printDebugMessage(f"Roblox rejected update check with channel {channel}, retrying as channel LIVE: {res.text}")
                         return self.getLatestClientVersion(debug=debug, channel="LIVE")
                     else:
-                        if debug == True: printDebugMessage(f"Something went wrong: {res.text}")
+                        if debug == True: printDebugMessage(f"Something went wrong: {res.text} | {res.status_code}")
                         return {"success": False, "message": "Something went wrong."}
             elif self.__main_os__ == "Windows":
                 if debug == True: printDebugMessage("Sending Request to Roblox Servers..") 
@@ -2739,14 +2778,14 @@ class Main:
                         if debug == True: printDebugMessage(f"Called ({res.url}): {res.text}")
                         return {"success": True, "client_version": jso.get("clientVersionUpload"), "hash": jso.get("version"), "attempted_channel": channel or "LIVE"}
                     else:
-                        if debug == True: printDebugMessage(f"Something went wrong: {res.text}")
+                        if debug == True: printDebugMessage(f"Something went wrong: {res.text} | {res.status_code}")
                         return {"success": False, "message": "Something went wrong."}
                 else:
                     if not (channel == "LIVE"):
                         if debug == True: printDebugMessage(f"Roblox rejected update check with channel {channel}, retrying as channel LIVE: {res.text}")
                         return self.getLatestClientVersion(debug=debug, channel="LIVE")
                     else:
-                        if debug == True: printDebugMessage(f"Something went wrong: {res.text}")
+                        if debug == True: printDebugMessage(f"Something went wrong: {res.text} | {res.status_code}")
                         return {"success": False, "message": "Something went wrong."}
             else:
                 printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
@@ -2779,7 +2818,7 @@ class Main:
                 try:
                     registry_key = win32api.RegOpenKey(win32con.HKEY_CURRENT_USER, r"Software\ROBLOX Corporation\Environments\RobloxPlayer\Channel", 0, win32con.KEY_READ)
                     value, regtype = win32api.RegQueryValueEx(registry_key, "www.roblox.com")
-                    win32api.CloseKey(registry_key)
+                    win32api.RegCloseKey(registry_key)
                     if value.replace(" ", "") == "":  version_channel = "LIVE"
                     else:
                         if value == "production": version_channel = "LIVE"
@@ -2811,14 +2850,14 @@ class Main:
                         if debug == True: printDebugMessage(f"Called ({res.url}): {res.text}")
                         return {"success": True, "client_version": jso.get("clientVersionUpload"), "hash": jso.get("version"), "attempted_channel": channel or "LIVE"}
                     else:
-                        if debug == True: printDebugMessage(f"Something went wrong: {res.text}")
+                        if debug == True: printDebugMessage(f"Something went wrong: {res.text} | {res.status_code}")
                         return {"success": False, "message": "Something went wrong."}
                 else:
                     if not (channel == "LIVE"):
                         if debug == True: printDebugMessage(f"Roblox rejected update check with channel {channel}, retrying as channel LIVE: {res.text}")
                         return self.getLatestStudioClientVersion(debug=debug, channel="LIVE")
                     else:
-                        if debug == True: printDebugMessage(f"Something went wrong: {res.text}")
+                        if debug == True: printDebugMessage(f"Something went wrong: {res.text} | {res.status_code}")
                         return {"success": False, "message": "Something went wrong."}
             elif self.__main_os__ == "Windows":
                 if debug == True: printDebugMessage("Sending Request to Roblox Servers..") 
@@ -2831,14 +2870,14 @@ class Main:
                         if debug == True: printDebugMessage(f"Called ({res.url}): {res.text}")
                         return {"success": True, "client_version": jso.get("clientVersionUpload"), "hash": jso.get("version"), "attempted_channel": channel or "LIVE"}
                     else:
-                        if debug == True: printDebugMessage(f"Something went wrong: {res.text}")
+                        if debug == True: printDebugMessage(f"Something went wrong: {res.text} | {res.status_code}")
                         return {"success": False, "message": "Something went wrong."}
                 else:
                     if not (channel == "LIVE"):
                         if debug == True: printDebugMessage(f"Roblox rejected update check with channel {channel}, retrying as channel LIVE: {res.text}")
                         return self.getLatestStudioClientVersion(debug=debug, channel="LIVE")
                     else:
-                        if debug == True: printDebugMessage(f"Something went wrong: {res.text}")
+                        if debug == True: printDebugMessage(f"Something went wrong: {res.text} | {res.status_code}")
                         return {"success": False, "message": "Something went wrong."}
             else:
                 printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
@@ -2871,7 +2910,7 @@ class Main:
                 try:
                     registry_key = win32api.RegOpenKey(win32con.HKEY_CURRENT_USER, r"Software\ROBLOX Corporation\Environments\RobloxStudio\Channel", 0, win32con.KEY_READ)
                     value, regtype = win32api.RegQueryValueEx(registry_key, "www.roblox.com")
-                    win32api.CloseKey(registry_key)
+                    win32api.RegCloseKey(registry_key)
                     if value.replace(" ", "") == "":  version_channel = "LIVE"
                     else:
                         if value == "production": version_channel = "LIVE"
@@ -3137,10 +3176,10 @@ class Main:
                         if debug == True: printDebugMessage(f"Successfully got application settings! URL: ({res.url})")
                         return {"success": True, "application_settings": jso.get("applicationSettings")}
                     else:
-                        if debug == True: printDebugMessage(f"Something went wrong: {res.text}")
+                        if debug == True: printDebugMessage(f"Something went wrong: {res.text} | {res.status_code}")
                         return {"success": False, "message": "Something went wrong."}
                 else:
-                    if debug == True: printDebugMessage(f"Something went wrong: {res.text}")
+                    if debug == True: printDebugMessage(f"Something went wrong: {res.text} | {res.status_code}")
                     return {"success": False, "message": "Something went wrong."}
             elif self.__main_os__ == "Windows":
                 if debug == True: printDebugMessage("Sending Request to Roblox Servers..") 
@@ -3151,10 +3190,10 @@ class Main:
                         if debug == True: printDebugMessage(f"Successfully got application settings! URL: ({res.url})")
                         return {"success": True, "application_settings": jso.get("applicationSettings")}
                     else:
-                        if debug == True: printDebugMessage(f"Something went wrong: {res.text}")
+                        if debug == True: printDebugMessage(f"Something went wrong: {res.text} | {res.status_code}")
                         return {"success": False, "message": "Something went wrong."}
                 else:
-                    if debug == True: printDebugMessage(f"Something went wrong: {res.text}")
+                    if debug == True: printDebugMessage(f"Something went wrong: {res.text} | {res.status_code}")
                     return {"success": False, "message": "Something went wrong."}
             else:
                 printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
@@ -3176,10 +3215,10 @@ class Main:
                         if debug == True: printDebugMessage(f"Successfully got application settings! URL: ({res.url})")
                         return {"success": True, "application_settings": jso.get("applicationSettings")}
                     else:
-                        if debug == True: printDebugMessage(f"Something went wrong: {res.text}")
+                        if debug == True: printDebugMessage(f"Something went wrong: {res.text} | {res.status_code}")
                         return {"success": False, "message": "Something went wrong."}
                 else:
-                    if debug == True: printDebugMessage(f"Something went wrong: {res.text}")
+                    if debug == True: printDebugMessage(f"Something went wrong: {res.text} | {res.status_code}")
                     return {"success": False, "message": "Something went wrong."}
             elif self.__main_os__ == "Windows":
                 if debug == True: printDebugMessage("Sending Request to Roblox Servers..") 
@@ -3190,10 +3229,10 @@ class Main:
                         if debug == True: printDebugMessage(f"Successfully got application settings! URL: ({res.url})")
                         return {"success": True, "application_settings": jso.get("applicationSettings")}
                     else:
-                        if debug == True: printDebugMessage(f"Something went wrong: {res.text}")
+                        if debug == True: printDebugMessage(f"Something went wrong: {res.text} | {res.status_code}")
                         return {"success": False, "message": "Something went wrong."}
                 else:
-                    if debug == True: printDebugMessage(f"Something went wrong: {res.text}")
+                    if debug == True: printDebugMessage(f"Something went wrong: {res.text} | {res.status_code}")
                     return {"success": False, "message": "Something went wrong."}
             else:
                 printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
@@ -3201,7 +3240,7 @@ class Main:
         except Exception as e:
             if debug == True: printDebugMessage(str(e))
             return {"success": False, "message": "There was an error checking. Please check your internet connection!"}
-    def prepareMultiInstance(self, required=False, debug=False, awaitRobloxClosure=True):
+    def prepareMultiInstance(self, debug=False, awaitRobloxClosure=True, allowReattachment=True):
         if self.__main_os__ == "Darwin":
             try:
                 posix_ipc.unlink_semaphore("/RobloxPlayerUniq")
@@ -3213,45 +3252,54 @@ class Main:
         elif self.__main_os__ == "Windows":
             import ctypes.wintypes
             kernel32 = ctypes.windll.kernel32
-            mutex = kernel32.OpenMutexA(0x1F0001, ctypes.wintypes.BOOL(True), "ROBLOX_singletonMutex")
-            if not (mutex == 0): 
-                if debug == True: printDebugMessage("Unable to attach to mutex because it's already created by Roblox or by an another script.")
-                return False
-            else:
-                def hold_mutex():
-                    mutex = kernel32.CreateMutexW(None, ctypes.wintypes.BOOL(True), "ROBLOX_singletonMutex")
-                    if mutex:
-                        try:
-                            if awaitRobloxClosure == True:
-                                while self.getIfRobloxIsOpen(): time.sleep(1)
-                            else:
-                                while True: time.sleep(1)
-                            kernel32.ReleaseMutex(mutex)
-                        except Exception as e: kernel32.ReleaseMutex(mutex)
-                def hold_mutex2():
-                    mutex = kernel32.CreateMutexA(None, ctypes.wintypes.BOOL(True), "ROBLOX_singletonMutex")
-                    if mutex:
-                        try:
-                            if awaitRobloxClosure == True:
-                                while self.getIfRobloxIsOpen(): time.sleep(1)
-                            else:
-                                while True: time.sleep(1)
-                            kernel32.ReleaseMutex(mutex)
-                        except Exception as e: kernel32.ReleaseMutex(mutex)
-                def hold_mutex3():
-                    mutex = kernel32.CreateMutexA(None, ctypes.wintypes.BOOL(True), "ROBLOX_fastflagsInstallerSingleton")
-                    if mutex:
-                        try:
-                            if awaitRobloxClosure == True:
-                                while self.getIfRobloxIsOpen(): time.sleep(1)
-                            else:
-                                while True: time.sleep(1)
-                            kernel32.ReleaseMutex(mutex)
-                        except Exception as e: kernel32.ReleaseMutex(mutex)
-                threading.Thread(target=hold_mutex).start()
-                threading.Thread(target=hold_mutex2).start()
-                threading.Thread(target=hold_mutex3).start()
-                return True
+            mutexes_events = [["ROBLOX_singletonEvent", b"ROBLOX_singletonEvent"], ["ROBLOX_SingletonEvent", b"ROBLOX_SingletonEvent"], ["ROBLOX_singletonMutex", b"ROBLOX_singletonMutex"]]
+            is_created = False
+            for mutex_names in mutexes_events:
+                mutex_name = mutex_names[0]
+                mutex_bytename = mutex_names[1]
+                mutex = kernel32.OpenMutexA(0x1F0001, ctypes.wintypes.BOOL(True), mutex_bytename)
+                mutex2 = kernel32.OpenMutexW(0x1F0001, ctypes.wintypes.BOOL(True), mutex_name)
+                if not (mutex and mutex2): 
+                    if allowReattachment == True:
+                        if self.getIfRobloxIsOpen():
+                            if debug == True: printDebugMessage(f"Reattaching mutexes under name: {mutex_name}.")
+                            self.endRoblox()
+                    else:
+                        if mutex: kernel32.CloseHandle(mutex)
+                        if mutex2: kernel32.CloseHandle(mutex2)
+                        if debug == True: printDebugMessage("Unable to attach to mutex because it's already created by Roblox or by an another script.")
+                        return False
+                    def hold_mutex(mu_name):
+                        mutexW = kernel32.CreateMutexW(None, ctypes.wintypes.BOOL(True), mu_name)
+                        if mutexW:
+                            try:
+                                if awaitRobloxClosure == True:
+                                    while self.getIfRobloxIsOpen(): time.sleep(1)
+                                else:
+                                    while True: time.sleep(1)
+                            except Exception as e: 
+                                if debug == True: printDebugMessage(f"There was an error holding mutex W: {str(e)}")
+                            finally: kernel32.ReleaseMutex(mutexW)
+                        else:
+                            if debug == True: printDebugMessage(f"There was an error holding mutex W due to response: {mutexW}")
+                    def hold_mutex2(mu_name):
+                        mutexA = kernel32.CreateMutexA(None, ctypes.wintypes.BOOL(True), mu_name)
+                        if mutexA:
+                            try:
+                                if awaitRobloxClosure == True:
+                                    while self.getIfRobloxIsOpen(): time.sleep(1)
+                                else:
+                                    while True: time.sleep(1)
+                                kernel32.ReleaseMutex(mutexA)
+                            except Exception as e: 
+                                if debug == True: printDebugMessage(f"There was an error holding mutex A: {str(e)}")
+                            finally: kernel32.ReleaseMutex(mutexA)
+                        else:
+                            if debug == True: printDebugMessage(f"There was an error holding mutex A due to response: {mutexA}")
+                    threading.Thread(target=hold_mutex, args=[mutex_name]).start()
+                    threading.Thread(target=hold_mutex2, args=[mutex_bytename]).start()
+                    is_created = True
+            return is_created
         else:
             printLog("RobloxFastFlagsInstaller is only supported for macOS and Windows.")
             return False
@@ -3303,7 +3351,7 @@ class Main:
                 for e in s: startData.remove(e)
             if makeDupe == True:
                 if self.getIfRobloxIsOpen() == True:
-                    self.prepareMultiInstance(debug=debug, required=True)
+                    self.prepareMultiInstance(debug=debug)
                     # com = f"open -n -a \'{os.path.join(macOS_dir, macOS_beforeClientServices, 'RobloxPlayer')}\' {startData}"
                     if debug == True: printDebugMessage("Running Roblox Player Unix Executable..")
                     a = subprocess.run(["/usr/bin/open", "-n", "-a", os.path.join(macOS_dir, macOS_beforeClientServices, "RobloxPlayer")] + (startData if type(startData) is list else startData.split(" ")), check=True)
@@ -3321,7 +3369,7 @@ class Main:
                                 else: time.sleep(0.5)
                             test_instance.requestThreadClosing()
                             if self.getIfRobloxIsOpen() == True:
-                                self.prepareMultiInstance(debug=debug, required=True)
+                                self.prepareMultiInstance(debug=debug)
                                 pid = self.getLatestOpenedRobloxPid()
                                 if pid: return self.RobloxInstance(self, pid=pid, log_file=mainLogFile, debug_mode=debug, allow_other_logs=allowRobloxOtherLogDebug, await_log_creation=True, one_threaded=oneThreadedInstance)
                 else:
@@ -3346,23 +3394,15 @@ class Main:
                             if pid: return self.RobloxInstance(self, pid=pid, log_file=mainLogFile, debug_mode=debug, allow_other_logs=allowRobloxOtherLogDebug, await_log_creation=True, one_threaded=oneThreadedInstance)
         elif self.__main_os__ == "Windows":
             created_mutex = False
-            if not self.getIfRobloxIsOpen():
-                if makeDupe == True:
-                   created_mutex = self.prepareMultiInstance(debug=debug)
-                   if created_mutex == True:
-                       if debug == True: printDebugMessage("Successfully attached the mutex! Once this window closes, all the other Roblox windows will close.")
-                   else:
-                       if debug == True: printDebugMessage("There's an issue trying to create a mutex!")
-            else:
-                if len(self.getAllOpenedRobloxWindows()) > 0:
-                    if debug == True and makeDupe == False: printDebugMessage("Roblox is currently open right now and multiple instance is disabled!")
-                elif makeDupe == True:
+            if makeDupe == True:
+                try:
                     created_mutex = self.prepareMultiInstance(debug=debug)
                     if created_mutex == True:
                         if debug == True: printDebugMessage("Successfully attached the mutex! Once this window closes, all the other Roblox windows will close.")
                     else:
-                        if debug == True: printDebugMessage("There's an issue trying to create a mutex!")
-
+                        if debug == True: printDebugMessage("There's an issue trying to create a mutex! This may be because the mutex was already taken!")
+                except Exception:
+                    if debug == True: printDebugMessage("There's an issue trying to create a mutex!")
             most_recent_roblox_version_dir = self.getRobloxInstallFolder()
             if most_recent_roblox_version_dir:
                 if debug == True: printDebugMessage("Running RobloxPlayerBeta.exe..")
@@ -4754,13 +4794,15 @@ if __name__ == "__main__":
         useVulkan = input("> ")
         generated_json["FFlagTaskSchedulerLimitTargetFpsTo2402"] = "false"
 
-        if main_os == "Darwin": generated_json["FFlagDebugGraphicsDisableMetal"] =  "true"
+        if fpsCap == None: generated_json["DFIntTaskSchedulerTargetFps"] = "9999"
+        else: generated_json["DFIntTaskSchedulerTargetFps"] = fpsCap
 
-        if fpsCap == None: generated_json["DFIntTaskSchedulerTargetFps"] = 99999
-        else: generated_json["DFIntTaskSchedulerTargetFps"] = int(fpsCap)
-
-        if isYes(useVulkan) == True: generated_json["FFlagDebugGraphicsPreferVulkan"] = "true"
-        elif isNo(useVulkan) == True: generated_json["FFlagDebugGraphicsPreferVulkan"] = "false"
+        if isYes(useVulkan) == True: 
+            generated_json["FFlagDebugGraphicsPreferVulkan"] = "true"
+            if main_os == "Darwin": generated_json["FFlagDebugGraphicsDisableMetal"] =  "true"
+        elif isNo(useVulkan) == True: 
+            generated_json["FFlagDebugGraphicsPreferVulkan"] = "false"
+            if main_os == "Darwin": generated_json["FFlagDebugGraphicsDisableMetal"] =  "false"
         elif isRequestClose(useVulkan) == True:
             printMainMessage("Ending installation..")
             sys.exit(0)
@@ -4813,7 +4855,7 @@ if __name__ == "__main__":
     elif isRequestClose(installVerifiedBadge) == True:
         printMainMessage("Ending installation..")
         sys.exit(0)
-    elif isNo(installVerifiedBadge) == True: generated_json["FStringWhitelistVerifiedUserId"] = ""
+    elif isNo(installVerifiedBadge) == True: generated_json["FStringWhitelistVerifiedUserId"] = None
 
     # Rename Charts to Discover
     printWarnMessage("--- Replace Charts ---")
@@ -4825,15 +4867,15 @@ if __name__ == "__main__":
         sys.exit(0)
     elif isNo(installRenameCharts) == True: generated_json["FFlagLuaAppChartsPageRenameIXP"] = "true"
 
-    if main_os == "Windows":
-        # Enable Developer Tools
-        printWarnMessage("--- Enable Developer Tools ---")
-        printMainMessage("Would you like to enable Developer Tools inside of the Roblox App (when website frame is opened) (Ctrl+Shift+I)? (y/n)")
-        installEnableDeveloper = input("> ")
-        if isYes(installEnableDeveloper) == True: generated_json["FFlagDebugEnableNewWebView2DevTool"] = "true"
-        elif isRequestClose(installEnableDeveloper) == True:
-            printMainMessage("Ending installation..")
-            sys.exit(0)
+    # Enable Developer Tools
+    printWarnMessage("--- Enable Developer Tools ---")
+    printMainMessage("Would you like to enable Developer Tools inside of the Roblox App (when website frame is opened) (Ctrl+Shift+I)? (y/n)")
+    installEnableDeveloper = input("> ")
+    if isYes(installEnableDeveloper) == True: generated_json["FFlagDebugEnableNewWebView2DevTool"] = "true"
+    elif isRequestClose(installEnableDeveloper) == True:
+        printMainMessage("Ending installation..")
+        sys.exit(0)
+    elif isNo(installEnableDeveloper) == True: generated_json["FFlagDebugEnableNewWebView2DevTool"] = "false"
 
     # Display FPS
     printWarnMessage("--- Display FPS ---")
@@ -4959,7 +5001,7 @@ if __name__ == "__main__":
     elif isRequestClose(installDisableFullScreenTitle) == True:
         printMainMessage("Ending installation..")
         sys.exit(0)
-    elif isNo(installDisableFullScreenTitle) == True: generated_json["FIntFullscreenTitleBarTriggerDelayMillis"] = ""
+    elif isNo(installDisableFullScreenTitle) == True: generated_json["FIntFullscreenTitleBarTriggerDelayMillis"] = None
 
     # Enable Red Text Font
     printWarnMessage("--- Enable Red Text Font ---")
@@ -4969,7 +5011,7 @@ if __name__ == "__main__":
     elif isRequestClose(installRedText) == True:
         printMainMessage("Ending installation..")
         sys.exit(0)
-    elif isNo(installRedText) == True: generated_json["FStringDebugHighlightSpecificFont"] = ""
+    elif isNo(installRedText) == True: generated_json["FStringDebugHighlightSpecificFont"] = None
 
     # Remove Automatically Translated
     printWarnMessage("--- Remove Automatically Translated ---")
@@ -4992,12 +5034,12 @@ if __name__ == "__main__":
     got_modes = sorted(got_modes)
     count = 1
 
-    generated_json["FFlagDebugGraphicsPreferMetal"] = ""
-    generated_json["FFlagDebugGraphicsDisableDirect3D11"] = ""
-    generated_json["FFlagDebugGraphicsPreferVulkan"] = ""
-    generated_json["FFlagDebugGraphicsPreferOpenGL"] = ""
-    generated_json["FFlagDebugGraphicsPreferD3D11FL10"] = ""
-    generated_json["FFlagDebugGraphicsPreferD3D11"] = ""
+    generated_json["FFlagDebugGraphicsPreferMetal"] = None
+    generated_json["FFlagDebugGraphicsDisableDirect3D11"] = None
+    generated_json["FFlagDebugGraphicsPreferVulkan"] = None
+    generated_json["FFlagDebugGraphicsPreferOpenGL"] = None
+    generated_json["FFlagDebugGraphicsPreferD3D11FL10"] = None
+    generated_json["FFlagDebugGraphicsPreferD3D11"] = None
         
     printWarnMessage("--- Rendering Mode ---")
     printMainMessage("Select a rendering mode to force on the client:")
@@ -5030,11 +5072,11 @@ if __name__ == "__main__":
     got_modes = sorted(got_modes)
     count = 1
 
-    generated_json["DFFlagDebugRenderForceTechnologyVoxel"] = ""
-    generated_json["FFlagDebugForceFutureIsBrightPhase2"] = ""
-    generated_json["FFlagDebugForceFutureIsBrightPhase3"] = ""
-    generated_json["FFlagRenderUnifiedLighting10"] = ""
-    generated_json["FFlagUnifiedLightingBetaFeature"] = ""
+    generated_json["DFFlagDebugRenderForceTechnologyVoxel"] = None
+    generated_json["FFlagDebugForceFutureIsBrightPhase2"] = None
+    generated_json["FFlagDebugForceFutureIsBrightPhase3"] = None
+    generated_json["FFlagRenderUnifiedLighting10"] = None
+    generated_json["FFlagUnifiedLightingBetaFeature"] = None
         
     printWarnMessage("--- Lighting Mode ---")
     printMainMessage("Select a lighting mode to force on the client:")
@@ -5063,8 +5105,8 @@ if __name__ == "__main__":
     got_modes = sorted(got_modes)
     count = 1
 
-    generated_json["DFFlagTextureQualityOverrideEnabled"] = ""
-    generated_json["DFIntTextureQualityOverride"] = ""
+    generated_json["DFFlagTextureQualityOverrideEnabled"] = None
+    generated_json["DFIntTextureQualityOverride"] = None
         
     printWarnMessage("--- Texture Quality ---")
     printMainMessage("Select a texture quality number to put on the client:")
@@ -5108,51 +5150,27 @@ if __name__ == "__main__":
         if installLimitVideosNum.isnumeric(): generated_json["DFIntVideoMaxNumberOfVideosPlaying"] = str(int(installLimitVideosNum))
         else:
             printYellowMessage("Disabled limit due to invalid prompt.")
-            generated_json["DFIntVideoMaxNumberOfVideosPlaying"] = ""
+            generated_json["DFIntVideoMaxNumberOfVideosPlaying"] = None
     elif isRequestClose(installLimitVideos) == True:
         printMainMessage("Ending installation..")
         sys.exit(0)
-    elif isNo(installLimitVideos) == True: generated_json["DFIntVideoMaxNumberOfVideosPlaying"] = ""
+    elif isNo(installLimitVideos) == True: generated_json["DFIntVideoMaxNumberOfVideosPlaying"] = None
 
-    # Darker Mode
-    printWarnMessage("--- Darker Mode ---")
-    printMainMessage("Would you like to enable Darker mode on your client? (Recently, this may not work.) (y/n)")
-    installDarkerMode = input("> ")
-    if isYes(installDarkerMode) == True:
+    # Disable Foundation Mode
+    printWarnMessage("--- Disable Foundation Mode ---")
+    printMainMessage("Would you like to disable Foundation mode on your client? (This is the new layout Roblox added) (y/n)")
+    installDisableFoundationMode = input("> ")
+    if isYes(installDisableFoundationMode) == True:
         generated_json["FFlagLuaAppUseUIBloxColorPalettes1"] = "true"
         generated_json["FFlagUIBloxUseNewThemeColorPalettes"] = "true"
-    elif isRequestClose(installDarkerMode) == True:
+        generated_json["FFlagLuaAppEnableFoundationColors7"] = "false"
+    elif isRequestClose(installDisableFoundationMode) == True:
         printMainMessage("Ending installation..")
         sys.exit(0)
-    elif isNo(installDarkerMode) == True:
+    elif isNo(installDisableFoundationMode) == True:
         generated_json["FFlagLuaAppUseUIBloxColorPalettes1"] = "false"
         generated_json["FFlagUIBloxUseNewThemeColorPalettes"] = "false"
-
-    # Blue Foundation Colors
-    printWarnMessage("--- Blue Foundation Colors ---")
-    printMainMessage("Would you like to enable new blue foundation colors on the Roblox client? (y/n)")
-    installBlueColors = input("> ")
-    if isYes(installBlueColors) == True:
-        generated_json["FFlagLuaAppEnableFoundationColors3"] = "true"
-        generated_json["FFlagLuaAppEnableFoundationColors4"] = "true"
-        generated_json["FFlagLuaAppEnableFoundationColors5"] = "true"
-        generated_json["FFlagLuaAppEnableFoundationColors6"] = "true"
         generated_json["FFlagLuaAppEnableFoundationColors7"] = "true"
-        generated_json["FFlagLuaAppEnableFoundationColors8"] = "true"
-        generated_json["FFlagLuaAppEnableFoundationColors9"] = "true"
-        generated_json["FFlagLuaAppEnableFoundationColors10"] = "true"
-    elif isRequestClose(installBlueColors) == True:
-        printMainMessage("Ending installation..")
-        sys.exit(0)
-    elif isNo(installBlueColors) == True:
-        generated_json["FFlagLuaAppEnableFoundationColors3"] = "false"
-        generated_json["FFlagLuaAppEnableFoundationColors4"] = "false"
-        generated_json["FFlagLuaAppEnableFoundationColors5"] = "false"
-        generated_json["FFlagLuaAppEnableFoundationColors6"] = "false"
-        generated_json["FFlagLuaAppEnableFoundationColors7"] = "false"
-        generated_json["FFlagLuaAppEnableFoundationColors8"] = "false"
-        generated_json["FFlagLuaAppEnableFoundationColors9"] = "false"
-        generated_json["FFlagLuaAppEnableFoundationColors10"] = "false"
 
     # Custom Disconnect Message
     printWarnMessage("--- Custom Disconnect Message ---")
@@ -5167,7 +5185,7 @@ if __name__ == "__main__":
         sys.exit(0)
     elif isNo(installCustomDisconnect) == True:
         generated_json["FFlagReconnectDisabled"] = "false"
-        generated_json["FStringReconnectDisabledReason"] = ""
+        generated_json["FStringReconnectDisabledReason"] = None
 
     # Ability to Hide UI
     printWarnMessage("--- Hide UI ---")
@@ -5194,7 +5212,7 @@ if __name__ == "__main__":
     elif isRequestClose(installHideUI) == True:
         printMainMessage("Ending installation..")
         sys.exit(0)
-    elif isNo(installHideUI) == True: generated_json["DFIntCanHideGuiGroupId"] = ""
+    elif isNo(installHideUI) == True: generated_json["DFIntCanHideGuiGroupId"] = None
 
     # Quick Connect
     printWarnMessage("--- Quick Connect ---")
