@@ -1,5 +1,5 @@
 {
-    "dev.efaz.verified_badge_add_on": "1.6.7",
+    "dev.efaz.verified_badge_add_on": "1.6.8",
     "dev.efaz.efaz_roblox_theme": "1.1.4",
     "dev.efaz.remove_builder_font": "1.5.8",
     "dev.efaz.charts_renamer": "1.2.9",
@@ -9,11 +9,11 @@
     "dev.efaz.bundled_extension": "1.2.4",
     "dev.efaz.roblox_logo_changer": "1.0.2",
 
-    "verified_checkmark_settings": "1.6.4",
+    "verified_checkmark_settings": "1.6.8",
     "efazRobloxTheme": "1.1.4",
-    "removeBuilderFont": "1.5.4",
+    "removeBuilderFont": "1.5.8",
     "removeBuilderFontFirefox": "1.4.4",
-    "chartsRename": "1.2.8",
+    "chartsRename": "1.2.9",
     "communities_renamer": "1.0.6",
     "exampleExtension": "1.2.7"
 }
