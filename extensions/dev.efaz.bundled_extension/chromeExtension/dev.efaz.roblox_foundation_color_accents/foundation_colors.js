@@ -17,7 +17,7 @@ inject.js:
             // This is for Efaz's Roblox Extension support
             if (chrome.runtime.getManifest()["homepage_url"] == "https://www.efaz.dev/roblox-extension") {
                 // This is run under bundled extension [{extension_name}/{resource}]
-                return chrome.runtime.getURL("{extension_name_this_is_replace_when_building_bundle_with_folder_name_if_youre_wondering}" + "/" + resource)
+                return chrome.runtime.getURL("dev.efaz.roblox_foundation_color_accents" + "/" + resource)
             } else {
                 return chrome.runtime.getURL(resource)
             }
@@ -221,59 +221,56 @@ inject.js:
                             let all_styles = document.getElementsByTagName("style");
                             all_styles = Array.prototype.slice.call(all_styles);
                             await loopThroughArrayAsync(all_styles, async (_, header) => {
-                                let change_made = false;
-                                let converted_sheet = "";
-                                if (header.innerHTML == "") {
-                                    converted_sheet = sheetToString(header.sheet);
-                                } else {
-                                    converted_sheet = header.innerHTML;
-                                }
-                                header.sheet = new CSSStyleSheet()
-                                if (converted_sheet.includes("51, 95, 255") || converted_sheet.includes("51,95,255")) {
-                                    converted_sheet = converted_sheet
-                                        .replaceAll("51, 95, 255", `${converted_rgb["r"]}, ${converted_rgb["g"]}, ${converted_rgb["b"]}`)
-                                        .replaceAll("51,95,255", `${converted_rgb["r"]}, ${converted_rgb["g"]}, ${converted_rgb["b"]}`);
-                                    change_made = true;
-                                }
-                                if (converted_sheet.includes("82, 139, 255") || converted_sheet.includes("82,139,255")) {
-                                    converted_sheet = converted_sheet
-                                        .replaceAll("82, 139, 255", `${formatRgbVal(converted_rgb["r"] + 30)}, ${formatRgbVal(converted_rgb["g"] + 30)}, ${formatRgbVal(converted_rgb["b"] + 30)}`)
-                                        .replaceAll("82,139,255", `${formatRgbVal(converted_rgb["r"] + 30)}, ${formatRgbVal(converted_rgb["g"] + 30)}, ${formatRgbVal(converted_rgb["b"] + 30)}`);
-                                    change_made = true;
-                                }
-                                if (converted_sheet.includes("20, 70, 255") || converted_sheet.includes("20,70,255")) {
-                                    converted_sheet = converted_sheet
-                                        .replaceAll("20, 70, 255", `${formatRgbVal(converted_rgb["r"] - 20)}, ${formatRgbVal(converted_rgb["g"] - 20)}, ${formatRgbVal(converted_rgb["b"] - 20)}`)
-                                        .replaceAll("20,70,255", `${formatRgbVal(converted_rgb["r"] - 20)}, ${formatRgbVal(converted_rgb["g"] - 20)}, ${formatRgbVal(converted_rgb["b"] - 20)}`);
-                                    change_made = true;
-                                }
-                                if (converted_sheet.includes("#528BFF")) {
-                                    converted_sheet = converted_sheet.replaceAll("#528BFF", rgbToHex(formatRgbVal(converted_rgb["r"] + 30), formatRgbVal(converted_rgb["g"] + 30), formatRgbVal(converted_rgb["b"] + 30)));
-                                    change_made = true;
-                                }
-                                if (converted_sheet.includes("#335FFF")) {
-                                    converted_sheet = converted_sheet.replaceAll("#335FFF", settings["color"]);
-                                    change_made = true;
-                                }
-                                if (converted_sheet.includes("#1446FF")) {
-                                    converted_sheet = converted_sheet.replaceAll("#1446FF", rgbToHex(formatRgbVal(converted_rgb["r"] - 20), formatRgbVal(converted_rgb["g"] - 20), formatRgbVal(converted_rgb["b"] - 20)));
-                                    change_made = true;
-                                }
-                                if (converted_sheet.includes("#3C64FA")) {
-                                    converted_sheet = converted_sheet.replaceAll("#3C64FA", rgbToHex(formatRgbVal(converted_rgb["r"] - 10), formatRgbVal(converted_rgb["g"] - 10), formatRgbVal(converted_rgb["b"] - 10)));
-                                    change_made = true;
-                                }
-                                if (change_made == true) {
-                                    header.innerHTML = converted_sheet + `
-                                    .web-blox-css-tss-lo77dr-Button-contained {
-                                        box-shadow: none;
-                                        color: rgb(255, 255, 255);
-                                        background-color: ${rgbToHex(formatRgbVal(converted_rgb["r"] - 10), formatRgbVal(converted_rgb["g"] - 10), formatRgbVal(converted_rgb["b"] - 10))} !important;
+                                if (!(header.getAttribute("baseColoringAdded") == "true")) {
+                                    let change_made = false;
+                                    let converted_sheet = "";
+                                    if (header.innerHTML == "") {
+                                        converted_sheet = sheetToString(header.sheet);
+                                    } else {
+                                        converted_sheet = header.innerHTML;
                                     }
-                                    .web-blox-css-tss-lo77dr-Button-contained:hover {
-                                        background-color: ${rgbToHex(formatRgbVal(converted_rgb["r"] - 30), formatRgbVal(converted_rgb["g"] - 30), formatRgbVal(converted_rgb["b"] - 30))} !important;
+                                    header.sheet = new CSSStyleSheet()
+                                    function applyBaseColoring() {
+                                        converted_sheet = converted_sheet
+                                            .replaceAll("51, 95, 255", `${converted_rgb["r"]}, ${converted_rgb["g"]}, ${converted_rgb["b"]}`)
+                                            .replaceAll("51,95,255", `${converted_rgb["r"]}, ${converted_rgb["g"]}, ${converted_rgb["b"]}`)
+                                            .replaceAll("82, 139, 255", `${formatRgbVal(converted_rgb["r"] + 30)}, ${formatRgbVal(converted_rgb["g"] + 30)}, ${formatRgbVal(converted_rgb["b"] + 30)}`)
+                                            .replaceAll("82,139,255", `${formatRgbVal(converted_rgb["r"] + 30)}, ${formatRgbVal(converted_rgb["g"] + 30)}, ${formatRgbVal(converted_rgb["b"] + 30)}`)
+                                            .replaceAll("20, 70, 255", `${formatRgbVal(converted_rgb["r"] - 20)}, ${formatRgbVal(converted_rgb["g"] - 20)}, ${formatRgbVal(converted_rgb["b"] - 20)}`)
+                                            .replaceAll("20,70,255", `${formatRgbVal(converted_rgb["r"] - 20)}, ${formatRgbVal(converted_rgb["g"] - 20)}, ${formatRgbVal(converted_rgb["b"] - 20)}`)
+                                            .replaceAll("#528BFF", rgbToHex(formatRgbVal(converted_rgb["r"] + 30), formatRgbVal(converted_rgb["g"] + 30), formatRgbVal(converted_rgb["b"] + 30)))
+                                            .replaceAll("#335FFF", settings["color"])
+                                            .replaceAll("#1446FF", rgbToHex(formatRgbVal(converted_rgb["r"] - 20), formatRgbVal(converted_rgb["g"] - 20), formatRgbVal(converted_rgb["b"] - 20)))
+                                            .replaceAll("#3C64FA", rgbToHex(formatRgbVal(converted_rgb["r"] - 10), formatRgbVal(converted_rgb["g"] - 10), formatRgbVal(converted_rgb["b"] - 10)));
                                     }
-                                    `;
+                                    if (
+                                        /51, 95, 255/.test(converted_sheet) || 
+                                        /51,95,255/.test(converted_sheet) || 
+                                        /82, 139, 255/.test(converted_sheet) || 
+                                        /82,139,255/.test(converted_sheet) || 
+                                        /20, 70, 255/.test(converted_sheet) || 
+                                        /20,70,255/.test(converted_sheet) ||
+                                        /#528BFF/.test(converted_sheet) || 
+                                        /#335FFF/.test(converted_sheet) || 
+                                        /#1446FF/.test(converted_sheet) || 
+                                        /#3C64FA/.test(converted_sheet)
+                                    ) {
+                                        applyBaseColoring()
+                                        change_made = true;
+                                    }
+                                    if (change_made == true) {
+                                        header.innerHTML = converted_sheet + `
+                                        .web-blox-css-tss-lo77dr-Button-contained {
+                                            box-shadow: none;
+                                            color: rgb(255, 255, 255);
+                                            background-color: ${rgbToHex(formatRgbVal(converted_rgb["r"] - 10), formatRgbVal(converted_rgb["g"] - 10), formatRgbVal(converted_rgb["b"] - 10))} !important;
+                                        }
+                                        .web-blox-css-tss-lo77dr-Button-contained:hover {
+                                            background-color: ${rgbToHex(formatRgbVal(converted_rgb["r"] - 30), formatRgbVal(converted_rgb["g"] - 30), formatRgbVal(converted_rgb["b"] - 30))} !important;
+                                        }
+                                        `;
+                                    }
+                                    header.setAttribute("baseColoringAdded", "true")
                                 }
                             });
                             setTimeout(() => { injectCSS(settings) }, amountOfSecondsBeforeLoop)
@@ -334,92 +331,66 @@ inject.js:
                                 };
                                 function applyBaseColoring(converted_sheet) {
                                     var change_made = false
-                                    if (converted_sheet.includes("51, 95, 255") || converted_sheet.includes("51,95,255")) {
+                                    if (
+                                        /51, 95, 255/.test(converted_sheet) || 
+                                        /51,95,255/.test(converted_sheet) ||
+                                        /82, 139, 255/.test(converted_sheet) || 
+                                        /82,139,255/.test(converted_sheet) ||
+                                        /20, 70, 255/.test(converted_sheet) ||
+                                        /20,70,255/.test(converted_sheet) ||
+                                        /112, 160, 255/.test(converted_sheet) || 
+                                        /112,160,255/.test(converted_sheet) ||
+                                        /0, 27, 122/.test(converted_sheet) || 
+                                        /0,27,122/.test(converted_sheet) ||
+                                        /60, 100, 250/.test(converted_sheet) || 
+                                        /60,100,250/.test(converted_sheet) ||
+                                        /0, 34, 255/.test(converted_sheet) || 
+                                        /0,34,255/.test(converted_sheet) ||
+                                        /58, 84, 255/.test(converted_sheet) || 
+                                        /58,84,255/.test(converted_sheet) ||
+                                        /115, 134, 255/.test(converted_sheet) || 
+                                        /115,134,255/.test(converted_sheet) ||
+                                        /173, 183, 255/.test(converted_sheet) || 
+                                        /173,183,255/.test(converted_sheet) ||
+                                        /85, 193, 255/.test(converted_sheet) || 
+                                        /85,193,255/.test(converted_sheet) ||
+                                        /43, 177, 255/.test(converted_sheet) || 
+                                        /43,177,255/.test(converted_sheet) ||
+                                        /#528BFF/.test(converted_sheet) ||
+                                        /#335FFF/.test(converted_sheet) ||
+                                        /#1446FF/.test(converted_sheet) ||
+                                        /#3C64FA/.test(converted_sheet)
+                                    ) {
                                         converted_sheet = converted_sheet
                                             .replaceAll("51, 95, 255", `${converted_rgb["r"]}, ${converted_rgb["g"]}, ${converted_rgb["b"]}`)
-                                            .replaceAll("51,95,255", `${converted_rgb["r"]}, ${converted_rgb["g"]}, ${converted_rgb["b"]}`);
-                                        change_made = true;
-                                    }
-                                    if (converted_sheet.includes("82, 139, 255") || converted_sheet.includes("82,139,255")) {
-                                        converted_sheet = converted_sheet
+                                            .replaceAll("51,95,255", `${converted_rgb["r"]}, ${converted_rgb["g"]}, ${converted_rgb["b"]}`)
                                             .replaceAll("82, 139, 255", `${formatRgbVal(converted_rgb["r"] + 30)}, ${formatRgbVal(converted_rgb["g"] + 30)}, ${formatRgbVal(converted_rgb["b"] + 30)}`)
-                                            .replaceAll("82,139,255", `${formatRgbVal(converted_rgb["r"] + 30)}, ${formatRgbVal(converted_rgb["g"] + 30)}, ${formatRgbVal(converted_rgb["b"] + 30)}`);
-                                        change_made = true;
-                                    }
-                                    if (converted_sheet.includes("20, 70, 255") || converted_sheet.includes("20,70,255")) {
-                                        converted_sheet = converted_sheet
+                                            .replaceAll("82,139,255", `${formatRgbVal(converted_rgb["r"] + 30)}, ${formatRgbVal(converted_rgb["g"] + 30)}, ${formatRgbVal(converted_rgb["b"] + 30)}`)
                                             .replaceAll("20, 70, 255", `${formatRgbVal(converted_rgb["r"] - 20)}, ${formatRgbVal(converted_rgb["g"] - 20)}, ${formatRgbVal(converted_rgb["b"] - 20)}`)
-                                            .replaceAll("20,70,255", `${formatRgbVal(converted_rgb["r"] - 20)}, ${formatRgbVal(converted_rgb["g"] - 20)}, ${formatRgbVal(converted_rgb["b"] - 20)}`);
-                                        change_made = true;
-                                    }
-                                    if (converted_sheet.includes("112, 160, 255") || converted_sheet.includes("112,160,255")) {
-                                        converted_sheet = converted_sheet
+                                            .replaceAll("20,70,255", `${formatRgbVal(converted_rgb["r"] - 20)}, ${formatRgbVal(converted_rgb["g"] - 20)}, ${formatRgbVal(converted_rgb["b"] - 20)}`)
                                             .replaceAll("112, 160, 255", `${formatRgbVal(converted_rgb["r"] + 50)}, ${formatRgbVal(converted_rgb["g"] + 50)}, ${formatRgbVal(converted_rgb["b"] + 50)}`)
-                                            .replaceAll("112,160,255", `${formatRgbVal(converted_rgb["r"] + 50)}, ${formatRgbVal(converted_rgb["g"] + 50)}, ${formatRgbVal(converted_rgb["b"] + 50)}`);
-                                        change_made = true;
-                                    }
-                                    if (converted_sheet.includes("0, 27, 122") || converted_sheet.includes("0,27,122")) {
-                                        converted_sheet = converted_sheet
+                                            .replaceAll("112,160,255", `${formatRgbVal(converted_rgb["r"] + 50)}, ${formatRgbVal(converted_rgb["g"] + 50)}, ${formatRgbVal(converted_rgb["b"] + 50)}`)
                                             .replaceAll("0, 27, 122", `${formatRgbVal(converted_rgb["r"] - 50)}, ${formatRgbVal(converted_rgb["g"] - 50)}, ${formatRgbVal(converted_rgb["b"] - 50)}`)
-                                            .replaceAll("0,27,122", `${formatRgbVal(converted_rgb["r"] - 50)}, ${formatRgbVal(converted_rgb["g"] - 50)}, ${formatRgbVal(converted_rgb["b"] - 50)}`);
-                                        change_made = true;
-                                    }
-                                    if (converted_sheet.includes("60, 100, 250") || converted_sheet.includes("60,100,250")) {
-                                        converted_sheet = converted_sheet
+                                            .replaceAll("0,27,122", `${formatRgbVal(converted_rgb["r"] - 50)}, ${formatRgbVal(converted_rgb["g"] - 50)}, ${formatRgbVal(converted_rgb["b"] - 50)}`)
                                             .replaceAll("60, 100, 250", `${converted_rgb["r"]}, ${converted_rgb["g"]}, ${converted_rgb["b"]}`)
-                                            .replaceAll("60,100,250", `${converted_rgb["r"]}, ${converted_rgb["g"]}, ${converted_rgb["b"]}`);
-                                        change_made = true;
-                                    }
-                                    if (converted_sheet.includes("0, 34, 255") || converted_sheet.includes("0,34,255")) {
-                                        converted_sheet = converted_sheet
+                                            .replaceAll("60,100,250", `${converted_rgb["r"]}, ${converted_rgb["g"]}, ${converted_rgb["b"]}`)
                                             .replaceAll("0, 34, 255", `${converted_rgb["r"]-50}, ${converted_rgb["g"]-50}, ${converted_rgb["b"]-50}`)
-                                            .replaceAll("0,34,255", `${converted_rgb["r"]-50}, ${converted_rgb["g"]-50}, ${converted_rgb["b"]-50}`);
-                                        change_made = true;
-                                    }
-                                    if (converted_sheet.includes("58, 84, 255") || converted_sheet.includes("58,84,255")) {
-                                        converted_sheet = converted_sheet
+                                            .replaceAll("0,34,255", `${converted_rgb["r"]-50}, ${converted_rgb["g"]-50}, ${converted_rgb["b"]-50}`)
                                             .replaceAll("58, 84, 255", `${converted_rgb["r"]-25}, ${converted_rgb["g"]-25}, ${converted_rgb["b"]-25}`)
-                                            .replaceAll("58,84,255", `${converted_rgb["r"]-25}, ${converted_rgb["g"]-25}, ${converted_rgb["b"]-25}`);
-                                        change_made = true;
-                                    }
-                                    if (converted_sheet.includes("115, 134, 255") || converted_sheet.includes("115,134,255")) {
-                                        converted_sheet = converted_sheet
+                                            .replaceAll("58,84,255", `${converted_rgb["r"]-25}, ${converted_rgb["g"]-25}, ${converted_rgb["b"]-25}`)
                                             .replaceAll("115, 134, 255", `${converted_rgb["r"]+25}, ${converted_rgb["g"]+25}, ${converted_rgb["b"]+25}`)
-                                            .replaceAll("115,134,255", `${converted_rgb["r"]+25}, ${converted_rgb["g"]+25}, ${converted_rgb["b"]+25}`);
-                                        change_made = true;
-                                    }
-                                    if (converted_sheet.includes("173, 183, 255") || converted_sheet.includes("173,183,255")) {
-                                        converted_sheet = converted_sheet
+                                            .replaceAll("115,134,255", `${converted_rgb["r"]+25}, ${converted_rgb["g"]+25}, ${converted_rgb["b"]+25}`)
                                             .replaceAll("173, 183, 255", `${converted_rgb["r"]+50}, ${converted_rgb["g"]+50}, ${converted_rgb["b"]+50}`)
-                                            .replaceAll("173,183,255", `${converted_rgb["r"]+50}, ${converted_rgb["g"]+50}, ${converted_rgb["b"]+50}`);
-                                        change_made = true;
-                                    }
-                                    if (converted_sheet.includes("85, 193, 255") || converted_sheet.includes("85,193,255")) {
-                                        converted_sheet = converted_sheet
+                                            .replaceAll("173,183,255", `${converted_rgb["r"]+50}, ${converted_rgb["g"]+50}, ${converted_rgb["b"]+50}`)
                                             .replaceAll("85, 193, 255", `${formatRgbVal(converted_rgb["r"] + 60)}, ${formatRgbVal(converted_rgb["g"] + 60)}, ${formatRgbVal(converted_rgb["b"] + 60)}`)
-                                            .replaceAll("85,193,255", `${formatRgbVal(converted_rgb["r"] + 60)}, ${formatRgbVal(converted_rgb["g"] + 60)}, ${formatRgbVal(converted_rgb["b"] + 60)}`);
-                                        change_made = true;
-                                    }
-                                    if (converted_sheet.includes("43, 177, 255") || converted_sheet.includes("43,177,255")) {
-                                        converted_sheet = converted_sheet
+                                            .replaceAll("85,193,255", `${formatRgbVal(converted_rgb["r"] + 60)}, ${formatRgbVal(converted_rgb["g"] + 60)}, ${formatRgbVal(converted_rgb["b"] + 60)}`)
                                             .replaceAll("43, 177, 255", `${formatRgbVal(converted_rgb["r"] + 40)}, ${formatRgbVal(converted_rgb["g"] + 40)}, ${formatRgbVal(converted_rgb["b"] + 40)}`)
-                                            .replaceAll("43,177,255", `${formatRgbVal(converted_rgb["r"] + 40)}, ${formatRgbVal(converted_rgb["g"] + 40)}, ${formatRgbVal(converted_rgb["b"] + 40)}`);
-                                        change_made = true;
-                                    }
-                                    if (converted_sheet.includes("#528BFF")) {
-                                        converted_sheet = converted_sheet.replaceAll("#528BFF", rgbToHex(formatRgbVal(converted_rgb["r"] + 30), formatRgbVal(converted_rgb["g"] + 30), formatRgbVal(converted_rgb["b"] + 30)));
-                                        change_made = true;
-                                    }
-                                    if (converted_sheet.includes("#335FFF")) {
-                                        converted_sheet = converted_sheet.replaceAll("#335FFF", settings["color"]);
-                                        change_made = true;
-                                    }
-                                    if (converted_sheet.includes("#1446FF")) {
-                                        converted_sheet = converted_sheet.replaceAll("#1446FF", rgbToHex(formatRgbVal(converted_rgb["r"] - 20), formatRgbVal(converted_rgb["g"] - 20), formatRgbVal(converted_rgb["b"] - 20)));
-                                        change_made = true;
-                                    }
-                                    if (converted_sheet.includes("#3C64FA")) {
-                                        converted_sheet = converted_sheet.replaceAll("#3C64FA", rgbToHex(formatRgbVal(converted_rgb["r"] - 10), formatRgbVal(converted_rgb["g"] - 10), formatRgbVal(converted_rgb["b"] - 10)));
+                                            .replaceAll("43,177,255", `${formatRgbVal(converted_rgb["r"] + 40)}, ${formatRgbVal(converted_rgb["g"] + 40)}, ${formatRgbVal(converted_rgb["b"] + 40)}`)
+                                            .replaceAll("#528BFF", rgbToHex(formatRgbVal(converted_rgb["r"] + 30), formatRgbVal(converted_rgb["g"] + 30), formatRgbVal(converted_rgb["b"] + 30)))
+                                            .replaceAll("#335FFF", settings["color"])
+                                            .replaceAll("#335FFF", settings["color"])
+                                            .replaceAll("#1446FF", rgbToHex(formatRgbVal(converted_rgb["r"] - 20), formatRgbVal(converted_rgb["g"] - 20), formatRgbVal(converted_rgb["b"] - 20)))
+                                            .replaceAll("#3C64FA", rgbToHex(formatRgbVal(converted_rgb["r"] - 10), formatRgbVal(converted_rgb["g"] - 10), formatRgbVal(converted_rgb["b"] - 10)));
                                         change_made = true;
                                     }
                                     return [change_made, converted_sheet]

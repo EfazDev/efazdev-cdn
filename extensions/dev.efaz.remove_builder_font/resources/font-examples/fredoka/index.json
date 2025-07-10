@@ -1,0 +1,106 @@
+{
+    "Main": {
+        "Light": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Regular.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Regular.woff2"
+        },
+        "Book": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Regular.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Regular.woff2"
+        },
+        "Medium": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Medium.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Medium.woff2"
+        },
+        "Bold": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-SemiBold.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-SemiBold.woff2"
+        },
+        "Black": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Bold.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Bold.woff2"
+        },
+        "Mono": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Light.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Light.woff2"
+        }
+    },
+    "DevForum": {
+        "Light": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Regular.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Regular.woff2"
+        },
+        "Book": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Regular.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Regular.woff2"
+        },
+        "Medium": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Medium.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Medium.woff2"
+        },
+        "Bold": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-SemiBold.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-SemiBold.woff2"
+        },
+        "Black": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Bold.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Bold.woff2"
+        },
+        "Mono": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Light.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Light.woff2"
+        }
+    },
+    "CreatorDashboard": {
+        "Light": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Regular.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Regular.woff2"
+        },
+        "Book": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Regular.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Regular.woff2"
+        },
+        "Medium": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Medium.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Medium.woff2"
+        },
+        "Bold": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-SemiBold.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-SemiBold.woff2"
+        },
+        "Black": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Bold.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Bold.woff2"
+        },
+        "Mono": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Light.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Light.woff2"
+        }
+    },
+    "OtherSub": {
+        "Light": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Regular.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Regular.woff2"
+        },
+        "Book": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Regular.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Regular.woff2"
+        },
+        "Medium": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Medium.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Medium.woff2"
+        },
+        "Bold": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-SemiBold.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-SemiBold.woff2"
+        },
+        "Black": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Bold.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Bold.woff2"
+        },
+        "Mono": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Light.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/Fredoka-Light.woff2"
+        }
+    }
+}

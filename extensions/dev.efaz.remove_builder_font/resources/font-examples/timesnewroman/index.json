@@ -1,0 +1,106 @@
+{
+    "Main": {
+        "Light": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff2"
+        },
+        "Book": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff2"
+        },
+        "Medium": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff2"
+        },
+        "Bold": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Bold.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Bold.woff2"
+        },
+        "Black": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Bold.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Bold.woff2"
+        },
+        "Mono": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff2"
+        }
+    },
+    "DevForum": {
+        "Light": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff2"
+        },
+        "Book": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff2"
+        },
+        "Medium": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff2"
+        },
+        "Bold": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Bold.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Bold.woff2"
+        },
+        "Black": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Bold.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Bold.woff2"
+        },
+        "Mono": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff2"
+        }
+    },
+    "CreatorDashboard": {
+        "Light": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff2"
+        },
+        "Book": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff2"
+        },
+        "Medium": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff2"
+        },
+        "Bold": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Bold.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Bold.woff2"
+        },
+        "Black": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Bold.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Bold.woff2"
+        },
+        "Mono": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff2"
+        }
+    },
+    "OtherSub": {
+        "Light": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff2"
+        },
+        "Book": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff2"
+        },
+        "Medium": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff2"
+        },
+        "Bold": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Bold.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Bold.woff2"
+        },
+        "Black": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Bold.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Bold.woff2"
+        },
+        "Mono": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/Normal.woff2"
+        }
+    }
+}

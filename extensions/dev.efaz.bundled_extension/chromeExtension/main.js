@@ -4,57 +4,11 @@ Efaz's Roblox Extension
 By: EfazDev
 
 main.js:
-    - Handle background scripts for the mini extensions
+    - Handle install pages
 
 */
 
-(function () {
-    async function loopThroughArrayAsync(array, callback) {
-        var generated_keys = Object.keys(array);
-        for (a = 0; a < generated_keys.length; a++) {
-            var key = generated_keys[a];
-            var value = array[key];
-            await callback(key, value);
-        };
-    };
-
-    async function generateLauncherPromise() {
-        return new Promise(async () => {
-            var ex = await fetch(chrome.runtime.getURL("./settings.json")).then((r) => {
-                return r.json();
-            }).then(r => {
-                return r["extensions"];
-            });
-            await loopThroughArrayAsync(ex, async (_, e) => {
-                try {
-                    var org_man = await fetch(chrome.runtime.getURL("./" + e + "/org_manifest.json")).then((r) => {
-                        if (r.ok) {
-                            return r.json();
-                        } else {
-                            return {};
-                        }
-                    });
-                    if (org_man["background"] && org_man["background"]["service_worker"]) {
-                        console.log("Importing " + e);
-                        importScripts(chrome.runtime.getURL("./" + e + "/" + org_man["background"]["service_worker"]));
-                    }
-                } catch (err) {
-                    console.warn("Unable to load service worker for " + e + ": " + err.message);
-                }
-            });
-            console.log("Successfully imported all extension background scripts!");
-        })
-    }
-    
-    self.addEventListener("install", async (event) => {
-        event.waitUntil(generateLauncherPromise());
-    });
-
-    self.addEventListener("activate", (event) => {
-        console.log("Reactivated extension background scripts!")
-        event.waitUntil(clients.claim());
-    });
-    
+(function () {    
     chrome.runtime.onInstalled.addListener(() => {
         const storage = chrome.storage.local;
         fetch("settings.json").then(setting_res => {

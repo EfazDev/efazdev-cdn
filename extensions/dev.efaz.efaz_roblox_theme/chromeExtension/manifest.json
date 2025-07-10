@@ -1,7 +1,7 @@
 {
     "name": "Efaz's Roblox Theme",
     "description": "An extension that creates the Efaz's Theme inside the Roblox website!",
-    "version": "1.1.4",
+    "version": "1.1.5",
     "manifest_version": 3,
     "author": "EfazDev",
     "homepage_url": "https://www.efaz.dev/",
@@ -23,7 +23,7 @@
         {
             "all_frames": true,
             "js": [
-                "inject.js"
+                "efaz_theme.js"
             ],
             "matches": [
                 "*://*.roblox.com/*"

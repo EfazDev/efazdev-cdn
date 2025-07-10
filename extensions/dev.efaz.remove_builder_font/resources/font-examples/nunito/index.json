@@ -1,0 +1,106 @@
+{
+    "Main": {
+        "Light": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Regular.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Regular.woff2"
+        },
+        "Book": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Medium.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Medium.woff2"
+        },
+        "Medium": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Bold.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Bold.woff2"
+        },
+        "Bold": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-ExtraBold.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-ExtraBold.woff2"
+        },
+        "Black": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Black.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Black.woff2"
+        },
+        "Mono": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Mono.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Mono.woff2"
+        }
+    },
+    "DevForum": {
+        "Light": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Light.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Light.woff2"
+        },
+        "Book": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Regular.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Regular.woff2"
+        },
+        "Medium": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Medium.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Medium.woff2"
+        },
+        "Bold": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Bold.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Bold.woff2"
+        },
+        "Black": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Black.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Black.woff2"
+        },
+        "Mono": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Mono.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Mono.woff2"
+        }
+    },
+    "CreatorDashboard": {
+        "Light": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Light.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Light.woff2"
+        },
+        "Book": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Regular.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Regular.woff2"
+        },
+        "Medium": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Medium.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Medium.woff2"
+        },
+        "Bold": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Bold.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Bold.woff2"
+        },
+        "Black": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Black.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Black.woff2"
+        },
+        "Mono": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Mono.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Mono.woff2"
+        }
+    },
+    "OtherSub": {
+        "Light": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Light.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Light.woff2"
+        },
+        "Book": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Regular.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Regular.woff2"
+        },
+        "Medium": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Medium.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Medium.woff2"
+        },
+        "Bold": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Bold.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Bold.woff2"
+        },
+        "Black": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Black.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Nunito-Black.woff2"
+        },
+        "Mono": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Mono.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/nunito/Mono.woff2"
+        }
+    }
+}

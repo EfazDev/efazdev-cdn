@@ -1,7 +1,7 @@
 {
     "name": "Efaz's Builder Font Remover",
     "description": "An extension that replaces the Builder font on the Roblox Website, DevForum and Creator Dashboard!",
-    "version": "1.5.8",
+    "version": "1.6.0",
     "manifest_version": 3,
     "author": "EfazDev",
     "homepage_url": "https://www.efaz.dev/remove-builder-font",
@@ -23,7 +23,7 @@
         {
             "all_frames": true,
             "js": [
-                "inject.js"
+                "builder_font_remover.js"
             ],
             "matches": [
                 "*://*.roblox.com/*"

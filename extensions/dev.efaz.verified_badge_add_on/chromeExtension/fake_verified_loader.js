@@ -825,6 +825,7 @@ function start() {
                                                 if (group_owners.length > 0) {
                                                     if (window.verifiedCheckmarkSettings) {
                                                         if (window.verifiedCheckmarkSettings["groupsIncluded"] == true) {
+                                                            /*
                                                             var group_list_verified_logo = document.getElementsByTagName("groups-list-item");
                                                             group_list_verified_logo = Array.prototype.slice.call(group_list_verified_logo);
                                                             if (group_list_verified_logo.length > 0) {
@@ -847,11 +848,12 @@ function start() {
                                                                     }
                                                                 });
                                                             }
+                                                            */
 
-                                                            approvedGroup(identified_id).then(info => {
+                                                            approvedGroup(identified_id[0]).then(info => {
                                                                 if (info["accepted"] == true) {
                                                                     group_owners.forEach((group_owner_name) => {
-                                                                        if (group_owner_name.innerHTML.includes(json["name"]) && getIfLinkIsUserProfile(group_owner_name.href) && group_owner_name.href.includes(json["id"].toString())) {
+                                                                        if (group_owner_name.innerHTML.includes(json["displayName"]) && getIfLinkIsUserProfile(group_owner_name.href) && group_owner_name.href.includes(json["id"].toString())) {
                                                                             if (!(group_owner_name.parentElement)) {
                                                                                 return;
                                                                             }
