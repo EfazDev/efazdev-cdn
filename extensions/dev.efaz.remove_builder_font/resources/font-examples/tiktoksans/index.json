@@ -1,0 +1,106 @@
+{
+    "Main": {
+        "Light": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Regular.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Regular.woff2"
+        },
+        "Book": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Regular.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Regular.woff2"
+        },
+        "Medium": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Medium.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Medium.woff2"
+        },
+        "Bold": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Bold.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Bold.woff2"
+        },
+        "Black": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Black.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Black.woff2"
+        },
+        "Mono": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Light.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Light.woff2"
+        }
+    },
+    "DevForum": {
+        "Light": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Regular.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Regular.woff2"
+        },
+        "Book": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Regular.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Regular.woff2"
+        },
+        "Medium": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Medium.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Medium.woff2"
+        },
+        "Bold": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Bold.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Bold.woff2"
+        },
+        "Black": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Black.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Black.woff2"
+        },
+        "Mono": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Light.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Light.woff2"
+        }
+    },
+    "CreatorDashboard": {
+        "Light": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Regular.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Regular.woff2"
+        },
+        "Book": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Regular.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Regular.woff2"
+        },
+        "Medium": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Medium.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Medium.woff2"
+        },
+        "Bold": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Bold.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Bold.woff2"
+        },
+        "Black": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Black.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Black.woff2"
+        },
+        "Mono": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Light.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Light.woff2"
+        }
+    },
+    "OtherSub": {
+        "Light": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Regular.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Regular.woff2"
+        },
+        "Book": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Regular.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Regular.woff2"
+        },
+        "Medium": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Medium.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Medium.woff2"
+        },
+        "Bold": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Bold.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Bold.woff2"
+        },
+        "Black": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Black.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Black.woff2"
+        },
+        "Mono": {
+            "woff": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Light.woff",
+            "woff2": "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/TikTokSans-Light.woff2"
+        }
+    }
+}

@@ -8,4 +8,5 @@ Poppins: "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources
 Roboto: "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/roboto/index.json"<br>
 Fredoka: "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/fredoka/index.json"<br>
 Oswald: "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/oswald/index.json"<br>
+TikTok Sans: "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/tiktoksans/index.json"
 Times New Roman: "https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/resources/font-examples/timesnewroman/index.json"
