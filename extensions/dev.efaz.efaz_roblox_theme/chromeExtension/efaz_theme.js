@@ -124,8 +124,8 @@ inject.js:
 
                                 if (document.getElementById("roproThemeFrame")) {
                                     var iframe = document.getElementById("roproThemeFrame")
-                                    if (!(iframe.src == "https://cdn2.efaz.dev/cdn/test/replacedReproBackground")) {
-                                        iframe.src = "https://cdn2.efaz.dev/cdn/test/replacedReproBackground"
+                                    if (!(iframe.src == "https://cdn2.efaz.dev/cdn/ropro-theme-set/replacedReproBackground")) {
+                                        iframe.src = "https://cdn2.efaz.dev/cdn/ropro-theme-set/replacedReproBackground"
                                     }
                                 }
                             }
@@ -144,8 +144,8 @@ inject.js:
 
                                 if (document.getElementById("roproThemeFrame")) {
                                     var iframe = document.getElementById("roproThemeFrame")
-                                    if (!(iframe.src == "https://cdn2.efaz.dev/cdn/test/replacedReproBackground")) {
-                                        iframe.src = "https://cdn2.efaz.dev/cdn/test/replacedReproBackground"
+                                    if (!(iframe.src == "https://cdn2.efaz.dev/cdn/ropro-theme-set/replacedReproBackground")) {
+                                        iframe.src = "https://cdn2.efaz.dev/cdn/ropro-theme-set/replacedReproBackground"
                                     }
                                 }
                             }
