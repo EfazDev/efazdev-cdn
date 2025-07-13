@@ -138,6 +138,7 @@ function start() {
         }
         function getIfLinkIsGroup(link) { return (/\/groups\//.test(link) || /\/communities\//.test(link)) }
         function getIfLinkIsUserProfile(link) { return (/\/users\//.test(link) && /\/profile/.test(link)) }
+        function getIfLinkIsUser(link, userId) { return (getIfLinkIsUserProfile(link) && link.includes(("/" + userId + "/profile"))) }
         function generateInstantPromise(value) {
             return new Promise((resolve, reject) => {
                 resolve(value)
@@ -315,7 +316,7 @@ function start() {
                                             let group_keys = Object.keys(allowed_groups["group_ownership"])
                                             let changes_made = false
                                             group_keys.forEach((key) => {
-                                                if (allowed_groups["group_ownership"][key] && allowed_groups["group_ownership"][key]["owner"] == json["id"] && allowed_groups["group_ownership"][key]["accepted"] == false) {
+                                                if (allowed_groups["group_ownership"][key] && allowed_groups["group_ownership"][key]["owner"] == userId && allowed_groups["group_ownership"][key]["accepted"] == false) {
                                                     allowed_groups["group_ownership"][key]["accepted"] = true
                                                     changes_made = true
                                                 }
@@ -333,16 +334,16 @@ function start() {
                                             }
 
                                             if (typeof (allowed_groups["group_ownership"][id]) == "object") {
-                                                if (approved_efazdev_users[allowed_groups["group_ownership"][id]["owner"]] && (!(allowed_groups["group_ownership"][id]["owner"] == json["id"]))) {
+                                                if (approved_efazdev_users[allowed_groups["group_ownership"][id]["owner"]] && (!(allowed_groups["group_ownership"][id]["owner"] == userId))) {
                                                     return { "accepted": false }
-                                                } else if (approved_by_user_users[allowed_groups["group_ownership"][id]["owner"]] && (!(allowed_groups["group_ownership"][id]["owner"] == json["id"]))) {
+                                                } else if (approved_by_user_users[allowed_groups["group_ownership"][id]["owner"]] && (!(allowed_groups["group_ownership"][id]["owner"] == userId))) {
                                                     return { "accepted": false }
                                                 } else {
                                                     return allowed_groups["group_ownership"][id]
                                                 }
                                             } else if (allowed_groups["group_ownership"][id] == false) {
                                                 return { "accepted": false }
-                                            } else if (allowed_groups["group_ownership"] && ((!(allowed_groups["group_ownership"][id])) && allowed_groups["group_ownership"][`scan_${json["id"]}`] == true)) {
+                                            } else if (allowed_groups["group_ownership"] && ((!(allowed_groups["group_ownership"][id])) && allowed_groups["group_ownership"][`scan_${userId}`] == true)) {
                                                 return { "accepted": false }
                                             } else {
                                                 if (onlycached == true) {
@@ -354,22 +355,22 @@ function start() {
                                                         group_scan = true
                                                         if (stored_group_data["temp_group_info"]) {
                                                             if (typeof (allowed_groups["group_ownership"][id]) == "object") {
-                                                                if (approved_efazdev_users[allowed_groups["group_ownership"][id]["owner"]] && (!(allowed_groups["group_ownership"][id]["owner"] == json["id"]))) {
+                                                                if (approved_efazdev_users[allowed_groups["group_ownership"][id]["owner"]] && (!(allowed_groups["group_ownership"][id]["owner"] == userId))) {
                                                                     return { "accepted": false }
-                                                                } else if (approved_by_user_users[allowed_groups["group_ownership"][id]["owner"]] && (!(allowed_groups["group_ownership"][id]["owner"] == json["id"]))) {
+                                                                } else if (approved_by_user_users[allowed_groups["group_ownership"][id]["owner"]] && (!(allowed_groups["group_ownership"][id]["owner"] == userId))) {
                                                                     return { "accepted": false }
                                                                 } else {
                                                                     return allowed_groups["group_ownership"][id]
                                                                 }
                                                             } else if (allowed_groups["group_ownership"][id] == false) {
                                                                 return { "accepted": false }
-                                                            } else if (allowed_groups["group_ownership"] && ((!(allowed_groups["group_ownership"][id])) && allowed_groups["group_ownership"][`scan_${json["id"]}`] == true)) {
+                                                            } else if (allowed_groups["group_ownership"] && ((!(allowed_groups["group_ownership"][id])) && allowed_groups["group_ownership"][`scan_${userId}`] == true)) {
                                                                 return { "accepted": false }
                                                             } else {
                                                                 return { "accepted": false }
                                                             }
                                                         } else {
-                                                            return fetch(`https://groups.roblox.com/v1/users/${json["id"]}/groups/roles?includeLocked=true&includeNotificationPreferences=true`, { "mode": "cors", "credentials": "include" }).then(grou_res => {
+                                                            return fetch(`https://groups.roblox.com/v1/users/${userId}/groups/roles?includeLocked=true&includeNotificationPreferences=true`, { "mode": "cors", "credentials": "include" }).then(grou_res => {
                                                                 if (grou_res.ok) {
                                                                     return grou_res.json();
                                                                 } else {
@@ -379,10 +380,10 @@ function start() {
                                                                 if (grou_resjson) {
                                                                     if (grou_resjson["data"]) {
                                                                         stored_group_data["temp_group_info"] = {}
-                                                                        allowed_groups["group_ownership"][`scan_${json["id"]}`] = true
+                                                                        allowed_groups["group_ownership"][`scan_${userId}`] = true
                                                                         grou_resjson["data"].forEach((grou_json) => {
                                                                             grou_json = grou_json["group"]
-                                                                            if (grou_json["owner"] && grou_json["owner"]["userId"] == json["id"]) {
+                                                                            if (grou_json["owner"] && grou_json["owner"]["userId"] == userId) {
                                                                                 grou_json["accepted"] = true;
                                                                                 allowed_groups["group_ownership"][grou_json["id"]] = {
                                                                                     "accepted": grou_json["accepted"],
@@ -502,7 +503,7 @@ function start() {
                                                 return { "accepted": false }
                                             } else {
                                                 group_scan = true
-                                                return fetch(`https://groups.roblox.com/v1/users/${json["id"]}/groups/roles?includeLocked=true&includeNotificationPreferences=true`, { "mode": "cors", "credentials": "include" }).then(grou_res => {
+                                                return fetch(`https://groups.roblox.com/v1/users/${userId}/groups/roles?includeLocked=true&includeNotificationPreferences=true`, { "mode": "cors", "credentials": "include" }).then(grou_res => {
                                                     if (grou_res.ok) {
                                                         return grou_res.json();
                                                     } else {
@@ -513,7 +514,7 @@ function start() {
                                                         if (grou_resjson["data"]) {
                                                             grou_resjson["data"].forEach((grou_json) => {
                                                                 grou_json = grou_json["group"]
-                                                                if (grou_json["owner"] == json["id"]) {
+                                                                if (grou_json["owner"] == userId) {
                                                                     grou_json["accepted"] = true
                                                                     stored_group_data["group_ownership"][grou_json["id"]] = grou_json
                                                                 } else {
@@ -587,12 +588,12 @@ function start() {
                                 if (window.verifiedCheckmarkSettings) {
                                     let verified_prompt_enabled = window.verifiedCheckmarkSettings["verifiedPrompt"];
                                     if (verified_prompt_enabled == true) {
-                                        if (approved_efazdev_users[json["id"].toString()]) {
+                                        if (approved_efazdev_users[userId.toString()]) {
                                             const placeholder = document.createRange().createContextualFragment(`<div>${efaz_approved_prompt_html}</div>`);
                                             if (!(document.getElementById("fake_verified_badge"))) {
                                                 document.body.appendChild(placeholder.children[0].children[0]);
                                             }
-                                        } else if (approved_by_user_users[json["id"].toString()]) {
+                                        } else if (approved_by_user_users[userId.toString()]) {
                                             const placeholder = document.createRange().createContextualFragment(`<div>${user_approved_prompt_html}</div>`);
                                             if (!(document.getElementById("fake_verified_badge"))) {
                                                 document.body.appendChild(placeholder.children[0].children[0]);
@@ -618,7 +619,7 @@ function start() {
                                 if (list_item.length > 0) {
                                     list_item.forEach((verified_badge_contain) => {
                                         if (verified_badge_contain.getAttribute("replicate-badge-addon-prompt")) {
-                                            if (verified_badge_contain.getAttribute("replicate-badge-addon-prompt") == `${json["id"]}_true`) {
+                                            if (verified_badge_contain.getAttribute("replicate-badge-addon-prompt") == `${userId}_true`) {
                                                 verified_badge_contain.setAttribute("replicate-badge-addon-prompt", "false")
                                                 verified_badge_contain.addEventListener("click", promptMessage);
                                             }
@@ -628,10 +629,10 @@ function start() {
                             }
 
                             if (enabled == true) {
-                                profile_html = profile_html.replaceAll("[input_id]", json["id"]);
-                                profile2_html = profile2_html.replaceAll("[input_id]", json["id"]);
+                                profile_html = profile_html.replaceAll("[input_id]", userId);
+                                profile2_html = profile2_html.replaceAll("[input_id]", userId);
 
-                                if (getIfLinkIsUserProfile(window.location.pathname) && window.location.pathname.includes(json["id"].toString())) {
+                                if (getIfLinkIsUserProfile(window.location.pathname) && getIfLinkIsUser(window.location.pathname, userId.toString())) {
                                     let main_headers = Array.from(document.querySelectorAll(".profile-name.text-overflow"));
                                     if (main_headers.length > 0) {
                                         main_headers.forEach((main_header) => {
@@ -695,7 +696,7 @@ function start() {
                                 if (name_on_side.length > 0) {
                                     name_on_side.forEach((main_name_on_side) => {
                                         if (main_name_on_side.outerHTML.includes(displayName) && main_name_on_side.parentElement && main_name_on_side.parentElement.href) {
-                                            if (getIfLinkIsUserProfile(main_name_on_side.parentElement.href) && main_name_on_side.parentElement.href.includes(json["id"].toString())) {
+                                            if (getIfLinkIsUserProfile(main_name_on_side.parentElement.href) && getIfLinkIsUser(main_name_on_side.parentElement.href, userId.toString())) {
                                                 if (verifiedBadgePlacedAlready(main_name_on_side.outerHTML)) {
                                                     return;
                                                 }
@@ -723,7 +724,7 @@ function start() {
                                             let group_guilded_posts = Array.from(document.querySelectorAll(".text-name.name"));
                                             if (group_guilded_posts.length > 0) {
                                                 group_guilded_posts.forEach((shout) => {
-                                                    if (shout.className == "text-name name" && shout.innerHTML.includes(displayName) && getIfLinkIsUserProfile(shout.href) && shout.href.includes(json["id"].toString())) {
+                                                    if (shout.className == "text-name name" && shout.innerHTML.includes(displayName) && getIfLinkIsUserProfile(shout.href) && getIfLinkIsUser(shout.href, userId.toString())) {
                                                         if (verifiedBadgePlacedAlready(shout.parentElement.outerHTML)) {
                                                             return;
                                                         }
@@ -732,25 +733,10 @@ function start() {
                                                 })
                                             }
 
-
-                                            /*
-                                            let group_shouts = Array.from(document.querySelectorAll(".text-label-medium.content-emphasis.ng-binding.ng-scope"));
-                                            if (group_shouts.length > 0) {
-                                                group_shouts.forEach((shout) => {
-                                                    if (shout.outerHTML.includes(displayName) && getIfLinkIsUserProfile(shout.href) && shout.href.includes(json["id"].toString())) {
-                                                        if (verifiedBadgePlacedAlready(shout.parentElement.outerHTML)) {
-                                                            return;
-                                                        }
-                                                        shout.outerHTML = `${shout.outerHTML} ${name_html_larger}`;
-                                                    }
-                                                });
-                                            }
-                                            */
-
                                             let name_in_group = Array.from(document.querySelectorAll(".list-item.member.ng-scope"));
                                             if (name_in_group.length > 0) {
                                                 name_in_group.forEach((main_name_on_group) => {
-                                                    if (main_name_on_group && main_name_on_group.children[0] && main_name_on_group.children[0].children[0] && getIfLinkIsUserProfile(main_name_on_group.children[0].children[0].href) && main_name_on_group.children[0].children[0].href.includes(json["id"].toString())) {
+                                                    if (main_name_on_group && main_name_on_group.children[0] && main_name_on_group.children[0].children[0] && getIfLinkIsUserProfile(main_name_on_group.children[0].children[0].href) && getIfLinkIsUser(main_name_on_group.children[0].children[0].href, userId.toString())) {
                                                         if (main_name_on_group.children[0] && main_name_on_group.children[0].children[2] && main_name_on_group.children[0].children[2].children[0] && main_name_on_group.children[0].children[2].children[0].children[0]) {
                                                             if (verifiedBadgePlacedAlready(main_name_on_group.children[0].children[2].children[0].innerHTML)) {
                                                                 return;
@@ -764,7 +750,7 @@ function start() {
                                             let group_wall = Array.from(document.querySelectorAll(".text-label-medium.content-emphasis.ng-binding.ng-scope"));
                                             if (group_wall.length > 0) {
                                                 group_wall.forEach((main_name_on_group) => {
-                                                    if (main_name_on_group.outerHTML.includes(displayName) && main_name_on_group.className == "text-label-medium content-emphasis ng-binding ng-scope" && getIfLinkIsUserProfile(main_name_on_group.href) && main_name_on_group.href.includes(json["id"].toString())) {
+                                                    if (main_name_on_group.outerHTML.includes(displayName) && main_name_on_group.className == "text-label-medium content-emphasis ng-binding ng-scope" && getIfLinkIsUserProfile(main_name_on_group.href) && getIfLinkIsUser(main_name_on_group.href, userId.toString())) {
                                                         if (verifiedBadgePlacedAlready(main_name_on_group.innerHTML)) {
                                                             return;
                                                         }
@@ -776,7 +762,7 @@ function start() {
                                             let group_payouts_auto = Array.from(document.querySelectorAll(".avatar-card-name.text-lead.text-overflow.ng-binding.ng-scope"));
                                             if (group_payouts_auto.length > 0) {
                                                 group_payouts_auto.forEach((main_name_on_group) => {
-                                                    if (main_name_on_group.innerHTML.includes(displayName) && main_name_on_group.href.includes(`${json["id"]}`)) {
+                                                    if (main_name_on_group.innerHTML.includes(displayName) && getIfLinkIsUserProfile(main_name_on_group.href) && getIfLinkIsUser(main_name_on_group.href, userId.toString())) {
                                                         if (verifiedBadgePlacedAlready(main_name_on_group.parentElement.innerHTML)) {
                                                             return
                                                         }
@@ -817,7 +803,7 @@ function start() {
                                                             approvedGroup(identified_id[0]).then(info => {
                                                                 if (info["accepted"] == true) {
                                                                     group_owners.forEach((group_owner_name) => {
-                                                                        if (group_owner_name.innerHTML.includes(json["displayName"]) && getIfLinkIsUserProfile(group_owner_name.href) && group_owner_name.href.includes(json["id"].toString())) {
+                                                                        if (group_owner_name.innerHTML.includes(displayName) && getIfLinkIsUserProfile(group_owner_name.href) && getIfLinkIsUser(group_owner_name.href, userId.toString())) {
                                                                             if (!(group_owner_name.parentElement)) {
                                                                                 return;
                                                                             }
@@ -939,20 +925,6 @@ function start() {
                                         });
                                     }
 
-                                    /*
-                                    setTimeout(function () {
-                                        let list_item = Array.from(document.querySelectorAll(".search-result.avatar-cards.ng-scope"));
-                                        if (list_item.length > 0) {
-                                            let catalog_list_header = list_item[0];
-                                            if (enable_observers == true) {
-                                                let observer = new MutationObserver(applyAutoChangeFunctionB);
-                                                observer.observe(catalog_list_header, { childList: true });
-                                            }
-                                        }
-
-                                        addPromptButtonInput()
-                                    }, start_time);
-                                    */
                                     addPromptButtonInput()
                                 }
                                 function applyAutoChangeFunctionC() { // Roblox Avatar Cards
@@ -978,17 +950,6 @@ function start() {
                                             }
                                         });
                                     }
-
-                                    /*
-                                    let list_item = Array.from(document.querySelectorAll(".hlist.avatar-cards"));
-                                    if (list_item.length > 0) {
-                                        let catalog_list_header = list_item[0];
-                                        if (enable_observers == true) {
-                                            let observer = new MutationObserver(applyAutoChangeFunctionB);
-                                            observer.observe(catalog_list_header, { childList: true });
-                                        }
-                                    }
-                                    */
 
                                     addPromptButtonInput()
                                 }
@@ -1031,17 +992,6 @@ function start() {
                                             }
                                         })
                                     }
-
-                                    /*
-                                    let list_item = document.getElementById("assetsItems");
-                                    if (list_item) {
-                                        let catalog_list_header = list_item;
-                                        if (enable_observers == true) {
-                                            let observer = new MutationObserver(applyAutoChangeFunctionD);
-                                            observer.observe(catalog_list_header, { childList: true });
-                                        }
-                                    }
-                                    */
                                 }
                                 function applyAutoChangeFunctionE() { // Resellers
                                     let username_containers_10 = Array.from(document.querySelectorAll(".text-name.username.ng-binding"));
@@ -1058,23 +1008,12 @@ function start() {
                                             }
                                         });
                                     }
-
-                                    /*
-                                    let list_item = Array.from(document.querySelectorAll(".resellers"));
-                                    if (list_item.length > 0) {
-                                        let catalog_list_header = list_item[0];
-                                        if (enable_observers == true) {
-                                            let observer = new MutationObserver(applyAutoChangeFunctionE);
-                                            observer.observe(catalog_list_header, { childList: true });
-                                        }
-                                    }
-                                    */
                                 }
                                 function applyAutoChangeFunctionF() { // More Avatar Cards
                                     let username_containers_11 = Array.from(document.querySelectorAll(".text-overflow.avatar-name"));
                                     if (username_containers_11.length > 0) {
                                         username_containers_11.forEach((user_container) => {
-                                            if (user_container && user_container.outerHTML.includes(`${displayName}`) && user_container.href.includes(json["id"]) && user_container.className == "text-overflow avatar-name") {
+                                            if (user_container && user_container.outerHTML.includes(`${displayName}`) && getIfLinkIsUserProfile(user_container.href) && getIfLinkIsUser(user_container.href, userId.toString()) && user_container.className == "text-overflow avatar-name") {
                                                 if (!(user_container.parentElement)) {
                                                     return;
                                                 }
@@ -1085,17 +1024,6 @@ function start() {
                                             }
                                         });
                                     }
-
-                                    /*
-                                    let list_item = Array.from(document.querySelectorAll(".hlist.avatar-cards"));
-                                    if (list_item.length > 0) {
-                                        let catalog_list_header = list_item[0];
-                                        if (enable_observers == true) {
-                                            let observer = new MutationObserver(applyAutoChangeFunctionF);
-                                            observer.observe(catalog_list_header, { childList: true });
-                                        }
-                                    }
-                                    */
                                 }
                                 function applyAutoChangeFunctionG() { // Game Cards
                                     let username_containers_12 = Array.from(document.querySelectorAll(".text-overflow.game-card-name.ng-binding"));
@@ -1153,26 +1081,6 @@ function start() {
                                             }
                                         });
                                     }
-
-                                    /*
-                                    let list_item = Array.from(document.querySelectorAll("groups-showcase-grid"));
-                                    if (list_item.length > 0) {
-                                        let catalog_list_header = list_item[0];
-                                        if (enable_observers == true) {
-                                            let observer = new MutationObserver(applyAutoChangeFunctionG);
-                                            observer.observe(catalog_list_header, { childList: true });
-                                        }
-                                    }
-
-                                    let list_item = document.getElementById("groups-switcher");
-                                    if (list_item) {
-                                        let catalog_list_header = list_item;
-                                        if (enable_observers == true) {
-                                            let observer = new MutationObserver(applyAutoChangeFunctionG);
-                                            observer.observe(catalog_list_header, { childList: true });
-                                        }
-                                    }
-                                    */
                                 }
                                 function applyAutoChangeFunctionH() { // Messages
                                     let username_containers_12 = Array.from(document.querySelectorAll(".paired-name.message-summary-username.positionAboveLink.font-header-2.ng-scope"));
@@ -1202,17 +1110,6 @@ function start() {
                                             }
                                         });
                                     }
-
-                                    /*
-                                    let list_item = document.getElementById("rbx-tabs-horizontal rbx-scrollable-tabs-horizontal roblox-messages-container ng-scope");
-                                    if (list_item) {
-                                        let catalog_list_header = list_item;
-                                        if (enable_observers == true) {
-                                            let observer = new MutationObserver(applyAutoChangeFunctionH);
-                                            observer.observe(catalog_list_header, { childList: true });
-                                        }
-                                    }
-                                    */
                                 }
                                 function applyAutoChangeFunctionI() { // More Names
                                     let username_containers_4 = Array.from(document.querySelectorAll(".text-name"));
@@ -1221,7 +1118,7 @@ function start() {
                                             if (!(user_container.parentElement)) {
                                                 return;
                                             }
-                                            if (user_container.parentElement.outerHTML.includes(`${username}`) && user_container.parentElement.outerHTML.includes(json["id"]) && user_container.className == "text-name") {
+                                            if (user_container.parentElement.outerHTML.includes(`${username}`) && user_container.parentElement.outerHTML.includes(userId) && user_container.className == "text-name") {
                                                 if (verifiedBadgePlacedAlready(user_container.parentElement.parentElement.outerHTML)) {
                                                     return;
                                                 }
@@ -1250,16 +1147,26 @@ function start() {
                                         });
                                     }
 
-                                    /*
-                                    let list_item = document.getElementById("item-container");
-                                    if (list_item) {
-                                        let catalog_list_header = list_item;
-                                        if (enable_observers == true) {
-                                            let observer = new MutationObserver(applyAutoChangeFunctionI);
-                                            observer.observe(catalog_list_header, { childList: true });
-                                        }
+                                    let username_containers_5 = Array.from(document.querySelectorAll(".rbx-private-owner"));
+                                    if (username_containers_5.length > 0) {
+                                        username_containers_5.forEach((user_container) => {
+                                            if (!(user_container.children && user_container.children[1])) {
+                                                return;
+                                            }
+                                            if (!(user_container.children[1].children[0])) {
+                                                return;
+                                            }
+                                            if (!(user_container.children[1].children[0].children[1])) {
+                                                return;
+                                            }
+                                            if (user_container.children[1].href && getIfLinkIsUserProfile(user_container.children[1].href) && getIfLinkIsUser(user_container.children[1].href, userId.toString()) && user_container.className == "rbx-private-owner") {
+                                                if (verifiedBadgePlacedAlready(user_container.children[1].children[0].children[1].innerHTML)) {
+                                                    return;
+                                                }
+                                                user_container.children[1].children[0].children[1].innerHTML = generateVerifiedIcon(game_html, 4, null, null, 1, null, null);
+                                            }
+                                        });
                                     }
-                                    */
                                 }
 
                                 let username_containers_2 = Array.from(document.querySelectorAll(".creator-name.text-link"));
@@ -1337,7 +1244,7 @@ function start() {
                                         if (!(user_container.parentElement)) {
                                             return;
                                         }
-                                        if (user_container.parentElement.outerHTML.includes(`${username}`) && user_container.parentElement.outerHTML.includes(json["id"]) && user_container.className == "text-name") {
+                                        if (user_container.parentElement.outerHTML.includes(`${username}`) && user_container.parentElement.outerHTML.includes(userId) && user_container.className == "text-name") {
                                             if (verifiedBadgePlacedAlready(user_container.parentElement.parentElement.outerHTML)) {
                                                 return;
                                             }
@@ -1446,17 +1353,17 @@ function start() {
                                         friends_username_containers.forEach((user_container) => {
                                             if (user_container.href && user_container.className == "text-link friend-link ng-isolate-scope") {
                                                 let userIdd = user_container.href.match(/[0-9]+/)[0];
-                                                if (json["id"] == userIdd) {
+                                                if (userId == userIdd) {
                                                     if (user_container.innerHTML.includes(`class="hide"`) && user_container.innerHTML.includes(displayName)) {
                                                         if (user_container.children[1]) {
                                                             if (!(user_checkmark_color == "%230066ff" || user_checkmark_color == "%230066FF")) {  // User's selected color
                                                                 user_container.children[1].innerHTML = user_container.children[1].innerHTML.replaceAll(`class="hide"`, "").replaceAll(`%230066FF`, user_checkmark_color)
-                                                            } else if (approved_efazdev_users[json["id"]] && approved_efazdev_users[json["id"]]["hexColor"]) { // If the main user has selected the default, has EfazDev Approved Users enabled, and there's a color attached to the approved user.
-                                                                let hex_color = approved_efazdev_users[json["id"]]["hexColor"]
+                                                            } else if (approved_efazdev_users[userId] && approved_efazdev_users[userId]["hexColor"]) { // If the main user has selected the default, has EfazDev Approved Users enabled, and there's a color attached to the approved user.
+                                                                let hex_color = approved_efazdev_users[userId]["hexColor"]
                                                                 hex_color = hex_color.replace("#", "%23");
                                                                 user_container.children[1].innerHTML = user_container.children[1].innerHTML.replaceAll(`class="hide"`, "").replaceAll(`%230066FF`, hex_color)
-                                                            } else if (approved_by_user_users[json["id"]] && approved_by_user_users[json["id"]]["hexColor"]) { // If the main user has selected the default, has EfazDev Approved Users enabled, and there's a color attached to the approved user.
-                                                                let hex_color = approved_by_user_users[json["id"]]["hexColor"]
+                                                            } else if (approved_by_user_users[userId] && approved_by_user_users[userId]["hexColor"]) { // If the main user has selected the default, has EfazDev Approved Users enabled, and there's a color attached to the approved user.
+                                                                let hex_color = approved_by_user_users[userId]["hexColor"]
                                                                 hex_color = hex_color.replace("#", "%23");
                                                                 user_container.children[1].innerHTML = user_container.children[1].innerHTML.replaceAll(`class="hide"`, "").replaceAll(`%230066FF`, hex_color)
                                                             } else {
@@ -1474,7 +1381,7 @@ function start() {
                                         friends_scroll_containers.forEach((user_container) => {
                                             if (user_container.href && user_container.className == "friends-carousel-tile-labels") {
                                                 let userIdd = user_container.href.match(/[0-9]+/)[0];
-                                                if (json["id"] == userIdd) {
+                                                if (userId == userIdd) {
                                                     if (user_container.children[0] && user_container.children[0].children[0]) {
                                                         if (verifiedBadgePlacedAlready(user_container.children[0].children[0].outerHTML)) {
                                                             return;
@@ -1487,58 +1394,6 @@ function start() {
                                     }
                                 }, start_time);
 
-                                /*
-                                setTimeout(function () {
-                                    let list_item = Array.from(document.querySelectorAll(".search-result.avatar-cards.ng-scope"));
-                                    if (list_item.length > 0) {
-                                        let catalog_list_header = list_item[0];
-                                        if (enable_observers == true) {
-                                            let observer = new MutationObserver(applyAutoChangeFunctionB);
-                                            observer.observe(catalog_list_header, { childList: true });
-                                        }
-                                        logMessage("Installed observer: search-result")
-                                    }
-                                }, start_time);
-                                */
-
-                                /*
-                                let list_item = Array.from(document.querySelectorAll(".hlist.item-cards-stackable.ng-scope"));
-                                if (list_item.length > 0) {
-                                    let catalog_list_header = list_item[0];
-                                    if (enable_observers == true) {
-                                        let observer = new MutationObserver(applyAutoChangeFunctionB);
-                                        observer.observe(catalog_list_header, { childList: true });
-                                    }
-                                    logMessage("Installed observer: item-cards-stackable")
-                                }
-                                */
-
-                                /*
-                                let list_item = Array.from(document.querySelectorAll(".tab-content.configure-group-details"));
-                                if (list_item.length > 0) {
-                                    let catalog_list_header = list_item[0];
-                                    if (enable_observers == true) {
-                                        let observer = new MutationObserver(applyAutoChangeFunctionC);
-                                        observer.observe(catalog_list_header, { childList: true });
-                                    }
-                                    logMessage("Installed observer: group-detail")
-                                }
-                                */
-
-                                /*
-                                setTimeout(function () {
-                                    let list_item = Array.from(document.querySelectorAll(".content"));
-                                    if (list_item.length > 0) {
-                                        let catalog_list_header = list_item[0];
-                                        if (enable_observers == true) {
-                                            let observer = new MutationObserver(applyAutoChangeFunctionB);
-                                            observer.observe(catalog_list_header, { childList: true });
-                                        }
-                                        logMessage("Installed observer: content")
-                                    }
-                                }, start_time);
-                                */
-
                                 /* Start all automatic changes and observers */
                                 applyAutoChangeFunctionA();
                                 applyAutoChangeFunctionB();
@@ -1550,12 +1405,9 @@ function start() {
                                 applyAutoChangeFunctionI();
                                 /* Start all automatic changes and observers */
 
-                                /* Add prompt popup for verified checkmarks with the ability to be clicked */
-                                setTimeout(addPromptButtonInput, start_time);
-                                /* Add prompt popup for verified checkmarks with the ability to be clicked */
-
                                 /* Loop entire function again */
                                 setTimeout(function () {
+                                    addPromptButtonInput()
                                     scanUser(id, isMain)
                                 }, start_time)
                                 /* Loop entire function again */
