@@ -16,7 +16,8 @@
         "startTime": {
             "text": "Start Loop Time (ms)",
             "type": "number",
-            "default": 75,
+            "default": 500,
+            "reset": true,
             "neededSettings": ["enabled"]
         },
         "replaceURLwithDiscoverURL": {

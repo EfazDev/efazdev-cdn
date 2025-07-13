@@ -71,7 +71,7 @@ reset_cache.js:
                         }
                     }
                 } catch (error) {
-                    if (!(error.toString() && error.toString().includes("aborted"))) {
+                    if (!(error.toString() && /aborted/.test(error.toString()))) {
                         console.warn(error);
                         alert("There was an issue trying to save approved user JSON!")
                     }

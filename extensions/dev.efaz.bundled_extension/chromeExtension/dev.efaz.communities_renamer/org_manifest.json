@@ -1,7 +1,7 @@
 {
     "name": "Efaz's Roblox Communities Renamer",
     "description": "An extension that replaces Communities on Roblox back to Groups!",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "manifest_version": 3,
     "author": "EfazDev",
     "homepage_url": "https://www.efaz.dev/roblox-communities-rename",
@@ -54,8 +54,7 @@
         "pages": []
     },
     "permissions": [
-        "storage",
-        "scripting"
+        "storage"
     ],
     "host_permissions": [
         "https://*.roblox.com/*"

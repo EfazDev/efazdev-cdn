@@ -26,7 +26,6 @@ inject.js:
             return chrome.runtime.getURL(resource)
         }
     }
-
     async function loopThroughArrayAsync(array, callback) {
         if (typeof (array) == "object") {
             if (Array.isArray(array)) {
@@ -44,7 +43,6 @@ inject.js:
             }
         }
     }
-
     async function getSettings(storage_key, callback) {
         if (callback) {
             fetch(getChromeURL("settings.json")).then((res) => {
@@ -94,6 +92,7 @@ inject.js:
             })
         }
     }
+    function timeout(func, ms) { setTimeout(func, ms); }
 
     try {
         getSettings(storage_key, function (items) {
@@ -105,39 +104,22 @@ inject.js:
             if (!(items[storage_key])) {
                 items[storage_key] = defaultData
             }
-            if (items[storage_key]["enabled"] == true) {
+            var settings = items[storage_key];
+            if (settings["enabled"] == true) {
                 var tab = window.location
                 if (tab.href) {
                     var urlObj = window.location
                     if (urlObj.hostname == "www.roblox.com") {
-                        async function injectCSS(settings) {
-                            var amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
-                            var rbx_icon_sector = ".app-icon-mac { background-image: url(rbx_icon) !important; } .app-icon-windows { background-image: url(rbx_icon) !important; } .app-icon-ios { background-image: url(rbx_icon) !important; } .app-icon-android { background-image: url(rbx_icon) !important; }";
-                            var rbx_studio_icon_sector = ".studio-icon-mac { background-image: url(rbx_studio_icon) !important; } .studio-icon-windows { background-image: url(rbx_studio_icon) !important; }";
-                            var rbx_studio_top_left_icon_sector = ".icon-logo-r { background-image: url(top_left_icon) !important; }";
-                            var rbx_studio_top_left_name_sector = ".icon-logo { background-image: url(top_left_name) !important; background-size: cover !important; } .icon-default-logo { background-image: url(top_left_name) !important; height:70px !important; }";
+                        let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
+                        let rbx_icon_sector = ".app-icon-mac { background-image: url(rbx_icon) !important; } .app-icon-windows { background-image: url(rbx_icon) !important; } .app-icon-ios { background-image: url(rbx_icon) !important; } .app-icon-android { background-image: url(rbx_icon) !important; }";
+                        let rbx_studio_icon_sector = ".studio-icon-mac { background-image: url(rbx_studio_icon) !important; } .studio-icon-windows { background-image: url(rbx_studio_icon) !important; }";
+                        let rbx_studio_top_left_icon_sector = ".icon-logo-r { background-image: url(top_left_icon) !important; }";
+                        let rbx_studio_top_left_name_sector = ".icon-logo { background-image: url(top_left_name) !important; background-size: cover !important; } .icon-default-logo { background-image: url(top_left_name) !important; height:70px !important; }";
+                        async function injectCSS() {
                             if (settings["projectedImage"] && settings["projectedImage"].startsWith("data")) {
-                                var all_links = document.getElementsByTagName("link")
-                                async function loopThroughArrayAsync(array, callback) {
-                                    if (typeof (array) == "object") {
-                                        if (Array.isArray(array)) {
-                                            for (let a = 0; a < array.length; a++) {
-                                                var value = array[a]
-                                                await callback(a, value)
-                                            }
-                                        } else {
-                                            var generated_keys = Object.keys(array);
-                                            for (let a = 0; a < generated_keys.length; a++) {
-                                                var key = generated_keys[a]
-                                                var value = array[key]
-                                                await callback(key, value)
-                                            }
-                                        }
-                                    }
-                                }
-                                all_links = Array.prototype.slice.call(all_links);
+                                let all_links = Array.from(document.querySelectorAll("link"));
                                 await loopThroughArrayAsync(all_links, async (_, header) => {
-                                    if (header.rel && header.rel == "icon" && header.href) {
+                                    if (header.rel && header.rel == "icon" && header.href && !(header.href == settings["projectedImage"])) {
                                         header.setAttribute("href", settings["projectedImage"])
                                     }
                                 })
@@ -178,140 +160,59 @@ inject.js:
                                     document.head.append(d)
                                 }
                             }
-                            setTimeout(() => { injectCSS(settings) }, amountOfSecondsBeforeLoop)
+                            timeout(() => { injectCSS() }, amountOfSecondsBeforeLoop)
                         }
-                        injectCSS(items[storage_key])
+                        injectCSS()
                     } else if (urlObj.hostname == "create.roblox.com") {
-                        async function injectCSS(settings) {
-                            var amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
-                            // var rbx_icon_sector = ".web-blox-css-tss-1hgd7ws-studioIcon { src: url(rbx_icon) !important; background-size: 80px; background-repeat: no-repeat; }";
-                            // var rbx_studio_icon_sector = ".web-blox-css-tss-1hgd7ws-studioIcon { src: url(rbx_studio_icon) !important; background-size: 80px; background-repeat: no-repeat; }";
+                        let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
+                        async function injectCSS() {
                             if (settings["projectedImage2"] && settings["projectedImage2"].startsWith("data")) {
-                                var all_links = document.getElementsByTagName("link")
-                                async function loopThroughArrayAsync(array, callback) {
-                                    if (typeof (array) == "object") {
-                                        if (Array.isArray(array)) {
-                                            for (let a = 0; a < array.length; a++) {
-                                                var value = array[a]
-                                                await callback(a, value)
-                                            }
-                                        } else {
-                                            var generated_keys = Object.keys(array);
-                                            for (let a = 0; a < generated_keys.length; a++) {
-                                                var key = generated_keys[a]
-                                                var value = array[key]
-                                                await callback(key, value)
-                                            }
-                                        }
-                                    }
-                                }
-                                all_links = Array.prototype.slice.call(all_links);
+                                var all_links = Array.from(document.querySelectorAll("link"));
                                 await loopThroughArrayAsync(all_links, async (_, header) => {
-                                    if (header.rel && header.rel == "icon" && header.href) {
+                                    if (header.rel && header.rel == "icon" && header.href && !(header.href == settings["projectedImage2"])) {
                                         header.setAttribute("href", settings["projectedImage2"])
                                     }
                                 })
                             }
-                            // if (settings["rbxIcon"] && settings["rbxIcon"].startsWith("data")) {
-                                // if (!(document.getElementById("rbx_icon"))) {
-                                //     var d = document.createElement("style")
-                                //     d.setAttribute("id", "rbx_icon")
-                                //     d.setAttribute("rel", "stylesheet")
-                                //     d.innerHTML = rbx_icon_sector.replaceAll("rbx_icon", settings["rbxIcon"])
-                                //     document.head.append(d)
-                                // }
-                            //     var all_icons = document.getElementsByClassName("web-blox-css-tss-1hgd7ws-studioIcon")
-                            //     all_icons = Array.prototype.slice.call(all_icons);
-                            //     await loopThroughArrayAsync(all_icons, async (_, header) => {
-                            //         if (header.width && header.width == "64") {
-                            //             header.setAttribute("src", settings["rbxIcon"])
-                            //         }
-                            //     })
-                            // }
-
                             if (settings["rbxStudioIcon"] && settings["rbxStudioIcon"].startsWith("data")) {
-                                // if (!(document.getElementById("rbx_studio_icon"))) {
-                                //     var d = document.createElement("style")
-                                //     d.setAttribute("id", "rbx_studio_icon")
-                                //     d.setAttribute("rel", "stylesheet")
-                                //     d.innerHTML = rbx_studio_icon_sector.replaceAll("rbx_studio_icon", settings["rbxStudioIcon"])
-                                //     document.head.append(d)
-                                // }
-                                var all_icons = document.getElementsByClassName("web-blox-css-tss-1hgd7ws-studioIcon")
-                                all_icons = Array.prototype.slice.call(all_icons);
+                                var all_icons = Array.from(document.querySelectorAll(".web-blox-css-tss-1hgd7ws-studioIcon"))
                                 await loopThroughArrayAsync(all_icons, async (_, header) => {
                                     if (header.getAttribute("width") == "64") {
                                         header.setAttribute("src", settings["rbxStudioIcon"])
                                     }
                                 })
                             }
-                            setTimeout(() => { injectCSS(settings) }, amountOfSecondsBeforeLoop)
+                            timeout(() => { injectCSS() }, amountOfSecondsBeforeLoop)
                         }
-                        injectCSS(items[storage_key])
+                        injectCSS()
                     } else if (urlObj.hostname == "devforum.roblox.com") {
-                        async function injectCSS(settings) {
-                            var amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
+                        let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
+                        async function injectCSS() {
                             if (settings["projectedImage3"] && settings["projectedImage3"].startsWith("data")) {
-                                var all_links = document.getElementsByTagName("link")
-                                async function loopThroughArrayAsync(array, callback) {
-                                    if (typeof (array) == "object") {
-                                        if (Array.isArray(array)) {
-                                            for (let a = 0; a < array.length; a++) {
-                                                var value = array[a]
-                                                await callback(a, value)
-                                            }
-                                        } else {
-                                            var generated_keys = Object.keys(array);
-                                            for (let a = 0; a < generated_keys.length; a++) {
-                                                var key = generated_keys[a]
-                                                var value = array[key]
-                                                await callback(key, value)
-                                            }
-                                        }
-                                    }
-                                }
-                                all_links = Array.prototype.slice.call(all_links);
+                                var all_links = Array.from(document.querySelectorAll("link"))
                                 await loopThroughArrayAsync(all_links, async (_, header) => {
-                                    if (header.rel && header.rel == "icon" && header.href) {
+                                    if (header.rel && header.rel == "icon" && header.href && !(header.href == settings["projectedImage3"])) {
                                         header.setAttribute("href", settings["projectedImage3"])
                                     }
                                 })
                             }
-                            setTimeout(() => { injectCSS(settings) }, amountOfSecondsBeforeLoop)
+                            timeout(() => { injectCSS() }, amountOfSecondsBeforeLoop)
                         }
-                        injectCSS(items[storage_key])
-                    } else if (urlObj.hostname.includes(".roblox.com")) {
-                        async function injectCSS(settings) {
-                            var amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
+                        injectCSS()
+                    } else if (/.roblox.com/.test(urlObj.hostname)) {
+                        let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
+                        async function injectCSS() {
                             if (settings["projectedImage4"] && settings["projectedImage4"].startsWith("data")) {
-                                var all_links = document.getElementsByTagName("link")
-                                async function loopThroughArrayAsync(array, callback) {
-                                    if (typeof (array) == "object") {
-                                        if (Array.isArray(array)) {
-                                            for (let a = 0; a < array.length; a++) {
-                                                var value = array[a]
-                                                await callback(a, value)
-                                            }
-                                        } else {
-                                            var generated_keys = Object.keys(array);
-                                            for (let a = 0; a < generated_keys.length; a++) {
-                                                var key = generated_keys[a]
-                                                var value = array[key]
-                                                await callback(key, value)
-                                            }
-                                        }
-                                    }
-                                }
-                                all_links = Array.prototype.slice.call(all_links);
+                                var all_links = Array.from(document.querySelectorAll("link"))
                                 await loopThroughArrayAsync(all_links, async (_, header) => {
-                                    if (header.rel && header.rel == "icon" && header.href) {
+                                    if (header.rel && header.rel == "icon" && header.href && !(header.href == settings["projectedImage4"])) {
                                         header.setAttribute("href", settings["projectedImage4"])
                                     }
                                 })
                             }
-                            setTimeout(() => { injectCSS(settings) }, amountOfSecondsBeforeLoop)
+                            timeout(() => { injectCSS() }, amountOfSecondsBeforeLoop)
                         }
-                        injectCSS(items[storage_key])
+                        injectCSS()
                     }
                 }
             }

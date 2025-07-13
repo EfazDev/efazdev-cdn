@@ -1,7 +1,7 @@
 {
     "name": "Efaz's Roblox Theme",
     "description": "An extension that creates the Efaz's Theme inside the Roblox website!",
-    "version": "1.1.5",
+    "version": "1.1.6",
     "manifest_version": 3,
     "author": "EfazDev",
     "homepage_url": "https://www.efaz.dev/",
@@ -55,8 +55,7 @@
         "pages": []
     },
     "permissions": [
-        "storage",
-        "scripting"
+        "storage"
     ],
     "host_permissions": [
         "https://*.roblox.com/*"

@@ -26,7 +26,6 @@ inject.js:
             return chrome.runtime.getURL(resource)
         }
     }
-
     async function loopThroughArrayAsync(array, callback) {
         if (typeof (array) == "object") {
             if (Array.isArray(array)) {
@@ -44,7 +43,26 @@ inject.js:
             }
         }
     }
-
+    function sheetToString(sheet) {
+        try {
+            return sheet.cssRules ? Array.from(sheet.cssRules).map(rule => rule.cssText || "").join("\n") : "";
+        } catch (e) { return ""; }
+    };
+    function hexToRgb(hex) {
+        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : null;
+    };
+    function rgbToHex(r, g, b) {
+        return "#" + (1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1);
+    };
+    function formatRgbVal(val) {
+        return Math.max(0, Math.min(255, val));
+    };
+    function timeout(func, ms) { setTimeout(func, ms); }
     async function getSettings(storage_key, callback) {
         if (callback) {
             fetch(getChromeURL("settings.json")).then((res) => {
@@ -97,59 +115,28 @@ inject.js:
 
     try {
         getSettings(storage_key, function (items) {
-            var defaultData = { "enabled": true, "color": "#56ac72", "loopSeconds": "100", "overwriteSuccessColor": false, "applyToPrimaryBtn": false, "overwriteCreateDashboard": false, "includeGraphInDashboard": false }
-            if (!(items[storage_key])) {
-                items[storage_key] = defaultData
-            }
-            if (items[storage_key]["enabled"] == true) {
+            let defaultData = { "enabled": true, "color": "#56ac72", "loopSeconds": "100", "overwriteSuccessColor": false, "applyToPrimaryBtn": false, "overwriteCreateDashboard": false, "includeGraphInDashboard": false }
+            if (!(items[storage_key])) { items[storage_key] = defaultData }
+            let settings = items[storage_key];
+            if (settings["enabled"] == true) {
                 var tab = window.location
                 if (tab.href) {
                     var urlObj = window.location
                     if (urlObj.hostname == "www.roblox.com") {
-                        async function injectCSS(settings) {
-                            let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
-                            let all_links = document.getElementsByTagName("link")
-
-                            async function loopThroughArrayAsync(array, callback) {
-                                if (typeof (array) == "object") {
-                                    if (Array.isArray(array)) {
-                                        for (let a = 0; a < array.length; a++) {
-                                            var value = array[a]
-                                            await callback(a, value)
-                                        }
-                                    } else {
-                                        var generated_keys = Object.keys(array);
-                                        for (let a = 0; a < generated_keys.length; a++) {
-                                            var key = generated_keys[a]
-                                            var value = array[key]
-                                            await callback(key, value)
-                                        }
-                                    }
-                                }
-                            }
-                            async function convertLargeResponse(response) {
-                                const reader = response.body.getReader();
-                                let decoder = new TextDecoder();
-                                let result = "";
-                                while (true) {
-                                    const { done, value } = await reader.read();
-                                    if (done) break;
-                                    result += decoder.decode(value, { stream: true });
-                                };
-                                return result;
-                            };
-
+                        let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
+                        let affect_bundles = ["StyleGuide", "Catalog", "Chat", "PlacesList", "ItemDetailsInfo", "UserSettings", "ItemPurchaseUpsell", "GameCarousel", "NotificationStream", "AccountSecurityPrompt", "FoundationCss"]
+                        let converted_rgb = hexToRgb(settings["color"]);
+                        async function injectCSS() {
                             // Normal Elements
-                            all_links = Array.prototype.slice.call(all_links);
+                            let all_links = Array.from(document.querySelectorAll("link"))
                             await loopThroughArrayAsync(all_links, async (_, header) => {
-                                let affect_bundles = ["StyleGuide", "Catalog", "Chat", "PlacesList", "ItemDetailsInfo", "UserSettings", "ItemPurchaseUpsell", "GameCarousel", "NotificationStream", "AccountSecurityPrompt", "FoundationCss"]
-                                if (header.rel && header.rel == "stylesheet" && (affect_bundles.includes(header.getAttribute("data-bundlename"))) && header.href) {
+                                if (!(header.getAttribute("baseColoringAdded") == "true") && header.rel && header.rel == "stylesheet" && (affect_bundles.includes(header.getAttribute("data-bundlename"))) && header.href) {
                                     let fetchLink = header.href
                                     header.setAttribute("data-bundlename", header.getAttribute("data-bundlename") + "_Accented")
                                     let roblox_css = await fetch(fetchLink)
                                     if (roblox_css.ok) {
                                         try {
-                                            var roblox_css_res = await convertLargeResponse(roblox_css);
+                                            let roblox_css_res = await roblox_css.text();
                                             if (settings["enableImageBackground"] == true) {
                                                 if (!(settings["projectedImage"] == "" || settings["projectedImage"] == "https://empty.efaz.dev" || settings["projectedImage"] == null)) {
                                                     if (settings["projectedImage"].startsWith("https://") || settings["projectedImage"].startsWith("data:")) { roblox_css_res = roblox_css_res.replaceAll("background-color:#335fff", "background:url(" + settings["projectedImage"] + ");background-size: 105% 100%;background-position: 50%") }
@@ -171,10 +158,12 @@ inject.js:
                                             d.setAttribute("onerror", "Roblox.BundleDetector &amp;&amp; Roblox.BundleDetector.reportBundleError(this)")
                                             d.setAttribute("data-bundlename", header.getAttribute("data-bundlename"))
                                             d.setAttribute("data-bundle-source", "Main")
+                                            d.setAttribute("baseColoringAdded", "true")
                                             d.setAttribute("org_href", header.href)
                                             d.innerHTML = roblox_css_res
                                             header.href = ""
                                             header.append(d)
+                                            header.setAttribute("baseColoringAdded", "true")
                                         } catch (e) {
                                             console.warn('There was an issue to load the requested CSS and inject accent color! Error Message: ' + e.message)
                                         }
@@ -185,43 +174,9 @@ inject.js:
                             })
 
                             // WebBlox Elements
-                            function sheetToString(sheet) {
-                                function stringifyRule(rule) {
-                                    return rule.cssText || ''
-                                }
-                                var text = sheet.cssRules
-                                    ? Array.from(sheet.cssRules)
-                                        .map(rule => stringifyRule(rule))
-                                        .join('\n')
-                                    : ''
-                                return text;
-                            };
-                            function hexToRgb(hex) {
-                                var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-                                return result ? {
-                                    r: parseInt(result[1], 16),
-                                    g: parseInt(result[2], 16),
-                                    b: parseInt(result[3], 16)
-                                } : null;
-                            };
-                            function rgbToHex(r, g, b) {
-                                return "#" + (1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1);
-                            };
-                            function formatRgbVal(val) {
-                                if (val < 0) {
-                                    return 0;
-                                } else if (val > 255) {
-                                    return 255;
-                                } else {
-                                    return val;
-                                }
-                            };
-
-                            let converted_rgb = hexToRgb(settings["color"]);
-                            let all_styles = document.getElementsByTagName("style");
-                            all_styles = Array.prototype.slice.call(all_styles);
+                            let all_styles = Array.from(document.querySelectorAll("style"));
                             await loopThroughArrayAsync(all_styles, async (_, header) => {
-                                if (!(header.getAttribute("baseColoringAdded") == "true")) {
+                                if (!(header.getAttribute("baseColoringAdded") == "true") && !(header.getAttribute("onerror"))) {
                                     let change_made = false;
                                     let converted_sheet = "";
                                     if (header.innerHTML == "") {
@@ -273,62 +228,13 @@ inject.js:
                                     header.setAttribute("baseColoringAdded", "true")
                                 }
                             });
-                            setTimeout(() => { injectCSS(settings) }, amountOfSecondsBeforeLoop)
+                            timeout(() => { injectCSS() }, amountOfSecondsBeforeLoop)
                         }
-                        injectCSS(items[storage_key])
+                        injectCSS()
                     } else if (urlObj.hostname == "create.roblox.com" || urlObj.hostname == "authorize.roblox.com" || urlObj.hostname == "advertise.roblox.com") {
-                        if (items[storage_key]["overwriteCreateDashboard"] == true) {
-                            async function injectCSS(settings) {
-                                var amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100;
-
-                                async function loopThroughArrayAsync(array, callback) {
-                                    if (typeof (array) == "object") {
-                                        if (Array.isArray(array)) {
-                                            for (let a = 0; a < array.length; a++) {
-                                                var value = array[a]
-                                                await callback(a, value)
-                                            }
-                                        } else {
-                                            var generated_keys = Object.keys(array);
-                                            for (let a = 0; a < generated_keys.length; a++) {
-                                                var key = generated_keys[a]
-                                                var value = array[key]
-                                                await callback(key, value)
-                                            }
-                                        }
-                                    }
-                                }
-                                function sheetToString(sheet) {
-                                    function stringifyRule(rule) {
-                                        return rule.cssText || ''
-                                    }
-                                    var text = sheet.cssRules
-                                        ? Array.from(sheet.cssRules)
-                                            .map(rule => stringifyRule(rule))
-                                            .join('\n')
-                                        : ''
-                                    return text;
-                                };
-                                function hexToRgb(hex) {
-                                    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-                                    return result ? {
-                                        r: parseInt(result[1], 16),
-                                        g: parseInt(result[2], 16),
-                                        b: parseInt(result[3], 16)
-                                    } : null;
-                                };
-                                function rgbToHex(r, g, b) {
-                                    return "#" + (1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1);
-                                };
-                                function formatRgbVal(val) {
-                                    if (val < 0) {
-                                        return 0;
-                                    } else if (val > 255) {
-                                        return 255;
-                                    } else {
-                                        return val;
-                                    }
-                                };
+                        if (settings["overwriteCreateDashboard"] == true) {
+                            let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
+                            async function injectCSS() {
                                 function applyBaseColoring(converted_sheet) {
                                     var change_made = false
                                     if (
@@ -397,8 +303,7 @@ inject.js:
                                 }
 
                                 var converted_rgb = hexToRgb(settings["color"]);
-                                var all_styles = document.getElementsByTagName("style");
-                                all_styles = Array.prototype.slice.call(all_styles);
+                                var all_styles = Array.from(document.querySelectorAll("style"));
                                 await loopThroughArrayAsync(all_styles, async (_, header) => {
                                     var target_sheet = "";
                                     if (header.sheet) {
@@ -412,9 +317,9 @@ inject.js:
                                     if (change_made == true) {header.innerHTML = converted_sheet}
                                 });
 
-                                var all_buttons = document.getElementsByTagName("button");
-                                var all_icons = document.getElementsByTagName("svg");
-                                all_buttons = Array.prototype.slice.call(all_buttons).concat(Array.prototype.slice.call(all_icons));
+                                var all_buttons = document.querySelectorAll("button");
+                                var all_icons = document.querySelectorAll("svg");
+                                all_buttons = Array.from(all_buttons).concat(Array.from(all_icons));
                                 await loopThroughArrayAsync(all_buttons, async (_, header) => {
                                     var att_name = "fill"
                                     if (header.getAttribute(att_name) && !(header.getAttribute(att_name).includes(`${converted_rgb["r"]}, ${converted_rgb["g"]}, ${converted_rgb["b"]}`) || header.getAttribute(att_name).includes(settings["color"]))) {
@@ -422,7 +327,7 @@ inject.js:
                                         var base_color_res = applyBaseColoring(target_sheet)
                                         var change_made = base_color_res[0] 
                                         var converted_sheet = base_color_res[1]
-                                        if (header.className.animVal.includes("highcharts-point highcharts-color-0")) {
+                                        if (/highcharts-point highcharts-color-0/.test(header.className.animVal)) {
                                             converted_sheet = settings["color"];
                                             change_made = true;
                                         }
@@ -455,10 +360,10 @@ inject.js:
                                 });
 
                                 if (settings["includeGraphInDashboard"] == true) {
-                                    var all_paths_svg = document.getElementsByTagName("path");
-                                    var all_span = document.getElementsByTagName("span");
-                                    var all_rect = document.getElementsByTagName("rect");
-                                    var new_combined_list = Array.prototype.slice.call(all_span).concat(Array.prototype.slice.call(all_paths_svg)).concat(Array.prototype.slice.call(all_rect));
+                                    var all_paths_svg = document.querySelectorAll("path");
+                                    var all_span = document.querySelectorAll("span");
+                                    var all_rect = document.querySelectorAll("rect");
+                                    var new_combined_list = Array.from(all_span).concat(Array.from(all_paths_svg)).concat(Array.from(all_rect));
                                     await loopThroughArrayAsync(new_combined_list, async (_, header) => {
                                         var att_name = "fill"
                                         if (header.getAttribute(att_name) && !(header.getAttribute(att_name).includes(`${converted_rgb["r"]}, ${converted_rgb["g"]}, ${converted_rgb["b"]}`) || header.getAttribute(att_name).includes(settings["color"]))) {
@@ -466,7 +371,7 @@ inject.js:
                                             var base_color_res = applyBaseColoring(target_sheet)
                                             var change_made = base_color_res[0] 
                                             var converted_sheet = base_color_res[1]
-                                            if (header.className.animVal.includes("highcharts-point highcharts-color-0")) {
+                                            if (/highcharts-point highcharts-color-0/.test(header.className.animVal)) {
                                                 converted_sheet = settings["color"];
                                                 change_made = true;
                                             }
@@ -498,9 +403,9 @@ inject.js:
                                         }
                                     });
                                 }
-                                setTimeout(() => { injectCSS(settings) }, amountOfSecondsBeforeLoop)
+                                timeout(() => { injectCSS() }, amountOfSecondsBeforeLoop)
                             }
-                            injectCSS(items[storage_key])
+                            injectCSS()
                         }
                     }
                 }

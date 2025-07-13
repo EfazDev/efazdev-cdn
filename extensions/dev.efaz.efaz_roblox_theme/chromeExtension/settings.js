@@ -157,7 +157,7 @@ async function loadChanges() {
                         }
                         var generated_html_element = `<label for="${key}" id="${key}_label">${val["text"]}: <input type="${val["type"]}" id="${key}" name="${key}"${gene_lis}>`
                         var beforeElement = document.getElementById("reviewDetails")
-                        if (val["hidden"] == true && !(window.location.href.includes("resize=true"))) {
+                        if (val["hidden"] == true && !(/resize=true/.test(window.location.href))) {
                             generated_html_element = `<label style="display: none;" for="${key}" id="${key}_label">${val["text"]}: <input type="${val["type"]}" id="${key}" name="${key}"${gene_lis}>`
                         } else {
                             if (val["alternateFileInput"] == true && val["type"] == "file") {
@@ -301,7 +301,7 @@ async function loadChanges() {
             document.getElementById("extens_vers").innerHTML = `v${extension_version}`
             document.getElementById("window_title").innerText = `${extension_name} Settings`
 
-            if (window.location.href.includes("resize=true")) {
+            if (/resize=true/.test(window.location.href)) {
                 /* User came from Thank you page */
                 document.getElementById("css").innerHTML = `
                 p, label, em {
@@ -368,7 +368,7 @@ async function loadChanges() {
                 `
             }
 
-            if (navigator.onLine && window.location.href.includes("resize=true")) {
+            if (navigator.onLine && /resize=true/.test(window.location.href)) {
                 /* User is online and came from Thank you page */
                 const style = document.createElement("link")
                 style.id = "resize-to-full-screen";
@@ -377,7 +377,7 @@ async function loadChanges() {
                 style.media = "all";
                 style.href = "https://cdn.efaz.dev/styles/htmlUI.css"
                 document.head.append(style)
-            } else if (navigator.onLine == false && (window.location.href.includes("resize=true"))) {
+            } else if (navigator.onLine == false && (/resize=true/.test(window.location.href))) {
                 /* User is offline and came from Thank you page */
                 document.getElementById("extens_vers").innerHTML = `${document.getElementById("extens_vers").innerHTML} | Network Offline`
                 document.getElementById("css").innerHTML = `${document.getElementById("css").innerHTML}

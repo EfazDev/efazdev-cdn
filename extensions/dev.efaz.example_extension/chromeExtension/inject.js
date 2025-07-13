@@ -45,6 +45,8 @@ inject.js:
         }
     }
 
+    function timeout(func, ms) { setTimeout(func, ms); }
+
     async function getSettings(storage_key, callback) {
         if (callback) {
             fetch(getChromeURL("settings.json")).then((res) => {
@@ -101,17 +103,18 @@ inject.js:
             if (!(items[storage_key])) {
                 items[storage_key] = defaultData
             }
-            if (items[storage_key]["enabled"] == true) {
+            var settings = items[storage_key];
+            if (settings["enabled"] == true) {
                 var tab = window.location
                 if (tab.href) {
                     var urlObj = window.location
                     if (urlObj.hostname == "www.roblox.com") {
-                        async function injectCSS(settings) {
+                        async function injectCSS() {
                             // var amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
                             console.log("Example Extension Right Here!")
-                            // setTimeout(() => { injectCSS(settings) }, amountOfSecondsBeforeLoop)
+                            // timeout(() => { injectCSS(settings) }, amountOfSecondsBeforeLoop)
                         }
-                        injectCSS(items[storage_key])
+                        injectCSS()
                     }
                 }
             }

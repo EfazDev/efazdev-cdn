@@ -8,17 +8,15 @@ var approved_efazdev_users = {};
 var approved_by_user_users = {};
 var group_scan = false;
 
-function warn(mes) {
-    console.warn(`Verified Badge Loader: ${mes}`)
-}
-
+function warn(mes) { console.warn(`Verified Badge Loader: ${mes}`) }
+function timeout(func, ms) { setTimeout(func, ms); }
 function start() {
     function logMessage(message) {
         if (allow_messages == true) { console.log(`Verified Badge Loader: ${message}`) }
     }
 
     function generateVerifiedIcon(closet, orgMargin, orgX, orgY, margin, sizeX, sizeY) {
-        var res = closet
+        let res = closet
         if ((typeof (orgMargin) == "number") && (typeof (margin) == "number")) {
             res = res.replace(`margin-left: ${orgMargin}px;`, `margin-left: ${margin}px;`)
         }
@@ -33,24 +31,25 @@ function start() {
 
     function applyChangesToHTML(json, user_checkmark_color) {
         /* All of these HTML variables are extracted from the Roblox Website and modified to be functioned like the actual badge. */
-        var profile_html = `<span efaz-verified-badge-addon="true" role="button" tabindex="0" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="jss16"><img class="profile-verified-badge-icon" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="[input_id]" alt="[input_id]"></span>`;
-        var profile2_html = `<span efaz-verified-badge-addon="true" role="button" tabindex="0" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="jss4"><img class="profile-verified-badge-icon" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="[input_id]" alt="[input_id]"></span>`
-        var name_html = `<img efaz-verified-badge-addon="true" class="verified-badge-icon-catalog-item-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon">`;
-        var name_html_larger = `<span efaz-verified-badge-addon="true" role="button" tabindex="0" replicate-badge-addon-prompt="${json["id"]}_true" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="jss292"><img class="verified-badge-icon-group-shout-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span>`;
-        var name_side_html = `<img efaz-verified-badge-addon="true" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon" style="margin-left: 2px;width: 12px;height: 12px; background: none !important;">`;
-        var name_side_real_html = `<img efaz-verified-badge-addon="true" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon" style="margin-left: 2px;width: 18px;height: 18px; background: none !important;">`;
-        var prompt_html = `<div efaz-verified-badge-addon="true" role="dialog" id="fake_verified_badge"><div class="modal-backdrop in"></div><div role="dialog" tabindex="-1" class="in modal" style="display: block;"><div class="modal-window modal-sm modal-dialog"><div class="modal-content" role="document"><div class="modal-header"><button type="button" class="close" title="close" onclick="document.getElementById('fake_verified_badge').remove()"><span class="icon-close"></span></button><h4 class="modal-title">Verified Badge Add-on</h4></div><div class="modal-body"><div><div><span role="button" tabindex="0" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="hz-centered-badge-container"><img class=" jss272" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%23FF4B00'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge" alt="Verified Badge"></span></div><div>This badge identifies that the user is using Efaz's Roblox Verified Badge Add-on! Please know that that the verified badge is not real and is visually added.</div></div></div><div class="modal-footer"><div class="loading"></div><div class="modal-buttons"><button type="button" class="modal-button btn-primary-md btn-min-width" onclick="window.location.replace('https://en.help.roblox.com/hc/en-us/articles/7997207259156')">Learn More</button><button type="button" class="modal-button btn-control-md btn-min-width" onclick="document.getElementById('fake_verified_badge').remove()">Close</button></div></div></div></div></div></div>`;
-        var efaz_approved_prompt_html = `<div efaz-verified-badge-addon="true" role="dialog" id="fake_verified_badge"><div class="modal-backdrop in"></div><div role="dialog" tabindex="-1" class="in modal" style="display: block;"><div class="modal-window modal-sm modal-dialog"><div class="modal-content" role="document"><div class="modal-header"><button type="button" class="close" title="close" onclick="document.getElementById('fake_verified_badge').remove()"><span class="icon-close"></span></button><h4 class="modal-title">Verified Badge Add-on</h4></div><div class="modal-body"><div><div><span role="button" tabindex="0" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="hz-centered-badge-container"><img class=" jss272" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%23FF4B00'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge" alt="Verified Badge"></span></div><div>This badge identifies that the user was verified by Efaz for their authenticity! Please know that that the verified badge was not given by Roblox, was maybe not asked for their approval, and is visually added.</div></div></div><div class="modal-footer"><div class="loading"></div><div class="modal-buttons"><button type="button" class="modal-button btn-primary-md btn-min-width" onclick="window.location.replace('https://en.help.roblox.com/hc/en-us/articles/7997207259156')">Learn More</button><button type="button" class="modal-button btn-control-md btn-min-width" onclick="document.getElementById('fake_verified_badge').remove()">Close</button></div></div></div></div></div></div>`;
-        var user_approved_prompt_html = `<div efaz-verified-badge-addon="true" role="dialog" id="fake_verified_badge"><div class="modal-backdrop in"></div><div role="dialog" tabindex="-1" class="in modal" style="display: block;"><div class="modal-window modal-sm modal-dialog"><div class="modal-content" role="document"><div class="modal-header"><button type="button" class="close" title="close" onclick="document.getElementById('fake_verified_badge').remove()"><span class="icon-close"></span></button><h4 class="modal-title">Verified Badge Add-on</h4></div><div class="modal-body"><div><div><span role="button" tabindex="0" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="hz-centered-badge-container"><img class=" jss272" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge" alt="Verified Badge"></span></div><div>This badge identifies that this user was trusted under the approval JSON selected by you! Please know that that the verified badge was not given by Roblox and is visually added.</div></div></div><div class="modal-footer"><div class="loading"></div><div class="modal-buttons"><button type="button" class="modal-button btn-primary-md btn-min-width" onclick="window.location.replace('https://en.help.roblox.com/hc/en-us/articles/7997207259156')">Learn More</button><button type="button" class="modal-button btn-control-md btn-min-width" onclick="document.getElementById('fake_verified_badge').remove()">Close</button></div></div></div></div></div></div>`;
-        var game_html = `<span efaz-verified-badge-addon="true" role="button" tabindex="0" replicate-badge-addon-prompt="${json["id"]}_true" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="jss4"><img class="verified-badge-icon-experience-creator" style="margin-left: 4px;width: 16px;height: 16px;" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span>`;
-        var name_small_html = `<span><span efaz-verified-badge-addon="true" role="button" tabindex="0" data-rblx-verified-badge-icon="" replicate-badge-addon-prompt="${json["id"]}_true" data-rblx-badge-icon="true" class="jss22"><img class="verified-badge-icon-member-card-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span></span>`;
-        var group_name_verified_html = `<span efaz-verified-badge-addon="true" role="button" tabindex="0" data-rblx-verified-badge-icon="" replicate-badge-addon-prompt="${json["id"]}_true" data-rblx-badge-icon="true" class="jss250"><img class="verified-badge-icon-group-name-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span>`;
-        var group_owner_name_html = `<span><span efaz-verified-badge-addon="true" role="button" tabindex="0" data-rblx-verified-badge-icon="" replicate-badge-addon-prompt="${json["id"]}_true" data-rblx-badge-icon="true" class="verified-badge-icon-group-owner-container"><img class="verified-badge-icon-group-owner-rendered" style="margin-left: 4px; width: 16px; height: 16px;" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span></span>`;
-        var reseller_html = `<span><span efaz-verified-badge-addon="true" role="button" tabindex="0" data-rblx-verified-badge-icon="" replicate-badge-addon-prompt="${json["id"]}_true" data-rblx-badge-icon="true" class="jss22"><img class="verified-badge-icon-item-resellers-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span></span>`;
-        var friends_scroll_html = `<div class="friend-tile-verified-badge"><div class="friend-tile-spacer"></div><span role="button" tabindex="0" efaz-verified-badge-addon="true" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="verified-badge jss40" style="margin-top: -2px;"><img class=" jss38" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span></div>`;
+        let profile_html = `<span efaz-verified-badge-addon="true" role="button" tabindex="0" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="jss16"><img class="profile-verified-badge-icon" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="[input_id]" alt="[input_id]"></span>`;
+        let profile2_html = `<span efaz-verified-badge-addon="true" role="button" tabindex="0" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="jss4"><img class="profile-verified-badge-icon" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="[input_id]" alt="[input_id]"></span>`
+        let name_html = `<img efaz-verified-badge-addon="true" class="verified-badge-icon-catalog-item-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon">`;
+        let name_html_larger = `<span efaz-verified-badge-addon="true" role="button" tabindex="0" replicate-badge-addon-prompt="${json["id"]}_true" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="jss292"><img class="verified-badge-icon-group-shout-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span>`;
+        let name_side_html = `<img efaz-verified-badge-addon="true" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon" style="margin-left: 2px;width: 12px;height: 12px; background: none !important;">`;
+        let name_side_real_html = `<img efaz-verified-badge-addon="true" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon" style="margin-left: 2px;width: 18px;height: 18px; background: none !important;">`;
+        let prompt_html = `<div efaz-verified-badge-addon="true" role="dialog" id="fake_verified_badge"><div class="modal-backdrop in"></div><div role="dialog" tabindex="-1" class="in modal" style="display: block;"><div class="modal-window modal-sm modal-dialog"><div class="modal-content" role="document"><div class="modal-header"><button type="button" class="close" title="close" onclick="document.getElementById('fake_verified_badge').remove()"><span class="icon-close"></span></button><h4 class="modal-title">Verified Badge Add-on</h4></div><div class="modal-body"><div><div><span role="button" tabindex="0" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="hz-centered-badge-container"><img class=" jss272" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%23FF4B00'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge" alt="Verified Badge"></span></div><div>This badge identifies that the user is using Efaz's Roblox Verified Badge Add-on! Please know that that the verified badge is not real and is visually added.</div></div></div><div class="modal-footer"><div class="loading"></div><div class="modal-buttons"><button type="button" class="modal-button btn-primary-md btn-min-width" onclick="window.location.replace('https://en.help.roblox.com/hc/en-us/articles/7997207259156')">Learn More</button><button type="button" class="modal-button btn-control-md btn-min-width" onclick="document.getElementById('fake_verified_badge').remove()">Close</button></div></div></div></div></div></div>`;
+        let efaz_approved_prompt_html = `<div efaz-verified-badge-addon="true" role="dialog" id="fake_verified_badge"><div class="modal-backdrop in"></div><div role="dialog" tabindex="-1" class="in modal" style="display: block;"><div class="modal-window modal-sm modal-dialog"><div class="modal-content" role="document"><div class="modal-header"><button type="button" class="close" title="close" onclick="document.getElementById('fake_verified_badge').remove()"><span class="icon-close"></span></button><h4 class="modal-title">Verified Badge Add-on</h4></div><div class="modal-body"><div><div><span role="button" tabindex="0" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="hz-centered-badge-container"><img class=" jss272" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%23FF4B00'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge" alt="Verified Badge"></span></div><div>This badge identifies that the user was verified by Efaz for their authenticity! Please know that that the verified badge was not given by Roblox, was maybe not asked for their approval, and is visually added.</div></div></div><div class="modal-footer"><div class="loading"></div><div class="modal-buttons"><button type="button" class="modal-button btn-primary-md btn-min-width" onclick="window.location.replace('https://en.help.roblox.com/hc/en-us/articles/7997207259156')">Learn More</button><button type="button" class="modal-button btn-control-md btn-min-width" onclick="document.getElementById('fake_verified_badge').remove()">Close</button></div></div></div></div></div></div>`;
+        let user_approved_prompt_html = `<div efaz-verified-badge-addon="true" role="dialog" id="fake_verified_badge"><div class="modal-backdrop in"></div><div role="dialog" tabindex="-1" class="in modal" style="display: block;"><div class="modal-window modal-sm modal-dialog"><div class="modal-content" role="document"><div class="modal-header"><button type="button" class="close" title="close" onclick="document.getElementById('fake_verified_badge').remove()"><span class="icon-close"></span></button><h4 class="modal-title">Verified Badge Add-on</h4></div><div class="modal-body"><div><div><span role="button" tabindex="0" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="hz-centered-badge-container"><img class=" jss272" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge" alt="Verified Badge"></span></div><div>This badge identifies that this user was trusted under the approval JSON selected by you! Please know that that the verified badge was not given by Roblox and is visually added.</div></div></div><div class="modal-footer"><div class="loading"></div><div class="modal-buttons"><button type="button" class="modal-button btn-primary-md btn-min-width" onclick="window.location.replace('https://en.help.roblox.com/hc/en-us/articles/7997207259156')">Learn More</button><button type="button" class="modal-button btn-control-md btn-min-width" onclick="document.getElementById('fake_verified_badge').remove()">Close</button></div></div></div></div></div></div>`;
+        let game_html = `<span efaz-verified-badge-addon="true" role="button" tabindex="0" replicate-badge-addon-prompt="${json["id"]}_true" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="jss4"><img class="verified-badge-icon-experience-creator" style="margin-left: 4px;width: 16px;height: 16px;" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span>`;
+        let name_small_html = `<span><span efaz-verified-badge-addon="true" role="button" tabindex="0" data-rblx-verified-badge-icon="" replicate-badge-addon-prompt="${json["id"]}_true" data-rblx-badge-icon="true" class="jss22"><img class="verified-badge-icon-member-card-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span></span>`;
+        let group_name_verified_html = `<span efaz-verified-badge-addon="true" role="button" tabindex="0" data-rblx-verified-badge-icon="" replicate-badge-addon-prompt="${json["id"]}_true" data-rblx-badge-icon="true" class="jss250"><img class="verified-badge-icon-group-name-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span>`;
+        let group_owner_name_html = `<span><span efaz-verified-badge-addon="true" role="button" tabindex="0" data-rblx-verified-badge-icon="" replicate-badge-addon-prompt="${json["id"]}_true" data-rblx-badge-icon="true" class="verified-badge-icon-group-owner-container"><img class="verified-badge-icon-group-owner-rendered" style="margin-left: 4px; width: 16px; height: 16px;" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span></span>`;
+        let reseller_html = `<span><span efaz-verified-badge-addon="true" role="button" tabindex="0" data-rblx-verified-badge-icon="" replicate-badge-addon-prompt="${json["id"]}_true" data-rblx-badge-icon="true" class="jss22"><img class="verified-badge-icon-item-resellers-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span></span>`;
+        let friends_scroll_html = `<div class="friend-tile-verified-badge"><div class="friend-tile-spacer"></div><span role="button" tabindex="0" efaz-verified-badge-addon="true" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="verified-badge jss40" style="margin-top: -2px;"><img class=" jss38" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span></div>`;
         /* All of these HTML variables are extracted from the Roblox Website and modified to be functioned like the actual badge. */
 
         /* Apply color changes to HTML above */
+        var hex_color = user_checkmark_color
         if (!(user_checkmark_color == "%230066ff" || user_checkmark_color == "%230066FF")) {  // User's selected color
             profile_html = profile_html.replace("%230066FF", user_checkmark_color);
             profile2_html = profile2_html.replace("%230066FF", user_checkmark_color);
@@ -65,7 +64,7 @@ function start() {
             reseller_html = reseller_html.replace("%230066FF", user_checkmark_color);
             friends_scroll_html = friends_scroll_html.replace("%230066FF", user_checkmark_color);
         } else if (approved_efazdev_users[json["id"]] && approved_efazdev_users[json["id"]]["hexColor"]) { // If the main user has selected the default, has EfazDev Approved Users enabled, and there's a color attached to the approved user.
-            var hex_color = approved_efazdev_users[json["id"]]["hexColor"]
+            hex_color = approved_efazdev_users[json["id"]]["hexColor"]
             hex_color = hex_color.replace("#", "%23");
 
             profile_html = profile_html.replace("%230066FF", hex_color);
@@ -82,7 +81,7 @@ function start() {
             efaz_approved_prompt_html = efaz_approved_prompt_html.replace("%23FF4B00", hex_color);
             friends_scroll_html = friends_scroll_html.replace("%230066FF", hex_color);
         } else if (approved_by_user_users[json["id"]] && approved_by_user_users[json["id"]]["hexColor"]) { // If the main user has selected the default, has EfazDev Approved Users enabled, and there's a color attached to the approved user.
-            var hex_color = approved_by_user_users[json["id"]]["hexColor"]
+            hex_color = approved_by_user_users[json["id"]]["hexColor"]
             hex_color = hex_color.replace("#", "%23");
 
             profile_html = profile_html.replace("%230066FF", hex_color);
@@ -124,43 +123,26 @@ function start() {
     }
 
     function verifiedBadgePlacedAlready(html) {
-        return (html.includes("data-rblx-badge-icon") || html.includes("replicate-badge-addon-prompt") || html.includes("Verified Badge Icon"))
+        return (/data-rblx-badge-icon/.test(html) || /replicate-badge-addon-prompt/.test(html) || /Verified Badge Icon/.test(html))
     }
 
     if (enabled) {
-        var user_checkmark_color = "%230066FF"
-        var broken_context = false;
-        var cached_group_list = null;
-
+        let user_checkmark_color = "%230066FF"
+        let broken_context = false;
+        let cached_group_list = null;
         if (window.verifiedCheckmarkSettings) {
-            var custom_checkmark_color = window.verifiedCheckmarkSettings["color"]
+            let custom_checkmark_color = window.verifiedCheckmarkSettings["color"]
             if (custom_checkmark_color) {
                 user_checkmark_color = custom_checkmark_color.replace("#", "%23");
             }
         }
-
-        function getIfLinkIsGroup(link) {
-            if (link.includes("/groups/") || link.includes("/communities/")) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        function getIfLinkIsUserProfile(link) {
-            if (link.includes("/users/") && link.includes("/profile")) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
+        function getIfLinkIsGroup(link) { return (/\/groups\//.test(link) || /\/communities\//.test(link)) }
+        function getIfLinkIsUserProfile(link) { return (/\/users\//.test(link) && /\/profile/.test(link)) }
         function generateInstantPromise(value) {
             return new Promise((resolve, reject) => {
                 resolve(value)
             });
         }
-
         async function getUserData(id, isMain) {
             if (typeof chrome !== 'undefined' && typeof chrome.storage !== 'undefined') {
                 if (broken_context == true) {
@@ -221,7 +203,7 @@ function start() {
                             }
                         }
                     }).catch(err => {
-                        if (err.toString().includes("Extension context")) {
+                        if (/Extension context/.test(err.toString())) {
                             broken_context = true
                             return null
                         } else {
@@ -278,7 +260,6 @@ function start() {
                 }
             }
         }
-
         function scanUser(id, isMain) {
             try {
                 getUserData(id, isMain)
@@ -331,8 +312,8 @@ function start() {
                                                 allowed_groups["group_ownership"] = {}
                                             }
 
-                                            var group_keys = Object.keys(allowed_groups["group_ownership"])
-                                            var changes_made = false
+                                            let group_keys = Object.keys(allowed_groups["group_ownership"])
+                                            let changes_made = false
                                             group_keys.forEach((key) => {
                                                 if (allowed_groups["group_ownership"][key] && allowed_groups["group_ownership"][key]["owner"] == json["id"] && allowed_groups["group_ownership"][key]["accepted"] == false) {
                                                     allowed_groups["group_ownership"][key]["accepted"] = true
@@ -424,10 +405,10 @@ function start() {
                                                                         })
 
                                                                         if (!(allowed_groups["group_ownership"][id])) {
-                                                                            var user_approved_keys = Object.keys(approved_by_user_users)
+                                                                            let user_approved_keys = Object.keys(approved_by_user_users)
                                                                             if (user_approved_keys) {
                                                                                 user_approved_keys.forEach((ke) => {
-                                                                                    var info = approved_by_user_users[ke]
+                                                                                    let info = approved_by_user_users[ke]
                                                                                     if (info["approve_groups"]) {
                                                                                         if (info["approve_groups"].includes(id)) {
                                                                                             allowed_groups["group_ownership"][id] = {
@@ -442,10 +423,10 @@ function start() {
                                                                                 })
                                                                             }
 
-                                                                            var efazdev_approved_keys = Object.keys(approved_efazdev_users)
+                                                                            let efazdev_approved_keys = Object.keys(approved_efazdev_users)
                                                                             if (efazdev_approved_keys) {
                                                                                 efazdev_approved_keys.forEach((ke) => {
-                                                                                    var info = approved_efazdev_users[ke]
+                                                                                    let info = approved_efazdev_users[ke]
                                                                                     if (info["approve_groups"]) {
                                                                                         if (info["approve_groups"].includes(id)) {
                                                                                             allowed_groups["group_ownership"][id] = {
@@ -496,7 +477,7 @@ function start() {
                                             })
                                         }
                                     } catch (err) {
-                                        if (err.toString().includes("Extension context")) {
+                                        if (/Extension context/.test(err.toString())) {
                                             broken_context = true;
                                             return { "accepted": false }
                                         } else {
@@ -541,10 +522,10 @@ function start() {
                                                             })
 
                                                             if (!(stored_group_data["group_ownership"][id])) {
-                                                                var user_approved_keys = Object.keys(approved_by_user_users)
+                                                                let user_approved_keys = Object.keys(approved_by_user_users)
                                                                 if (user_approved_keys) {
                                                                     user_approved_keys.forEach((ke) => {
-                                                                        var info = approved_by_user_users[ke]
+                                                                        let info = approved_by_user_users[ke]
                                                                         if (info["approve_groups"]) {
                                                                             if (info["approve_groups"].includes(id)) {
                                                                                 stored_group_data["group_ownership"][id] = {
@@ -559,10 +540,10 @@ function start() {
                                                                     })
                                                                 }
 
-                                                                var efazdev_approved_keys = Object.keys(approved_efazdev_users)
+                                                                let efazdev_approved_keys = Object.keys(approved_efazdev_users)
                                                                 if (efazdev_approved_keys) {
                                                                     efazdev_approved_keys.forEach((ke) => {
-                                                                        var info = approved_efazdev_users[ke]
+                                                                        let info = approved_efazdev_users[ke]
                                                                         if (info["approve_groups"]) {
                                                                             if (info["approve_groups"].includes(id)) {
                                                                                 stored_group_data["group_ownership"][id] = {
@@ -604,7 +585,7 @@ function start() {
 
                             function promptMessage() {
                                 if (window.verifiedCheckmarkSettings) {
-                                    var verified_prompt_enabled = window.verifiedCheckmarkSettings["verifiedPrompt"];
+                                    let verified_prompt_enabled = window.verifiedCheckmarkSettings["verifiedPrompt"];
                                     if (verified_prompt_enabled == true) {
                                         if (approved_efazdev_users[json["id"].toString()]) {
                                             const placeholder = document.createRange().createContextualFragment(`<div>${efaz_approved_prompt_html}</div>`);
@@ -627,15 +608,13 @@ function start() {
                             }
 
                             function generateDOMElement(html) {
-                                var div = document.createElement("div");
+                                let div = document.createElement("div");
                                 div.innerHTML = html.trim();
                                 return div.firstChild;
                             }
 
                             function addPromptButtonInput() {
-                                var list_item = document.getElementsByTagName("span");
-                                list_item = Array.prototype.slice.call(list_item);
-
+                                let list_item = Array.from(document.querySelectorAll("span"));
                                 if (list_item.length > 0) {
                                     list_item.forEach((verified_badge_contain) => {
                                         if (verified_badge_contain.getAttribute("replicate-badge-addon-prompt")) {
@@ -653,8 +632,7 @@ function start() {
                                 profile2_html = profile2_html.replaceAll("[input_id]", json["id"]);
 
                                 if (getIfLinkIsUserProfile(window.location.pathname) && window.location.pathname.includes(json["id"].toString())) {
-                                    var main_headers = document.getElementsByClassName("profile-name text-overflow");
-                                    main_headers = Array.prototype.slice.call(main_headers);
+                                    let main_headers = Array.from(document.querySelectorAll(".profile-name.text-overflow"));
                                     if (main_headers.length > 0) {
                                         main_headers.forEach((main_header) => {
                                             if (main_header.offsetParent && main_header.offsetParent.className == "header-title") {
@@ -682,8 +660,7 @@ function start() {
                                         });
                                     }
 
-                                    var main_headers2 = document.getElementsByClassName("profile-header-title-container");
-                                    main_headers2 = Array.prototype.slice.call(main_headers2);
+                                    let main_headers2 = Array.from(document.querySelectorAll(".profile-header-title-container"));
                                     if (main_headers2.length > 0) {
                                         main_headers2.forEach((main_header) => {
                                             if (verifiedBadgePlacedAlready(main_header.innerHTML)) {
@@ -695,8 +672,7 @@ function start() {
                                         });
                                     }
 
-                                    var premium_logos = document.getElementsByClassName("premium-badge-right-aligned");
-                                    premium_logos = Array.prototype.slice.call(premium_logos);
+                                    let premium_logos = Array.from(document.querySelectorAll(".premium-badge-right-aligned"));
                                     if (premium_logos.length > 0) {
                                         premium_logos.forEach((premium) => {
                                             if (premium && premium.className == "premium-badge-right-aligned") {
@@ -705,8 +681,7 @@ function start() {
                                         });
                                     }
 
-                                    var premium_logos2 = document.getElementsByClassName("profile-header-premium-badge");
-                                    premium_logos2 = Array.prototype.slice.call(premium_logos2);
+                                    let premium_logos2 = Array.from(document.querySelectorAll(".profile-header-premium-badge"));
                                     if (premium_logos2.length > 0) {
                                         premium_logos2.forEach((premium) => {
                                             if (premium) {
@@ -716,8 +691,7 @@ function start() {
                                     }
                                 }
 
-                                var name_on_side = document.getElementsByClassName("font-header-2 dynamic-ellipsis-item");
-                                name_on_side = Array.prototype.slice.call(name_on_side);
+                                let name_on_side = Array.from(document.querySelectorAll(".font-header-2.dynamic-ellipsis-item"));
                                 if (name_on_side.length > 0) {
                                     name_on_side.forEach((main_name_on_side) => {
                                         if (main_name_on_side.outerHTML.includes(displayName) && main_name_on_side.parentElement && main_name_on_side.parentElement.href) {
@@ -731,8 +705,7 @@ function start() {
                                     });
                                 }
 
-                                var username_containers = document.getElementsByClassName("user-name-container");
-                                username_containers = Array.prototype.slice.call(username_containers);
+                                let username_containers = Array.from(document.querySelectorAll(".user-name-container"));
                                 if (username_containers.length > 0) {
                                     username_containers.forEach((user_container) => {
                                         if (user_container.innerHTML.includes(displayName)) {
@@ -747,8 +720,7 @@ function start() {
                                 function applyAutoChangeFunctionA() { // Roblox Groups Main Handler
                                     if (getIfLinkIsGroup(window.location.pathname)) {
                                         function attachExtra() {
-                                            var group_guilded_posts = document.getElementsByClassName("text-name name");
-                                            group_guilded_posts = Array.prototype.slice.call(group_guilded_posts);
+                                            let group_guilded_posts = Array.from(document.querySelectorAll(".text-name.name"));
                                             if (group_guilded_posts.length > 0) {
                                                 group_guilded_posts.forEach((shout) => {
                                                     if (shout.className == "text-name name" && shout.innerHTML.includes(displayName) && getIfLinkIsUserProfile(shout.href) && shout.href.includes(json["id"].toString())) {
@@ -762,8 +734,7 @@ function start() {
 
 
                                             /*
-                                            var group_shouts = document.getElementsByClassName("text-label-medium content-emphasis ng-binding ng-scope");
-                                            group_shouts = Array.prototype.slice.call(group_shouts);
+                                            let group_shouts = Array.from(document.querySelectorAll(".text-label-medium.content-emphasis.ng-binding.ng-scope"));
                                             if (group_shouts.length > 0) {
                                                 group_shouts.forEach((shout) => {
                                                     if (shout.outerHTML.includes(displayName) && getIfLinkIsUserProfile(shout.href) && shout.href.includes(json["id"].toString())) {
@@ -776,8 +747,7 @@ function start() {
                                             }
                                             */
 
-                                            var name_in_group = document.getElementsByClassName("list-item member ng-scope");
-                                            name_in_group = Array.prototype.slice.call(name_in_group);
+                                            let name_in_group = Array.from(document.querySelectorAll(".list-item.member.ng-scope"));
                                             if (name_in_group.length > 0) {
                                                 name_in_group.forEach((main_name_on_group) => {
                                                     if (main_name_on_group && main_name_on_group.children[0] && main_name_on_group.children[0].children[0] && getIfLinkIsUserProfile(main_name_on_group.children[0].children[0].href) && main_name_on_group.children[0].children[0].href.includes(json["id"].toString())) {
@@ -791,8 +761,7 @@ function start() {
                                                 });
                                             }
 
-                                            var group_wall = document.getElementsByClassName("text-label-medium content-emphasis ng-binding ng-scope");
-                                            group_wall = Array.prototype.slice.call(group_wall);
+                                            let group_wall = Array.from(document.querySelectorAll(".text-label-medium.content-emphasis.ng-binding.ng-scope"));
                                             if (group_wall.length > 0) {
                                                 group_wall.forEach((main_name_on_group) => {
                                                     if (main_name_on_group.outerHTML.includes(displayName) && main_name_on_group.className == "text-label-medium content-emphasis ng-binding ng-scope" && getIfLinkIsUserProfile(main_name_on_group.href) && main_name_on_group.href.includes(json["id"].toString())) {
@@ -804,8 +773,7 @@ function start() {
                                                 });
                                             }
 
-                                            var group_payouts_auto = document.getElementsByClassName("avatar-card-name text-lead text-overflow ng-binding ng-scope");
-                                            group_payouts_auto = Array.prototype.slice.call(group_payouts_auto);
+                                            let group_payouts_auto = Array.from(document.querySelectorAll(".avatar-card-name.text-lead.text-overflow.ng-binding.ng-scope"));
                                             if (group_payouts_auto.length > 0) {
                                                 group_payouts_auto.forEach((main_name_on_group) => {
                                                     if (main_name_on_group.innerHTML.includes(displayName) && main_name_on_group.href.includes(`${json["id"]}`)) {
@@ -818,21 +786,18 @@ function start() {
                                             }
                                         }
                                         function refresh() {
-                                            var identified_id = window.location.pathname.match(/[0-9]+/);
+                                            let identified_id = window.location.pathname.match(/[0-9]+/);
                                             if (identified_id && identified_id[0]) {
-                                                var group_owners = document.getElementsByClassName("MuiLink-underlineHover web-blox-css-mui-94v26k");
-                                                group_owners = Array.prototype.slice.call(group_owners);
+                                                let group_owners = Array.from(document.querySelectorAll(".MuiLink-underlineHover.web-blox-css-mui-94v26k"));
                                                 if (group_owners.length > 0) {
                                                     if (window.verifiedCheckmarkSettings) {
                                                         if (window.verifiedCheckmarkSettings["groupsIncluded"] == true) {
-                                                            /*
-                                                            var group_list_verified_logo = document.getElementsByTagName("groups-list-item");
-                                                            group_list_verified_logo = Array.prototype.slice.call(group_list_verified_logo);
+                                                            let group_list_verified_logo = Array.from(document.querySelectorAll("groups-list-item"));
                                                             if (group_list_verified_logo.length > 0) {
                                                                 group_list_verified_logo.forEach((main_name_on_group) => {
                                                                     if (main_name_on_group.children[0] && main_name_on_group.children[0].children[0] && main_name_on_group.children[0].children[0].children[1]) {
                                                                         if (main_name_on_group.children[0].href) {
-                                                                            var group_id = main_name_on_group.children[0].href.match(/[0-9]+/)[0];
+                                                                            let group_id = main_name_on_group.children[0].href.match(/[0-9]+/)[0];
                                                                             if (group_id) {
                                                                                 approvedGroup(group_id).then((info) => {
                                                                                     if (info["accepted"] == true) {
@@ -848,7 +813,6 @@ function start() {
                                                                     }
                                                                 });
                                                             }
-                                                            */
 
                                                             approvedGroup(identified_id[0]).then(info => {
                                                                 if (info["accepted"] == true) {
@@ -864,8 +828,7 @@ function start() {
 
                                                                             if (window.verifiedCheckmarkSettings) {
                                                                                 if (window.verifiedCheckmarkSettings["groupsIncluded"] == true) {
-                                                                                    var group_name = document.getElementsByClassName("profile-header-details-community-name text-heading-large");
-                                                                                    group_name = Array.prototype.slice.call(group_name);
+                                                                                    let group_name = Array.from(document.querySelectorAll(".profile-header-details-community-name.text-heading-large"));
                                                                                     if (group_name.length > 0) {
                                                                                         group_name.forEach((main_name_on_group) => {
                                                                                             if (verifiedBadgePlacedAlready(main_name_on_group.innerHTML)) {
@@ -890,8 +853,7 @@ function start() {
                                     }
                                 }
                                 function applyAutoChangeFunctionB() { // Creator Name
-                                    var username_containers_2 = document.getElementsByClassName("creator-name text-link");
-                                    username_containers_2 = Array.prototype.slice.call(username_containers_2);
+                                    let username_containers_2 = Array.from(document.querySelectorAll(".creator-name.text-link"));
                                     if (username_containers_2.length > 0) {
                                         username_containers_2.forEach((user_container) => {
                                             if (user_container.outerHTML.includes(`@${username}`) && user_container.className == "creator-name text-link") {
@@ -908,7 +870,7 @@ function start() {
                                             if (include_groups == true) {
                                                 if (user_container.className == "creator-name text-link") {
                                                     if (user_container.href && getIfLinkIsGroup(user_container.href)) {
-                                                        var group_id = user_container.href.match(/[0-9]+/)[0];
+                                                        let group_id = user_container.href.match(/[0-9]+/)[0];
                                                         approvedGroup(group_id).then((info) => {
                                                             if (info["accepted"] == true) {
                                                                 if (user_container.className == "creator-name text-link") {
@@ -930,8 +892,7 @@ function start() {
                                         });
                                     }
 
-                                    var username_containers_7 = document.getElementsByClassName("avatar-name text-overflow ng-binding");
-                                    username_containers_7 = Array.prototype.slice.call(username_containers_7);
+                                    let username_containers_7 = Array.from(document.querySelectorAll(".avatar-name.text-overflow.ng-binding"));
                                     if (username_containers_7.length > 0) {
                                         username_containers_7.forEach((user_container) => {
                                             if (user_container.outerHTML.includes(`${displayName}`) && user_container.className == "avatar-name text-overflow ng-binding") {
@@ -954,13 +915,11 @@ function start() {
                                         });
                                     }
 
-                                    var username_containers_8 = document.getElementsByClassName("text-overflow avatar-name ng-binding ng-scope");
-                                    username_containers_8 = Array.prototype.slice.call(username_containers_8);
+                                    let username_containers_8 = Array.from(document.querySelectorAll(".text-overflow.avatar-name.ng-binding.ng-scope"));
                                     if (username_containers_8.length > 0) {
                                         username_containers_8.forEach((user_container) => {
                                             if (user_container.outerHTML.includes(`${displayName}`) && user_container.className == "text-overflow avatar-name ng-binding ng-scope") {
-                                                var username_containers_9 = document.getElementsByClassName("text-overflow avatar-card-label ng-binding ng-scope");
-                                                username_containers_9 = Array.prototype.slice.call(username_containers_9);
+                                                let username_containers_9 = Array.from(document.querySelectorAll(".text-overflow.avatar-card-label.ng-binding.ng-scope"));
                                                 if (username_containers_9.length > 0) {
                                                     username_containers_9.forEach((user_container_2) => {
                                                         if (user_container.offsetParent == user_container_2.offsetParent) {
@@ -982,12 +941,11 @@ function start() {
 
                                     /*
                                     setTimeout(function () {
-                                        var list_item = document.getElementsByClassName("search-result avatar-cards ng-scope");
-                                        list_item = Array.prototype.slice.call(list_item);
+                                        let list_item = Array.from(document.querySelectorAll(".search-result.avatar-cards.ng-scope"));
                                         if (list_item.length > 0) {
-                                            var catalog_list_header = list_item[0];
+                                            let catalog_list_header = list_item[0];
                                             if (enable_observers == true) {
-                                                var observer = new MutationObserver(applyAutoChangeFunctionB);
+                                                let observer = new MutationObserver(applyAutoChangeFunctionB);
                                                 observer.observe(catalog_list_header, { childList: true });
                                             }
                                         }
@@ -998,8 +956,7 @@ function start() {
                                     addPromptButtonInput()
                                 }
                                 function applyAutoChangeFunctionC() { // Roblox Avatar Cards
-                                    var username_containers_7 = document.getElementsByClassName("avatar-name text-overflow ng-binding");
-                                    username_containers_7 = Array.prototype.slice.call(username_containers_7);
+                                    let username_containers_7 = Array.from(document.querySelectorAll(".avatar-name.text-overflow.ng-binding"));
                                     if (username_containers_7.length > 0) {
                                         username_containers_7.forEach((user_container) => {
                                             if (user_container.outerHTML.includes(`${displayName}`) && user_container.className == "avatar-name text-overflow ng-binding") {
@@ -1023,12 +980,11 @@ function start() {
                                     }
 
                                     /*
-                                    var list_item = document.getElementsByClassName("hlist avatar-cards");
-                                    list_item = Array.prototype.slice.call(list_item);
+                                    let list_item = Array.from(document.querySelectorAll(".hlist.avatar-cards"));
                                     if (list_item.length > 0) {
-                                        var catalog_list_header = list_item[0];
+                                        let catalog_list_header = list_item[0];
                                         if (enable_observers == true) {
-                                            var observer = new MutationObserver(applyAutoChangeFunctionB);
+                                            let observer = new MutationObserver(applyAutoChangeFunctionB);
                                             observer.observe(catalog_list_header, { childList: true });
                                         }
                                     }
@@ -1037,8 +993,7 @@ function start() {
                                     addPromptButtonInput()
                                 }
                                 function applyAutoChangeFunctionD() { // Unused since inventory doesn't show verified badges.
-                                    var username_containers_9 = document.getElementsByClassName("creator-name text-overflow text-link ng-binding");
-                                    username_containers_9 = Array.prototype.slice.call(username_containers_9);
+                                    let username_containers_9 = Array.from(document.querySelectorAll(".creator-name.text-overflow.text-link.ng-binding"));
                                     if (username_containers_9.length > 0) {
                                         username_containers_9.forEach((user_container) => {
                                             if (user_container.outerHTML.includes(`@${username}`) && user_container.className == "creator-name text-overflow text-link ng-binding") {
@@ -1055,7 +1010,7 @@ function start() {
                                             if (include_groups == true) {
                                                 if (user_container.className == "creator-name text-overflow text-link ng-binding") {
                                                     if (user_container.href && getIfLinkIsGroup(user_container.href)) {
-                                                        var group_id = user_container.href.match(/[0-9]+/)[0];
+                                                        let group_id = user_container.href.match(/[0-9]+/)[0];
                                                         approvedGroup(group_id).then((info) => {
                                                             if (info["accepted"] == true) {
                                                                 if (user_container.className == "creator-name text-overflow text-link ng-binding") {
@@ -1078,19 +1033,18 @@ function start() {
                                     }
 
                                     /*
-                                    var list_item = document.getElementById("assetsItems");
+                                    let list_item = document.getElementById("assetsItems");
                                     if (list_item) {
-                                        var catalog_list_header = list_item;
+                                        let catalog_list_header = list_item;
                                         if (enable_observers == true) {
-                                            var observer = new MutationObserver(applyAutoChangeFunctionD);
+                                            let observer = new MutationObserver(applyAutoChangeFunctionD);
                                             observer.observe(catalog_list_header, { childList: true });
                                         }
                                     }
                                     */
                                 }
                                 function applyAutoChangeFunctionE() { // Resellers
-                                    var username_containers_10 = document.getElementsByClassName("text-name username ng-binding");
-                                    username_containers_10 = Array.prototype.slice.call(username_containers_10);
+                                    let username_containers_10 = Array.from(document.querySelectorAll(".text-name.username.ng-binding"));
                                     if (username_containers_10.length > 0) {
                                         username_containers_10.forEach((user_container) => {
                                             if (user_container.outerHTML.includes(`${username}`) && user_container.className == "text-name username ng-binding") {
@@ -1106,20 +1060,18 @@ function start() {
                                     }
 
                                     /*
-                                    var list_item = document.getElementsByClassName("resellers");
-                                    list_item = Array.prototype.slice.call(list_item);
+                                    let list_item = Array.from(document.querySelectorAll(".resellers"));
                                     if (list_item.length > 0) {
-                                        var catalog_list_header = list_item[0];
+                                        let catalog_list_header = list_item[0];
                                         if (enable_observers == true) {
-                                            var observer = new MutationObserver(applyAutoChangeFunctionE);
+                                            let observer = new MutationObserver(applyAutoChangeFunctionE);
                                             observer.observe(catalog_list_header, { childList: true });
                                         }
                                     }
                                     */
                                 }
                                 function applyAutoChangeFunctionF() { // More Avatar Cards
-                                    var username_containers_11 = document.getElementsByClassName("text-overflow avatar-name");
-                                    username_containers_11 = Array.prototype.slice.call(username_containers_11);
+                                    let username_containers_11 = Array.from(document.querySelectorAll(".text-overflow.avatar-name"));
                                     if (username_containers_11.length > 0) {
                                         username_containers_11.forEach((user_container) => {
                                             if (user_container && user_container.outerHTML.includes(`${displayName}`) && user_container.href.includes(json["id"]) && user_container.className == "text-overflow avatar-name") {
@@ -1135,26 +1087,24 @@ function start() {
                                     }
 
                                     /*
-                                    var list_item = document.getElementsByClassName("hlist avatar-cards");
-                                    list_item = Array.prototype.slice.call(list_item);
+                                    let list_item = Array.from(document.querySelectorAll(".hlist.avatar-cards"));
                                     if (list_item.length > 0) {
-                                        var catalog_list_header = list_item[0];
+                                        let catalog_list_header = list_item[0];
                                         if (enable_observers == true) {
-                                            var observer = new MutationObserver(applyAutoChangeFunctionF);
+                                            let observer = new MutationObserver(applyAutoChangeFunctionF);
                                             observer.observe(catalog_list_header, { childList: true });
                                         }
                                     }
                                     */
                                 }
                                 function applyAutoChangeFunctionG() { // Game Cards
-                                    var username_containers_12 = document.getElementsByClassName("text-overflow game-card-name ng-binding");
-                                    username_containers_12 = Array.prototype.slice.call(username_containers_12);
+                                    let username_containers_12 = Array.from(document.querySelectorAll(".text-overflow.game-card-name.ng-binding"));
                                     if (username_containers_12.length > 0) {
                                         username_containers_12.forEach((user_container) => {
                                             if (include_groups == true) {
                                                 if (user_container.className == "text-overflow game-card-name ng-binding") {
                                                     if (user_container.parentElement.parentElement.href && getIfLinkIsGroup(user_container.parentElement.parentElement.href)) {
-                                                        var group_id = user_container.parentElement.parentElement.href.match(/[0-9]+/)[0];
+                                                        let group_id = user_container.parentElement.parentElement.href.match(/[0-9]+/)[0];
                                                         approvedGroup(group_id, true).then((info) => {
                                                             if (info["accepted"] == true) {
                                                                 if (user_container.className == "text-overflow game-card-name ng-binding") {
@@ -1176,14 +1126,13 @@ function start() {
                                         });
                                     }
 
-                                    var username_containers_13 = document.getElementsByClassName("ng-binding slide-item-name text-overflow groups font-title");
-                                    username_containers_13 = Array.prototype.slice.call(username_containers_13);
+                                    let username_containers_13 = Array.from(document.querySelectorAll(".ng-binding.slide-item-name.text-overflow.groups.font-title"));
                                     if (username_containers_13.length > 0) {
                                         username_containers_13.forEach((user_container) => {
                                             if (include_groups == true) {
                                                 if (user_container.className == "ng-binding slide-item-name text-overflow groups font-title") {
                                                     if (user_container.parentElement.href && getIfLinkIsGroup(user_container.parentElement.href)) {
-                                                        var group_id = user_container.parentElement.href.match(/[0-9]+/)[0];
+                                                        let group_id = user_container.parentElement.href.match(/[0-9]+/)[0];
                                                         approvedGroup(group_id, true).then((info) => {
                                                             if (info["accepted"] == true) {
                                                                 if (user_container.className == "ng-binding slide-item-name text-overflow groups font-title") {
@@ -1206,29 +1155,27 @@ function start() {
                                     }
 
                                     /*
-                                    var list_item = document.getElementsByTagName("groups-showcase-grid");
-                                    list_item = Array.prototype.slice.call(list_item);
+                                    let list_item = Array.from(document.querySelectorAll("groups-showcase-grid"));
                                     if (list_item.length > 0) {
-                                        var catalog_list_header = list_item[0];
+                                        let catalog_list_header = list_item[0];
                                         if (enable_observers == true) {
-                                            var observer = new MutationObserver(applyAutoChangeFunctionG);
+                                            let observer = new MutationObserver(applyAutoChangeFunctionG);
                                             observer.observe(catalog_list_header, { childList: true });
                                         }
                                     }
 
-                                    var list_item = document.getElementById("groups-switcher");
+                                    let list_item = document.getElementById("groups-switcher");
                                     if (list_item) {
-                                        var catalog_list_header = list_item;
+                                        let catalog_list_header = list_item;
                                         if (enable_observers == true) {
-                                            var observer = new MutationObserver(applyAutoChangeFunctionG);
+                                            let observer = new MutationObserver(applyAutoChangeFunctionG);
                                             observer.observe(catalog_list_header, { childList: true });
                                         }
                                     }
                                     */
                                 }
                                 function applyAutoChangeFunctionH() { // Messages
-                                    var username_containers_12 = document.getElementsByClassName("paired-name message-summary-username positionAboveLink font-header-2 ng-scope");
-                                    username_containers_12 = Array.prototype.slice.call(username_containers_12);
+                                    let username_containers_12 = Array.from(document.querySelectorAll(".paired-name.message-summary-username.positionAboveLink.font-header-2.ng-scope"));
                                     if (username_containers_12.length > 0) {
                                         username_containers_12.forEach((user_container) => {
                                             if (user_container.children[0] && user_container.className == "paired-name message-summary-username positionAboveLink font-header-2 ng-scope") {
@@ -1242,8 +1189,7 @@ function start() {
                                         });
                                     }
 
-                                    var username_containers_13 = document.getElementsByClassName("paired-name text-name username-container font-header-2");
-                                    username_containers_13 = Array.prototype.slice.call(username_containers_13);
+                                    let username_containers_13 = Array.from(document.querySelectorAll(".paired-name.text-name.username-container.font-header-2"));
                                     if (username_containers_13.length > 0) {
                                         username_containers_13.forEach((user_container) => {
                                             if (user_container.children[0] && user_container.className == "paired-name text-name username-container font-header-2") {
@@ -1258,19 +1204,18 @@ function start() {
                                     }
 
                                     /*
-                                    var list_item = document.getElementById("rbx-tabs-horizontal rbx-scrollable-tabs-horizontal roblox-messages-container ng-scope");
+                                    let list_item = document.getElementById("rbx-tabs-horizontal rbx-scrollable-tabs-horizontal roblox-messages-container ng-scope");
                                     if (list_item) {
-                                        var catalog_list_header = list_item;
+                                        let catalog_list_header = list_item;
                                         if (enable_observers == true) {
-                                            var observer = new MutationObserver(applyAutoChangeFunctionH);
+                                            let observer = new MutationObserver(applyAutoChangeFunctionH);
                                             observer.observe(catalog_list_header, { childList: true });
                                         }
                                     }
                                     */
                                 }
                                 function applyAutoChangeFunctionI() { // More Names
-                                    var username_containers_4 = document.getElementsByClassName("text-name");
-                                    username_containers_4 = Array.prototype.slice.call(username_containers_4);
+                                    let username_containers_4 = Array.from(document.querySelectorAll(".text-name"));
                                     if (username_containers_4.length > 0) {
                                         username_containers_4.forEach((user_container) => {
                                             if (!(user_container.parentElement)) {
@@ -1283,7 +1228,7 @@ function start() {
                                                 user_container.parentElement.outerHTML = `${user_container.parentElement.outerHTML}${generateVerifiedIcon(game_html, 4, null, null, 2, null, null)}`;
                                             } else if (include_groups == true) {
                                                 if (user_container.href && getIfLinkIsGroup(user_container.href)) {
-                                                    var group_id = user_container.href.match(/[0-9]+/)[0];
+                                                    let group_id = user_container.href.match(/[0-9]+/)[0];
                                                     approvedGroup(group_id).then((info) => {
                                                         if (info["accepted"] == true && user_container.className == "text-name") {
                                                             if (!(user_container.parentElement)) {
@@ -1306,19 +1251,18 @@ function start() {
                                     }
 
                                     /*
-                                    var list_item = document.getElementById("item-container");
+                                    let list_item = document.getElementById("item-container");
                                     if (list_item) {
-                                        var catalog_list_header = list_item;
+                                        let catalog_list_header = list_item;
                                         if (enable_observers == true) {
-                                            var observer = new MutationObserver(applyAutoChangeFunctionI);
+                                            let observer = new MutationObserver(applyAutoChangeFunctionI);
                                             observer.observe(catalog_list_header, { childList: true });
                                         }
                                     }
                                     */
                                 }
 
-                                var username_containers_2 = document.getElementsByClassName("creator-name text-link");
-                                username_containers_2 = Array.prototype.slice.call(username_containers_2);
+                                let username_containers_2 = Array.from(document.querySelectorAll(".creator-name.text-link"));
                                 if (username_containers_2.length > 0) {
                                     username_containers_2.forEach((user_container) => {
                                         if (user_container.outerHTML.includes(`@${username}`) && user_container.className == "creator-name text-link") {
@@ -1333,7 +1277,7 @@ function start() {
                                         if (include_groups == true) {
                                             if (user_container.className == "creator-name text-link") {
                                                 if (user_container.href && getIfLinkIsGroup(user_container.href)) {
-                                                    var group_id = user_container.href.match(/[0-9]+/)[0];
+                                                    let group_id = user_container.href.match(/[0-9]+/)[0];
                                                     approvedGroup(group_id).then((info) => {
                                                         if (info["accepted"] == true) {
                                                             if (user_container.className == "creator-name text-link") {
@@ -1355,8 +1299,7 @@ function start() {
                                     });
                                 }
 
-                                var username_containers_3 = document.getElementsByClassName("text-name text-overflow");
-                                username_containers_3 = Array.prototype.slice.call(username_containers_3);
+                                let username_containers_3 = Array.from(document.querySelectorAll(".text-name.text-overflow"));
                                 if (username_containers_3.length > 0) {
                                     username_containers_3.forEach((user_container) => {
                                         if (user_container.outerHTML.includes(`@${username}`) && user_container.className == "text-name text-overflow") {
@@ -1369,7 +1312,7 @@ function start() {
                                             user_container.outerHTML = `${user_container.outerHTML}${game_html}`;
                                         } else if (include_groups == true) {
                                             if (user_container.href && getIfLinkIsGroup(user_container.href)) {
-                                                var group_id = user_container.href.match(/[0-9]+/)[0];
+                                                let group_id = user_container.href.match(/[0-9]+/)[0];
                                                 approvedGroup(group_id).then((info) => {
                                                     if (info["accepted"] == true && user_container.className == "text-name text-overflow") {
                                                         if (user_container.outerHTML.includes(info["name"])) {
@@ -1388,8 +1331,7 @@ function start() {
                                     });
                                 }
 
-                                var username_containers_4 = document.getElementsByClassName("text-name");
-                                username_containers_4 = Array.prototype.slice.call(username_containers_4);
+                                let username_containers_4 = Array.from(document.querySelectorAll(".text-name"));
                                 if (username_containers_4.length > 0) {
                                     username_containers_4.forEach((user_container) => {
                                         if (!(user_container.parentElement)) {
@@ -1402,7 +1344,7 @@ function start() {
                                             user_container.parentElement.outerHTML = `${user_container.parentElement.outerHTML}${generateVerifiedIcon(game_html, 4, null, null, 2, null, null)}`;
                                         } else if (include_groups == true) {
                                             if (user_container.href && getIfLinkIsGroup(user_container.href)) {
-                                                var group_id = user_container.href.match(/[0-9]+/)[0];
+                                                let group_id = user_container.href.match(/[0-9]+/)[0];
                                                 approvedGroup(group_id).then((info) => {
                                                     if (info["accepted"] == true && user_container.className == "text-name") {
                                                         if (!(user_container.parentElement)) {
@@ -1424,8 +1366,7 @@ function start() {
                                     });
                                 }
 
-                                var username_containers_5 = document.getElementsByClassName("text-overflow age-bracket-label-username font-caption-header");
-                                username_containers_5 = Array.prototype.slice.call(username_containers_5);
+                                let username_containers_5 = Array.from(document.querySelectorAll(".text-overflow.age-bracket-label-username.font-caption-header"));
                                 if (username_containers_5.length > 0) {
                                     username_containers_5.forEach((user_container) => {
                                         if (user_container.outerHTML.includes(`${displayName}`) && user_container.className == "text-overflow age-bracket-label-username font-caption-header") {
@@ -1440,8 +1381,7 @@ function start() {
                                     });
                                 }
 
-                                var username_containers_6 = document.getElementsByClassName("text-name name ng-binding");
-                                username_containers_6 = Array.prototype.slice.call(username_containers_6);
+                                let username_containers_6 = Array.from(document.querySelectorAll(".text-name.name.ng-binding"));
                                 if (username_containers_6.length > 0) {
                                     username_containers_6.forEach((user_container) => {
                                         if (user_container.outerHTML.includes(`${displayName}`) && user_container.className == "text-name name ng-binding") {
@@ -1456,8 +1396,7 @@ function start() {
                                     });
                                 }
 
-                                var username_containers_7 = document.getElementsByClassName("avatar-name text-overflow ng-binding");
-                                username_containers_7 = Array.prototype.slice.call(username_containers_7);
+                                let username_containers_7 = Array.from(document.querySelectorAll(".avatar-name.text-overflow.ng-binding"));
                                 if (username_containers_7.length > 0) {
                                     username_containers_7.forEach((user_container) => {
                                         if (user_container.outerHTML.includes(`${displayName}`) && user_container.className == "avatar-name text-overflow ng-binding") {
@@ -1478,13 +1417,11 @@ function start() {
                                 }
 
                                 setTimeout(function () {
-                                    var username_containers_8 = document.getElementsByClassName("text-overflow avatar-name ng-binding ng-scope");
-                                    username_containers_8 = Array.prototype.slice.call(username_containers_8);
+                                    let username_containers_8 = Array.from(document.querySelectorAll(".text-overflow.avatar-name.ng-binding.ng-scope"));
                                     if (username_containers_8.length > 0) {
                                         username_containers_8.forEach((user_container) => {
                                             if (user_container.outerHTML.includes(`${displayName}`) && user_container.className == "text-overflow avatar-name ng-binding ng-scope") {
-                                                var username_containers_9 = document.getElementsByClassName("text-overflow avatar-card-label ng-binding ng-scope");
-                                                username_containers_9 = Array.prototype.slice.call(username_containers_9);
+                                                let username_containers_9 = Array.from(document.querySelectorAll(".text-overflow.avatar-card-label.ng-binding.ng-scope"));
                                                 if (username_containers_9.length > 0) {
                                                     username_containers_9.forEach((user_container_2) => {
                                                         if (user_container.offsetParent == user_container_2.offsetParent) {
@@ -1504,23 +1441,22 @@ function start() {
                                         });
                                     }
 
-                                    var friends_username_containers = document.getElementsByClassName("text-link friend-link ng-isolate-scope");
-                                    friends_username_containers = Array.prototype.slice.call(friends_username_containers);
+                                    let friends_username_containers = Array.from(document.querySelectorAll(".text-link.friend-link.ng-isolate-scope"));
                                     if (friends_username_containers.length > 0) {
                                         friends_username_containers.forEach((user_container) => {
                                             if (user_container.href && user_container.className == "text-link friend-link ng-isolate-scope") {
-                                                var userIdd = user_container.href.match(/[0-9]+/)[0];
+                                                let userIdd = user_container.href.match(/[0-9]+/)[0];
                                                 if (json["id"] == userIdd) {
                                                     if (user_container.innerHTML.includes(`class="hide"`) && user_container.innerHTML.includes(displayName)) {
                                                         if (user_container.children[1]) {
                                                             if (!(user_checkmark_color == "%230066ff" || user_checkmark_color == "%230066FF")) {  // User's selected color
                                                                 user_container.children[1].innerHTML = user_container.children[1].innerHTML.replaceAll(`class="hide"`, "").replaceAll(`%230066FF`, user_checkmark_color)
                                                             } else if (approved_efazdev_users[json["id"]] && approved_efazdev_users[json["id"]]["hexColor"]) { // If the main user has selected the default, has EfazDev Approved Users enabled, and there's a color attached to the approved user.
-                                                                var hex_color = approved_efazdev_users[json["id"]]["hexColor"]
+                                                                let hex_color = approved_efazdev_users[json["id"]]["hexColor"]
                                                                 hex_color = hex_color.replace("#", "%23");
                                                                 user_container.children[1].innerHTML = user_container.children[1].innerHTML.replaceAll(`class="hide"`, "").replaceAll(`%230066FF`, hex_color)
                                                             } else if (approved_by_user_users[json["id"]] && approved_by_user_users[json["id"]]["hexColor"]) { // If the main user has selected the default, has EfazDev Approved Users enabled, and there's a color attached to the approved user.
-                                                                var hex_color = approved_by_user_users[json["id"]]["hexColor"]
+                                                                let hex_color = approved_by_user_users[json["id"]]["hexColor"]
                                                                 hex_color = hex_color.replace("#", "%23");
                                                                 user_container.children[1].innerHTML = user_container.children[1].innerHTML.replaceAll(`class="hide"`, "").replaceAll(`%230066FF`, hex_color)
                                                             } else {
@@ -1533,12 +1469,11 @@ function start() {
                                         });
                                     }
 
-                                    var friends_scroll_containers = document.getElementsByClassName("friends-carousel-tile-labels");
-                                    friends_scroll_containers = Array.prototype.slice.call(friends_scroll_containers);
+                                    let friends_scroll_containers = Array.from(document.querySelectorAll(".friends-carousel-tile-labels"));
                                     if (friends_scroll_containers.length > 0) {
                                         friends_scroll_containers.forEach((user_container) => {
                                             if (user_container.href && user_container.className == "friends-carousel-tile-labels") {
-                                                var userIdd = user_container.href.match(/[0-9]+/)[0];
+                                                let userIdd = user_container.href.match(/[0-9]+/)[0];
                                                 if (json["id"] == userIdd) {
                                                     if (user_container.children[0] && user_container.children[0].children[0]) {
                                                         if (verifiedBadgePlacedAlready(user_container.children[0].children[0].outerHTML)) {
@@ -1554,12 +1489,11 @@ function start() {
 
                                 /*
                                 setTimeout(function () {
-                                    var list_item = document.getElementsByClassName("search-result avatar-cards ng-scope");
-                                    list_item = Array.prototype.slice.call(list_item);
+                                    let list_item = Array.from(document.querySelectorAll(".search-result.avatar-cards.ng-scope"));
                                     if (list_item.length > 0) {
-                                        var catalog_list_header = list_item[0];
+                                        let catalog_list_header = list_item[0];
                                         if (enable_observers == true) {
-                                            var observer = new MutationObserver(applyAutoChangeFunctionB);
+                                            let observer = new MutationObserver(applyAutoChangeFunctionB);
                                             observer.observe(catalog_list_header, { childList: true });
                                         }
                                         logMessage("Installed observer: search-result")
@@ -1568,12 +1502,11 @@ function start() {
                                 */
 
                                 /*
-                                var list_item = document.getElementsByClassName("hlist item-cards-stackable ng-scope");
-                                list_item = Array.prototype.slice.call(list_item);
+                                let list_item = Array.from(document.querySelectorAll(".hlist.item-cards-stackable.ng-scope"));
                                 if (list_item.length > 0) {
-                                    var catalog_list_header = list_item[0];
+                                    let catalog_list_header = list_item[0];
                                     if (enable_observers == true) {
-                                        var observer = new MutationObserver(applyAutoChangeFunctionB);
+                                        let observer = new MutationObserver(applyAutoChangeFunctionB);
                                         observer.observe(catalog_list_header, { childList: true });
                                     }
                                     logMessage("Installed observer: item-cards-stackable")
@@ -1581,12 +1514,11 @@ function start() {
                                 */
 
                                 /*
-                                var list_item = document.getElementsByClassName("tab-content configure-group-details");
-                                list_item = Array.prototype.slice.call(list_item);
+                                let list_item = Array.from(document.querySelectorAll(".tab-content.configure-group-details"));
                                 if (list_item.length > 0) {
-                                    var catalog_list_header = list_item[0];
+                                    let catalog_list_header = list_item[0];
                                     if (enable_observers == true) {
-                                        var observer = new MutationObserver(applyAutoChangeFunctionC);
+                                        let observer = new MutationObserver(applyAutoChangeFunctionC);
                                         observer.observe(catalog_list_header, { childList: true });
                                     }
                                     logMessage("Installed observer: group-detail")
@@ -1595,12 +1527,11 @@ function start() {
 
                                 /*
                                 setTimeout(function () {
-                                    var list_item = document.getElementsByClassName("content");
-                                    list_item = Array.prototype.slice.call(list_item);
+                                    let list_item = Array.from(document.querySelectorAll(".content"));
                                     if (list_item.length > 0) {
-                                        var catalog_list_header = list_item[0];
+                                        let catalog_list_header = list_item[0];
                                         if (enable_observers == true) {
-                                            var observer = new MutationObserver(applyAutoChangeFunctionB);
+                                            let observer = new MutationObserver(applyAutoChangeFunctionB);
                                             observer.observe(catalog_list_header, { childList: true });
                                         }
                                         logMessage("Installed observer: content")
@@ -1631,7 +1562,7 @@ function start() {
                             }
                         }
                     }).catch(err => {
-                        if (err.toString().includes("Extension context")) {
+                        if (/Extension context/.test(err.toString())) {
                             broken_context = true
                             return { "accepted": false }
                         } else {
@@ -1639,7 +1570,7 @@ function start() {
                             if (allow_messages == true) {
                                 alert("We couldn't apply the verified badge due to an error! Sorry!");
                             } else {
-                                setTimeout(() => {
+                                timeout(() => {
                                     scanUser(id, isMain)
                                 }, start_time)
                             }
@@ -1650,7 +1581,6 @@ function start() {
                 if (allow_messages == true) alert("We couldn't apply the verified badge due to an error! Sorry!");
             }
         }
-
         getUserData("*", true).then(json => {
             if (json && json["id"]) {
                 scanUser(json["id"], true)
@@ -1666,7 +1596,7 @@ function start() {
                         if (json && json["id"]) {
                             chrome.storage.local.get("user_verification").then((stored_user_data) => {
                                 if (stored_user_data["user_verification"]) {
-                                    var ids = Object.keys(stored_user_data["user_verification"])
+                                    let ids = Object.keys(stored_user_data["user_verification"])
                                     ids.forEach((user_id) => {
                                         if (!(user_id == json["id"])) {
                                             scanUser(user_id, false)
@@ -1685,9 +1615,9 @@ function start() {
                         if (json && json["id"]) {
                             chrome.storage.local.get("user_verification").then((stored_user_data) => {
                                 if (stored_user_data["user_verification"]) {
-                                    var ids = Object.keys(approved_by_user_users)
+                                    let ids = Object.keys(approved_by_user_users)
                                     ids.forEach((user_id) => {
-                                        var approved_user_info = approved_by_user_users[user_id]
+                                        let approved_user_info = approved_by_user_users[user_id]
                                         if (!(approved_user_info["id"] == json["id"].toString())) {
                                             scanUser(approved_user_info["id"], false)
                                         }
@@ -1705,9 +1635,9 @@ function start() {
                         if (json && json["id"]) {
                             chrome.storage.local.get("user_verification").then((stored_user_data) => {
                                 if (stored_user_data["user_verification"]) {
-                                    var ids = Object.keys(approved_efazdev_users)
+                                    let ids = Object.keys(approved_efazdev_users)
                                     ids.forEach((user_id) => {
-                                        var approved_user_info = approved_efazdev_users[user_id]
+                                        let approved_user_info = approved_efazdev_users[user_id]
                                         if (!(approved_user_info["id"] == json["id"].toString())) {
                                             scanUser(approved_user_info["id"], false)
                                         }
@@ -1724,7 +1654,6 @@ function start() {
         }, start_time * 5)
     }
 }
-
 async function loader() { // Script Loader
     if (!(window.location.hostname == "www.roblox.com")) {
         // warn("The host of this script being ran on is not www.roblox.com.")
@@ -1762,7 +1691,7 @@ async function loader() { // Script Loader
             }
             if (window.verifiedCheckmarkSettings["allowEfazDevApprovedBadges"] == true) {
                 try {
-                    var appr_json = await fetch("https://cdn.efaz.dev/extensions/dev.efaz.verified_badge_add_on/resources/approved_users.json").then(appr_res => {
+                    let appr_json = await fetch("https://cdn.efaz.dev/extensions/dev.efaz.verified_badge_add_on/resources/approved_users.json").then(appr_res => {
                         if (appr_res.ok) {
                             return appr_res.json()
                         } else {
@@ -1780,7 +1709,7 @@ async function loader() { // Script Loader
             }
             if (window.verifiedCheckmarkSettings["useCustomApprovedBadgesByUser"] == true) {
                 try {
-                    var appr_json = await chrome.storage.local.get("user_approved_json").then(async (app_json_items) => {
+                    let appr_json = await chrome.storage.local.get("user_approved_json").then(async (app_json_items) => {
                         if (app_json_items && app_json_items["user_approved_json"]) {
                             if (typeof (app_json_items["user_approved_json"]) == "object") {
                                 return app_json_items["user_approved_json"]
@@ -1799,7 +1728,7 @@ async function loader() { // Script Loader
                 }
             }
             if (document.readyState === "complete") {
-                setTimeout(() => { start() }, start_time)
+                timeout(() => { start() }, start_time)
             } else {
                 window.addEventListener("DOMContentLoaded", start)
             }
@@ -1827,7 +1756,7 @@ async function loader() { // Script Loader
             }).then(appr_json => {
                 approved_efazdev_users = appr_json;
                 if (document.readyState === "complete") {
-                    setTimeout(() => { start() }, start_time)
+                    timeout(() => { start() }, start_time)
                 } else {
                     window.addEventListener("DOMContentLoaded", start)
                 }
@@ -1835,7 +1764,7 @@ async function loader() { // Script Loader
             }).catch(err => {
                 warn(err)
                 if (document.readyState === "complete") {
-                    setTimeout(() => { start() }, start_time)
+                    timeout(() => { start() }, start_time)
                 } else {
                     window.addEventListener("DOMContentLoaded", start)
                 }
@@ -1843,7 +1772,7 @@ async function loader() { // Script Loader
             })
         } else {
             if (document.readyState === "complete") {
-                setTimeout(() => { start() }, start_time)
+                timeout(() => { start() }, start_time)
             } else {
                 window.addEventListener("DOMContentLoaded", start)
             }
@@ -1871,12 +1800,11 @@ async function loader() { // Script Loader
             }
         }
         if (document.readyState === "complete") {
-            setTimeout(() => { start() }, start_time)
+            timeout(() => { start() }, start_time)
         } else {
             window.addEventListener("DOMContentLoaded", start)
         }
         console.log("Starting Verified Badge Loader: Settings Configuration v1")
     }
 }
-
 loader() // Start Loader

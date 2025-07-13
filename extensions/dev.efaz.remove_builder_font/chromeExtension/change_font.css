@@ -14,35 +14,35 @@ CSS is based on Roblox's servers and archive.org for old files.
     font-family: BuilderRemove;
     src: url(https://css.rbxcdn.com/38e00f7de6f417aa3a458560a15e2b8a-GothamSSm-Light.woff2) format("woff2"),url(https://css.rbxcdn.com/5c779fadf28d7893108d5b896e092e0d-GothamSSm-Light.woff) format("woff");
     font-weight: 300;
-    font-style: normal
+    font-style: swap
 }
 
 @font-face {
     font-family: BuilderRemove;
     src: url(https://css.rbxcdn.com/6eafc48312528e2515d622428b6b95cc-GothamSSm-Book.woff2) format("woff2"),url(https://css.rbxcdn.com/713e0b3a604ff4e44f55f9d1c100e8b5-GothamSSm-Book.woff) format("woff");
     font-weight: 400;
-    font-style: normal
+    font-style: swap
 }
 
 @font-face {
     font-family: BuilderRemove;
     src: url(https://css.rbxcdn.com/66d562e3299ee732a53db150038c026e-GothamSSm-Medium.woff2) format("woff2"),url(https://css.rbxcdn.com/2ed7693f8cf4d79466dd604c35502f76-GothamSSm-Medium.woff) format("woff");
     font-weight: 500;
-    font-style: normal
+    font-style: swap
 }
 
 @font-face {
     font-family: BuilderRemove;
     src: url(https://css.rbxcdn.com/3c102ace52ea35b16da4383819acfa38-GothamSSm-Bold.woff2) format("woff2"),url(https://css.rbxcdn.com/fe0e9885efc341b17f7e600781493f69-GothamSSm-Bold.woff) format("woff");
     font-weight: 700;
-    font-style: normal
+    font-style: swap
 }
 
 @font-face {
     font-family: BuilderRemove;
     src: url(https://css.rbxcdn.com/0acd8ff34f3a5c177d02e9011ee74eb3-GothamSSm-Black.woff2) format("woff2"),url(https://css.rbxcdn.com/3ac436cddb043616a4059aa6fe3b0c0a-GothamSSm-Black.woff) format("woff");
     font-weight: 800;
-    font-style: normal
+    font-style: swap
 }
 
 /* [Overwrite Builder font-family with provided font files.]  */

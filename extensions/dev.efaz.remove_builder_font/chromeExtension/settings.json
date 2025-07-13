@@ -9,7 +9,8 @@
         "startTime": {
             "text": "Start Loop Time (ms)",
             "type": "number",
-            "default": 125,
+            "default": 500,
+            "reset": true,
             "neededSettings": ["enabled"]
         },
         "remoteStyles": {

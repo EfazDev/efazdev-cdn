@@ -28,7 +28,6 @@ inject.js:
                 return chrome.runtime.getURL(resource)
             }
         }
-
         async function loopThroughArrayAsync(array, callback) {
             if (typeof (array) == "object") {
                 if (Array.isArray(array)) {
@@ -46,7 +45,6 @@ inject.js:
                 }
             }
         }
-
         async function getSettings(storage_key, callback) {
             if (callback) {
                 fetch(getChromeURL("settings.json")).then((res) => {
@@ -96,6 +94,7 @@ inject.js:
                 })
             }
         }
+        function timeout(func, ms) { setTimeout(func, ms); }
         getSettings(storage_key, function (items) {
             var enabled = true;
             if (items[storage_key]) {
@@ -109,11 +108,12 @@ inject.js:
                     "startTime": "75"
                 }
             }
+            var settings = items[storage_key];
             if (enabled == true) {
                 var tab = window.location
                 if (tab.href) {
                     if (tab.hostname == "www.roblox.com") {
-                        function injectRename(settings) {
+                        function injectRename() {
                             var newName = settings["newName"];
                             var isGames = newName.toLowerCase() == "games";
                             var isCharts = newName.toLowerCase() == "charts";
@@ -125,7 +125,7 @@ inject.js:
                             newName = div.innerText.replace(/<\/[^>]+(>|$)/g, "");
                             /* Clean New Name to prevent crashes */
 
-                            var topbar_headers = document.getElementsByClassName("font-header-2 nav-menu-title text-header charts-rename-exp-treatment")
+                            var topbar_headers = document.querySelectorAll(".font-header-2.nav-menu-title.text-header.charts-rename-exp-treatment")
                             for (let i = 0; i < topbar_headers.length; i++) {
                                 var header = topbar_headers[i]
                                 if (header.href && !(header.innerText.includes(newName))) {
@@ -140,7 +140,7 @@ inject.js:
                                 }
                             }
 
-                            var chart_links = document.getElementsByClassName("btn-secondary-xs see-all-link-icon btn-more")
+                            var chart_links = document.querySelectorAll(".btn-secondary-xs.see-all-link-icon.btn-more")
                             for (let i = 0; i < chart_links.length; i++) {
                                 var header = chart_links[i]
                                 if (header.href && !(header.innerText.includes(newName))) {
@@ -167,7 +167,7 @@ inject.js:
                             }
 
                             if (window.location.pathname == `/discover` || window.location.pathname == `/charts` || window.location.pathname == `/games`) {
-                                var page_headers = document.getElementsByClassName("games-list-header")
+                                var page_headers = document.querySelectorAll(".games-list-header")
                                 for (let i = 0; i < page_headers.length; i++) {
                                     var header = page_headers[i]
                                     if (!(header.innerHTML.includes(newName))) {
@@ -181,7 +181,7 @@ inject.js:
                                 }
 
                                 if (settings["changeTitleHtml"] == true) {
-                                    var titles = document.getElementsByTagName("title")
+                                    var titles = document.querySelectorAll("title")
                                     for (let i = 0; i < titles.length; i++) {
                                         var header = titles[i]
                                         if (!(header.innerText.includes(newName))) {
@@ -190,10 +190,9 @@ inject.js:
                                     }
                                 }
                             }
-
-                            setTimeout(() => { injectRename(settings) }, amountOfSecondsBeforeLoop)
+                            timeout(() => injectRename(), amountOfSecondsBeforeLoop)
                         }
-                        injectRename(items[storage_key])
+                        injectRename()
                     }
                 }
             }

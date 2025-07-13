@@ -18,7 +18,7 @@
         "loopSeconds": {
             "text": "Start Loop Time (ms)",
             "type": "number",
-            "default": 100,
+            "default": 500,
             "reset": true,
             "neededSettings": [
                 "enabled"
