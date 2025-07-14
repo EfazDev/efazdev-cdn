@@ -113,22 +113,20 @@ inject.js:
                 var tab = window.location
                 if (tab.href) {
                     if (tab.hostname == "www.roblox.com") {
+                        var newName = settings["newName"];
+                        var isGames = newName.toLowerCase() == "games";
+                        var isCharts = newName.toLowerCase() == "charts";
+                        var amountOfSecondsBeforeLoop = (typeof(settings["startTime"]) == "string" && Number(settings["startTime"])) ? Number(settings["startTime"]) : 75
+                        /* Clean New Name to prevent crashes */
+                        var div = document.createElement("div");
+                        div.innerHTML = newName;
+                        newName = div.innerText.replace(/<\/[^>]+(>|$)/g, "");
+                        /* Clean New Name to prevent crashes */
                         function injectRename() {
-                            var newName = settings["newName"];
-                            var isGames = newName.toLowerCase() == "games";
-                            var isCharts = newName.toLowerCase() == "charts";
-                            var amountOfSecondsBeforeLoop = (typeof(settings["startTime"]) == "string" && Number(settings["startTime"])) ? Number(settings["startTime"]) : 75
-
-                            /* Clean New Name to prevent crashes */
-                            var div = document.createElement("div");
-                            div.innerHTML = newName;
-                            newName = div.innerText.replace(/<\/[^>]+(>|$)/g, "");
-                            /* Clean New Name to prevent crashes */
-
-                            var topbar_headers = document.querySelectorAll(".font-header-2.nav-menu-title.text-header.charts-rename-exp-treatment")
+                            var topbar_headers = document.querySelectorAll(".font-header-2.nav-menu-title.text-header")
                             for (let i = 0; i < topbar_headers.length; i++) {
                                 var header = topbar_headers[i]
-                                if (header.href && !(header.innerText.includes(newName))) {
+                                if (header.href && /Charts/.test(header.innerHTML) && !(header.innerText.includes(newName))) {
                                     if (isGames == true) {
                                         header.href = header.href.replace("charts", "games")
                                         header.href = header.href.replace("discover", "games")
@@ -143,13 +141,17 @@ inject.js:
                             var chart_links = document.querySelectorAll(".btn-secondary-xs.see-all-link-icon.btn-more")
                             for (let i = 0; i < chart_links.length; i++) {
                                 var header = chart_links[i]
-                                if (header.href && !(header.innerText.includes(newName))) {
+                                if (header.href && !(header.href.includes(newName))) {
                                     if (isGames == true) {
-                                        header.href = header.href.replace("charts", "games")
-                                        header.href = header.href.replace("discover", "games")
+                                        if (/charts/.test(header.href) || /discover/.test(header.href)) {
+                                            header.href = header.href.replace("charts", "games")
+                                            header.href = header.href.replace("discover", "games")
+                                        }
                                     } else {
-                                        header.href = header.href.replace("charts", "discover")
-                                        header.href = header.href.replace("games", "discover")
+                                        if (/charts/.test(header.href) || /games/.test(header.href)) {
+                                            header.href = header.href.replace("charts", "discover")
+                                            header.href = header.href.replace("games", "discover")
+                                        }
                                     }
                                 }
                             }

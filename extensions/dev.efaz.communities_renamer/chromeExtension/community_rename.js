@@ -114,25 +114,24 @@ inject.js:
                 var tab = window.location
                 if (tab.href) {
                     if (tab.hostname == "www.roblox.com") {
+                        var newName = settings["newName"];
+                        var newNameWithoutEndingS = settings["newName"].endsWith("s") ? settings["newName"].slice(0, -1) : settings["newName"];
+                        var amountOfSecondsBeforeLoop = (typeof(settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
+
+                        /* Clean New Name to prevent crashes */
+                        var div = document.createElement("div");
+                        div.innerHTML = newName;
+                        newName = div.innerText.replace(/<\/[^>]+(>|$)/g, "");
+
+                        var div = document.createElement("div");
+                        div.innerHTML = newNameWithoutEndingS;
+                        newNameWithoutEndingS = div.innerText.replace(/<\/[^>]+(>|$)/g, "");
+                        /* Clean New Name to prevent crashes */
                         function injectRename() {
-                            var newName = settings["newName"];
-                            var newNameWithoutEndingS = settings["newName"].endsWith("s") ? settings["newName"].slice(0, -1) : settings["newName"];
-                            var amountOfSecondsBeforeLoop = (typeof(settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
-
-                            /* Clean New Name to prevent crashes */
-                            var div = document.createElement("div");
-                            div.innerHTML = newName;
-                            newName = div.innerText.replace(/<\/[^>]+(>|$)/g, "");
-
-                            var div = document.createElement("div");
-                            div.innerHTML = newNameWithoutEndingS;
-                            newNameWithoutEndingS = div.innerText.replace(/<\/[^>]+(>|$)/g, "");
-                            /* Clean New Name to prevent crashes */
-
                             var sidebar_headers = document.querySelectorAll(".font-header-2.dynamic-ellipsis-item")
                             for (let i = 0; i < sidebar_headers.length; i++) {
                                 var header = sidebar_headers[i]
-                                if (!(header.innerHTML.includes(newName)) && /Communities/.test(header.innerHTML)) {
+                                if (/Communities/.test(header.innerHTML) && !(header.innerHTML.includes(newName))) {
                                     if (header.href && settings["replaceURLwithGroupsURL"] == true) {
                                         header.href = header.href.replace("communities", "groups")
                                     }
@@ -143,7 +142,7 @@ inject.js:
                             var sidebar_link_headers = document.querySelectorAll(".dynamic-overflow-container.text-nav")
                             for (let i = 0; i < sidebar_link_headers.length; i++) {
                                 var header = sidebar_link_headers[i]
-                                if (!(header.innerHTML.includes(newName)) && /Communities/.test(header.innerHTML)) {
+                                if (/Communities/.test(header.innerHTML) && !(header.innerHTML.includes(newName))) {
                                     if (header.href && settings["replaceURLwithGroupsURL"] == true) {
                                         header.href = header.href.replace("communities", "groups")
                                     }
@@ -154,7 +153,7 @@ inject.js:
                             var group_webblox_dropdown = document.querySelectorAll(".web-blox-css-mui-184cbry")
                             for (let i = 0; i < group_webblox_dropdown.length; i++) {
                                 var header = group_webblox_dropdown[i]
-                                if (!(header.innerHTML.includes(newNameWithoutEndingS)) && /Community/.test(header.innerHTML)) {
+                                if (/Community/.test(header.innerHTML) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                     if (header.href && settings["replaceURLwithGroupsURL"] == true) {
                                         header.href = header.href.replace("communities", "groups")
                                     }
@@ -165,7 +164,7 @@ inject.js:
                             var search_headers = document.querySelectorAll(".section-title.ng-binding ng-scope.font-header-1")
                             for (let i = 0; i < search_headers.length; i++) {
                                 var header = search_headers[i]
-                                if (!(header.innerHTML.includes(newName)) && /Communities/.test(header.innerHTML)) {
+                                if (/Communities/.test(header.innerHTML) && !(header.innerHTML.includes(newName))) {
                                     if (header.href && settings["replaceURLwithGroupsURL"] == true) {
                                         header.href = header.href.replace("communities", "groups")
                                     }
@@ -176,7 +175,7 @@ inject.js:
                             var friends_headers = document.querySelectorAll(".ng-binding")
                             for (let i = 0; i < friends_headers.length; i++) {
                                 var header = friends_headers[i]
-                                if (!(header.innerHTML.includes(newName)) && /Communities/.test(header.innerHTML)) {
+                                if (/Communities/.test(header.innerHTML) && !(header.innerHTML.includes(newName))) {
                                     if (header.href && settings["replaceURLwithGroupsURL"] == true) {
                                         header.href = header.href.replace("communities", "groups")
                                     }
@@ -187,7 +186,7 @@ inject.js:
                             var my_communities_link = document.querySelectorAll(".btn-secondary-xs.btn-more.see-all-link-icon.ng-binding.ng-scope")
                             for (let i = 0; i < my_communities_link.length; i++) {
                                 var header = my_communities_link[i]
-                                if (!(header.innerHTML.includes(newName)) && /Communities/.test(header.innerHTML)) {
+                                if (/Communities/.test(header.innerHTML) && !(header.innerHTML.includes(newName))) {
                                     if (header.href && settings["replaceURLwithGroupsURL"] == true) {
                                         header.href = header.href.replace("communities", "groups")
                                     }
@@ -198,7 +197,7 @@ inject.js:
                             var create_community_button = document.querySelectorAll(".btn-secondary-md.create-group-button.ng-binding")
                             for (let i = 0; i < create_community_button.length; i++) {
                                 var header = create_community_button[i]
-                                if (!(header.innerHTML.includes(newNameWithoutEndingS)) && /Community/.test(header.innerHTML)) {
+                                if (/Community/.test(header.innerHTML) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                     if (header.href && settings["replaceURLwithGroupsURL"] == true) {
                                         header.href = header.href.replace("communities", "groups")
                                     }
@@ -209,7 +208,7 @@ inject.js:
                             var most_text_frames = document.querySelectorAll(".ng-binding")
                             for (let i = 0; i < most_text_frames.length; i++) {
                                 var header = most_text_frames[i]
-                                if (!(header.innerHTML.includes(newNameWithoutEndingS)) && /Community/.test(header.innerHTML)) {
+                                if (/Community/.test(header.innerHTML) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                     if (header.href && settings["replaceURLwithGroupsURL"] == true) {
                                         header.href = header.href.replace("communities", "groups")
                                     }
@@ -222,7 +221,7 @@ inject.js:
                             var small_create_community_text = document.querySelectorAll(".small.text.create-group-text.ng-binding.ng-scope")
                             for (let i = 0; i < small_create_community_text.length; i++) {
                                 var header = small_create_community_text[i]
-                                if (!(header.innerHTML.includes(newName.toLowerCase())) && /communities/.test(header.innerHTML)) {
+                                if (/communities/.test(header.innerHTML) && !(header.innerHTML.includes(newName.toLowerCase()))) {
                                     if (header.href && settings["replaceURLwithGroupsURL"] == true) {
                                         header.href = header.href.replace("communities", "groups")
                                     }
@@ -233,7 +232,7 @@ inject.js:
                             var transaction_page_summary = document.querySelectorAll(".summary-transaction-label")
                             for (let i = 0; i < transaction_page_summary.length; i++) {
                                 var header = transaction_page_summary[i]
-                                if (!(header.innerHTML.includes(newNameWithoutEndingS)) && /Community/.test(header.innerHTML)) {
+                                if (/Community/.test(header.innerHTML) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                     if (header.href && settings["replaceURLwithGroupsURL"] == true) {
                                         header.href = header.href.replace("communities", "groups")
                                     }
@@ -244,7 +243,7 @@ inject.js:
                             var amount_text_summary = document.querySelectorAll(".amount")
                             for (let i = 0; i < amount_text_summary.length; i++) {
                                 var header = amount_text_summary[i]
-                                if (!(header.innerHTML.includes(newNameWithoutEndingS)) && /Community/.test(header.innerHTML)) {
+                                if (/Community/.test(header.innerHTML) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                     if (header.href && settings["replaceURLwithGroupsURL"] == true) {
                                         header.href = header.href.replace("communities", "groups")
                                     }
@@ -255,7 +254,7 @@ inject.js:
                             var selected_labels = document.querySelectorAll(".rbx-selection-label")
                             for (let i = 0; i < selected_labels.length; i++) {
                                 var header = selected_labels[i]
-                                if (!(header.innerHTML.includes(newNameWithoutEndingS)) && /Community/.test(header.innerHTML)) {
+                                if (/Community/.test(header.innerHTML) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                     if (header.href && settings["replaceURLwithGroupsURL"] == true) {
                                         header.href = header.href.replace("communities", "groups")
                                     }
@@ -266,7 +265,7 @@ inject.js:
                             var item_descriptions = document.querySelectorAll(".item-description")
                             for (let i = 0; i < item_descriptions.length; i++) {
                                 var header = item_descriptions[i]
-                                if (!(header.innerHTML.includes(newNameWithoutEndingS)) && /Community/.test(header.innerHTML)) {
+                                if (/Community/.test(header.innerHTML) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                     if (header.href && settings["replaceURLwithGroupsURL"] == true) {
                                         header.href = header.href.replace("communities", "groups")
                                     }
@@ -277,7 +276,7 @@ inject.js:
                             var shout_community_button = document.querySelectorAll(".btn-secondary-md.group-form-button.ng-binding")
                             for (let i = 0; i < shout_community_button.length; i++) {
                                 var header = shout_community_button[i]
-                                if (!(header.innerHTML.includes(newNameWithoutEndingS)) && /Community/.test(header.innerHTML)) {
+                                if (/Community/.test(header.innerHTML) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                     if (header.href && settings["replaceURLwithGroupsURL"] == true) {
                                         header.href = header.href.replace("communities", "groups")
                                     }
@@ -288,7 +287,7 @@ inject.js:
                             var previous_names = document.querySelectorAll(".text-pastname.ng-binding")
                             for (let i = 0; i < previous_names.length; i++) {
                                 var header = previous_names[i]
-                                if (!(header.innerHTML.includes(newNameWithoutEndingS)) && /Community/.test(header.innerHTML)) {
+                                if (/Community/.test(header.innerHTML) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                     if (header.href && settings["replaceURLwithGroupsURL"] == true) {
                                         header.href = header.href.replace("communities", "groups")
                                     }
@@ -299,7 +298,7 @@ inject.js:
                             var search_communities_link = document.querySelectorAll(".form-control.input-field.ng-pristine")
                             for (let i = 0; i < search_communities_link.length; i++) {
                                 var header = search_communities_link[i]
-                                if (!(header.placeholder.includes(newName)) && /Communities/.test(header.placeholder)) {
+                                if (/Communities/.test(header.placeholder) && !(header.placeholder.includes(newName))) {
                                     if (header.href && settings["replaceURLwithGroupsURL"] == true) {
                                         header.href = header.href.replace("communities", "groups")
                                     }
@@ -316,17 +315,15 @@ inject.js:
                                     }
                                 }
                                 if (settings["massEdit"] == true) {
-                                    if (!(header.innerHTML.includes(newNameWithoutEndingS)) && /Community/.test(header.innerHTML)) {
+                                    if (/Community/.test(header.innerHTML) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                         header.innerHTML = header.innerHTML.replace("Community", newNameWithoutEndingS)
                                     }
                                 }
                             }
 
                             if (settings["replaceURLwithGroupsURL"] == true) {
-                                if (/\/communities/.test(window.location.pathname)) {
-                                    if (!(/\/configure/.test(window.location.href))) {
-                                        window.history.pushState({ id: "100" }, newName, window.location.href.replace("/communities", "/groups"));
-                                    }
+                                if (/\/communities/.test(window.location.pathname) && !(/\/configure/.test(window.location.href))) {
+                                    window.history.pushState({ id: "100" }, newName, window.location.href.replace("/communities", "/groups"));
                                 }
                             }
 
