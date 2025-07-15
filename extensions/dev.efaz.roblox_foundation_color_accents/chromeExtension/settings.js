@@ -363,7 +363,7 @@ async function loadChanges() {
                 }
         
                 a {
-                    color: #4295f5;
+                    color: #ff4b00;
                 }
                 `
             }
