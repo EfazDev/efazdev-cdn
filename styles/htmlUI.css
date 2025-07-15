@@ -104,6 +104,7 @@ button {
     z-index: 0;
     margin: 0 auto;
     box-shadow: none;
+    border: #ff4b00;
 }
 input, textarea {
     pointer-events: auto;
