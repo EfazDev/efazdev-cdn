@@ -99,12 +99,11 @@ button {
     transition: transform 0.2s, padding 0.25s cubic-bezier(.4, 2, .3, 1), box-shadow 0.25s cubic-bezier(.4, 2, .3, 1);
     white-space: nowrap;
     overflow: hidden;
-    border: none;
+    border-color: #ff4b00;
     box-sizing: border-box;
     z-index: 0;
     margin: 0 auto;
     box-shadow: none;
-    border: #ff4b00;
 }
 input, textarea {
     pointer-events: auto;
