@@ -105,7 +105,7 @@ button {
     margin: 0 auto;
     box-shadow: none;
 }
-input {
+input, textarea {
     pointer-events: auto;
     position: relative;
     font-family: mainfont;
@@ -126,7 +126,7 @@ input {
     margin: 0;
     box-shadow: none;
 }
-input::placeholder {
+input::placeholder, textarea::placeholder {
     font-size: clamp(0.85rem, 1.2vw, 1rem);
     font-family: mainfont, sans-serif;
     font-weight: normal;
@@ -168,6 +168,14 @@ button>* {
     box-shadow: none;
 }
 .gradient-border > input {
+    border-radius: 16px;
+    background: #181818;
+    border: none;
+    position: relative;
+    z-index: 1;
+    box-shadow: none;
+}
+.gradient-border > textarea {
     border-radius: 16px;
     background: #181818;
     border: none;
