@@ -200,6 +200,12 @@ span.material-symbols-outlined {
 button:hover {
     box-shadow: 0 6px 32px rgba(255,75,0,0.22), 0 2px 12px rgba(0,0,0,0.16);
 }
+button:hover {
+    transform: scale(1.06);
+}
+span.gradient-border > button:hover {
+    transform: none;
+}
 button:hover::before {
     background: linear-gradient(to right, #ff4b00, #ffff00, #00ff00);
     filter: brightness(1.08) blur(0.5px);
