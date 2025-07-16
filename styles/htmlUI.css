@@ -63,19 +63,19 @@ h1 {
 p {
     font-size: 1.125rem;
     max-width: 600px;
-    margin: 8px auto;
+    margin: 10px auto;
     text-align: center;
 }
 e {
     max-width: 600px;
-    margin: 8px auto;
+    margin: 10px auto;
     color: #ff0000;
     text-align: center;
 }
 a {
     max-width: 600px;
     color: #ff4b00;
-    margin: 8px auto;
+    margin: 10px auto;
     text-align: center;
 }
 button {
