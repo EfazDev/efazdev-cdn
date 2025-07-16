@@ -202,6 +202,13 @@ button:hover::before {
 button:active {
     transform: scale(0.97);
 }
+table,
+th,
+td {
+    border: 1px solid white;
+    border-collapse: collapse;
+    text-align: center;
+}
 @media (max-width: 600px) {
     body {
         padding-left: 0.5rem;
