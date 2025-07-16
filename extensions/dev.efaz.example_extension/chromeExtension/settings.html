@@ -7,89 +7,249 @@
     <meta name="title" content="Extension Settings">
     <meta name="description" content="just a extension settings page">
     <style id="css">
+        /* 
+
+        Remade EfazDev UI!
+        Modified on July 16th, 2025
+
+        */
+
         @font-face {
             font-family: mainfont;
-            src: url('https://cdn.efaz.dev/styles/mainFont.ttf');
             font-weight: bold;
+            font-display: swap;
+            src: url("https://cdn.efaz.dev/styles/mainFont.ttf");
         }
-
-        @media (prefers-color-scheme: light) {
-            body {
-                min-height: 100%;
-                min-width: 100%;
-                background: linear-gradient(60deg, #ff4b00 0%, #dbdb00 50%, #00ce00 100%);
-                background-repeat: repeat-y !important;
-                background-blend-mode: normal !important;
-                background-size: 100vw 100vh;
-                min-height: 100vh;
-                font-family: mainfont;
-                background-repeat: no-repeat;
-                background-attachment: fixed;
-                color: white;
-            }
-        }
-
-        @media (prefers-color-scheme: dark) {
-            body {
-                min-height: 100%;
-                min-width: 100%;
-                background: linear-gradient(60deg, #4e1700 0%, #4e4e00 50%, #004200 100%);
-                background-repeat: repeat-y !important;
-                background-blend-mode: normal !important;
-                background-size: 100vw 100vh;
-                min-height: 100vh;
-                font-family: mainfont;
-                background-repeat: no-repeat;
-                background-attachment: fixed;
-                color: white;
-            }
-        }
-
-        button {
-            border: 1px solid white;
-            border-radius: 8px;
-            background-color: #00c900;
-            color: rgb(255, 255, 255);
-            font-family: mainfont;
-        }
-
-        input {
-            border: 1px solid white;
-            border-collapse: collapse;
-            text-align: center;
-            margin-left: auto;
-            border-radius: 8px;
-            background-color: #00c900;
-            color: rgb(255, 255, 255);
-            vertical-align: middle;
-            justify-content: center;
-            font-family: mainfont;
-            margin-right: auto;
-        }
-
         html {
             width: 500px;
             height: 580px;
         }
-
-        e {
-            color: rgb(255, 0, 0);
-            font-size: x-small;
-        }
-
-        li {
-            display: inline-block;
-            padding: 2px;
-        }
-
-        ul {
-            padding-left: 0;
-            display: flex !important;
+        body {
+            font-family: mainfont, sans-serif;
+            background: linear-gradient(180deg, #0a0a0a, #111111, #1c1c1c);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: left;
             justify-content: left;
+            overflow-x: hidden;
         }
-
+        div {
+            max-width: 800px;
+            width: 100%;
+            flex-direction: column;
+            display: block;
+            align-items: left;
+            justify-content: left;
+            margin-top: 0;
+            text-align: left;
+        }
+        ul {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: left;
+            align-items: flex-start;
+            gap: 0.5rem 0.5rem;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        ul>div {
+            margin-left: 10px;
+            margin-right: 0;
+        }
+        ul>div:first-child {
+            margin-left: 0;
+        }
+        h1 {
+            margin-bottom: 18px;
+            text-align: left;
+        }
+        h2 {
+            margin-bottom: 14px;
+            text-align: left;
+        }
+        h3 {
+            margin-bottom: 12px;
+            text-align: left;
+        }
+        p {
+            max-width: 600px;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+        label {
+            display: flex;
+            align-items: center;
+            max-width: 600px;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+        label > * {
+            margin-left: 5px;
+        }
+        e {
+            max-width: 600px;
+            margin-bottom: 5px;
+            color: #ff0000;
+            text-align: center;
+        }
+        em {
+            margin-bottom: 10px;
+            display: block;
+        }
         a {
-            color: #4295f5;
+            max-width: 600px;
+            color: #ff4b00;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        button {
+            pointer-events: auto;
+            position: relative;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0.1rem 1rem;
+            font-family: mainfont, sans-serif;
+            border-radius: 16px;
+            color: #fff;
+            font-weight: bold;
+            background: #2d2d2d;
+            background-blend-mode: normal;
+            cursor: pointer;
+            transition: transform 0.2s, padding 0.25s cubic-bezier(.4, 2, .3, 1), box-shadow 0.25s cubic-bezier(.4, 2, .3, 1);
+            white-space: nowrap;
+            overflow: hidden;
+            border-color: #ff4b00;
+            box-sizing: border-box;
+            z-index: 0;
+            box-shadow: none;
+        }
+        input, textarea {
+            margin-left: 5px;
+            pointer-events: auto;
+            position: relative;
+            font-family: mainfont;
+            display: inline-flex;
+            padding: 0.1rem 0.5rem;
+            align-items: left;
+            justify-content: left;
+            color: #fff;
+            font-weight: bold;
+            background: #2d2d2d;
+            border-radius: 16px;
+            border: none;
+            transition: transform 0.2s, padding 0.25s cubic-bezier(.4, 2, .3, 1), box-shadow 0.25s cubic-bezier(.4, 2, .3, 1);
+            box-sizing: border-box;
+            z-index: 0;
+            box-shadow: none;
+        }
+        input::placeholder, textarea::placeholder {
+            font-size: clamp(0.85rem, 1.2vw, 1rem);
+            font-family: mainfont, sans-serif;
+            font-weight: normal;
+            line-height: 1.2;
+            letter-spacing: normal;
+            text-align: center;
+            color: #bbb;
+            opacity: 1;
+        }
+        button:active::before {
+            transform: scale(0.97);
+        }
+        button:focus-visible::before {
+            outline: 2px solid #ff4b00;
+        }
+        button>* {
+            position: relative;
+            z-index: 2;
+            color: #fff;
+        }
+        button:hover {
+            box-shadow: 0 6px 32px rgba(255,75,0,0.22), 0 2px 12px rgba(0,0,0,0.16);
+            transform: scale(1.06);
+        }
+        button:hover::before {
+            background: linear-gradient(to right, #ff4b00, #ffff00, #00ff00);
+            filter: brightness(1.08) blur(0.5px);
+            transform: scale(1.04);
+        }
+        button:active {
+            transform: scale(0.97);
+        }
+        group {
+            margin-bottom: 18px;
+        }
+        .gradient-border {
+            display: inline-block;
+            padding: 3px;
+            border-radius: 19px;
+            background: linear-gradient(to right, #ff4b00, #ffff00, #00ff00);
+            transition: background 0.3s cubic-bezier(.4,2,.3,1), transform 0.2s cubic-bezier(.4,2,.3,1);
+            margin: 0.15rem;
+        }
+        .gradient-border:hover {
+            background: linear-gradient(to right, #ff4b00, #ffff00, #00ff00);
+            transform: scale(1.06);
+        }
+        .gradient-border > button {
+            border-radius: 18px;
+            background: linear-gradient(to right, #232323 60%, #222 70%, #181818 80%), linear-gradient(to right, #ff4b00, #ffff00, #00ff00);
+            border: none;
+            position: relative;
+            z-index: 1;
+            box-shadow: none;
+        }
+        .gradient-border > input {
+            border-radius: 16px;
+            background: linear-gradient(to right, #232323 60%, #222 70%, #181818 80%), linear-gradient(to right, #ff4b00, #ffff00, #00ff00);
+            border: none;
+            position: relative;
+            z-index: 1;
+            box-shadow: none;
+        }
+        .gradient-border > textarea {
+            border-radius: 16px;
+            background: linear-gradient(to right, #232323 60%, #222 70%, #181818 80%), linear-gradient(to right, #ff4b00, #ffff00, #00ff00);
+            border: none;
+            position: relative;
+            z-index: 1;
+            box-shadow: none;
+        }
+        .colored_buttons {
+            padding: initial
+        }
+        span.material-symbols-outlined {
+            font-size: 1.3em;
+            vertical-align: middle;
+            transition: none;
+            margin-right: 4px;
+            margin-left: 0;
+            line-height: 1;
+            display: inline-block;
+        }
+        span.gradient-border > button:hover {
+            transform: none;
+        }
+        span.gradient-border > button {
+            background: linear-gradient(to right, #232323 60%, #222 70%, #181818 80%), linear-gradient(to right, #ff4b00, #ffff00, #00ff00);
+        }
+        table,
+        th,
+        td {
+            border: 1px solid white;
+            border-collapse: collapse;
+            text-align: center;
+        }
+    </style>
+    <style> 
+        html {
+            width: 500px;
+            height: 580px;
         }
     </style>
     <script src="settings.js"></script>
@@ -100,11 +260,11 @@
         <h1 id='title1'>Hello!</h1>
 
         <p>------ System Details ------</p>
-        <label id="extens_name">Extension Name: Loading..</label><br>
-        <label for="enabled" id="enabled_label">Enable Extension: <input type="checkbox" id="enabled" name="enabled"></label><br>
+        <label id="extens_name">Extension Name: Loading..</label>
+        <label for="enabled" id="enabled_label">Enable Extension: <input type="checkbox" id="enabled" name="enabled"></label>
         <p id="extensionSettings">------ Extension Settings ------</p>
         <p id="reviewDetails">------ Review Details! ------</p>
-        <button type='submit' id="submitbutton" class="center">Save Settings!</button><br><br>
+        <span class="gradient-border"><button type='submit' id="submitbutton" class="center">Save Settings!</button></span><br><br>
         <em>Extension is made by @EfazDev. This extension is not affiliated or made by Roblox.</em>
         <ul>
             <li><a target="_blank" href="https://twitter.efaz.dev"><img class="resize-img" title="Twitter" height="24"

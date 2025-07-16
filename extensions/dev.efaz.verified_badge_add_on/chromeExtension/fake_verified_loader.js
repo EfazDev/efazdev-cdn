@@ -778,20 +778,20 @@ function start() {
                                                 if (group_owners.length > 0) {
                                                     if (window.verifiedCheckmarkSettings) {
                                                         if (window.verifiedCheckmarkSettings["groupsIncluded"] == true) {
-                                                            let group_list_verified_logo = Array.from(document.querySelectorAll("groups-list-item"));
+                                                            let group_list_verified_logo = Array.from(document.querySelectorAll(".groups-list-item"));
                                                             if (group_list_verified_logo.length > 0) {
                                                                 group_list_verified_logo.forEach((main_name_on_group) => {
-                                                                    if (main_name_on_group.children[0] && main_name_on_group.children[0].children[0] && main_name_on_group.children[0].children[0].children[1]) {
-                                                                        if (main_name_on_group.children[0].href) {
-                                                                            let group_id = main_name_on_group.children[0].href.match(/[0-9]+/)[0];
+                                                                    if (main_name_on_group.children[1] && main_name_on_group.children[1].children[0] && main_name_on_group.children[1].children[0].children[0] && main_name_on_group.children[1].children[0].children[0].children[0]) {
+                                                                        if (main_name_on_group.href) {
+                                                                            let group_id = main_name_on_group.href.match(/[0-9]+/)[0];
                                                                             if (group_id) {
                                                                                 approvedGroup(group_id).then((info) => {
                                                                                     if (info["accepted"] == true) {
-                                                                                        main_name_on_group = main_name_on_group.children[0].children[0].children[1];
+                                                                                        main_name_on_group = main_name_on_group.children[1].children[0].children[0].children[0];
                                                                                         if (verifiedBadgePlacedAlready(main_name_on_group.innerHTML)) {
                                                                                             return;
                                                                                         }
-                                                                                        main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${name_side_html}`;
+                                                                                        main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${generateVerifiedIcon(name_side_html, 2, 12, 12, 2, 16, 16)}`;
                                                                                     }
                                                                                 })
                                                                             }

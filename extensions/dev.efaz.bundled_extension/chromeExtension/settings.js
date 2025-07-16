@@ -78,10 +78,10 @@ async function loadChanges2() {
         document.getElementById("window_title").innerText = `Bundle Settings`
 
         if (document.getElementById(exName) == null) {
-            var generated_html_element = `<label for="${exName}">${settings["bundledDisplayName"]} v${manifest["version"]}: <button type="submit" id="${exName}">Open Settings!</button>`
+            var generated_html_element = `<label for="${exName}">${settings["bundledDisplayName"]} v${manifest["version"]}: <span class="gradient-border"><button type="submit" id="${exName}">Open Settings!</button></span>`
             var beforeElement = document.getElementById("reviewDetails")
             if (settings["hidden"] == true && !(window.location.href.includes("resize=true"))) {
-                generated_html_element = `<label style="display: none;" for="${exName}">${settings["name"]} v${manifest["version"]}: <button type="submit" id="${exName}">Open Settings!</button>`
+                generated_html_element = `<label style="display: none;" for="${exName}">${settings["name"]} v${manifest["version"]}: <span class="gradient-border"><button type="submit" id="${exName}">Open Settings!</button></span>`
             } else {
                 generated_html_element = `${generated_html_element}`
             }
@@ -100,7 +100,7 @@ async function loadChanges2() {
                         .replaceAll('<script src="setting_colors.js"></script>', '<script class="reexecute" src="' + exName + "/setting_colors.js" + '"></script>')
                         .replaceAll('<script src="reset_cache.js"></script>', '<script class="reexecute" src="' + exName + "/reset_cache.js" + '"></script>')
                         .replaceAll("</meta>", "")
-                    webpage = webpage.replaceAll('<button type=\'submit\' id="submitbutton" class="center">Save Settings!</button><br><br>', '<button type=\'submit\' id="submitbutton" class="center">Save Settings!</button> <button type="submit" id="goBackToBundledPage">Return to Extensions page!</button><br><br>')
+                    webpage = webpage.replaceAll('<span class="gradient-border"><button type=\'submit\' id="submitbutton" class="center">Save Settings!</button></span><br><br>', '<span class="gradient-border"><button type=\'submit\' id="submitbutton" class="center">Save Settings!</button></span> <span class="gradient-border"><button type="submit" id="goBackToBundledPage">Return to Extensions page!</button></span><br><br>')
                     
                     // Run HTML
                     var newElement = new DOMParser().parseFromString(webpage, "text/html")
@@ -148,80 +148,7 @@ async function loadChanges2() {
         }
     })
 
-    if (navigator.onLine && window.location.href.includes("resize=true")) {
-        /* User is online and came from Thank you page */
-        const style = document.createElement("link")
-        style.id = "resize-to-full-screen";
-        style.rel = "stylesheet";
-        style.type = "text/css";
-        style.media = "all";
-        style.href = "https://cdn.efaz.dev/styles/htmlUI.css"
-        document.head.append(style)
-    } else if (navigator.onLine == false && (window.location.href.includes("resize=true"))) {
-        /* User is offline and came from Thank you page */
-        document.getElementById("extens_vers").innerHTML = `${document.getElementById("extens_vers").innerHTML} | Network Offline`
-        document.getElementById("css").innerHTML = `${document.getElementById("css").innerHTML}
-/* This stylesheet is exported for when your computer has no internet. */
-
-body {
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background: linear-gradient(90deg, #ff4b00 0%, #dddd00 33.33%,  #00db00 66.66%, #00d0ff 100%);
-    font-family: arial !important;
-    color: white;
-    overflow: hidden;
-}
-p,
-h1,
-h2,
-h3,
-label {
-    text-align: center;
-    margin: 0;
-}
-
-.center {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-button {
-    border: 1px solid white;
-    border-collapse: collapse;
-    text-align: center;
-    margin-left: auto;
-    border-radius: 8px;
-    background-color: #00c900;
-    color: rgb(255, 255, 255);
-    vertical-align: middle;
-    justify-content: center;
-    font-family: arial;
-    margin-right: auto;
-}
-html {
-    width: 100%;
-    height: 100%
-}
-div {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    vertical-align: middle;
-    position: fixed;
-
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-}
-
-/* This stylesheet is exported for when your computer has no internet. */
-        `
-    } else if (navigator.onLine == false) {
+    if (navigator.onLine == false) {
         /* User is offline */
         document.getElementById("extens_vers").innerHTML = `${document.getElementById("extens_vers").innerHTML} | Network Offline`
         document.getElementById("css").innerHTML = `${document.getElementById("css").innerHTML}
