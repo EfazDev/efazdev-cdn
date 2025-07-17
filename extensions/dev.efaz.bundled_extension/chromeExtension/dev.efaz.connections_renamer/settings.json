@@ -1,0 +1,52 @@
+{
+    "name": "dev.efaz.connections_renamer",
+    "settings": {
+        "enabled": {
+            "text": "Enable Extension",
+            "type": "checkbox",
+            "default": true
+        },
+        "newName": {
+            "text": "Replace Connections with",
+            "type": "text",
+            "default": "Friends",
+            "reset": true,
+            "neededSettings": [
+                "enabled"
+            ]
+        },
+        "startTime": {
+            "text": "Start Loop Time (ms)",
+            "type": "number",
+            "default": 500,
+            "reset": true,
+            "neededSettings": [
+                "enabled"
+            ]
+        },
+        "massEdit": {
+            "text": "Mass Edit HTML Contents with Connection or Connections Text",
+            "type": "checkbox",
+            "default": true,
+            "neededSettings": [
+                "enabled"
+            ]
+        },
+        "changeTitleHtml": {
+            "text": "Replace Tab Name with New Name",
+            "type": "checkbox",
+            "default": true,
+            "neededSettings": [
+                "enabled"
+            ]
+        }
+    },
+    "bundledDisplayName": "Connections Renamer",
+    "typeOfStorage": "sync",
+    "chromeWebstoreLinkEnabled": true,
+    "uploadedChromeExtensionID": "knlbpobhdckkodfgggidkcegiifhgljo",
+    "scanForManifestUpdates": true,
+    "isVersionServer": true,
+    "onlineManifestFile": "https://cdn.efaz.dev/extensions/versions/public.json",
+    "bundleAssociatedName": "dev.efaz.connections_renamer"
+}

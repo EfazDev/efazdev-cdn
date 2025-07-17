@@ -306,6 +306,38 @@ inject.js:
                                 }
                             }
 
+                            var back_links = document.querySelectorAll(".back-link")
+                            for (let i = 0; i < back_links.length; i++) {
+                                var header = back_links[i]
+                                if ((/Community/.test(header.innerHTML) || /Communities/.test(header.innerHTML))) {
+                                    header.innerHTML = header.innerHTML.replace("Community", newNameWithoutEndingS).replace("Communities", newName)
+                                }
+                            }
+
+                            var font_bodies = document.querySelectorAll(".font-body")
+                            for (let i = 0; i < font_bodies.length; i++) {
+                                var header = font_bodies[i]
+                                if ((/Community/.test(header.innerHTML) || /Communities/.test(header.innerHTML)) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
+                                    header.innerHTML = header.innerHTML.replace("Community", newNameWithoutEndingS).replace("Communities", newName)
+                                }
+                            }
+
+                            var emphasises = document.querySelectorAll(".text-emphasis")
+                            for (let i = 0; i < emphasises.length; i++) {
+                                var header = emphasises[i]
+                                if ((/Community/.test(header.innerHTML) || /Communities/.test(header.innerHTML)) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
+                                    header.innerHTML = header.innerHTML.replace("Community", newNameWithoutEndingS).replace("Communities", newName)
+                                }
+                            }
+
+                            var text_contents = document.querySelectorAll(".text-content")
+                            for (let i = 0; i < text_contents.length; i++) {
+                                var header = text_contents[i]
+                                if ((/Community/.test(header.innerHTML) || /Communities/.test(header.innerHTML)) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
+                                    header.innerHTML = header.innerHTML.replace("Community", newNameWithoutEndingS).replace("Communities", newName)
+                                }
+                            }
+
                             var all_links = document.querySelectorAll("a")
                             for (let i = 0; i < all_links.length; i++) {
                                 var header = all_links[i]
@@ -317,6 +349,16 @@ inject.js:
                                 if (settings["massEdit"] == true) {
                                     if (/Community/.test(header.innerHTML) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                         header.innerHTML = header.innerHTML.replace("Community", newNameWithoutEndingS)
+                                    }
+                                }
+                            }
+
+                            var all_labels = document.querySelectorAll("label")
+                            for (let i = 0; i < all_labels.length; i++) {
+                                var header = all_labels[i]
+                                if (settings["massEdit"] == true) {
+                                    if ((/Community/.test(header.innerHTML) || /Communities/.test(header.innerHTML)) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
+                                        header.innerHTML = header.innerHTML.replace("Community", newNameWithoutEndingS).replace("Communities", newName)
                                     }
                                 }
                             }

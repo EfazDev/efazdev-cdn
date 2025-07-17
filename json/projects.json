@@ -100,6 +100,16 @@
         "description": "An extension that replaces Communities on Roblox back to Groups!"
     },
     {
+        "name": "Efaz's Roblox Connections Renamer",
+        "url": "https://www.efaz.dev/roblox-connections-rename",
+        "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-connections-renamer/knlbpobhdckkodfgggidkcegiifhgljo",
+        "discontinued": false,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
+        "dateDiscontinued": "None",
+        "description": "An extension that replaces Connections on Roblox back to Friends!"
+    },
+    {
         "name": "Efaz's Roblox Logo Changer",
         "url": "https://www.efaz.dev/roblox-logo-changer",
         "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-logo-changer/cpickeibcibgfokapikmokmfgnjlglph",
