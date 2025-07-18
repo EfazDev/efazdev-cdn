@@ -161,6 +161,14 @@ inject.js:
                                 }
                             }
 
+                            var group_header_name = document.querySelectorAll(".groups-list-heading")
+                            for (let i = 0; i < group_header_name.length; i++) {
+                                var header = group_header_name[i]
+                                if (/Communities/.test(header.innerHTML) && !(header.innerHTML.includes(newName))) {
+                                    header.innerHTML = header.innerHTML.replace("Communities", newName)
+                                }
+                            }
+
                             var search_headers = document.querySelectorAll(".section-title.ng-binding ng-scope.font-header-1")
                             for (let i = 0; i < search_headers.length; i++) {
                                 var header = search_headers[i]
@@ -295,7 +303,7 @@ inject.js:
                                 }
                             }
 
-                            var search_communities_link = document.querySelectorAll(".form-control.input-field.ng-pristine")
+                            var search_communities_link = document.querySelectorAll(".groups-list-search-input")
                             for (let i = 0; i < search_communities_link.length; i++) {
                                 var header = search_communities_link[i]
                                 if (/Communities/.test(header.placeholder) && !(header.placeholder.includes(newName))) {
