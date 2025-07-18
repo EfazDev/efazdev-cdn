@@ -1,0 +1,136 @@
+{
+    "name": "dev.efaz.roblox_logo_changer",
+    "settings": {
+        "enabled": {
+            "text": "Enable Extension",
+            "type": "checkbox",
+            "default": true
+        },
+        "loopSeconds": {
+            "text": "Start Loop Time (ms)",
+            "type": "number",
+            "default": 500,
+            "reset": true,
+            "neededSettings": [
+                "enabled"
+            ]
+        },
+        "rbxIcon": {
+            "text": "Set Roblox Player Icon",
+            "type": "file",
+            "default": "",
+            "extraArguments": {
+                "accept": "image/*"
+            },
+            "neededSettings": [
+                "enabled"
+            ],
+            "reset": true,
+            "alternateFileInput": true
+        },
+        "rbxStudioIcon": {
+            "text": "Set Roblox Studio Icon",
+            "type": "file",
+            "default": "",
+            "extraArguments": {
+                "accept": "image/*"
+            },
+            "neededSettings": [
+                "enabled"
+            ],
+            "reset": true,
+            "alternateFileInput": true
+        },
+        "topLeftLogo": {
+            "text": "Set Roblox Icon (Main Web)",
+            "type": "file",
+            "default": "",
+            "extraArguments": {
+                "accept": "image/*"
+            },
+            "neededSettings": [
+                "enabled"
+            ],
+            "reset": true,
+            "alternateFileInput": true
+        },
+        "topLeftName": {
+            "text": "Set Roblox Name (Main Web)",
+            "type": "file",
+            "default": "",
+            "extraArguments": {
+                "accept": "image/*"
+            },
+            "neededSettings": [
+                "enabled"
+            ],
+            "reset": true,
+            "alternateFileInput": true
+        },
+        "projectedImage": {
+            "text": "Set Roblox Website Tab Icon",
+            "type": "file",
+            "default": "",
+            "extraArguments": {
+                "accept": "image/*"
+            },
+            "neededSettings": [
+                "enabled"
+            ],
+            "reset": true,
+            "alternateFileInput": true
+        },
+        "projectedImage2": {
+            "text": "Set Creator Dashboard Tab Icon",
+            "type": "file",
+            "default": "",
+            "extraArguments": {
+                "accept": "image/*"
+            },
+            "neededSettings": [
+                "enabled"
+            ],
+            "reset": true,
+            "alternateFileInput": true
+        },
+        "projectedImage3": {
+            "text": "Set DevForum Tab Icon",
+            "type": "file",
+            "default": "",
+            "extraArguments": {
+                "accept": "image/*"
+            },
+            "neededSettings": [
+                "enabled"
+            ],
+            "reset": true,
+            "alternateFileInput": true
+        },
+        "projectedImage4": {
+            "text": "Set Other Website Tab Icon",
+            "type": "file",
+            "default": "",
+            "extraArguments": {
+                "accept": "image/*"
+            },
+            "neededSettings": [
+                "enabled"
+            ],
+            "reset": true,
+            "alternateFileInput": true
+        }
+    },
+    "bundledDisplayName": "Roblox Logo Changer",
+    "typeOfStorage": "local",
+    "chromeWebstoreLinkEnabled": true,
+    "firefoxWebstoreLinkEnabled": true,
+    "uploadedChromeExtensionID": "cpickeibcibgfokapikmokmfgnjlglph",
+    "uploadedFirefoxExtensionID": "efaz-s-roblox-logo-changer",
+    "customExportFileType": "image/png",
+    "customExportPhotoRes": 300,
+    "scanForManifestUpdates": true,
+    "isVersionServer": true,
+    "browserMode": "firefox",
+    "onlineManifestFile": "https://cdn.efaz.dev/extensions/versions/public.json",
+    "bundleAssociatedName": "dev.efaz.roblox_logo_changer"
+}

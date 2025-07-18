@@ -1,0 +1,55 @@
+{
+    "name": "Efaz's Roblox Logo Changer",
+    "description": "A Chrome Extension that can change the Roblox Logo to a new icon!",
+    "version": "1.1.1",
+    "manifest_version": 3,
+    "author": "EfazDev",
+    "homepage_url": "https://www.efaz.dev/",
+    "icons": {
+        "16": "icon16.png",
+        "32": "icon32.png",
+        "48": "icon48.png",
+        "128": "icon128.png"
+    },
+    "background": {
+        "scripts": [
+            "main.js"
+        ]
+    },
+    "content_scripts": [
+        {
+            "all_frames": true,
+            "js": [
+                "logo_changer.js"
+            ],
+            "matches": [
+                "*://*.roblox.com/*"
+            ],
+            "run_at": "document_start"
+        }
+    ],
+    "action": {
+        "default_title": "Efaz's Roblox Logo Changer",
+        "default_icon": "icon128.png"
+    },
+    "web_accessible_resources": [
+        {
+            "matches": [
+                "*://*.roblox.com/*"
+            ],
+            "resources": [
+                "settings.json"
+            ]
+        }
+    ],
+    "permissions": [
+        "storage",
+        "unlimitedStorage"
+    ],
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "roblox_logo_changer@efaz.dev",
+            "strict_min_version": "109.0"
+        }
+    }
+}

@@ -1,0 +1,21 @@
+{
+    "displayName": "Efaz's Roblox Extension",
+    "name": "dev.efaz.bundled_extension",
+    "extensions": [
+        "dev.efaz.communities_renamer",
+        "dev.efaz.roblox_logo_changer",
+        "dev.efaz.charts_renamer",
+        "dev.efaz.connections_renamer",
+        "dev.efaz.remove_builder_font",
+        "dev.efaz.verified_badge_add_on",
+        "dev.efaz.roblox_foundation_color_accents"
+    ],
+    "chromeWebstoreLinkEnabled": true,
+    "firefoxWebstoreLinkEnabled": true,
+    "uploadedChromeExtensionID": "iehkcelgogmkojgggahdefcdncfeiadf",
+    "uploadedFirefoxExtensionID": "efaz-s-roblox-extension",
+    "scanForManifestUpdates": true,
+    "isVersionServer": true,
+    "browserMode": "firefox",
+    "onlineManifestFile": "https://cdn.efaz.dev/extensions/versions/public.json"
+}

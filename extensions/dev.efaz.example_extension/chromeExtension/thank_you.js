@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
         var extension_icon = man_json["icons"]["128"]
 
         document.getElementById("extens_icon").src = extension_icon
-        document.getElementById("extens_name").innerHTML = `Thank you for installing ${extension_name}!`
-        document.getElementById("extens_vers").innerHTML = `Version Number: v${extension_version}`
+        document.getElementById("extens_name").innerText = `Thank you for installing ${extension_name}!`
+        document.getElementById("extens_vers").innerText = `Version Number: v${extension_version}`
     })
 })

@@ -137,6 +137,10 @@ for i in extensions_added:
     with open(f"{extension_path}/{i}/org_manifest.json", "w") as f: json.dump(mans[i], f, indent=4)
     with open(f"{extension_path}/{i}/settings.json", "w") as f: json.dump(ses[i], f, indent=4)
     os.remove(f"{extension_path}/{i}/manifest.json")
+    os.remove(f"{extension_path}/{i}/settings.js")
+    os.remove(f"{extension_path}/{i}/thank_you.js")
+    os.remove(f"{extension_path}/{i}/thank_you.html")
+    os.remove(f"{extension_path}/{i}/main.js")
 
 if not (os.name == "nt"):
     printMainMessage("Creating Bundle ZIP File..")

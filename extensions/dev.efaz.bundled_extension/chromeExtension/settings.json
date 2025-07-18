@@ -11,8 +11,11 @@
         "dev.efaz.roblox_foundation_color_accents"
     ],
     "chromeWebstoreLinkEnabled": true,
+    "firefoxWebstoreLinkEnabled": true,
     "uploadedChromeExtensionID": "iehkcelgogmkojgggahdefcdncfeiadf",
+    "uploadedFirefoxExtensionID": "efaz-s-roblox-extension",
     "scanForManifestUpdates": true,
     "isVersionServer": true,
+    "browserMode": "chrome",
     "onlineManifestFile": "https://cdn.efaz.dev/extensions/versions/public.json"
 }

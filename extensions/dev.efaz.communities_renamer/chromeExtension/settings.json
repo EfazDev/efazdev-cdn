@@ -42,8 +42,11 @@
     "bundledDisplayName": "Communities Renamer",
     "typeOfStorage": "sync",
     "chromeWebstoreLinkEnabled": true,
+    "firefoxWebstoreLinkEnabled": true,
     "uploadedChromeExtensionID": "afaoamnkmjkkpheiblblbinpmdnacipm",
+    "uploadedFirefoxExtensionID": "efaz-s-communities-renamer",
     "scanForManifestUpdates": true,
     "isVersionServer": true,
+    "browserMode": "chrome",
     "onlineManifestFile": "https://cdn.efaz.dev/extensions/versions/public.json"
 }

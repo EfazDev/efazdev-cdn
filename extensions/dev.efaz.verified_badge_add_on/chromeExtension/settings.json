@@ -60,8 +60,11 @@
     "bundledDisplayName": "Verified Badge Add-on",
     "typeOfStorage": "local",
     "chromeWebstoreLinkEnabled": true,
+    "firefoxWebstoreLinkEnabled": true,
     "uploadedChromeExtensionID": "kediboibmfffkllcmgemojpkphmokaea",
+    "uploadedFirefoxExtensionID": "efaz-s-verified-badge",
     "scanForManifestUpdates": true,
     "isVersionServer": true,
+    "browserMode": "chrome",
     "onlineManifestFile": "https://cdn.efaz.dev/extensions/versions/public.json"
 }

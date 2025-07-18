@@ -44,9 +44,12 @@
     "bundledDisplayName": "Charts Renamer",
     "typeOfStorage": "sync",
     "chromeWebstoreLinkEnabled": true,
+    "firefoxWebstoreLinkEnabled": true,
     "uploadedChromeExtensionID": "eghkpfdncgmcaifihhfgihcenboakjck",
+    "uploadedFirefoxExtensionID": "efaz-s-roblox-charts-renamer",
     "scanForManifestUpdates": true,
     "isVersionServer": true,
+    "browserMode": "chrome",
     "onlineManifestFile": "https://cdn.efaz.dev/extensions/versions/public.json",
     "bundleAssociatedName": "dev.efaz.charts_renamer"
 }

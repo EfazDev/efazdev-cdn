@@ -1,0 +1,38 @@
+{
+    "name": "dev.efaz.example_extension",
+    "settings": {
+        "enabled": {
+            "text": "Enable Extension",
+            "type": "checkbox",
+            "default": true
+        },
+        "color": {
+            "text": "Select a color",
+            "type": "color",
+            "default": "#0066FF",
+            "reset": true,
+            "neededSettings": [
+                "enabled"
+            ]
+        },
+        "donotdisturb": {
+            "text": "Would you like us to not disturb you?",
+            "type": "checkbox",
+            "default": true,
+            "reset": false,
+            "neededSettings": [
+                "enabled"
+            ]
+        }
+    },
+    "bundledDisplayName": "Example Extension",
+    "typeOfStorage": "sync",
+    "chromeWebstoreLinkEnabled": false,
+    "firefoxWebstoreLinkEnabled": false,
+    "uploadedChromeExtensionID": "",
+    "uploadedFirefoxExtensionID": "",
+    "scanForManifestUpdates": true,
+    "isVersionServer": true,
+    "browserMode": "firefox",
+    "onlineManifestFile": "https://cdn.efaz.dev/extensions/versions/public.json"
+}

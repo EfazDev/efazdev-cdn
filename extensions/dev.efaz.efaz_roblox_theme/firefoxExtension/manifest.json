@@ -1,0 +1,58 @@
+{
+    "name": "Efaz's Roblox Theme",
+    "description": "An extension that creates the Efaz's Theme inside the Roblox website!",
+    "version": "1.2.1",
+    "manifest_version": 3,
+    "author": "EfazDev",
+    "homepage_url": "https://www.efaz.dev/",
+    "icons": {
+        "16": "icon16.png",
+        "32": "icon32.png",
+        "48": "icon48.png",
+        "128": "icon128.png"
+    },
+    "background": {
+        "scripts": [
+            "main.js"
+        ]
+    },
+    "content_scripts": [
+        {
+            "all_frames": true,
+            "js": [
+                "efaz_theme.js"
+            ],
+            "matches": [
+                "*://*.roblox.com/*"
+            ],
+            "run_at": "document_start"
+        }
+    ],
+    "web_accessible_resources": [
+        {
+            "matches": [
+                "*://*.roblox.com/*"
+            ],
+            "resources": [
+                "theme.css",
+                "settings.json"
+            ]
+        }
+    ],
+    "action": {
+        "default_title": "Efaz's Roblox Theme",
+        "default_icon": "icon128.png"
+    },
+    "permissions": [
+        "storage"
+    ],
+    "host_permissions": [
+        "https://*.roblox.com/*"
+    ],
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "efaz_roblox_theme@efaz.dev",
+            "strict_min_version": "109.0"
+        }
+    }
+}

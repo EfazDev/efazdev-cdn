@@ -1,0 +1,57 @@
+{
+    "name": "Efaz's Roblox Connections Renamer",
+    "description": "An extension that replaces Connections on the Roblox Website with Friends or another name!",
+    "version": "1.0.1",
+    "manifest_version": 3,
+    "author": "EfazDev",
+    "homepage_url": "https://www.efaz.dev/roblox-connections-rename",
+    "icons": {
+        "16": "icon16.png",
+        "32": "icon32.png",
+        "48": "icon48.png",
+        "128": "icon128.png"
+    },
+    "background": {
+        "scripts": [
+            "main.js"
+        ]
+    },
+    "content_scripts": [
+        {
+            "all_frames": true,
+            "js": [
+                "connections_rename.js"
+            ],
+            "matches": [
+                "*://*.roblox.com/*"
+            ],
+            "run_at": "document_start"
+        }
+    ],
+    "action": {
+        "default_title": "Efaz's Roblox Connections Renamer",
+        "default_icon": "icon128.png"
+    },
+    "web_accessible_resources": [
+        {
+            "matches": [
+                "*://*.roblox.com/*"
+            ],
+            "resources": [
+                "settings.json"
+            ]
+        }
+    ],
+    "permissions": [
+        "storage"
+    ],
+    "host_permissions": [
+        "https://*.roblox.com/*"
+    ],
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "connections_renamer@efaz.dev",
+            "strict_min_version": "109.0"
+        }
+    }
+}

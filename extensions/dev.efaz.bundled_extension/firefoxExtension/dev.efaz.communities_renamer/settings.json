@@ -1,0 +1,63 @@
+{
+    "name": "dev.efaz.communities_renamer",
+    "settings": {
+        "enabled": {
+            "text": "Enable Extension",
+            "type": "checkbox",
+            "default": true
+        },
+        "newName": {
+            "text": "Replace Communities with",
+            "type": "text",
+            "default": "Groups",
+            "reset": true,
+            "neededSettings": [
+                "enabled"
+            ]
+        },
+        "loopSeconds": {
+            "text": "Start Loop Time (ms)",
+            "type": "number",
+            "default": 500,
+            "reset": true,
+            "neededSettings": [
+                "enabled"
+            ]
+        },
+        "replaceURLwithGroupsURL": {
+            "text": "Replace /communities URL with /groups",
+            "type": "checkbox",
+            "default": true,
+            "neededSettings": [
+                "enabled"
+            ]
+        },
+        "massEdit": {
+            "text": "Mass Edit HTML Contents with Community or Communities Text",
+            "type": "checkbox",
+            "default": true,
+            "neededSettings": [
+                "enabled"
+            ]
+        },
+        "changeTitleHtml": {
+            "text": "Replace Tab Name with New Name",
+            "type": "checkbox",
+            "default": true,
+            "neededSettings": [
+                "enabled"
+            ]
+        }
+    },
+    "bundledDisplayName": "Communities Renamer",
+    "typeOfStorage": "sync",
+    "chromeWebstoreLinkEnabled": true,
+    "firefoxWebstoreLinkEnabled": true,
+    "uploadedChromeExtensionID": "afaoamnkmjkkpheiblblbinpmdnacipm",
+    "uploadedFirefoxExtensionID": "efaz-s-communities-renamer",
+    "scanForManifestUpdates": true,
+    "isVersionServer": true,
+    "browserMode": "firefox",
+    "onlineManifestFile": "https://cdn.efaz.dev/extensions/versions/public.json",
+    "bundleAssociatedName": "dev.efaz.communities_renamer"
+}

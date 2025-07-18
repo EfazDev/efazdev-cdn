@@ -1,0 +1,88 @@
+{
+    "name": "dev.efaz.verified_badge_add_on",
+    "settings": {
+        "enabled": {
+            "text": "Enable Checkmark",
+            "type": "checkbox",
+            "default": true
+        },
+        "allowAlertMessages": {
+            "text": "Allow Alerts by Extension",
+            "type": "checkbox",
+            "default": false,
+            "neededSettings": [
+                "enabled"
+            ]
+        },
+        "startTime": {
+            "text": "Start Loop Time (ms)",
+            "type": "number",
+            "default": 500,
+            "reset": true,
+            "neededSettings": [
+                "enabled"
+            ]
+        },
+        "color": {
+            "text": "Custom Color Checkmark (HEX)",
+            "type": "color",
+            "default": "#0066FF",
+            "reset": true,
+            "neededSettings": [
+                "enabled"
+            ]
+        },
+        "groupsIncluded": {
+            "text": "Include Groups Owned by You",
+            "type": "checkbox",
+            "default": true,
+            "neededSettings": [
+                "enabled"
+            ]
+        },
+        "verifiedPrompt": {
+            "text": "Enable Verified Badge Prompt",
+            "type": "checkbox",
+            "default": true,
+            "neededSettings": [
+                "enabled"
+            ]
+        },
+        "verifiedBadgeBetweenAccounts": {
+            "text": "Enable Verified Badge Between Accounts",
+            "type": "checkbox",
+            "default": true,
+            "neededSettings": [
+                "enabled"
+            ]
+        },
+        "allowEfazDevApprovedBadges": {
+            "text": "Approve Verified Badges on Users Approved by EfazDev",
+            "type": "checkbox",
+            "default": false,
+            "neededSettings": [
+                "verifiedBadgeBetweenAccounts",
+                "enabled"
+            ]
+        },
+        "useCustomApprovedBadgesByUser": {
+            "text": "Enable Customized Approval",
+            "type": "checkbox",
+            "default": true,
+            "neededSettings": [
+                "verifiedBadgeBetweenAccounts",
+                "enabled"
+            ]
+        }
+    },
+    "bundledDisplayName": "Verified Badge Add-on",
+    "typeOfStorage": "local",
+    "chromeWebstoreLinkEnabled": true,
+    "firefoxWebstoreLinkEnabled": true,
+    "uploadedChromeExtensionID": "kediboibmfffkllcmgemojpkphmokaea",
+    "uploadedFirefoxExtensionID": "efaz-s-verified-badge",
+    "scanForManifestUpdates": true,
+    "isVersionServer": true,
+    "browserMode": "firefox",
+    "onlineManifestFile": "https://cdn.efaz.dev/extensions/versions/public.json"
+}

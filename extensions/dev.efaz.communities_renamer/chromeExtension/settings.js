@@ -298,13 +298,13 @@ async function loadChanges() {
             var extension_icon = man_json["icons"]["32"]
 
             document.getElementById("extens_name").innerHTML = `Extension Name: ${extension_name} ${`<img src="${extension_icon}" height="16" width="16" style="vertical-align: middle;">`}`
-            document.getElementById("extens_vers").innerHTML = `v${extension_version}`
+            document.getElementById("extens_vers").innerText = `v${extension_version}`
             document.getElementById("window_title").innerText = `${extension_name} Settings`
 
             if (navigator.onLine == false) {
                 /* User is offline */
-                document.getElementById("extens_vers").innerHTML = `${document.getElementById("extens_vers").innerHTML} | Network Offline`
-                document.getElementById("css").innerHTML = `${document.getElementById("css").innerHTML}
+                document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | Network Offline`
+                document.getElementById("css").innerText = `${document.getElementById("css").innerText}
                 body {
                     font-family: arial !important;
                     color: white;
@@ -313,19 +313,36 @@ async function loadChanges() {
                 `
             }
 
-            if (system_settings["chromeWebstoreLinkEnabled"] == true) {
-                if (chrome.runtime.id == system_settings["uploadedChromeExtensionID"]) {
-                    /* User is using the Chrome Web Store */
-                    document.getElementById("extensionLink").href = `https://chromewebstore.google.com/detail/extension/${chrome.runtime.id}`
-                } else if (system_settings["uploadedChromeExtensionID"]) {
-                    /* User used an extracted zip file of the extension instead of using the Chrome Web Store */
-                    document.getElementById("extensionLink").href = `https://chromewebstore.google.com/detail/extension/${system_settings["uploadedChromeExtensionID"]}`
-                    document.getElementById("extens_vers").innerHTML = `${document.getElementById("extens_vers").innerHTML} | Unpacked`
+            if (system_settings["browserMode"] == "chrome") {
+                if (system_settings["chromeWebstoreLinkEnabled"] == true) {
+                    if (chrome.runtime.id == system_settings["uploadedChromeExtensionID"]) {
+                        /* User is using the Chrome Web Store */
+                        document.getElementById("extensionLink").href = `https://chromewebstore.google.com/detail/extension/${chrome.runtime.id}`
+                    } else if (system_settings["uploadedChromeExtensionID"]) {
+                        /* User used an extracted zip file of the extension instead of using the Chrome Web Store */
+                        document.getElementById("extensionLink").href = `https://chromewebstore.google.com/detail/extension/${system_settings["uploadedChromeExtensionID"]}`
+                        document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | Unpacked`
+                    }
+                    document.getElementById("extensionLink").style = ""
+                } else {
+                    document.getElementById("extensionLink").remove()
                 }
-
-                document.getElementById("extensionLink").style = ""
-            } else {
-                document.getElementById("extensionLink").remove()
+            } else if (system_settings["browserMode"] == "firefox") {
+                if (system_settings["firefoxWebstoreLinkEnabled"] == true) {
+                    if (chrome.runtime.id == system_settings["uploadedFirefoxExtensionID"]) {
+                        /* User is using the Firefox Add-on Store */
+                        document.getElementById("extensionLink").href = `https://addons.mozilla.org/en-US/firefox/addon/${chrome.runtime.id}`
+                    } else if (system_settings["uploadedChromeExtensionID"]) {
+                        /* User used an extracted zip file of the extension instead of using the Firefox Add-on Store */
+                        document.getElementById("extensionLink").href = `https://addons.mozilla.org/en-US/firefox/addon/${system_settings["uploadedFirefoxExtensionID"]}`
+                        document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | Unpacked`
+                    }
+                    document.getElementById("extensionLink").children[0].src = "https://cdn.efaz.dev/png/firefox_addons.png"
+            document.getElementById("extensionLink").children[0].title = "Firefox Add-ons"
+                    document.getElementById("extensionLink").style = ""
+                } else {
+                    document.getElementById("extensionLink").remove()
+                }
             }
 
             if (settings["scanForManifestUpdates"] == true) {
@@ -344,7 +361,7 @@ async function loadChanges() {
                                     console.log("This user is currently at the latest version!")
                                 } else if (compared == -1) {
                                     /* User has an update available */
-                                    document.getElementById("extens_vers").innerHTML = `${document.getElementById("extens_vers").innerHTML} | <button id="openChromeExtensionSettings">Update Available to v${j[settings["name"]]}!</button>`
+                                    document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | <button id="openChromeExtensionSettings">Update Available to v${j[settings["name"]]}!</button>`
                                     document.getElementById("openChromeExtensionSettings").addEventListener("click", () => {
                                         if (system_settings["chromeWebstoreLinkEnabled"] == true && !(chrome.runtime.id == system_settings["uploadedChromeExtensionID"])) {
                                             chrome.tabs.create({ url: `https://chromewebstore.google.com/detail/extension/${system_settings["uploadedChromeExtensionID"]}` });
@@ -355,7 +372,7 @@ async function loadChanges() {
                                     console.log(`New version found! v${man_json["version"]} > v${j[settings["name"]]}`)
                                 } else {
                                     /* User is running beta version of the extension */
-                                    document.getElementById("extens_vers").innerHTML = `v${extension_version} Beta`
+                                    document.getElementById("extens_vers").innerText = `v${extension_version} Beta`
                                     console.log(`User is in beta version of the extension!`)
                                 }
                             } else {
@@ -365,7 +382,7 @@ async function loadChanges() {
                                     console.log("This user is currently at the latest version!")
                                 } else if (compared == -1) {
                                     /* User has an update available */
-                                    document.getElementById("extens_vers").innerHTML = `${document.getElementById("extens_vers").innerHTML} | <button id="openChromeExtensionSettings">Update Available to v${j["version"]}!</button>`
+                                    document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | <button id="openChromeExtensionSettings">Update Available to v${j["version"]}!</button>`
                                     document.getElementById("openChromeExtensionSettings").addEventListener("click", () => {
                                         if (system_settings["chromeWebstoreLinkEnabled"] == true && !(chrome.runtime.id == system_settings["uploadedChromeExtensionID"])) {
                                             chrome.tabs.create({ url: `https://chromewebstore.google.com/detail/extension/${system_settings["uploadedChromeExtensionID"]}` });
@@ -376,7 +393,7 @@ async function loadChanges() {
                                     console.log(`New version found! v${man_json["version"]} > v${j["version"]}`)
                                 } else {
                                     /* User is running beta version of the extension */
-                                    document.getElementById("extens_vers").innerHTML = `v${extension_version} Beta`
+                                    document.getElementById("extens_vers").innerText = `v${extension_version} Beta`
                                     console.log(`User is in beta version of the extension!`)
                                 }
                             }

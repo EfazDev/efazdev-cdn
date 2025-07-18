@@ -1,0 +1,76 @@
+{
+    "name": "Efaz's Roblox Extension",
+    "description": "An extension that holds all of Efaz's mini Roblox extensions in one!",
+    "version": "1.4.1",
+    "manifest_version": 3,
+    "author": "EfazDev",
+    "homepage_url": "https://www.efaz.dev/roblox-extension",
+    "icons": {
+        "16": "icon16.png",
+        "32": "icon32.png",
+        "48": "icon48.png",
+        "128": "icon128.png"
+    },
+    "background": {
+        "scripts": [
+            "main.js"
+        ]
+    },
+    "content_scripts": [
+        {
+            "all_frames": true,
+            "js": [
+                "dev.efaz.communities_renamer/community_rename.js",
+                "dev.efaz.roblox_logo_changer/logo_changer.js",
+                "dev.efaz.charts_renamer/charts_rename.js",
+                "dev.efaz.connections_renamer/connections_rename.js",
+                "dev.efaz.remove_builder_font/builder_font_remover.js",
+                "dev.efaz.verified_badge_add_on/fake_verified_loader.js",
+                "dev.efaz.roblox_foundation_color_accents/foundation_colors.js"
+            ],
+            "css": [],
+            "matches": [
+                "*://*.roblox.com/*"
+            ],
+            "run_at": "document_start"
+        }
+    ],
+    "web_accessible_resources": [
+        {
+            "matches": [
+                "*://*.roblox.com/*"
+            ],
+            "resources": [
+                "dev.efaz.communities_renamer/settings.json",
+                "dev.efaz.roblox_logo_changer/settings.json",
+                "dev.efaz.charts_renamer/settings.json",
+                "dev.efaz.connections_renamer/settings.json",
+                "dev.efaz.remove_builder_font/change_font.css",
+                "dev.efaz.remove_builder_font/change_font2.css",
+                "dev.efaz.remove_builder_font/creator_dashboard.css",
+                "dev.efaz.remove_builder_font/devforum_font.css",
+                "dev.efaz.remove_builder_font/global_font.css",
+                "dev.efaz.remove_builder_font/settings.json",
+                "dev.efaz.verified_badge_add_on/settings.json",
+                "dev.efaz.roblox_foundation_color_accents/settings.json"
+            ]
+        }
+    ],
+    "action": {
+        "default_title": "Efaz's Roblox Extension",
+        "default_icon": "icon128.png"
+    },
+    "permissions": [
+        "storage",
+        "unlimitedStorage"
+    ],
+    "host_permissions": [
+        "https://*.roblox.com/*"
+    ],
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "bundled_extension@efaz.dev",
+            "strict_min_version": "109.0"
+        }
+    }
+}

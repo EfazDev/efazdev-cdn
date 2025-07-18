@@ -36,8 +36,11 @@
     "bundledDisplayName": "Connections Renamer",
     "typeOfStorage": "sync",
     "chromeWebstoreLinkEnabled": true,
+    "firefoxWebstoreLinkEnabled": true,
     "uploadedChromeExtensionID": "knlbpobhdckkodfgggidkcegiifhgljo",
+    "uploadedFirefoxExtensionID": "efaz-s-connections-renamer",
     "scanForManifestUpdates": true,
     "isVersionServer": true,
+    "browserMode": "chrome",
     "onlineManifestFile": "https://cdn.efaz.dev/extensions/versions/public.json"
 }

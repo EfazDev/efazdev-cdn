@@ -105,10 +105,13 @@
     "bundledDisplayName": "Roblox Logo Changer",
     "typeOfStorage": "local",
     "chromeWebstoreLinkEnabled": true,
+    "firefoxWebstoreLinkEnabled": true,
     "uploadedChromeExtensionID": "cpickeibcibgfokapikmokmfgnjlglph",
+    "uploadedFirefoxExtensionID": "efaz-s-roblox-logo-changer",
     "customExportFileType": "image/png",
     "customExportPhotoRes": 300,
     "scanForManifestUpdates": true,
     "isVersionServer": true,
+    "browserMode": "chrome",
     "onlineManifestFile": "https://cdn.efaz.dev/extensions/versions/public.json"
 }

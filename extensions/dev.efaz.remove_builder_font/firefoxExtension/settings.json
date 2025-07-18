@@ -1,0 +1,78 @@
+{
+    "name": "dev.efaz.remove_builder_font",
+    "settings": {
+        "enabled": {
+            "text": "Enable Extension",
+            "type": "checkbox",
+            "default": true
+        },
+        "startTime": {
+            "text": "Start Loop Time (ms)",
+            "type": "number",
+            "default": 500,
+            "reset": true,
+            "neededSettings": [
+                "enabled"
+            ]
+        },
+        "remoteStyles": {
+            "text": "Use Remote Stylesheets (Stored on https://cdn.efaz.dev)",
+            "type": "checkbox",
+            "default": false,
+            "neededSettings": [
+                "enabled"
+            ]
+        },
+        "overwriteCreateDashboard": {
+            "text": "Change Fonts on Creator Dashboard",
+            "type": "checkbox",
+            "default": true,
+            "neededSettings": [
+                "enabled"
+            ]
+        },
+        "overwriteDevForum": {
+            "text": "Change Fonts on DevForum",
+            "type": "checkbox",
+            "default": true,
+            "neededSettings": [
+                "enabled"
+            ]
+        },
+        "overwriteOtherSubdomains": {
+            "text": "Change Fonts on Other Subdomains",
+            "type": "checkbox",
+            "default": true,
+            "neededSettings": [
+                "enabled"
+            ]
+        },
+        "onlyUseOldFontOnMainWebsite": {
+            "text": "Use Old Font on Creator Dashboard / DevForum / Other > Custom URL",
+            "type": "checkbox",
+            "default": true,
+            "neededSettings": [
+                "enabled"
+            ]
+        },
+        "resourcesUrl": {
+            "text": "Font Resources URL (Make sure custom source is trusted and safe!)",
+            "type": "text",
+            "default": "https://oldfont.efaz.dev/",
+            "reset": true,
+            "neededSettings": [
+                "enabled"
+            ]
+        }
+    },
+    "bundledDisplayName": "Builder Font Remover",
+    "typeOfStorage": "sync",
+    "chromeWebstoreLinkEnabled": true,
+    "firefoxWebstoreLinkEnabled": true,
+    "uploadedChromeExtensionID": "hapbigglmmihgdmpficddjdmfgikalcp",
+    "uploadedFirefoxExtensionID": "efaz-s-builder-font-remover",
+    "scanForManifestUpdates": true,
+    "isVersionServer": true,
+    "browserMode": "firefox",
+    "onlineManifestFile": "https://cdn.efaz.dev/extensions/versions/public.json"
+}

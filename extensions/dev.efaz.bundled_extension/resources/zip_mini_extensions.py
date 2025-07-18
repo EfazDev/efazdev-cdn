@@ -29,11 +29,19 @@ for i in os.listdir(extensions_folder):
     if not (i == "dev.efaz.bundled_extension" or i == "versions") and os.path.isdir(os.path.join(extensions_folder, i)) and not os.path.islink(os.path.join(extensions_folder, i)):
         printMainMessage(f"Zipping {i} Extension..")
         if os.path.exists(os.path.join(extensions_folder, i, "zip", "chromeExtension.zip")): os.remove(os.path.join(extensions_folder, i, "zip", "chromeExtension.zip"))
-        subprocess.run(
-            f'zip -r ../zip/chromeExtension.zip ./ -x "*.git*" -x "*.DS_Store" -x "__MACOSX*" -x "__pycache*"',
-            cwd=os.path.join(extensions_folder, i, "chromeExtension"),
-            shell=True,
-        )
+        if os.path.exists(os.path.join(extensions_folder, i, "zip", "firefoxExtension.zip")): os.remove(os.path.join(extensions_folder, i, "zip", "firefoxExtension.zip"))
+        if os.path.exists(os.path.join(extensions_folder, i, "chromeExtension")):
+            subprocess.run(
+                f'zip -r ../zip/chromeExtension.zip ./ -x "*.git*" -x "*.DS_Store" -x "__MACOSX*" -x "__pycache*"',
+                cwd=os.path.join(extensions_folder, i, "chromeExtension"),
+                shell=True,
+            )
+        if os.path.exists(os.path.join(extensions_folder, i, "firefoxExtension")):
+            subprocess.run(
+                f'zip -r ../zip/firefoxExtension.zip ./ -x "*.git*" -x "*.DS_Store" -x "__MACOSX*" -x "__pycache*"',
+                cwd=os.path.join(extensions_folder, i, "firefoxExtension"),
+                shell=True,
+            )
         extensions_added.append(i)
 printSuccessMessage("SUCCESS!")
 printSuccessMessage("Successfully recreated ZIP files from existing extensions made!")

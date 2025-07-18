@@ -54,8 +54,11 @@
     "bundledDisplayName": "Builder Font Remover",
     "typeOfStorage": "sync",
     "chromeWebstoreLinkEnabled": true,
+    "firefoxWebstoreLinkEnabled": true,
     "uploadedChromeExtensionID": "hapbigglmmihgdmpficddjdmfgikalcp",
+    "uploadedFirefoxExtensionID": "efaz-s-builder-font-remover",
     "scanForManifestUpdates": true,
     "isVersionServer": true,
+    "browserMode": "chrome",
     "onlineManifestFile": "https://cdn.efaz.dev/extensions/versions/public.json"
 }

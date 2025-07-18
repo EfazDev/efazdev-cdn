@@ -82,10 +82,13 @@
     "bundledDisplayName": "Foundation Color Accents",
     "typeOfStorage": "local",
     "chromeWebstoreLinkEnabled": true,
+    "firefoxWebstoreLinkEnabled": true,
     "uploadedChromeExtensionID": "ofblldaagkkmhajigieajamomjcbohgf",
+    "uploadedFirefoxExtensionID": "efaz-s-roblox-foundation-color",
     "scanForManifestUpdates": true,
     "customExportFileType": "image/png",
     "isVersionServer": true,
+    "browserMode": "chrome",
     "onlineManifestFile": "https://cdn.efaz.dev/extensions/versions/public.json",
     "bundleAssociatedName": "dev.efaz.roblox_foundation_color_accents"
 }

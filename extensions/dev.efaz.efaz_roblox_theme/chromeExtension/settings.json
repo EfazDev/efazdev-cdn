@@ -16,8 +16,11 @@
     "bundledDisplayName": "Efaz's Theme",
     "typeOfStorage": "sync",
     "chromeWebstoreLinkEnabled": false,
+    "firefoxWebstoreLinkEnabled": false,
     "uploadedChromeExtensionID": "",
+    "uploadedFirefoxExtensionID": "",
     "scanForManifestUpdates": true,
     "isVersionServer": true,
+    "browserMode": "chrome",
     "onlineManifestFile": "https://cdn.efaz.dev/extensions/versions/public.json"
 }

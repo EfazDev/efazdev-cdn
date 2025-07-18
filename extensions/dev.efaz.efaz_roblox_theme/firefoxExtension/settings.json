@@ -1,0 +1,28 @@
+{
+    "name": "dev.efaz.efaz_roblox_theme",
+    "settings": {
+        "enabled": {
+            "text": "Enable Extension",
+            "type": "checkbox",
+            "default": true
+        },
+        "remoteStyles": {
+            "text": "Use Remote Stylesheets (Imported from https://cdn.efaz.dev)",
+            "type": "checkbox",
+            "default": false,
+            "neededSettings": [
+                "enabled"
+            ]
+        }
+    },
+    "bundledDisplayName": "Efaz's Theme",
+    "typeOfStorage": "sync",
+    "chromeWebstoreLinkEnabled": false,
+    "firefoxWebstoreLinkEnabled": false,
+    "uploadedChromeExtensionID": "",
+    "uploadedFirefoxExtensionID": "",
+    "scanForManifestUpdates": true,
+    "isVersionServer": true,
+    "browserMode": "firefox",
+    "onlineManifestFile": "https://cdn.efaz.dev/extensions/versions/public.json"
+}
