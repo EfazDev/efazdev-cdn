@@ -337,8 +337,6 @@ async function loadChanges() {
                         document.getElementById("extensionLink").href = `https://addons.mozilla.org/en-US/firefox/addon/${system_settings["uploadedFirefoxExtensionID"]}`
                         document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | Unpacked`
                     }
-                    document.getElementById("extensionLink").children[0].src = "https://cdn.efaz.dev/png/firefox_addons.png"
-            document.getElementById("extensionLink").children[0].title = "Firefox Add-ons"
                     document.getElementById("extensionLink").style = ""
                 } else {
                     document.getElementById("extensionLink").remove()
@@ -363,10 +361,18 @@ async function loadChanges() {
                                     /* User has an update available */
                                     document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | <button id="openChromeExtensionSettings">Update Available to v${j[settings["name"]]}!</button>`
                                     document.getElementById("openChromeExtensionSettings").addEventListener("click", () => {
-                                        if (system_settings["chromeWebstoreLinkEnabled"] == true && !(chrome.runtime.id == system_settings["uploadedChromeExtensionID"])) {
-                                            chrome.tabs.create({ url: `https://chromewebstore.google.com/detail/extension/${system_settings["uploadedChromeExtensionID"]}` });
-                                        } else {
-                                            chrome.tabs.create({ url: "chrome://extensions/" });
+                                        if (system_settings["browserMode"] == "chrome") {
+                                            if (system_settings["chromeWebstoreLinkEnabled"] == true && !(chrome.runtime.id == system_settings["uploadedChromeExtensionID"])) {
+                                                chrome.tabs.create({ url: `https://chromewebstore.google.com/detail/extension/${system_settings["uploadedChromeExtensionID"]}` });
+                                            } else {
+                                                chrome.tabs.create({ url: "chrome://extensions/" });
+                                            }
+                                        } else if (system_settings["browserMode"] == "firefox") {
+                                            if (system_settings["firefoxWebstoreLinkEnabled"] == true && !(chrome.runtime.id == system_settings["uploadedFirefoxExtensionID"])) {
+                                                chrome.tabs.create({ url: `https://addons.mozilla.org/en-US/firefox/addon/${system_settings["uploadedFirefoxExtensionID"]}` });
+                                            } else {
+                                                chrome.tabs.create({ url: "about:debugging#/runtime/this-firefox" });
+                                            }
                                         }
                                     });
                                     console.log(`New version found! v${man_json["version"]} > v${j[settings["name"]]}`)
@@ -384,10 +390,18 @@ async function loadChanges() {
                                     /* User has an update available */
                                     document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | <button id="openChromeExtensionSettings">Update Available to v${j["version"]}!</button>`
                                     document.getElementById("openChromeExtensionSettings").addEventListener("click", () => {
-                                        if (system_settings["chromeWebstoreLinkEnabled"] == true && !(chrome.runtime.id == system_settings["uploadedChromeExtensionID"])) {
-                                            chrome.tabs.create({ url: `https://chromewebstore.google.com/detail/extension/${system_settings["uploadedChromeExtensionID"]}` });
-                                        } else {
-                                            chrome.tabs.create({ url: "chrome://extensions/" });
+                                        if (system_settings["browserMode"] == "chrome") {
+                                            if (system_settings["chromeWebstoreLinkEnabled"] == true && !(chrome.runtime.id == system_settings["uploadedChromeExtensionID"])) {
+                                                chrome.tabs.create({ url: `https://chromewebstore.google.com/detail/extension/${system_settings["uploadedChromeExtensionID"]}` });
+                                            } else {
+                                                chrome.tabs.create({ url: "chrome://extensions/" });
+                                            }
+                                        } else if (system_settings["browserMode"] == "firefox") {
+                                            if (system_settings["firefoxWebstoreLinkEnabled"] == true && !(chrome.runtime.id == system_settings["uploadedFirefoxExtensionID"])) {
+                                                chrome.tabs.create({ url: `https://addons.mozilla.org/en-US/firefox/addon/${system_settings["uploadedFirefoxExtensionID"]}` });
+                                            } else {
+                                                chrome.tabs.create({ url: "about:debugging#/runtime/this-firefox" });
+                                            }
                                         }
                                     });
                                     console.log(`New version found! v${man_json["version"]} > v${j["version"]}`)
