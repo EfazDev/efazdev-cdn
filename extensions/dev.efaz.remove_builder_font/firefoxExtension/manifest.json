@@ -48,7 +48,8 @@
         "default_icon": "icon128.png"
     },
     "permissions": [
-        "storage"
+        "storage",
+        "declarativeNetRequest"
     ],
     "host_permissions": [
         "https://*.roblox.com/*"
@@ -56,6 +57,9 @@
     "browser_specific_settings": {
         "gecko": {
             "id": "remove_builder_font@efaz.dev",
+            "strict_min_version": "109.0"
+        },
+        "gecko_android": {
             "strict_min_version": "109.0"
         }
     }

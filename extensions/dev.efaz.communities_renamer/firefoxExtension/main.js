@@ -21,14 +21,14 @@ main.js:
                         return
                     } else {
                         items[name]["thanks"] = true
-                        chrome.tabs.create({
+                        browser.tabs.create({
                             url: chrome.runtime.getURL("thank_you.html")
                         })
                         await chrome.storage.local.set(items);
                     }
                 } else {
                     items[name] = { "thanks": true }
-                    chrome.tabs.create({
+                    browser.tabs.create({
                         url: chrome.runtime.getURL("thank_you.html")
                     })
                     await chrome.storage.local.set(items);
@@ -37,7 +37,7 @@ main.js:
         })
     });
     chrome.action.onClicked.addListener(() => {
-        chrome.tabs.create({
+        browser.tabs.create({
             url: chrome.runtime.getURL("settings.html")
         })
     });

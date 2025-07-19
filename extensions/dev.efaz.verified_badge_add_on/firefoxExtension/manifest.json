@@ -53,6 +53,9 @@
         "gecko": {
             "id": "verified_badge_add_on@efaz.dev",
             "strict_min_version": "109.0"
+        },
+        "gecko_android": {
+            "strict_min_version": "109.0"
         }
     }
 }

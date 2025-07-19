@@ -9,6 +9,7 @@ main.js:
 */
 
 (function () {
+    const ruleId = 1
     chrome.runtime.onInstalled.addListener(() => {
         fetch("settings.json").then(setting_res => {
             return setting_res.json();
@@ -21,14 +22,14 @@ main.js:
                         return
                     } else {
                         items[name]["thanks"] = true
-                        chrome.tabs.create({
+                        browser.tabs.create({
                             url: chrome.runtime.getURL("thank_you.html")
                         })
                         await chrome.storage.local.set(items);
                     }
                 } else {
                     items[name] = { "thanks": true }
-                    chrome.tabs.create({
+                    browser.tabs.create({
                         url: chrome.runtime.getURL("thank_you.html")
                     })
                     await chrome.storage.local.set(items);
@@ -37,8 +38,31 @@ main.js:
         })
     });
     chrome.action.onClicked.addListener(() => {
-        chrome.tabs.create({
+        browser.tabs.create({
             url: chrome.runtime.getURL("settings.html")
         })
+    });
+    browser.declarativeNetRequest.updateDynamicRules({
+        removeRuleIds: [ruleId],
+        addRules: [{
+            id: ruleId,
+            priority: 1,
+            action: {
+                type: "modifyHeaders",
+                responseHeaders: [{
+                    header: "Content-Security-Policy",
+                    operation: "remove"
+                }, {
+                    header: "X-Content-Security-Policy",
+                    operation: "remove"
+                }]
+            },
+            condition: {
+                urlFilter: "*://*.roblox.com/*",
+                resourceTypes: ["main_frame", "sub_frame", "script", "stylesheet", "image", "xmlhttprequest", "other"]
+            }
+        }]
+    }).catch(error => {
+        console.error("Error adding declarativeNetRequest rule:", error);
     });
 })()
