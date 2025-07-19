@@ -52,10 +52,10 @@
     "browser_specific_settings": {
         "gecko": {
             "id": "roblox_foundation_color_accents@efaz.dev",
-            "strict_min_version": "109.0"
+            "strict_min_version": "113.0"
         },
         "gecko_android": {
-            "strict_min_version": "109.0"
+            "strict_min_version": "113.0"
         }
     }
 }

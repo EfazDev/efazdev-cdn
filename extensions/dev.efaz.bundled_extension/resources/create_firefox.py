@@ -41,10 +41,10 @@ for i in os.listdir(extensions_folder):
             man["browser_specific_settings"] = {
                 "gecko": {
                     "id": f"{i.split('.')[-1]}@efaz.dev",
-                    "strict_min_version": "109.0"
+                    "strict_min_version": "113.0"
                 },
                 "gecko_android": {
-                    "strict_min_version": "109.0"
+                    "strict_min_version": "113.0"
                 }
             }
             if i == "dev.efaz.remove_builder_font" or i == "dev.efaz.bundled_extension": man["permissions"].append("declarativeNetRequest")

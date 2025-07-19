@@ -49,10 +49,10 @@
     "browser_specific_settings": {
         "gecko": {
             "id": "roblox_logo_changer@efaz.dev",
-            "strict_min_version": "109.0"
+            "strict_min_version": "113.0"
         },
         "gecko_android": {
-            "strict_min_version": "109.0"
+            "strict_min_version": "113.0"
         }
     }
 }
