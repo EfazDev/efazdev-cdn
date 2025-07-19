@@ -113,8 +113,8 @@ inject.js:
                         let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
                         let rbx_icon_sector = ".app-icon-mac { background-image: url(rbx_icon) !important; } .app-icon-windows { background-image: url(rbx_icon) !important; } .app-icon-ios { background-image: url(rbx_icon) !important; } .app-icon-android { background-image: url(rbx_icon) !important; }";
                         let rbx_studio_icon_sector = ".studio-icon-mac { background-image: url(rbx_studio_icon) !important; } .studio-icon-windows { background-image: url(rbx_studio_icon) !important; }";
-                        let rbx_studio_top_left_icon_sector = ".icon-logo-r { background-image: url(top_left_icon) !important; }";
-                        let rbx_studio_top_left_name_sector = ".icon-logo { background-image: url(top_left_name) !important; background-size: cover !important; } .icon-default-logo { background-image: url(top_left_name) !important; height:70px !important; }";
+                        let rbx_top_left_icon_sector = ".icon-logo-r { background-image: url(top_left_icon) !important; } .game-social-links>.btn-secondary-lg .icon-social-media-roblox { background-position: 0 0px !important; background-image: url(top_left_icon); }";
+                        let rbx_top_left_name_sector = ".icon-logo { background-image: url(top_left_name) !important; background-size: cover !important; } .icon-default-logo { background-image: url(top_left_name) !important; height:70px !important; }";
                         async function injectCSS() {
                             if (settings["projectedImage"] && settings["projectedImage"].startsWith("data")) {
                                 let all_links = Array.from(document.querySelectorAll("link"));
@@ -129,7 +129,7 @@ inject.js:
                                     var d = document.createElement("style")
                                     d.setAttribute("id", "rbx_icon")
                                     d.setAttribute("rel", "stylesheet")
-                                    d.innerText = rbx_icon_sector.replaceAll("rbx_icon", settings["rbxIcon"])
+                                    d.textContent = rbx_icon_sector.replaceAll("rbx_icon", settings["rbxIcon"])
                                     document.head.append(d)
                                 }
                             }
@@ -138,7 +138,7 @@ inject.js:
                                     var d = document.createElement("style")
                                     d.setAttribute("id", "rbx_studio_icon")
                                     d.setAttribute("rel", "stylesheet")
-                                    d.innerText = rbx_studio_icon_sector.replaceAll("rbx_studio_icon", settings["rbxStudioIcon"])
+                                    d.textContent = rbx_studio_icon_sector.replaceAll("rbx_studio_icon", settings["rbxStudioIcon"])
                                     document.head.append(d)
                                 }
                             }
@@ -147,7 +147,7 @@ inject.js:
                                     var d = document.createElement("style")
                                     d.setAttribute("id", "top_left_icon")
                                     d.setAttribute("rel", "stylesheet")
-                                    d.innerText = rbx_studio_top_left_icon_sector.replaceAll("top_left_icon", settings["topLeftLogo"])
+                                    d.textContent = rbx_top_left_icon_sector.replaceAll("top_left_icon", settings["topLeftLogo"])
                                     document.head.append(d)
                                 }
                             }
@@ -156,7 +156,7 @@ inject.js:
                                     var d = document.createElement("style")
                                     d.setAttribute("id", "top_left_name")
                                     d.setAttribute("rel", "stylesheet")
-                                    d.innerText = rbx_studio_top_left_name_sector.replaceAll("top_left_name", settings["topLeftName"])
+                                    d.textContent = rbx_top_left_name_sector.replaceAll("top_left_name", settings["topLeftName"])
                                     document.head.append(d)
                                 }
                             }
@@ -173,6 +173,13 @@ inject.js:
                                         header.setAttribute("href", settings["projectedImage2"])
                                     }
                                 })
+                                var creator_hub_icon = document.querySelectorAll(".web-blox-css-tss-nvpyzg-logo")
+                                for (let i = 0; i < creator_hub_icon.length; i++) {
+                                    var header = creator_hub_icon[i]
+                                    if (header.tagName.toLowerCase() == "svg") {
+                                        header.outerHTML = '<img class="' + header.classList.toString() + '" width="' + header.getAttribute("width") + '" height="' + header.getAttribute("height") + '" src="' + settings["projectedImage2"] + '">'
+                                    }
+                                }
                             }
                             if (settings["rbxStudioIcon"] && settings["rbxStudioIcon"].startsWith("data")) {
                                 var all_icons = Array.from(document.querySelectorAll(".web-blox-css-tss-1hgd7ws-studioIcon"))
@@ -196,6 +203,15 @@ inject.js:
                                     }
                                 })
                             }
+                            if (settings["projectedImage2"] && settings["projectedImage2"].startsWith("data")) {
+                                var creator_hub_icon = document.querySelectorAll(".css-nvpyzg-logo")
+                                for (let i = 0; i < creator_hub_icon.length; i++) {
+                                    var header = creator_hub_icon[i]
+                                    if (header.tagName.toLowerCase() == "svg") {
+                                        header.outerHTML = '<img class="' + header.classList.toString() + '" width="' + header.getAttribute("width") + '" height="' + header.getAttribute("height") + '" src="' + settings["projectedImage2"] + '">'
+                                    }
+                                }
+                            }
                             timeout(() => { injectCSS() }, amountOfSecondsBeforeLoop)
                         }
                         injectCSS()
@@ -209,6 +225,22 @@ inject.js:
                                         header.setAttribute("href", settings["projectedImage4"])
                                     }
                                 })
+                            }
+                            if (settings["projectedImage2"] && settings["projectedImage2"].startsWith("data")) {
+                                var creator_hub_icon = document.querySelectorAll(".css-nvpyzg-logo")
+                                for (let i = 0; i < creator_hub_icon.length; i++) {
+                                    var header = creator_hub_icon[i]
+                                    if (header.tagName.toLowerCase() == "svg") {
+                                        header.outerHTML = '<img class="' + header.className + '" width="' + header.getAttribute("width") + '" height="' + header.getAttribute("height") + '" src="' + settings["projectedImage2"] + '">'
+                                    }
+                                }
+                                var creator_hub_icon2 = document.querySelectorAll(".web-blox-css-mui-v3z1wi img")
+                                for (let i = 0; i < creator_hub_icon2.length; i++) {
+                                    var header = creator_hub_icon2[i]
+                                    if (header.tagName.toLowerCase() == "img" && /roblox_icon/.test(header.src)) {
+                                        header.src = settings["projectedImage2"]
+                                    }
+                                }
                             }
                             timeout(() => { injectCSS() }, amountOfSecondsBeforeLoop)
                         }

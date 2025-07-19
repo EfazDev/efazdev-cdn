@@ -335,7 +335,6 @@ async function loadChanges() {
                     } else if (system_settings["uploadedChromeExtensionID"]) {
                         /* User used an extracted zip file of the extension instead of using the Chrome Web Store */
                         document.getElementById("extensionLink").href = `https://chromewebstore.google.com/detail/extension/${system_settings["uploadedChromeExtensionID"]}`
-                        document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | Unpacked`
                     }
                     document.getElementById("extensionLink").style = ""
                 } else {
@@ -346,10 +345,9 @@ async function loadChanges() {
                     if (chrome.runtime.id == system_settings["uploadedFirefoxExtensionID"]) {
                         /* User is using the Firefox Add-on Store */
                         document.getElementById("extensionLink").href = `https://addons.mozilla.org/en-US/firefox/addon/${chrome.runtime.id}`
-                    } else if (system_settings["uploadedChromeExtensionID"]) {
-                        /* User used an extracted zip file of the extension instead of using the Firefox Add-on Store */
+                    } else if (system_settings["uploadedFirefoxExtensionID"]) {
+                        /* User used an extracted zip file of the extension instead of using the Chrome Web Store */
                         document.getElementById("extensionLink").href = `https://addons.mozilla.org/en-US/firefox/addon/${system_settings["uploadedFirefoxExtensionID"]}`
-                        document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | Unpacked`
                     }
                     document.getElementById("extensionLink").children[0].src = "https://cdn.efaz.dev/png/firefox_addons.png"
                     document.getElementById("extensionLink").children[0].title = "Firefox Add-ons"

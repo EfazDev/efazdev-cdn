@@ -909,7 +909,7 @@ function start() {
                                                 if (username_containers_9.length > 0) {
                                                     username_containers_9.forEach((user_container_2) => {
                                                         if (user_container.offsetParent == user_container_2.offsetParent) {
-                                                            if (user_container_2.innerText == `@${username}`) {
+                                                            if (user_container_2.textContent == `@${username}`) {
                                                                 if (!(user_container.parentElement)) {
                                                                     return;
                                                                 }
@@ -1332,7 +1332,7 @@ function start() {
                                                 if (username_containers_9.length > 0) {
                                                     username_containers_9.forEach((user_container_2) => {
                                                         if (user_container.offsetParent == user_container_2.offsetParent) {
-                                                            if (user_container_2.innerText == `@${username}`) {
+                                                            if (user_container_2.textContent == `@${username}`) {
                                                                 if (!(user_container.parentElement)) {
                                                                     return;
                                                                 }

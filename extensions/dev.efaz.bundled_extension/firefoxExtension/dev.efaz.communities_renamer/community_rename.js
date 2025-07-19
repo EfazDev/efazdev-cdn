@@ -121,11 +121,11 @@ inject.js:
                         /* Clean New Name to prevent crashes */
                         var div = document.createElement("div");
                         div.innerHTML = newName;
-                        newName = div.innerText.replace(/<\/[^>]+(>|$)/g, "");
+                        newName = div.textContent.replace(/<\/[^>]+(>|$)/g, "");
 
                         var div = document.createElement("div");
                         div.innerHTML = newNameWithoutEndingS;
-                        newNameWithoutEndingS = div.innerText.replace(/<\/[^>]+(>|$)/g, "");
+                        newNameWithoutEndingS = div.textContent.replace(/<\/[^>]+(>|$)/g, "");
                         /* Clean New Name to prevent crashes */
                         function injectRename() {
                             var sidebar_headers = document.querySelectorAll(".font-header-2.dynamic-ellipsis-item")
@@ -382,8 +382,8 @@ inject.js:
                                     var titles = document.querySelectorAll("title")
                                     for (let i = 0; i < titles.length; i++) {
                                         var header = titles[i]
-                                        if (/Communities/.test(header.innerText)) {
-                                            header.innerText = header.innerText.replaceAll("Communities", newName)
+                                        if (/Communities/.test(header.textContent)) {
+                                            header.textContent = header.textContent.replaceAll("Communities", newName)
                                         }
                                     }
                                 }

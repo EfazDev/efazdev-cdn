@@ -137,7 +137,7 @@ inject.js:
                                         const style = document.createElement("style")
                                         style.id = "efaz-roblox-theme";
                                         style.media = "all";
-                                        style.innerText = css
+                                        style.textContent = css
                                         document.head.append(style)
                                     }
                                 }

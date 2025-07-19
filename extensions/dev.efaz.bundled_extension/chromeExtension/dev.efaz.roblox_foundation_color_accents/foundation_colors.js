@@ -160,7 +160,7 @@ inject.js:
                                             d.setAttribute("data-bundle-source", "Main")
                                             d.setAttribute("baseColoringAdded", "true")
                                             d.setAttribute("org_href", header.href)
-                                            d.innerText = roblox_css_res
+                                            d.textContent = roblox_css_res
                                             header.href = ""
                                             header.append(d)
                                             header.setAttribute("baseColoringAdded", "true")
@@ -179,10 +179,10 @@ inject.js:
                                 if (!(header.getAttribute("baseColoringAdded") == "true") && !(header.getAttribute("onerror"))) {
                                     let change_made = false;
                                     let converted_sheet = "";
-                                    if (header.innerText == "") {
+                                    if (header.textContent == "") {
                                         converted_sheet = sheetToString(header.sheet);
                                     } else {
-                                        converted_sheet = header.innerText;
+                                        converted_sheet = header.textContent;
                                     }
                                     header.sheet = new CSSStyleSheet()
                                     function applyBaseColoring() {
@@ -214,7 +214,7 @@ inject.js:
                                         change_made = true;
                                     }
                                     if (change_made == true) {
-                                        header.innerText = converted_sheet + `
+                                        header.textContent = converted_sheet + `
                                         .web-blox-css-tss-lo77dr-Button-contained {
                                             box-shadow: none;
                                             color: rgb(255, 255, 255);
@@ -308,13 +308,13 @@ inject.js:
                                     var target_sheet = "";
                                     if (header.sheet) {
                                         target_sheet = sheetToString(header.sheet);
-                                    } else if (header.innerText) {
-                                        target_sheet = header.innerText;
+                                    } else if (header.textContent) {
+                                        target_sheet = header.textContent;
                                     }
                                     var base_color_res = applyBaseColoring(target_sheet)
                                     var change_made = base_color_res[0] 
                                     var converted_sheet = base_color_res[1]
-                                    if (change_made == true) {header.innerText = converted_sheet}
+                                    if (change_made == true) {header.textContent = converted_sheet}
                                 });
 
                                 var all_buttons = document.querySelectorAll("button");

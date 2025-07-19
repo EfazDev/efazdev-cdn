@@ -120,13 +120,13 @@ inject.js:
                         /* Clean New Name to prevent crashes */
                         var div = document.createElement("div");
                         div.innerHTML = newName;
-                        newName = div.innerText.replace(/<\/[^>]+(>|$)/g, "");
+                        newName = div.textContent.replace(/<\/[^>]+(>|$)/g, "");
                         /* Clean New Name to prevent crashes */
                         function injectRename() {
                             var topbar_headers = document.querySelectorAll(".font-header-2.nav-menu-title.text-header")
                             for (let i = 0; i < topbar_headers.length; i++) {
                                 var header = topbar_headers[i]
-                                if (header.href && /Charts/.test(header.innerText) && !(header.innerText.includes(newName))) {
+                                if (header.href && /Charts/.test(header.textContent) && !(header.textContent.includes(newName))) {
                                     if (isGames == true) {
                                         header.href = header.href.replace("charts", "games")
                                         header.href = header.href.replace("discover", "games")
@@ -134,7 +134,7 @@ inject.js:
                                         header.href = header.href.replace("charts", "discover")
                                         header.href = header.href.replace("games", "discover")
                                     }
-                                    header.innerText = newName
+                                    header.textContent = newName
                                 }
                             }
 
@@ -175,8 +175,8 @@ inject.js:
                                     if (!(header.innerHTML.includes(newName))) {
                                         for (let e = 0; e < header.children.length; e++) {
                                             var child = header.children[e]
-                                            if (!(child.innerText.includes(newName))) {
-                                                child.innerText = `${newName}`
+                                            if (!(child.textContent.includes(newName))) {
+                                                child.textContent = `${newName}`
                                             }
                                         }
                                     }
@@ -186,8 +186,8 @@ inject.js:
                                     var titles = document.querySelectorAll("title")
                                     for (let i = 0; i < titles.length; i++) {
                                         var header = titles[i]
-                                        if (!(header.innerText.includes(newName))) {
-                                            header.innerText = header.innerText.replaceAll("Charts", newName)
+                                        if (!(header.textContent.includes(newName))) {
+                                            header.textContent = header.textContent.replaceAll("Charts", newName)
                                         }
                                     }
                                 }

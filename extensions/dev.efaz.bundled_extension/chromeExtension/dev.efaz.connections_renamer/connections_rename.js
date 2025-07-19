@@ -118,11 +118,11 @@ inject.js:
                         /* Clean New Name to prevent crashes */
                         var div = document.createElement("div");
                         div.innerHTML = newName;
-                        newName = div.innerText.replace(/<\/[^>]+(>|$)/g, "");
+                        newName = div.textContent.replace(/<\/[^>]+(>|$)/g, "");
                         
                         var div = document.createElement("div");
                         div.innerHTML = newNameWithoutEndingS;
-                        newNameWithoutEndingS = div.innerText.replace(/<\/[^>]+(>|$)/g, "");
+                        newNameWithoutEndingS = div.textContent.replace(/<\/[^>]+(>|$)/g, "");
                         /* Clean New Name to prevent crashes */
                         function injectRename() {
                             var sidebar_headers = document.querySelectorAll(".font-header-2.dynamic-ellipsis-item")
@@ -226,8 +226,8 @@ inject.js:
                             var friends_subtitle = document.querySelectorAll(".friends-subtitle")
                             for (let i = 0; i < friends_subtitle.length; i++) {
                                 var header = friends_subtitle[i]
-                                if (/Connections/.test(header.innerHTML) && !(header.innerHTML.includes(newName))) {
-                                    header.innerHTML = header.innerHTML.replace("Connections", newName)
+                                if (header.childNodes && header.childNodes[0] && /Connections/.test(header.childNodes[0].textContent) && !(header.childNodes[0].textContent.includes(newName))) {
+                                    header.childNodes[0].textContent = header.childNodes[0].textContent.replace("Connections", newName)
                                 }
                             }
 
@@ -271,6 +271,14 @@ inject.js:
                                 }
                             }
 
+                            var friend_tooltips = document.querySelectorAll("#friendsTooltip")
+                            for (let i = 0; i < friend_tooltips.length; i++) {
+                                var header = friend_tooltips[i]
+                                if ((/Connection/.test(header.innerHTML) || /Connections/.test(header.innerHTML)) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
+                                    header.innerHTML = header.innerHTML.replace("Connection", newNameWithoutEndingS)
+                                }
+                            }
+
                             var player_list_headers = document.querySelectorAll(".people-list-header")
                             for (let i = 0; i < player_list_headers.length; i++) {
                                 var header = player_list_headers[i]
@@ -294,7 +302,7 @@ inject.js:
                             for (let i = 0; i < all_links.length; i++) {
                                 var header = all_links[i]
                                 if (settings["massEdit"] == true) {
-                                    if (/Connection/.test(header.innerHTML) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
+                                    if (!(header.className == "profile-header-social-count") && /Connection/.test(header.innerHTML) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                         header.innerHTML = header.innerHTML.replace("Connection", newNameWithoutEndingS)
                                     }
                                 }
@@ -310,13 +318,21 @@ inject.js:
                                 }
                             }
 
+                            var all_profile_headers = document.querySelectorAll(".profile-header-social-count-label")
+                            for (let i = 0; i < all_profile_headers.length; i++) {
+                                var header = all_profile_headers[i]
+                                if ((/Connection/.test(header.innerHTML) || /Connections/.test(header.innerHTML)) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
+                                    header.innerHTML = header.innerHTML.replace("Connection", newNameWithoutEndingS)
+                                }
+                            }
+
                             if (/\/connections/.test(window.location.pathname) || /\/friends/.test(window.location.pathname)) {    
                                 if (settings["changeTitleHtml"] == true) {
                                     var titles = document.querySelectorAll("title")
                                     for (let i = 0; i < titles.length; i++) {
                                         var header = titles[i]
-                                        if (/Connections/.test(header.innerText)) {
-                                            header.innerText = header.innerText.replaceAll("Connections", newName)
+                                        if (/Connections/.test(header.textContent)) {
+                                            header.textContent = header.textContent.replaceAll("Connections", newName)
                                         }
                                     }
                                 }

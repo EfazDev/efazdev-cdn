@@ -69,7 +69,7 @@
             "alternateFileInput": true
         },
         "projectedImage2": {
-            "text": "Set Creator Dashboard Tab Icon",
+            "text": "Set Creator Dashboard Icon",
             "type": "file",
             "default": "",
             "extraArguments": {
