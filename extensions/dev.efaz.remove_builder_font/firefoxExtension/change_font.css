@@ -221,3 +221,7 @@ CSS is based on Roblox's servers and archive.org for old files.
     font-weight: 500 !important;
     font-size: 15px !important;
 }
+
+.container-footer {
+    position: initial !important;
+}

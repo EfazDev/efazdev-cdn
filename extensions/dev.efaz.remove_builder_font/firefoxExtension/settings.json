@@ -56,7 +56,7 @@
             ]
         },
         "resourcesUrl": {
-            "text": "Font Resources URL (Make sure custom source is trusted and safe!)",
+            "text": "Font Resources URL (Make sure it's trusted!)",
             "type": "text",
             "default": "https://oldfont.efaz.dev/",
             "reset": true,
