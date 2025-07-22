@@ -430,30 +430,16 @@ inject.js:
                                 if (css) {
                                     let new_tries = 0
                                     if (tries) { new_tries = tries }
-                                    if (document.querySelector("head > style:nth-child(1)")) {
-                                        let selector = document.querySelector("head > style:nth-child(1)");
+                                    let selectors = document.head.querySelectorAll("style")
+                                    for (q = 0; q < selectors.length; q++) {
+                                        let selector = selectors[q]
                                         let sheet_text = sheetToString(selector.sheet)
-                                        if (/@font-face/.test(sheet_text)) {
+                                        if (selector.getAttribute("data-emotion") == "web-blox-css-mui-global" && /@font-face/.test(sheet_text)) {
                                             if (!(/Efaz's Builder Font Remover/.test(selector.textContent))) {
                                                 if (selector.textContent == "") {
                                                     selector.textContent = `${sheet_text} \n\n${css}`
                                                 } else if (/\/fonts\/builder-sans\//.test(selector.textContent)) {
                                                     selector.textContent = `${sheet_text} \n\n${css}`
-                                                }
-                                            }
-                                        }
-                                    } else {
-                                        let selectors = document.head.querySelectorAll("style")
-                                        for (q = 0; q < selectors.length; q++) {
-                                            let selector = selectors[q]
-                                            let sheet_text = sheetToString(selector.sheet)
-                                            if (selector.getAttribute("data-emotion") == "web-blox-css-mui-global" && /@font-face/.test(sheet_text)) {
-                                                if (!(/Efaz's Builder Font Remover/.test(selector.textContent))) {
-                                                    if (selector.textContent == "") {
-                                                        selector.textContent = `${sheet_text} \n\n${css}`
-                                                    } else if (/\/fonts\/builder-sans\//.test(selector.textContent)) {
-                                                        selector.textContent = `${sheet_text} \n\n${css}`
-                                                    }
                                                 }
                                             }
                                         }
@@ -484,39 +470,26 @@ inject.js:
                             }
                         }
                     } else if (/.roblox.com/.test(urlObj.hostname)) {
-                        if (otherSub == true && !(/create.roblox.com/.test(urlObj.hostname))) {
+                        if (otherSub == true) {
                             async function injectCSS(css, tries) {
                                 if (css) {
                                     let new_tries = 0
                                     if (tries) { new_tries = tries }
-                                    if (document.querySelector("head > style:nth-child(1)")) {
-                                        let selector = document.querySelector("head > style:nth-child(1)");
-                                        if (/@font-face/.test(sheetToString(selector.sheet))) {
+                                    let selectors = document.head.querySelectorAll("style")
+                                    let found = false
+                                    for (q = 0; q < selectors.length; q++) {
+                                        let selector = selectors[q]
+                                        if (selector.getAttribute("data-emotion") == "web-blox-css-mui-global" && /@font-face/.test(sheetToString(selector.sheet))) {
                                             if (selector.textContent == "") {
                                                 selector.textContent = css
+                                                found = true
+                                            } else if (/@font-face/.test(selector.textContent) && /BuilderSans/.test(selector.textContent)) {
+                                                selector.textContent = `${selector.textContent} \n\n${css}`
+                                                found = true
                                             }
-                                        } else {
-                                            timeout(() => { injectCSS(css, new_tries + 1) }, settings["startTime"])
-                                        }
-                                    } else {
-                                        let selectors = document.head.querySelectorAll("style")
-                                        let found = false
-                                        for (q = 0; q < selectors.length; q++) {
-                                            let selector = selectors[q]
-                                            if (selector.getAttribute("data-emotion") == "web-blox-css-mui-global" && /@font-face/.test(sheetToString(selector.sheet))) {
-                                                if (selector.textContent == "") {
-                                                    selector.textContent = css
-                                                    found = true
-                                                } else if (/@font-face/.test(selector.textContent) && /BuilderSans/.test(selector.textContent)) {
-                                                    selector.textContent = css
-                                                    found = true
-                                                }
-                                            }
-                                        }
-                                        if (found == false) {
-                                            timeout(() => { injectCSS(css, new_tries + 1) }, settings["startTime"])
                                         }
                                     }
+                                    timeout(() => { injectCSS(css, new_tries + 1) }, settings["startTime"])
                                 }
                             }
                             if (stored_creator_dashboard_css) {
