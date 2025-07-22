@@ -216,6 +216,7 @@ inject.js:
                             var most_text_frames = document.querySelectorAll(".ng-binding")
                             for (let i = 0; i < most_text_frames.length; i++) {
                                 var header = most_text_frames[i]
+                                if (header.getAttribute("ng-bind") == "role.name" || header.getAttribute("ng-bind") == "$ctrl.data.currentRoleName") { continue };
                                 if (/Community/.test(header.innerHTML) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                     if (header.href && settings["replaceURLwithGroupsURL"] == true) {
                                         header.href = header.href.replace("communities", "groups")
