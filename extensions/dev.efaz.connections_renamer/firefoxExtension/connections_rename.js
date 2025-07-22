@@ -128,16 +128,8 @@ inject.js:
                             var sidebar_headers = document.querySelectorAll(".font-header-2.dynamic-ellipsis-item")
                             for (let i = 0; i < sidebar_headers.length; i++) {
                                 var header = sidebar_headers[i]
-                                if (/Connections/.test(header.innerHTML) && !(header.innerHTML.includes(newName))) {
+                                if (/Connect/.test(header.innerHTML) && !(header.innerHTML.includes(newName))) {
                                     header.innerHTML = newName
-                                }
-                            }
-
-                            var sidebar_link_headers = document.querySelectorAll(".dynamic-overflow-container.text-nav")
-                            for (let i = 0; i < sidebar_link_headers.length; i++) {
-                                var header = sidebar_link_headers[i]
-                                if (/Connections/.test(header.innerHTML) && !(header.innerHTML.includes(newName))) {
-                                    header.innerHTML = header.innerHTML.replace("Connections", newName)
                                 }
                             }
 
@@ -160,7 +152,9 @@ inject.js:
                             var buttons_text = document.querySelectorAll(".web-blox-css-tss-1283320-Button-textContainer")
                             for (let i = 0; i < buttons_text.length; i++) {
                                 var header = buttons_text[i]
-                                if (/Connection/.test(header.innerHTML) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
+                                if (/Remove Connection/.test(header.innerHTML) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
+                                    header.innerHTML = header.innerHTML.replace("Remove Connection", "Un" + newNameWithoutEndingS.toLowerCase())
+                                } else if (/Connection/.test(header.innerHTML) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                     header.innerHTML = header.innerHTML.replace("Connection", newNameWithoutEndingS)
                                 }
                             }
