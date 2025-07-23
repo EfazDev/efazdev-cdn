@@ -31,15 +31,12 @@ inject.js:
         if (typeof (array) == "object") {
             if (Array.isArray(array)) {
                 for (let a = 0; a < array.length; a++) {
-                    var value = array[a]
-                    await callback(a, value)
+                    await callback(a, array[a])
                 }
             } else {
                 var generated_keys = Object.keys(array);
                 for (let a = 0; a < generated_keys.length; a++) {
-                    var key = generated_keys[a]
-                    var value = array[key]
-                    await callback(key, value)
+                    await callback(generated_keys[a], array[generated_keys[a]])
                 }
             }
         }
@@ -48,67 +45,32 @@ inject.js:
     function timeout(func, ms) { setTimeout(func, ms); }
 
     async function getSettings(storage_key, callback) {
-        if (callback) {
-            fetch(getChromeURL("settings.json")).then((res) => {
-                if (res.ok) {
-                    return res.json();
-                }
-            }).then(jso => {
-                if (jso) {
-                    return storage.get(storage_key).then(async (user_settings) => {
-                        if (!user_settings) {
-                            user_settings = {}
+        return fetch(getChromeURL("settings.json")).then((res) => {
+            if (res.ok) { return res.json(); }
+        }).then(jso => {
+            if (jso) {
+                return storage.get(storage_key).then(async (user_settings) => {
+                    if (!user_settings) { user_settings = {} }
+                    if (!(user_settings[storage_key])) { user_settings[storage_key] = {} }
+                    await loopThroughArrayAsync(jso["settings"], async (i, v) => {
+                        if (typeof(user_settings[storage_key][i]) == "undefined") {
+                            if (!(typeof(v["default"]) == "undefined")) {user_settings[storage_key][i] = v["default"]}
                         }
-                        if (!(user_settings[storage_key])) {
-                            user_settings[storage_key] = {}
-                        }
-                        await loopThroughArrayAsync(jso["settings"], async (i, v) => {
-                            if (typeof(user_settings[storage_key][i]) == "undefined") {
-                                if (!(typeof(v["default"]) == "undefined")) {user_settings[storage_key][i] = v["default"]}
-                            }
-                        })
-                        callback(user_settings)
                     })
-                }
-            })
-        } else {
-            return fetch(getChromeURL("settings.json")).then((res) => {
-                if (res.ok) {
-                    return res.json();
-                }
-            }).then(jso => {
-                if (jso) {
-                    return storage.get(storage_key).then(async (user_settings) => {
-                        if (!user_settings) {
-                            user_settings = {}
-                        }
-                        if (!(user_settings[storage_key])) {
-                            user_settings[storage_key] = {}
-                        }
-                        await loopThroughArrayAsync(jso["settings"], async (i, v) => {
-                            if (typeof(user_settings[storage_key][i]) == "undefined") {
-                                if (!(typeof(v["default"]) == "undefined")) {user_settings[storage_key][i] = v["default"]}
-                            }
-                        })
-                        return user_settings
-                    })
-                }
-            })
-        }
+                    if (callback) { callback(user_settings) }
+                    return user_settings
+                })
+            }
+        })
     }
 
     try {
         getSettings(storage_key, function (items) {
-            var defaultData = { "enabled": true }
-            if (!(items[storage_key])) {
-                items[storage_key] = defaultData
-            }
-            var settings = items[storage_key];
+            let settings = items[storage_key];
             if (settings["enabled"] == true) {
-                var tab = window.location
+                let tab = window.location
                 if (tab.href) {
-                    var urlObj = window.location
-                    if (urlObj.hostname == "www.roblox.com") {
+                    if (tab.hostname == "www.roblox.com") {
                         async function injectCSS() {
                             // var amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
                             console.log("Example Extension Right Here!")

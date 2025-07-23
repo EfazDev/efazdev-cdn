@@ -1,7 +1,7 @@
 {
     "name": "Example Extension",
     "description": "A plain extension.",
-    "version": "1.4.5",
+    "version": "1.4.7",
     "manifest_version": 3,
     "author": "EfazDev",
     "homepage_url": "https://www.efaz.dev/",

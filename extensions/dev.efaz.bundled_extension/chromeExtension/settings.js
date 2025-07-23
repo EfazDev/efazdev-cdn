@@ -156,6 +156,7 @@ async function loadChanges2() {
             font-family: arial !important;
             color: white;
             overflow: hidden;
+            background-color: #000000;
         }
         `
     }

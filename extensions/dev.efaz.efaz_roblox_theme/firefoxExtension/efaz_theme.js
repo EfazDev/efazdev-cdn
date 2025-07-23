@@ -32,84 +32,48 @@ inject.js:
         if (typeof (array) == "object") {
             if (Array.isArray(array)) {
                 for (let a = 0; a < array.length; a++) {
-                    var value = array[a]
-                    await callback(a, value)
+                    await callback(a, array[a])
                 }
             } else {
                 var generated_keys = Object.keys(array);
                 for (let a = 0; a < generated_keys.length; a++) {
-                    var key = generated_keys[a]
-                    var value = array[key]
-                    await callback(key, value)
+                    await callback(generated_keys[a], array[generated_keys[a]])
                 }
             }
         }
     }
 
     async function getSettings(storage_key, callback) {
-        if (callback) {
-            fetch(getChromeURL("settings.json")).then((res) => {
-                if (res.ok) {
-                    return res.json();
-                }
-            }).then(jso => {
-                if (jso) {
-                    return storage.get(storage_key).then(async (user_settings) => {
-                        if (!user_settings) {
-                            user_settings = {}
+        return fetch(getChromeURL("settings.json")).then((res) => {
+            if (res.ok) { return res.json(); }
+        }).then(jso => {
+            if (jso) {
+                return storage.get(storage_key).then(async (user_settings) => {
+                    if (!user_settings) { user_settings = {} }
+                    if (!(user_settings[storage_key])) { user_settings[storage_key] = {} }
+                    await loopThroughArrayAsync(jso["settings"], async (i, v) => {
+                        if (typeof(user_settings[storage_key][i]) == "undefined") {
+                            if (!(typeof(v["default"]) == "undefined")) {user_settings[storage_key][i] = v["default"]}
                         }
-                        if (!(user_settings[storage_key])) {
-                            user_settings[storage_key] = {}
-                        }
-                        await loopThroughArrayAsync(jso["settings"], async (i, v) => {
-                            if (typeof(user_settings[storage_key][i]) == "undefined") {
-                                if (!(typeof(v["default"]) == "undefined")) {user_settings[storage_key][i] = v["default"]}
-                            }
-                        })
-                        callback(user_settings)
                     })
-                }
-            })
-        } else {
-            return fetch(getChromeURL("settings.json")).then((res) => {
-                if (res.ok) {
-                    return res.json();
-                }
-            }).then(jso => {
-                if (jso) {
-                    return storage.get(storage_key).then(async (user_settings) => {
-                        if (!user_settings) {
-                            user_settings = {}
-                        }
-                        if (!(user_settings[storage_key])) {
-                            user_settings[storage_key] = {}
-                        }
-                        await loopThroughArrayAsync(jso["settings"], async (i, v) => {
-                            if (typeof(user_settings[storage_key][i]) == "undefined") {
-                                if (!(typeof(v["default"]) == "undefined")) {user_settings[storage_key][i] = v["default"]}
-                            }
-                        })
-                        return user_settings
-                    })
-                }
-            })
-        }
+                    if (callback) { callback(user_settings) }
+                    return user_settings
+                })
+            }
+        })
     }
 
     try {
         getSettings(storage_key, function (items) {
-            var enabled = true;
-            var remoteStyles = false;
-
-            if (items[storage_key]) {
-                if (typeof (items[storage_key]["enabled"]) == "boolean") { enabled = items[storage_key]["enabled"] };
-                if (typeof (items[storage_key]["remoteStyles"]) == "boolean") { remoteStyles = items[storage_key]["remoteStyles"] };
-            }
+            let enabled = true;
+            let remoteStyles = false;
+            let settings = items[storage_key];
+            if (typeof (settings["enabled"]) == "boolean") { enabled = settings["enabled"] };
+            if (typeof (settings["remoteStyles"]) == "boolean") { remoteStyles = settings["remoteStyles"] };
             if (enabled == true) {
-                var tab = window.location
+                let tab = window.location
                 if (tab.href) {
-                    var urlObj = window.location
-                    if (urlObj.hostname == "www.roblox.com") {
+                    if (tab.hostname == "www.roblox.com") {
                         if (remoteStyles == true) {
                             function injectCSS() {
                                 if (document.getElementById("efaz-roblox-theme") == null) {

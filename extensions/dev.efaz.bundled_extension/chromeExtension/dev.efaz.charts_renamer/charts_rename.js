@@ -32,101 +32,58 @@ inject.js:
             if (typeof (array) == "object") {
                 if (Array.isArray(array)) {
                     for (let a = 0; a < array.length; a++) {
-                        var value = array[a]
-                        await callback(a, value)
+                        await callback(a, array[a])
                     }
                 } else {
                     var generated_keys = Object.keys(array);
                     for (let a = 0; a < generated_keys.length; a++) {
-                        var key = generated_keys[a]
-                        var value = array[key]
-                        await callback(key, value)
+                        await callback(generated_keys[a], array[generated_keys[a]])
                     }
                 }
             }
         }
         async function getSettings(storage_key, callback) {
-            if (callback) {
-                fetch(getChromeURL("settings.json")).then((res) => {
-                    if (res.ok) {
-                        return res.json();
-                    }
-                }).then(jso => {
-                    if (jso) {
-                        return storage.get(storage_key).then(async (user_settings) => {
-                            if (!user_settings) {
-                                user_settings = {}
+            return fetch(getChromeURL("settings.json")).then((res) => {
+                if (res.ok) { return res.json(); }
+            }).then(jso => {
+                if (jso) {
+                    return storage.get(storage_key).then(async (user_settings) => {
+                        if (!user_settings) { user_settings = {} }
+                        if (!(user_settings[storage_key])) { user_settings[storage_key] = {} }
+                        await loopThroughArrayAsync(jso["settings"], async (i, v) => {
+                            if (typeof(user_settings[storage_key][i]) == "undefined") {
+                                if (!(typeof(v["default"]) == "undefined")) {user_settings[storage_key][i] = v["default"]}
                             }
-                            if (!(user_settings[storage_key])) {
-                                user_settings[storage_key] = {}
-                            }
-                            await loopThroughArrayAsync(jso["settings"], async (i, v) => {
-                                if (typeof(user_settings[storage_key][i]) == "undefined") {
-                                    if (!(typeof(v["default"]) == "undefined")) {user_settings[storage_key][i] = v["default"]}
-                                }
-                            })
-                            callback(user_settings)
                         })
-                    }
-                })
-            } else {
-                return fetch(getChromeURL("settings.json")).then((res) => {
-                    if (res.ok) {
-                        return res.json();
-                    }
-                }).then(jso => {
-                    if (jso) {
-                        return storage.get(storage_key).then(async (user_settings) => {
-                            if (!user_settings) {
-                                user_settings = {}
-                            }
-                            if (!(user_settings[storage_key])) {
-                                user_settings[storage_key] = {}
-                            }
-                            await loopThroughArrayAsync(jso["settings"], async (i, v) => {
-                                if (typeof(user_settings[storage_key][i]) == "undefined") {
-                                    if (!(typeof(v["default"]) == "undefined")) {user_settings[storage_key][i] = v["default"]}
-                                }
-                            })
-                            return user_settings
-                        })
-                    }
-                })
-            }
+                        if (callback) { callback(user_settings) }
+                        return user_settings
+                    })
+                }
+            })
         }
         function timeout(func, ms) { setTimeout(func, ms); }
         getSettings(storage_key, function (items) {
-            var enabled = true;
-            if (items[storage_key]) {
-                if (typeof (items[storage_key]["enabled"]) == "boolean") { enabled = items[storage_key]["enabled"] };
-            } else {
-                items[storage_key] = {
-                    "enabled": true,
-                    "newName": "Discover",
-                    "replaceURLwithDiscoverURL": true,
-                    "changeTitleHtml": true,
-                    "startTime": "75"
-                }
-            }
-            var settings = items[storage_key];
+            let enabled = true;
+            let settings = items[storage_key];
+            if (typeof (settings["enabled"]) == "boolean") { enabled = settings["enabled"] };
             if (enabled == true) {
-                var tab = window.location
+                let tab = window.location
                 if (tab.href) {
                     if (tab.hostname == "www.roblox.com") {
-                        var newName = settings["newName"];
-                        var isGames = newName.toLowerCase() == "games";
-                        var isCharts = newName.toLowerCase() == "charts";
-                        var amountOfSecondsBeforeLoop = (typeof(settings["startTime"]) == "string" && Number(settings["startTime"])) ? Number(settings["startTime"]) : 75
+                        let newName = settings["newName"];
+                        let isGames = newName.toLowerCase() == "games";
+                        let isCharts = newName.toLowerCase() == "charts";
+                        let amountOfSecondsBeforeLoop = (typeof(settings["startTime"]) == "string" && Number(settings["startTime"])) ? Number(settings["startTime"]) : 75
                         /* Clean New Name to prevent crashes */
                         var div = document.createElement("div");
                         div.innerHTML = newName;
                         newName = div.textContent.replace(/<\/[^>]+(>|$)/g, "");
                         /* Clean New Name to prevent crashes */
                         function injectRename() {
-                            var topbar_headers = document.querySelectorAll(".font-header-2.nav-menu-title.text-header")
+                            let topbar_headers = document.querySelectorAll(".font-header-2.nav-menu-title.text-header")
                             for (let i = 0; i < topbar_headers.length; i++) {
-                                var header = topbar_headers[i]
-                                if (header.href && /Charts/.test(header.textContent) && !(header.textContent.includes(newName))) {
+                                let header = topbar_headers[i]
+                                if (header.href && header.textContent.includes("Charts") && !(header.textContent.includes(newName))) {
                                     if (isGames == true) {
                                         header.href = header.href.replace("charts", "games")
                                         header.href = header.href.replace("discover", "games")
@@ -138,17 +95,17 @@ inject.js:
                                 }
                             }
 
-                            var chart_links = document.querySelectorAll(".btn-secondary-xs.see-all-link-icon.btn-more")
+                            let chart_links = document.querySelectorAll(".btn-secondary-xs.see-all-link-icon.btn-more")
                             for (let i = 0; i < chart_links.length; i++) {
-                                var header = chart_links[i]
+                                let header = chart_links[i]
                                 if (header.href && !(header.href.includes(newName))) {
                                     if (isGames == true) {
-                                        if (/charts/.test(header.href) || /discover/.test(header.href)) {
+                                        if (header.href.includes("charts") || header.href.includes("discover")) {
                                             header.href = header.href.replace("charts", "games")
                                             header.href = header.href.replace("discover", "games")
                                         }
                                     } else {
-                                        if (/charts/.test(header.href) || /games/.test(header.href)) {
+                                        if (header.href.includes("charts") || header.href.includes("games")) {
                                             header.href = header.href.replace("charts", "discover")
                                             header.href = header.href.replace("games", "discover")
                                         }
@@ -169,12 +126,12 @@ inject.js:
                             }
 
                             if (window.location.pathname == `/discover` || window.location.pathname == `/charts` || window.location.pathname == `/games`) {
-                                var page_headers = document.querySelectorAll(".games-list-header")
+                                let page_headers = document.querySelectorAll(".games-list-header")
                                 for (let i = 0; i < page_headers.length; i++) {
-                                    var header = page_headers[i]
+                                    let header = page_headers[i]
                                     if (!(header.innerHTML.includes(newName))) {
                                         for (let e = 0; e < header.children.length; e++) {
-                                            var child = header.children[e]
+                                            let child = header.children[e]
                                             if (!(child.textContent.includes(newName))) {
                                                 child.textContent = `${newName}`
                                             }
@@ -183,9 +140,9 @@ inject.js:
                                 }
 
                                 if (settings["changeTitleHtml"] == true) {
-                                    var titles = document.querySelectorAll("title")
+                                    let titles = document.querySelectorAll("title")
                                     for (let i = 0; i < titles.length; i++) {
-                                        var header = titles[i]
+                                        let header = titles[i]
                                         if (!(header.textContent.includes(newName))) {
                                             header.textContent = header.textContent.replaceAll("Charts", newName)
                                         }

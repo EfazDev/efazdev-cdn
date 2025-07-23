@@ -30,86 +30,44 @@ inject.js:
         if (typeof (array) == "object") {
             if (Array.isArray(array)) {
                 for (let a = 0; a < array.length; a++) {
-                    var value = array[a]
-                    await callback(a, value)
+                    await callback(a, array[a])
                 }
             } else {
                 var generated_keys = Object.keys(array);
                 for (let a = 0; a < generated_keys.length; a++) {
-                    var key = generated_keys[a]
-                    var value = array[key]
-                    await callback(key, value)
+                    await callback(generated_keys[a], array[generated_keys[a]])
                 }
             }
         }
     }
     async function getSettings(storage_key, callback) {
-        if (callback) {
-            fetch(getChromeURL("settings.json")).then((res) => {
-                if (res.ok) {
-                    return res.json();
-                }
-            }).then(jso => {
-                if (jso) {
-                    return storage.get(storage_key).then(async (user_settings) => {
-                        if (!user_settings) {
-                            user_settings = {}
+        return fetch(getChromeURL("settings.json")).then((res) => {
+            if (res.ok) { return res.json(); }
+        }).then(jso => {
+            if (jso) {
+                return storage.get(storage_key).then(async (user_settings) => {
+                    if (!user_settings) { user_settings = {} }
+                    if (!(user_settings[storage_key])) { user_settings[storage_key] = {} }
+                    await loopThroughArrayAsync(jso["settings"], async (i, v) => {
+                        if (typeof(user_settings[storage_key][i]) == "undefined") {
+                            if (!(typeof(v["default"]) == "undefined")) {user_settings[storage_key][i] = v["default"]}
                         }
-                        if (!(user_settings[storage_key])) {
-                            user_settings[storage_key] = {}
-                        }
-                        await loopThroughArrayAsync(jso["settings"], async (i, v) => {
-                            if (typeof(user_settings[storage_key][i]) == "undefined") {
-                                if (!(typeof(v["default"]) == "undefined")) {user_settings[storage_key][i] = v["default"]}
-                            }
-                        })
-                        callback(user_settings)
                     })
-                }
-            })
-        } else {
-            return fetch(getChromeURL("settings.json")).then((res) => {
-                if (res.ok) {
-                    return res.json();
-                }
-            }).then(jso => {
-                if (jso) {
-                    return storage.get(storage_key).then(async (user_settings) => {
-                        if (!user_settings) {
-                            user_settings = {}
-                        }
-                        if (!(user_settings[storage_key])) {
-                            user_settings[storage_key] = {}
-                        }
-                        await loopThroughArrayAsync(jso["settings"], async (i, v) => {
-                            if (typeof(user_settings[storage_key][i]) == "undefined") {
-                                if (!(typeof(v["default"]) == "undefined")) {user_settings[storage_key][i] = v["default"]}
-                            }
-                        })
-                        return user_settings
-                    })
-                }
-            })
-        }
+                    if (callback) { callback(user_settings) }
+                    return user_settings
+                })
+            }
+        })
     }
     function timeout(func, ms) { setTimeout(func, ms); }
 
     try {
         getSettings(storage_key, function (items) {
-            var defaultData = { 
-                "enabled": true, 
-                "loopSeconds": "100", 
-                "projectedImage": null 
-            }
-            if (!(items[storage_key])) {
-                items[storage_key] = defaultData
-            }
-            var settings = items[storage_key];
+            let settings = items[storage_key];
             if (settings["enabled"] == true) {
-                var tab = window.location
+                let tab = window.location
                 if (tab.href) {
-                    var urlObj = window.location
-                    if (urlObj.hostname == "www.roblox.com") {
+                    if (tab.hostname == "www.roblox.com") {
                         let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
                         let rbx_icon_sector = ".app-icon-mac { background-image: url(rbx_icon) !important; } .app-icon-windows { background-image: url(rbx_icon) !important; } .app-icon-ios { background-image: url(rbx_icon) !important; } .app-icon-android { background-image: url(rbx_icon) !important; }";
                         let rbx_studio_icon_sector = ".studio-icon-mac { background-image: url(rbx_studio_icon) !important; } .studio-icon-windows { background-image: url(rbx_studio_icon) !important; }";
@@ -163,7 +121,7 @@ inject.js:
                             timeout(() => { injectCSS() }, amountOfSecondsBeforeLoop)
                         }
                         injectCSS()
-                    } else if (urlObj.hostname == "create.roblox.com") {
+                    } else if (tab.hostname == "create.roblox.com") {
                         let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
                         async function injectCSS() {
                             if (settings["projectedImage2"] && settings["projectedImage2"].startsWith("data")) {
@@ -192,7 +150,7 @@ inject.js:
                             timeout(() => { injectCSS() }, amountOfSecondsBeforeLoop)
                         }
                         injectCSS()
-                    } else if (urlObj.hostname == "devforum.roblox.com") {
+                    } else if (tab.hostname == "devforum.roblox.com") {
                         let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
                         async function injectCSS() {
                             if (settings["projectedImage3"] && settings["projectedImage3"].startsWith("data")) {
@@ -215,7 +173,7 @@ inject.js:
                             timeout(() => { injectCSS() }, amountOfSecondsBeforeLoop)
                         }
                         injectCSS()
-                    } else if (/.roblox.com/.test(urlObj.hostname)) {
+                    } else if (tab.hostname.endsWith(".roblox.com")) {
                         let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
                         async function injectCSS() {
                             if (settings["projectedImage4"] && settings["projectedImage4"].startsWith("data")) {
@@ -237,7 +195,7 @@ inject.js:
                                 var creator_hub_icon2 = document.querySelectorAll(".web-blox-css-mui-v3z1wi img")
                                 for (let i = 0; i < creator_hub_icon2.length; i++) {
                                     var header = creator_hub_icon2[i]
-                                    if (header.tagName.toLowerCase() == "img" && /roblox_icon/.test(header.src)) {
+                                    if (header.tagName.toLowerCase() == "img" && header.src.includes("roblox_icon")) {
                                         header.src = settings["projectedImage2"]
                                     }
                                 }

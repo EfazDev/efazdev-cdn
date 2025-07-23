@@ -11,6 +11,15 @@ Modified on July 15th, 2025
     font-display: swap;
     src: url("https://cdn.efaz.dev/styles/mainFont.ttf");
 }
+html {
+    background: #0a0a0a;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    overscroll-behavior-y: none;
+    -webkit-overflow-scrolling: touch;
+}
 body {
     font-family: mainfont, sans-serif;
     background: linear-gradient(180deg, #0a0a0a, #111111, #1c1c1c);

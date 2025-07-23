@@ -30,15 +30,12 @@ inject.js:
         if (typeof (array) == "object") {
             if (Array.isArray(array)) {
                 for (let a = 0; a < array.length; a++) {
-                    var value = array[a]
-                    await callback(a, value)
+                    await callback(a, array[a])
                 }
             } else {
                 var generated_keys = Object.keys(array);
                 for (let a = 0; a < generated_keys.length; a++) {
-                    var key = generated_keys[a]
-                    var value = array[key]
-                    await callback(key, value)
+                    await callback(generated_keys[a], array[generated_keys[a]])
                 }
             }
         }
@@ -64,65 +61,32 @@ inject.js:
     };
     function timeout(func, ms) { setTimeout(func, ms); }
     async function getSettings(storage_key, callback) {
-        if (callback) {
-            fetch(getChromeURL("settings.json")).then((res) => {
-                if (res.ok) {
-                    return res.json();
-                }
-            }).then(jso => {
-                if (jso) {
-                    return storage.get(storage_key).then(async (user_settings) => {
-                        if (!user_settings) {
-                            user_settings = {}
+        return fetch(getChromeURL("settings.json")).then((res) => {
+            if (res.ok) { return res.json(); }
+        }).then(jso => {
+            if (jso) {
+                return storage.get(storage_key).then(async (user_settings) => {
+                    if (!user_settings) { user_settings = {} }
+                    if (!(user_settings[storage_key])) { user_settings[storage_key] = {} }
+                    await loopThroughArrayAsync(jso["settings"], async (i, v) => {
+                        if (typeof(user_settings[storage_key][i]) == "undefined") {
+                            if (!(typeof(v["default"]) == "undefined")) {user_settings[storage_key][i] = v["default"]}
                         }
-                        if (!(user_settings[storage_key])) {
-                            user_settings[storage_key] = {}
-                        }
-                        await loopThroughArrayAsync(jso["settings"], async (i, v) => {
-                            if (typeof(user_settings[storage_key][i]) == "undefined") {
-                                if (!(typeof(v["default"]) == "undefined")) {user_settings[storage_key][i] = v["default"]}
-                            }
-                        })
-                        callback(user_settings)
                     })
-                }
-            })
-        } else {
-            return fetch(getChromeURL("settings.json")).then((res) => {
-                if (res.ok) {
-                    return res.json();
-                }
-            }).then(jso => {
-                if (jso) {
-                    return storage.get(storage_key).then(async (user_settings) => {
-                        if (!user_settings) {
-                            user_settings = {}
-                        }
-                        if (!(user_settings[storage_key])) {
-                            user_settings[storage_key] = {}
-                        }
-                        await loopThroughArrayAsync(jso["settings"], async (i, v) => {
-                            if (typeof(user_settings[storage_key][i]) == "undefined") {
-                                if (!(typeof(v["default"]) == "undefined")) {user_settings[storage_key][i] = v["default"]}
-                            }
-                        })
-                        return user_settings
-                    })
-                }
-            })
-        }
+                    if (callback) { callback(user_settings) }
+                    return user_settings
+                })
+            }
+        })
     }
 
     try {
         getSettings(storage_key, function (items) {
-            let defaultData = { "enabled": true, "color": "#56ac72", "loopSeconds": "100", "overwriteSuccessColor": false, "applyToPrimaryBtn": false, "overwriteCreateDashboard": false, "includeGraphInDashboard": false }
-            if (!(items[storage_key])) { items[storage_key] = defaultData }
             let settings = items[storage_key];
             if (settings["enabled"] == true) {
-                var tab = window.location
+                let tab = window.location
                 if (tab.href) {
-                    var urlObj = window.location
-                    if (urlObj.hostname == "www.roblox.com") {
+                    if (tab.hostname == "www.roblox.com") {
                         let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
                         let affect_bundles = ["StyleGuide", "Catalog", "Chat", "PlacesList", "ItemDetailsInfo", "UserSettings", "ItemPurchaseUpsell", "GameCarousel", "NotificationStream", "AccountSecurityPrompt", "FoundationCss"]
                         let converted_rgb = hexToRgb(settings["color"]);
@@ -199,16 +163,16 @@ inject.js:
                                             .replaceAll("#3C64FA", rgbToHex(formatRgbVal(converted_rgb["r"] - 10), formatRgbVal(converted_rgb["g"] - 10), formatRgbVal(converted_rgb["b"] - 10)));
                                     }
                                     if (
-                                        /51, 95, 255/.test(converted_sheet) || 
-                                        /51,95,255/.test(converted_sheet) || 
-                                        /82, 139, 255/.test(converted_sheet) || 
-                                        /82,139,255/.test(converted_sheet) || 
-                                        /20, 70, 255/.test(converted_sheet) || 
-                                        /20,70,255/.test(converted_sheet) ||
-                                        /#528BFF/.test(converted_sheet) || 
-                                        /#335FFF/.test(converted_sheet) || 
-                                        /#1446FF/.test(converted_sheet) || 
-                                        /#3C64FA/.test(converted_sheet)
+                                        converted_sheet.includes("51, 95, 255") || 
+                                        converted_sheet.includes("51,95,255") || 
+                                        converted_sheet.includes("82, 139, 255") || 
+                                        converted_sheet.includes("82,139,255") || 
+                                        converted_sheet.includes("20, 70, 255") || 
+                                        converted_sheet.includes("20,70,255") ||
+                                        converted_sheet.includes("#528BFF") || 
+                                        converted_sheet.includes("#335FFF") || 
+                                        converted_sheet.includes("#1446FF") || 
+                                        converted_sheet.includes("#3C64FA")
                                     ) {
                                         applyBaseColoring()
                                         change_made = true;
@@ -231,41 +195,41 @@ inject.js:
                             timeout(() => { injectCSS() }, amountOfSecondsBeforeLoop)
                         }
                         injectCSS()
-                    } else if (urlObj.hostname == "create.roblox.com" || urlObj.hostname == "authorize.roblox.com" || urlObj.hostname == "advertise.roblox.com") {
+                    } else if (tab.hostname == "create.roblox.com" || tab.hostname == "authorize.roblox.com" || tab.hostname == "advertise.roblox.com") {
                         if (settings["overwriteCreateDashboard"] == true) {
                             let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
                             async function injectCSS() {
                                 function applyBaseColoring(converted_sheet) {
                                     var change_made = false
                                     if (
-                                        /51, 95, 255/.test(converted_sheet) || 
-                                        /51,95,255/.test(converted_sheet) ||
-                                        /82, 139, 255/.test(converted_sheet) || 
-                                        /82,139,255/.test(converted_sheet) ||
-                                        /20, 70, 255/.test(converted_sheet) ||
-                                        /20,70,255/.test(converted_sheet) ||
-                                        /112, 160, 255/.test(converted_sheet) || 
-                                        /112,160,255/.test(converted_sheet) ||
-                                        /0, 27, 122/.test(converted_sheet) || 
-                                        /0,27,122/.test(converted_sheet) ||
-                                        /60, 100, 250/.test(converted_sheet) || 
-                                        /60,100,250/.test(converted_sheet) ||
-                                        /0, 34, 255/.test(converted_sheet) || 
-                                        /0,34,255/.test(converted_sheet) ||
-                                        /58, 84, 255/.test(converted_sheet) || 
-                                        /58,84,255/.test(converted_sheet) ||
-                                        /115, 134, 255/.test(converted_sheet) || 
-                                        /115,134,255/.test(converted_sheet) ||
-                                        /173, 183, 255/.test(converted_sheet) || 
-                                        /173,183,255/.test(converted_sheet) ||
-                                        /85, 193, 255/.test(converted_sheet) || 
-                                        /85,193,255/.test(converted_sheet) ||
-                                        /43, 177, 255/.test(converted_sheet) || 
-                                        /43,177,255/.test(converted_sheet) ||
-                                        /#528BFF/.test(converted_sheet) ||
-                                        /#335FFF/.test(converted_sheet) ||
-                                        /#1446FF/.test(converted_sheet) ||
-                                        /#3C64FA/.test(converted_sheet)
+                                        converted_sheet.includes("51, 95, 255") || 
+                                        converted_sheet.includes("51,95,255") ||
+                                        converted_sheet.includes("82, 139, 255") || 
+                                        converted_sheet.includes("82,139,255") ||
+                                        converted_sheet.includes("20, 70, 255") ||
+                                        converted_sheet.includes("20,70,255") ||
+                                        converted_sheet.includes("112, 160, 255") || 
+                                        converted_sheet.includes("112,160,255") ||
+                                        converted_sheet.includes("0, 27, 122") || 
+                                        converted_sheet.includes("0,27,122") ||
+                                        converted_sheet.includes("60, 100, 250") || 
+                                        converted_sheet.includes("60,100,250") ||
+                                        converted_sheet.includes("0, 34, 255") || 
+                                        converted_sheet.includes("0,34,255") ||
+                                        converted_sheet.includes("58, 84, 255") || 
+                                        converted_sheet.includes("58,84,255") ||
+                                        converted_sheet.includes("115, 134, 255") || 
+                                        converted_sheet.includes("115,134,255") ||
+                                        converted_sheet.includes("173, 183, 255") || 
+                                        converted_sheet.includes("173,183,255") ||
+                                        converted_sheet.includes("85, 193, 255") || 
+                                        converted_sheet.includes("85,193,255") ||
+                                        converted_sheet.includes("43, 177, 255") || 
+                                        converted_sheet.includes("43,177,255") ||
+                                        converted_sheet.includes("#528BFF") ||
+                                        converted_sheet.includes("#335FFF") ||
+                                        converted_sheet.includes("#1446FF") ||
+                                        converted_sheet.includes("#3C64FA")
                                     ) {
                                         converted_sheet = converted_sheet
                                             .replaceAll("51, 95, 255", `${converted_rgb["r"]}, ${converted_rgb["g"]}, ${converted_rgb["b"]}`)
@@ -300,7 +264,7 @@ inject.js:
                                         change_made = true;
                                     }
                                     return [change_made, converted_sheet]
-                                }
+                                } 
 
                                 var converted_rgb = hexToRgb(settings["color"]);
                                 var all_styles = Array.from(document.querySelectorAll("style"));
@@ -308,13 +272,15 @@ inject.js:
                                     var target_sheet = "";
                                     if (header.sheet) {
                                         target_sheet = sheetToString(header.sheet);
-                                    } else if (header.textContent) {
+                                    } else {
                                         target_sheet = header.textContent;
                                     }
                                     var base_color_res = applyBaseColoring(target_sheet)
                                     var change_made = base_color_res[0] 
                                     var converted_sheet = base_color_res[1]
-                                    if (change_made == true) {header.textContent = converted_sheet}
+                                    if (change_made == true) {
+                                        header.textContent = converted_sheet
+                                    }
                                 });
 
                                 var all_buttons = document.querySelectorAll("button");
@@ -327,7 +293,7 @@ inject.js:
                                         var base_color_res = applyBaseColoring(target_sheet)
                                         var change_made = base_color_res[0] 
                                         var converted_sheet = base_color_res[1]
-                                        if (/highcharts-point highcharts-color-0/.test(header.className.animVal)) {
+                                        if (header.className.animVal.includes("highcharts-point highcharts-color-0")) {
                                             converted_sheet = settings["color"];
                                             change_made = true;
                                         }
@@ -371,7 +337,7 @@ inject.js:
                                             var base_color_res = applyBaseColoring(target_sheet)
                                             var change_made = base_color_res[0] 
                                             var converted_sheet = base_color_res[1]
-                                            if (/highcharts-point highcharts-color-0/.test(header.className.animVal)) {
+                                            if (header.className.animVal.includes("highcharts-point highcharts-color-0")) {
                                                 converted_sheet = settings["color"];
                                                 change_made = true;
                                             }

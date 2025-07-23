@@ -323,6 +323,7 @@ async function loadChanges() {
                     font-family: arial !important;
                     color: white;
                     overflow: hidden;
+                    background-color: #000000;
                 }
                 `
             }

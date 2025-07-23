@@ -16,15 +16,12 @@ async function loopThroughArrayAsync(array, callback) {
     if (typeof (array) == "object") {
         if (Array.isArray(array)) {
             for (let a = 0; a < array.length; a++) {
-                let value = array[a]
-                await callback(a, value)
+                await callback(a, array[a])
             }
         } else {
-            let generated_keys = Object.keys(array);
+            var generated_keys = Object.keys(array);
             for (let a = 0; a < generated_keys.length; a++) {
-                let key = generated_keys[a]
-                let value = array[key]
-                await callback(key, value)
+                await callback(generated_keys[a], array[generated_keys[a]])
             }
         }
     }
@@ -157,7 +154,7 @@ async function loadChanges() {
                         }
                         var generated_html_element = `<label for="${key}" id="${key}_label">${val["text"]}: <input type="${val["type"]}" id="${key}" name="${key}"${gene_lis}>`
                         var beforeElement = document.getElementById("reviewDetails")
-                        if (val["hidden"] == true && !(/resize=true/.test(window.location.href))) {
+                        if (val["hidden"] == true && !(window.location.href.includes("resize=true"))) {
                             generated_html_element = `<label style="display: none;" for="${key}" id="${key}_label">${val["text"]}: <input type="${val["type"]}" id="${key}" name="${key}"${gene_lis}>`
                         } else {
                             if (val["alternateFileInput"] == true && val["type"] == "file") {
@@ -309,6 +306,7 @@ async function loadChanges() {
                     font-family: arial !important;
                     color: white;
                     overflow: hidden;
+                    background-color: #000000;
                 }
                 `
             }

@@ -185,94 +185,57 @@ inject.js:
         if (typeof (array) == "object") {
             if (Array.isArray(array)) {
                 for (let a = 0; a < array.length; a++) {
-                    var value = array[a]
-                    await callback(a, value)
+                    await callback(a, array[a])
                 }
             } else {
                 var generated_keys = Object.keys(array);
                 for (let a = 0; a < generated_keys.length; a++) {
-                    var key = generated_keys[a]
-                    var value = array[key]
-                    await callback(key, value)
+                    await callback(generated_keys[a], array[generated_keys[a]])
                 }
             }
         }
     }
     async function getSettings(storage_key, callback) {
-        if (callback) {
-            fetch(getChromeURL("settings.json")).then((res) => {
-                if (res.ok) {
-                    return res.json();
-                }
-            }).then(jso => {
-                if (jso) {
-                    return storage.get(storage_key).then(async (user_settings) => {
-                        if (!user_settings) {
-                            user_settings = {}
+        return fetch(getChromeURL("settings.json")).then((res) => {
+            if (res.ok) { return res.json(); }
+        }).then(jso => {
+            if (jso) {
+                return storage.get(storage_key).then(async (user_settings) => {
+                    if (!user_settings) { user_settings = {} }
+                    if (!(user_settings[storage_key])) { user_settings[storage_key] = {} }
+                    await loopThroughArrayAsync(jso["settings"], async (i, v) => {
+                        if (typeof(user_settings[storage_key][i]) == "undefined") {
+                            if (!(typeof(v["default"]) == "undefined")) {user_settings[storage_key][i] = v["default"]}
                         }
-                        if (!(user_settings[storage_key])) {
-                            user_settings[storage_key] = {}
-                        }
-                        await loopThroughArrayAsync(jso["settings"], async (i, v) => {
-                            if (typeof(user_settings[storage_key][i]) == "undefined") {
-                                if (!(typeof(v["default"]) == "undefined")) {user_settings[storage_key][i] = v["default"]}
-                            }
-                        })
-                        callback(user_settings)
                     })
-                }
-            })
-        } else {
-            return fetch(getChromeURL("settings.json")).then((res) => {
-                if (res.ok) {
-                    return res.json();
-                }
-            }).then(jso => {
-                if (jso) {
-                    return storage.get(storage_key).then(async (user_settings) => {
-                        if (!user_settings) {
-                            user_settings = {}
-                        }
-                        if (!(user_settings[storage_key])) {
-                            user_settings[storage_key] = {}
-                        }
-                        await loopThroughArrayAsync(jso["settings"], async (i, v) => {
-                            if (typeof(user_settings[storage_key][i]) == "undefined") {
-                                if (!(typeof(v["default"]) == "undefined")) {user_settings[storage_key][i] = v["default"]}
-                            }
-                        })
-                        return user_settings
-                    })
-                }
-            })
-        }
+                    if (callback) { callback(user_settings) }
+                    return user_settings
+                })
+            }
+        })
     }
 
     try {
         getSettings(storage_key, function (items) {
-            var enabled = true;
-            var remoteStyles = false;
-            var overwriteCreateDashboard = true;
-            var devForum = true;
-            var otherSub = true;
-            var oldFontOnOtherSub = true;
-            var trusted_source = "https://oldfont.efaz.dev/"; /* This is customizable by the user, but they would have to find a fitting url and make sure it's trusted. */
-
-            if (items[storage_key]) {
-                if (typeof (items[storage_key]["enabled"]) == "boolean") { enabled = items[storage_key]["enabled"] };
-                if (typeof (items[storage_key]["remoteStyles"]) == "boolean") { remoteStyles = items[storage_key]["remoteStyles"] };
-                if (typeof (items[storage_key]["overwriteCreateDashboard"]) == "boolean") { overwriteCreateDashboard = items[storage_key]["overwriteCreateDashboard"] };
-                if (typeof (items[storage_key]["overwriteDevForum"]) == "boolean") { devForum = items[storage_key]["overwriteDevForum"] };
-                if (typeof (items[storage_key]["overwriteOtherSubdomains"]) == "boolean") { otherSub = items[storage_key]["overwriteOtherSubdomains"] };
-                if (typeof (items[storage_key]["onlyUseOldFontOnMainWebsite"]) == "boolean") { oldFontOnOtherSub = items[storage_key]["onlyUseOldFontOnMainWebsite"] };
-                if (typeof (items[storage_key]["resourcesUrl"]) == "string") { if (items[storage_key]["resourcesUrl"] == "https://cdn.efaz.dev/extensions/remove-builder-font/resources/" || items[storage_key]["resourcesUrl"] == "https://cdn2.efaz.dev/cdn/remove-builder-font/") { items[storage_key]["resourcesUrl"] = trusted_source; storage.set(items); } trusted_source = items[storage_key]["resourcesUrl"] };
-            }
-            var settings = items[storage_key];
+            let enabled = true;
+            let remoteStyles = false;
+            let overwriteCreateDashboard = true;
+            let devForum = true;
+            let otherSub = true;
+            let oldFontOnOtherSub = true;
+            let trusted_source = "https://oldfont.efaz.dev/"; /* This is customizable by the user, but they would have to find a fitting url and make sure it's trusted. */
+            let settings = items[storage_key];
+            if (typeof (settings["enabled"]) == "boolean") { enabled = settings["enabled"] };
+            if (typeof (settings["remoteStyles"]) == "boolean") { remoteStyles = settings["remoteStyles"] };
+            if (typeof (settings["overwriteCreateDashboard"]) == "boolean") { overwriteCreateDashboard = settings["overwriteCreateDashboard"] };
+            if (typeof (settings["overwriteDevForum"]) == "boolean") { devForum = settings["overwriteDevForum"] };
+            if (typeof (settings["overwriteOtherSubdomains"]) == "boolean") { otherSub = settings["overwriteOtherSubdomains"] };
+            if (typeof (settings["onlyUseOldFontOnMainWebsite"]) == "boolean") { oldFontOnOtherSub = settings["onlyUseOldFontOnMainWebsite"] };
+            if (typeof (settings["resourcesUrl"]) == "string") { if (settings["resourcesUrl"] == "https://cdn.efaz.dev/extensions/remove-builder-font/resources/" || settings["resourcesUrl"] == "https://cdn2.efaz.dev/cdn/remove-builder-font/") { settings["resourcesUrl"] = trusted_source; storage.set(items); } trusted_source = settings["resourcesUrl"] };
             if (enabled == true) {
-                var tab = window.location
+                let tab = window.location
                 if (tab.href) {
-                    var urlObj = window.location
-                    if (urlObj.hostname == "www.roblox.com") {
+                    if (tab.hostname == "www.roblox.com") {
                         async function injectCSS(css) {
                             if (css && !(document.getElementById("remove-builder-font"))) {
                                 const style = document.createElement("style")
@@ -309,12 +272,12 @@ inject.js:
                             if (css) {
                                 let selectors = Array.from(document.querySelectorAll("style"));
                                 await loopThroughArrayAsync(selectors, async (_, selector) => {
-                                    if (!(/Efaz's Builder Font Remover/.test(selector.textContent)) && (selector.getAttribute("data-emotion") == "web-blox-css-mui-global" || selector.getAttribute("data-emotion") == "web-blox-css-mui")) {
+                                    if (!(selector.textContent.includes("Efaz's Builder Font Remover")) && (selector.getAttribute("data-emotion") == "web-blox-css-mui-global" || selector.getAttribute("data-emotion") == "web-blox-css-mui")) {
                                         let sheet_text = sheetToString(selector.sheet)
-                                        if (/@font-face/.test(sheet_text)) {
+                                        if (sheet_text.includes("@font-face")) {
                                             if (selector.textContent == "") {
                                                 selector.textContent = `${sheet_text.replaceAll("Builder Sans", "BuilderRemove").replaceAll("Builder Mono", "BuilderMono")} \n\n${css}`
-                                            } else if (/\/fonts\/builder-sans\//.test(selector.textContent)) {
+                                            } else if (selector.textContent.includes("/fonts/builder-sans/")) {
                                                 selector.textContent = `${sheet_text.replaceAll("Builder Sans", "BuilderRemove").replaceAll("Builder Mono", "BuilderMono")} \n\n${css}`
                                             }
                                         }
@@ -324,7 +287,7 @@ inject.js:
                                             if (sheet_text != "") { selector.textContent = selector.textContent + sheet_text; }
                                             selector.setAttribute("scanned-builder-font-remove", "true")
                                         }
-                                        if (!(/Efaz's Builder Font Remover/.test(selector.textContent) && /Builder Sans/.test(selector.textContent))) {
+                                        if (!(selector.textContent.includes("Efaz's Builder Font Remover")) && selector.textContent.includes("Builder Sans")) {
                                             selector.textContent = `${selector.textContent.replaceAll("Builder Sans", "BuilderRemove").replaceAll("Builder Mono", "BuilderMono")} \n\n${css}`
                                         }
                                     }
@@ -366,7 +329,7 @@ inject.js:
                                 })
                             }
                         }
-                    } else if (urlObj.hostname == "devforum.roblox.com") {
+                    } else if (tab.hostname == "devforum.roblox.com") {
                         if (devForum == true) {
                             async function injectCSS(css, tries) {
                                 if (css) {
@@ -424,7 +387,7 @@ inject.js:
                                 }
                             }
                         }
-                    } else if (urlObj.hostname == "create.roblox.com") {
+                    } else if (tab.hostname == "create.roblox.com") {
                         if (overwriteCreateDashboard == true) {
                             async function injectCSS(css, tries) {
                                 if (css) {
@@ -434,11 +397,11 @@ inject.js:
                                     for (q = 0; q < selectors.length; q++) {
                                         let selector = selectors[q]
                                         let sheet_text = sheetToString(selector.sheet)
-                                        if (selector.getAttribute("data-emotion") == "web-blox-css-mui-global" && /@font-face/.test(sheet_text)) {
-                                            if (!(/Efaz's Builder Font Remover/.test(selector.textContent))) {
+                                        if (selector.getAttribute("data-emotion") == "web-blox-css-mui-global" && sheet_text.includes("@font-face")) {
+                                            if (!(selector.textContent.includes("Efaz's Builder Font Remover"))) {
                                                 if (selector.textContent == "") {
                                                     selector.textContent = `${sheet_text} \n\n${css}`
-                                                } else if (/\/fonts\/builder-sans\//.test(selector.textContent)) {
+                                                } else if (selector.textContent.includes("/fonts/builder-sans/")) {
                                                     selector.textContent = `${sheet_text} \n\n${css}`
                                                 }
                                             }
@@ -469,7 +432,7 @@ inject.js:
                                 }
                             }
                         }
-                    } else if (/.roblox.com/.test(urlObj.hostname)) {
+                    } else if (tab.hostname.endsWith(".roblox.com")) {
                         if (otherSub == true) {
                             async function injectCSS(css, tries) {
                                 if (css) {
@@ -479,11 +442,11 @@ inject.js:
                                     let found = false
                                     for (q = 0; q < selectors.length; q++) {
                                         let selector = selectors[q]
-                                        if (selector.getAttribute("data-emotion") == "web-blox-css-mui-global" && /@font-face/.test(sheetToString(selector.sheet))) {
+                                        if (selector.getAttribute("data-emotion") == "web-blox-css-mui-global" && sheetToString(selector.sheet).includes("@font-face")) {
                                             if (selector.textContent == "") {
                                                 selector.textContent = css
                                                 found = true
-                                            } else if (/@font-face/.test(selector.textContent) && /BuilderSans/.test(selector.textContent)) {
+                                            } else if (selector.textContent.includes("@font-face") && selector.textContent.includes("BuilderSans")) {
                                                 selector.textContent = `${selector.textContent} \n\n${css}`
                                                 found = true
                                             }

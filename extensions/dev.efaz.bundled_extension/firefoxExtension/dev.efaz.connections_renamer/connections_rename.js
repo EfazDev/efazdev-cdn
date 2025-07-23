@@ -32,89 +32,47 @@ inject.js:
             if (typeof (array) == "object") {
                 if (Array.isArray(array)) {
                     for (let a = 0; a < array.length; a++) {
-                        var value = array[a]
-                        await callback(a, value)
+                        await callback(a, array[a])
                     }
                 } else {
                     var generated_keys = Object.keys(array);
                     for (let a = 0; a < generated_keys.length; a++) {
-                        var key = generated_keys[a]
-                        var value = array[key]
-                        await callback(key, value)
+                        await callback(generated_keys[a], array[generated_keys[a]])
                     }
                 }
             }
         }
         async function getSettings(storage_key, callback) {
-            if (callback) {
-                fetch(getChromeURL("settings.json")).then((res) => {
-                    if (res.ok) {
-                        return res.json();
-                    }
-                }).then(jso => {
-                    if (jso) {
-                        return storage.get(storage_key).then(async (user_settings) => {
-                            if (!user_settings) {
-                                user_settings = {}
+            return fetch(getChromeURL("settings.json")).then((res) => {
+                if (res.ok) { return res.json(); }
+            }).then(jso => {
+                if (jso) {
+                    return storage.get(storage_key).then(async (user_settings) => {
+                        if (!user_settings) { user_settings = {} }
+                        if (!(user_settings[storage_key])) { user_settings[storage_key] = {} }
+                        await loopThroughArrayAsync(jso["settings"], async (i, v) => {
+                            if (typeof(user_settings[storage_key][i]) == "undefined") {
+                                if (!(typeof(v["default"]) == "undefined")) {user_settings[storage_key][i] = v["default"]}
                             }
-                            if (!(user_settings[storage_key])) {
-                                user_settings[storage_key] = {}
-                            }
-                            await loopThroughArrayAsync(jso["settings"], async (i, v) => {
-                                if (typeof(user_settings[storage_key][i]) == "undefined") {
-                                    if (!(typeof(v["default"]) == "undefined")) {user_settings[storage_key][i] = v["default"]}
-                                }
-                            })
-                            callback(user_settings)
                         })
-                    }
-                })
-            } else {
-                return fetch(getChromeURL("settings.json")).then((res) => {
-                    if (res.ok) {
-                        return res.json();
-                    }
-                }).then(jso => {
-                    if (jso) {
-                        return storage.get(storage_key).then(async (user_settings) => {
-                            if (!user_settings) {
-                                user_settings = {}
-                            }
-                            if (!(user_settings[storage_key])) {
-                                user_settings[storage_key] = {}
-                            }
-                            await loopThroughArrayAsync(jso["settings"], async (i, v) => {
-                                if (typeof(user_settings[storage_key][i]) == "undefined") {
-                                    if (!(typeof(v["default"]) == "undefined")) {user_settings[storage_key][i] = v["default"]}
-                                }
-                            })
-                            return user_settings
-                        })
-                    }
-                })
-            }
+                        if (callback) { callback(user_settings) }
+                        return user_settings
+                    })
+                }
+            })
         }
         function timeout(func, ms) { setTimeout(func, ms); }
         getSettings(storage_key, function (items) {
-            var enabled = true;
-            if (items[storage_key]) {
-                if (typeof (items[storage_key]["enabled"]) == "boolean") { enabled = items[storage_key]["enabled"] };
-            } else {
-                items[storage_key] = {
-                    "enabled": true,
-                    "newName": "Friends",
-                    "changeTitleHtml": true,
-                    "startTime": "75"
-                }
-            }
-            var settings = items[storage_key];
+            let enabled = true;
+            let settings = items[storage_key];
+            if (typeof (settings["enabled"]) == "boolean") { enabled = settings["enabled"] };
             if (enabled == true) {
-                var tab = window.location
+                let tab = window.location
                 if (tab.href) {
                     if (tab.hostname == "www.roblox.com") {
-                        var newName = settings["newName"];
-                        var newNameWithoutEndingS = settings["newName"].endsWith("s") ? settings["newName"].slice(0, -1) : settings["newName"];
-                        var amountOfSecondsBeforeLoop = (typeof(settings["startTime"]) == "string" && Number(settings["startTime"])) ? Number(settings["startTime"]) : 75
+                        let newName = settings["newName"];
+                        let newNameWithoutEndingS = settings["newName"].endsWith("s") ? settings["newName"].slice(0, -1) : settings["newName"];
+                        let amountOfSecondsBeforeLoop = (typeof(settings["startTime"]) == "string" && Number(settings["startTime"])) ? Number(settings["startTime"]) : 75
                         /* Clean New Name to prevent crashes */
                         var div = document.createElement("div");
                         div.innerHTML = newName;
@@ -125,207 +83,207 @@ inject.js:
                         newNameWithoutEndingS = div.textContent.replace(/<\/[^>]+(>|$)/g, "");
                         /* Clean New Name to prevent crashes */
                         function injectRename() {
-                            var sidebar_headers = document.querySelectorAll(".font-header-2.dynamic-ellipsis-item")
+                            let sidebar_headers = document.querySelectorAll(".font-header-2.dynamic-ellipsis-item")
                             for (let i = 0; i < sidebar_headers.length; i++) {
-                                var header = sidebar_headers[i]
-                                if (/Connect/.test(header.innerHTML) && !(header.innerHTML.includes(newName))) {
+                                let header = sidebar_headers[i]
+                                if (header.innerHTML.includes("Connect") && !(header.innerHTML.includes(newName))) {
                                     header.innerHTML = newName
                                 }
                             }
 
-                            var group_webblox_dropdown = document.querySelectorAll(".web-blox-css-mui-184cbry")
+                            let group_webblox_dropdown = document.querySelectorAll(".web-blox-css-mui-184cbry")
                             for (let i = 0; i < group_webblox_dropdown.length; i++) {
-                                var header = group_webblox_dropdown[i]
-                                if (/Connection/.test(header.innerHTML) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
+                                let header = group_webblox_dropdown[i]
+                                if (header.innerHTML.includes("Connection") && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                     header.innerHTML = header.innerHTML.replace("Connection", newNameWithoutEndingS)
                                 }
                             }
 
-                            var title_page_text = document.querySelectorAll(".friends-title")
+                            let title_page_text = document.querySelectorAll(".friends-title")
                             for (let i = 0; i < title_page_text.length; i++) {
-                                var header = title_page_text[i]
-                                if (/Connections/.test(header.innerHTML) && !(header.innerHTML.includes(newName))) {
+                                let header = title_page_text[i]
+                                if (header.innerHTML.includes("Connections") && !(header.innerHTML.includes(newName))) {
                                     header.innerHTML = header.innerHTML.replace("Connections", newName)
                                 }
                             }
 
-                            var buttons_text = document.querySelectorAll(".web-blox-css-tss-1283320-Button-textContainer")
+                            let buttons_text = document.querySelectorAll(".web-blox-css-tss-1283320-Button-textContainer")
                             for (let i = 0; i < buttons_text.length; i++) {
-                                var header = buttons_text[i]
-                                if (/Remove Connection/.test(header.innerHTML) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
+                                let header = buttons_text[i]
+                                if (header.innerHTML.includes("Remove Connection") && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                     header.innerHTML = header.innerHTML.replace("Remove Connection", "Un" + newNameWithoutEndingS.toLowerCase())
-                                } else if (/Connection/.test(header.innerHTML) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
+                                } else if (header.innerHTML.includes("Connection") && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                     header.innerHTML = header.innerHTML.replace("Connection", newNameWithoutEndingS)
                                 }
                             }
 
-                            var search_headers = document.querySelectorAll(".section-title.ng-binding ng-scope.font-header-1")
+                            let search_headers = document.querySelectorAll(".section-title.ng-binding ng-scope.font-header-1")
                             for (let i = 0; i < search_headers.length; i++) {
-                                var header = search_headers[i]
-                                if (/Connections/.test(header.innerHTML) && !(header.innerHTML.includes(newName))) {
+                                let header = search_headers[i]
+                                if (header.innerHTML.includes("Connections") && !(header.innerHTML.includes(newName))) {
                                     header.innerHTML = header.innerHTML.replace("Connections", newName)
                                 }
                             }
 
-                            var friends_search_link = document.querySelectorAll(".friends-filter-searchbar-input")
+                            let friends_search_link = document.querySelectorAll(".friends-filter-searchbar-input")
                             for (let i = 0; i < friends_search_link.length; i++) {
-                                var header = friends_search_link[i]
-                                if (/Connections/.test(header.placeholder) && !(header.placeholder.includes(newName))) {
+                                let header = friends_search_link[i]
+                                if (header.placeholder.includes("Connections") && !(header.placeholder.includes(newName))) {
                                     header.placeholder = header.placeholder.replace("Connections", `${newName}`)
                                 }
                             }
 
-                            var friends_headers = document.querySelectorAll(".ng-binding")
+                            let friends_headers = document.querySelectorAll(".ng-binding")
                             for (let i = 0; i < friends_headers.length; i++) {
-                                var header = friends_headers[i]
-                                if (/Connections/.test(header.innerHTML) && !(header.innerHTML.includes(newName))) {
+                                let header = friends_headers[i]
+                                if (header.innerHTML.includes("Connections") && !(header.innerHTML.includes(newName))) {
                                     header.innerHTML = header.innerHTML.replace("Connections", newName)
                                 }
                             }
 
-                            var most_text_frames = document.querySelectorAll(".ng-binding")
+                            let most_text_frames = document.querySelectorAll(".ng-binding")
                             for (let i = 0; i < most_text_frames.length; i++) {
-                                var header = most_text_frames[i]
-                                if (/Connection/.test(header.innerHTML) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
+                                let header = most_text_frames[i]
+                                if (header.innerHTML.includes("Connection") && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                     if (settings["massEdit"] == true) {
                                         header.innerHTML = header.innerHTML.replace("Connection", newNameWithoutEndingS)
                                     }
                                 }
                             }
 
-                            var amount_text_summary = document.querySelectorAll(".amount")
+                            let amount_text_summary = document.querySelectorAll(".amount")
                             for (let i = 0; i < amount_text_summary.length; i++) {
-                                var header = amount_text_summary[i]
-                                if (/Connection/.test(header.innerHTML) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
+                                let header = amount_text_summary[i]
+                                if (header.innerHTML.includes("Connection") && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                     header.innerHTML = header.innerHTML.replace("Connection", newNameWithoutEndingS)
                                 }
                             }
 
-                            var selected_labels = document.querySelectorAll(".rbx-selection-label")
+                            let selected_labels = document.querySelectorAll(".rbx-selection-label")
                             for (let i = 0; i < selected_labels.length; i++) {
-                                var header = selected_labels[i]
-                                if (/Connection/.test(header.innerHTML) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
+                                let header = selected_labels[i]
+                                if (header.innerHTML.includes("Connection") && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                     header.innerHTML = header.innerHTML.replace("Connection", newNameWithoutEndingS)
                                 }
                             }
 
-                            var item_descriptions = document.querySelectorAll(".item-description")
+                            let item_descriptions = document.querySelectorAll(".item-description")
                             for (let i = 0; i < item_descriptions.length; i++) {
-                                var header = item_descriptions[i]
-                                if (/Connection/.test(header.innerHTML) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
+                                let header = item_descriptions[i]
+                                if (header.innerHTML.includes("Connection") && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                     header.innerHTML = header.innerHTML.replace("Connection", newNameWithoutEndingS)
                                 }
                             }
 
-                            var friends_subtitle = document.querySelectorAll(".friends-subtitle")
+                            let friends_subtitle = document.querySelectorAll(".friends-subtitle")
                             for (let i = 0; i < friends_subtitle.length; i++) {
-                                var header = friends_subtitle[i]
-                                if (header.childNodes && header.childNodes[0] && /Connections/.test(header.childNodes[0].textContent) && !(header.childNodes[0].textContent.includes(newName))) {
+                                let header = friends_subtitle[i]
+                                if (header.childNodes && header.childNodes[0] && header.childNodes[0].textContent.includes("Connections") && !(header.childNodes[0].textContent.includes(newName))) {
                                     header.childNodes[0].textContent = header.childNodes[0].textContent.replace("Connections", newName)
                                 }
                             }
 
-                            var previous_names = document.querySelectorAll(".text-pastname.ng-binding")
+                            let previous_names = document.querySelectorAll(".text-pastname.ng-binding")
                             for (let i = 0; i < previous_names.length; i++) {
-                                var header = previous_names[i]
-                                if (/Connection/.test(header.innerHTML) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
+                                let header = previous_names[i]
+                                if (header.innerHTML.includes("Connection") && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                     header.innerHTML = header.innerHTML.replace("Connection", newNameWithoutEndingS)
                                 }
                             }
 
-                            var back_links = document.querySelectorAll(".back-link")
+                            let back_links = document.querySelectorAll(".back-link")
                             for (let i = 0; i < back_links.length; i++) {
-                                var header = back_links[i]
-                                if ((/Connection/.test(header.innerHTML) || /Connections/.test(header.innerHTML))) {
+                                let header = back_links[i]
+                                if ((header.innerHTML.includes("Connection") || header.innerHTML.includes("Connections"))) {
                                     header.innerHTML = header.innerHTML.replace("Connections", newName)
                                 }
                             }
 
-                            var font_bodies = document.querySelectorAll(".font-body")
+                            let font_bodies = document.querySelectorAll(".font-body")
                             for (let i = 0; i < font_bodies.length; i++) {
-                                var header = font_bodies[i]
-                                if ((/Connection/.test(header.innerHTML) || /Connections/.test(header.innerHTML)) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
+                                let header = font_bodies[i]
+                                if ((header.innerHTML.includes("Connection") || header.innerHTML.includes("Connections")) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                     header.innerHTML = header.innerHTML.replace("Connection", newNameWithoutEndingS)
                                 }
                             }
 
-                            var emphasises = document.querySelectorAll(".text-emphasis")
+                            let emphasises = document.querySelectorAll(".text-emphasis")
                             for (let i = 0; i < emphasises.length; i++) {
-                                var header = emphasises[i]
-                                if ((/Connection/.test(header.innerHTML) || /Connections/.test(header.innerHTML)) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
+                                let header = emphasises[i]
+                                if ((header.innerHTML.includes("Connection") || header.innerHTML.includes("Connections")) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                     header.innerHTML = header.innerHTML.replace("Connection", newNameWithoutEndingS)
                                 }
                             }
 
-                            var text_contents = document.querySelectorAll(".text-content")
+                            let text_contents = document.querySelectorAll(".text-content")
                             for (let i = 0; i < text_contents.length; i++) {
-                                var header = text_contents[i]
-                                if ((/Connection/.test(header.innerHTML) || /Connections/.test(header.innerHTML)) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
+                                let header = text_contents[i]
+                                if ((header.innerHTML.includes("Connection") || header.innerHTML.includes("Connections")) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                     header.innerHTML = header.innerHTML.replace("Connection", newNameWithoutEndingS)
                                 }
                             }
 
-                            var friend_tooltips = document.querySelectorAll("#friendsTooltip")
+                            let friend_tooltips = document.querySelectorAll("#friendsTooltip")
                             for (let i = 0; i < friend_tooltips.length; i++) {
-                                var header = friend_tooltips[i]
-                                if ((/Connection/.test(header.innerHTML) || /Connections/.test(header.innerHTML)) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
+                                let header = friend_tooltips[i]
+                                if ((header.innerHTML.includes("Connection") || header.innerHTML.includes("Connections")) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                     header.innerHTML = header.innerHTML.replace("Connection", newNameWithoutEndingS)
                                 }
                             }
 
-                            var player_list_headers = document.querySelectorAll(".people-list-header")
+                            let player_list_headers = document.querySelectorAll(".people-list-header")
                             for (let i = 0; i < player_list_headers.length; i++) {
-                                var header = player_list_headers[i]
-                                if ((/Connection/.test(header.innerHTML) || /Connections/.test(header.innerHTML)) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
+                                let header = player_list_headers[i]
+                                if ((header.innerHTML.includes("Connection") || header.innerHTML.includes("Connections")) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                     header.innerHTML = header.innerHTML.replace("Connection", newNameWithoutEndingS)
                                 }
                             }
 
-                            var friend_list_titles = document.querySelectorAll(".friends-carousel-tile-labels")
+                            let friend_list_titles = document.querySelectorAll(".friends-carousel-tile-labels")
                             for (let i = 0; i < friend_list_titles.length; i++) {
-                                var header = friend_list_titles[i]
-                                if (header.nodeName == "DIV" && /Connect/.test(header.innerHTML) && !(header.innerHTML.includes(newName))) {
-                                    if (!(/Add/.test(header.innerHTML))) {
+                                let header = friend_list_titles[i]
+                                if (header.nodeName == "DIV" && header.innerHTML.includes("Connect") && !(header.innerHTML.includes(newName))) {
+                                    if (!(header.innerHTML.includes("Add"))) {
                                         header.innerHTML = header.innerHTML.replace("Connect", "Add Connect")
                                     }
                                     header.innerHTML = header.innerHTML.replace("Connect", newName)
                                 }
                             }
 
-                            var all_links = document.querySelectorAll("a")
+                            let all_links = document.querySelectorAll("a")
                             for (let i = 0; i < all_links.length; i++) {
-                                var header = all_links[i]
+                                let header = all_links[i]
                                 if (settings["massEdit"] == true) {
-                                    if (!(header.className == "profile-header-social-count") && /Connection/.test(header.innerHTML) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
+                                    if (!(header.className == "profile-header-social-count") && header.innerHTML.includes("Connection") && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                         header.innerHTML = header.innerHTML.replace("Connection", newNameWithoutEndingS)
                                     }
                                 }
                             }
 
-                            var all_labels = document.querySelectorAll("label")
+                            let all_labels = document.querySelectorAll("label")
                             for (let i = 0; i < all_labels.length; i++) {
-                                var header = all_labels[i]
+                                let header = all_labels[i]
                                 if (settings["massEdit"] == true) {
-                                    if ((/Connection/.test(header.innerHTML) || /Connections/.test(header.innerHTML)) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
+                                    if ((header.innerHTML.includes("Connection") || header.innerHTML.includes("Connections")) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                         header.innerHTML = header.innerHTML.replace("Connection", newNameWithoutEndingS)
                                     }
                                 }
                             }
 
-                            var all_profile_headers = document.querySelectorAll(".profile-header-social-count-label")
+                            let all_profile_headers = document.querySelectorAll(".profile-header-social-count-label")
                             for (let i = 0; i < all_profile_headers.length; i++) {
-                                var header = all_profile_headers[i]
-                                if ((/Connection/.test(header.innerHTML) || /Connections/.test(header.innerHTML)) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
+                                let header = all_profile_headers[i]
+                                if ((header.innerHTML.includes("Connection") || header.innerHTML.includes("Connections")) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                     header.innerHTML = header.innerHTML.replace("Connection", newNameWithoutEndingS)
                                 }
                             }
 
-                            if (/\/connections/.test(window.location.pathname) || /\/friends/.test(window.location.pathname)) {    
+                            if (window.location.pathname.includes("/connections") || window.location.pathname.includes("/friends")) {    
                                 if (settings["changeTitleHtml"] == true) {
-                                    var titles = document.querySelectorAll("title")
+                                    let titles = document.querySelectorAll("title")
                                     for (let i = 0; i < titles.length; i++) {
-                                        var header = titles[i]
-                                        if (/Connections/.test(header.textContent)) {
+                                        let header = titles[i]
+                                        if (header.textContent.includes("Connections")) {
                                             header.textContent = header.textContent.replaceAll("Connections", newName)
                                         }
                                     }
