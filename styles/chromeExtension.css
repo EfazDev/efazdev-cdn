@@ -9,7 +9,7 @@ Modified on July 16th, 2025
     font-family: mainfont;
     font-weight: bold;
     font-display: swap;
-    src: url("https://cdn.efaz.dev/styles/mainFont.ttf");
+    src: url(https://cdn.efaz.dev/styles/mainFont.woff2) format("woff2"), url(https://cdn.efaz.dev/styles/mainFont.woff) format("woff");
 }
 html {
     width: 500px;
@@ -23,7 +23,7 @@ html {
     -webkit-overflow-scrolling: touch;
 }
 body {
-    font-family: mainfont, sans-serif;
+    font-family: mainfont, arial, sans-serif;
     background: linear-gradient(180deg, #0a0a0a, #111111, #1c1c1c);
     color: #fff;
     min-height: 100vh;

@@ -1,6 +1,6 @@
 @font-face {
     font-family: mainfont;
-    src: url("https://cdn.efaz.dev/styles/mainFont.ttf");
+    src: url(https://cdn.efaz.dev/styles/mainFont.woff2) format("woff2"), url(https://cdn.efaz.dev/styles/mainFont.woff) format("woff");
     font-weight: bold;
 }
 
@@ -11,7 +11,7 @@ body {
     width: 1920px;
     height: 1080px;
     background: linear-gradient(225deg, rgba(255, 75, 0, 1) 0%, rgb(207, 207, 0) 60%, rgb(19, 193, 0) 100%);
-    font-family: mainfont;
+    font-family: mainfont, arial, sans-serif;
     color: white;
     align-items: flex-start;
 }
