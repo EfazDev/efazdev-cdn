@@ -24,6 +24,7 @@ html {
 }
 body {
     font-family: mainfont, arial, sans-serif;
+    background: linear-gradient(180deg, #0a0a0a, #111111, #1c1c1c);
     color: #fff;
     min-height: 100vh;
     display: flex;
