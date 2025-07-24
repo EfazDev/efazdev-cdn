@@ -14,7 +14,7 @@ Modified on July 16th, 2025
 html {
     width: 500px;
     height: 580px;
-    background: #0a0a0a;
+    background: linear-gradient(180deg, #0a0a0a, #111111, #1c1c1c);
     min-height: 100%;
     margin: 0;
     padding: 0;
@@ -24,7 +24,6 @@ html {
 }
 body {
     font-family: mainfont, arial, sans-serif;
-    background: linear-gradient(180deg, #0a0a0a, #111111, #1c1c1c);
     color: #fff;
     min-height: 100vh;
     display: flex;
