@@ -18,6 +18,7 @@ html {
     padding: 0;
     overflow-x: hidden;
     overscroll-behavior-y: none;
+    overflow: hidden;
     -webkit-overflow-scrolling: touch;
 }
 body {
@@ -293,5 +294,70 @@ br {
     a {
         font-size: 1rem;
         max-width: 100vw;
+    }
+}
+
+@media (orientation: portrait) {
+    html {
+        font-size: 200%;
+    }
+
+    body {
+        padding: 1.25rem;
+        align-items: center;
+    }
+
+    div {
+        width: 200%;
+        max-width: 95vw;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+    h2 {
+        font-size: 1.4rem;
+    }
+    h3 {
+        font-size: 1.2rem;
+    }
+
+    p, label, a {
+        font-size: 1.1em;
+    }
+
+    button, input, textarea {
+        font-size: 1em;
+        width: 100%;
+    }
+
+    img {
+        scale: 2;
+        margin: 0.3em !important;
+        max-width: none;
+        display: block;
+        margin: 0 auto;
+        height: auto;
+        display: inline-block;
+    }
+
+    div > img {
+        margin-bottom: 1em !important;
+    }
+
+    ul {
+        flex-direction: column;
+        align-items: stretch;
+        width: 200%;
+    }
+
+    ul > div {
+        width: 100%;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    html {
+        font-size: 150%;
     }
 }
