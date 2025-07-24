@@ -442,7 +442,7 @@ inject.js:
                                     let found = false
                                     for (q = 0; q < selectors.length; q++) {
                                         let selector = selectors[q]
-                                        if (selector.getAttribute("data-emotion") == "web-blox-css-mui-global" && sheetToString(selector.sheet).includes("@font-face")) {
+                                        if ((selector.getAttribute("data-emotion") == "web-blox-css-mui-global" || selector.getAttribute("data-emotion") == "css-global") && sheetToString(selector.sheet).includes("@font-face")) {
                                             if (selector.textContent == "") {
                                                 selector.textContent = css
                                                 found = true
