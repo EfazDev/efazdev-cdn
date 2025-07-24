@@ -356,7 +356,7 @@ br {
     }
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 768px) and (orientation: portrait) {
     html {
         font-size: 150%;
     }
