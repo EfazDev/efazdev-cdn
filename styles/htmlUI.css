@@ -17,7 +17,6 @@ html {
     margin: 0;
     padding: 0;
     overscroll-behavior-y: none;
-    -webkit-overflow-scrolling: touch;
 }
 body {
     font-family: mainfont, arial, sans-serif;
