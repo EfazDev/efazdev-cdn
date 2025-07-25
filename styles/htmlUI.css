@@ -355,3 +355,9 @@ br {
         font-size: 125%;
     }
 }
+
+@media screen and (min-device-width: 1080px) and (orientation: portrait) {
+    html {
+        font-size: 100%;
+    }
+}
