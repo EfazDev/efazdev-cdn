@@ -1,5 +1,15 @@
 [
     {
+        "name": "GUESTY - By NK Studios",
+        "url": "https://www.roblox.com/games/4842364293/GUESTY-COUNTDOWN",
+        "download_url": "https://www.roblox.com/games/4842364293/GUESTY-COUNTDOWN",
+        "discontinued": false,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "Play on Roblox!", "ProjectPage": "Play on Roblox!"},
+        "dateDiscontinued": "None",
+        "description": "A Roblox horror game to complete a chapter without getting caught by a guest!"
+    },
+    {
         "name": "Steal Milk for UGC - By CalmGFX",
         "url": "https://www.roblox.com/games/16832699537",
         "download_url": "https://www.roblox.com/games/16832699537",
@@ -18,6 +28,16 @@
         "buttonText": {"ProjectsPage": "Play on Roblox!", "ProjectPage": "Play on Roblox!"},
         "dateDiscontinued": "None",
         "description": "A Roblox game that is made for Cabled which includes a join & claim and more!"
+    },
+    {
+        "name": "Don't Touch Cellis - By CellisPlays",
+        "url": "https://www.roblox.com/games/15562398167/5-FREE-UGC-Dont-Touch-CelIis",
+        "download_url": "https://www.roblox.com/games/15562398167/5-FREE-UGC-Dont-Touch-CelIis",
+        "discontinued": false,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "Play on Roblox!", "ProjectPage": "Play on Roblox!"},
+        "dateDiscontinued": "None",
+        "description": "A Simulator Roblox game where you can spend/afk on and get UGC!"
     },
     {
         "name": "BuilderNoob's Join n Claims - By BuilderNoob",
@@ -40,16 +60,6 @@
         "description": "A Join & Claim Roblox game where you can get a chance for UGC by Outflowed at a set global time!"
     },
     {
-        "name": "Guesty - By NK Studios",
-        "url": "https://www.roblox.com/games/4842364293/GUESTY-COUNTDOWN",
-        "download_url": "https://www.roblox.com/games/4842364293/GUESTY-COUNTDOWN",
-        "discontinued": false,
-        "showInProjectsPage": true,
-        "buttonText": {"ProjectsPage": "Play on Roblox!", "ProjectPage": "Play on Roblox!"},
-        "dateDiscontinued": "None",
-        "description": "A Roblox horror game to complete a chapter without getting caught by a guest!"
-    },
-    {
         "name": "Cabled's Trick or Treat - By Cabled",
         "url": "https://www.roblox.com/games/76368809972950/Cableds-Trick-or-Treat",
         "download_url": "https://www.roblox.com/games/76368809972950/Cableds-Trick-or-Treat",
@@ -68,16 +78,6 @@
         "buttonText": {"ProjectsPage": "Play on Roblox!", "ProjectPage": "Play on Roblox!"},
         "dateDiscontinued": "None",
         "description": "A Hangout Roblox game where you can hangout at!"
-    },
-    {
-        "name": "Don't Touch Cellis - By CellisPlays",
-        "url": "https://www.roblox.com/games/15562398167/5-FREE-UGC-Dont-Touch-CelIis",
-        "download_url": "https://www.roblox.com/games/15562398167/5-FREE-UGC-Dont-Touch-CelIis",
-        "discontinued": false,
-        "showInProjectsPage": true,
-        "buttonText": {"ProjectsPage": "Play on Roblox!", "ProjectPage": "Play on Roblox!"},
-        "dateDiscontinued": "None",
-        "description": "A Simulator Roblox game where you can spend/afk on and get UGC!"
     },
     {
         "name": "Nugget - By LeminLimez",
