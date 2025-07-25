@@ -30,14 +30,14 @@
         "description": "A program heavily inspired by Bloxstrap but using Python!"
     },
     {
-        "name": "Efaz's Builder Font Remover",
-        "url": "https://www.efaz.dev/remove-builder-font",
-        "download_url": "https://chromewebstore.google.com/detail/efazs-builder-font-remove/hapbigglmmihgdmpficddjdmfgikalcp",
+        "name": "Efaz's Roblox Extension",
+        "url": "https://www.efaz.dev/roblox-extension",
+        "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-extension/iehkcelgogmkojgggahdefcdncfeiadf",
         "discontinued": false,
         "showInProjectsPage": true,
         "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
         "dateDiscontinued": "None",
-        "description": "Chrome extension that removes the Builder font on the Roblox website and replaces it with the old font again!"
+        "description": "An extension that contains all of my Roblox Chrome extensions at once!"
     },
     {
         "name": "Efaz's Roblox Verified Badge Add-on",
@@ -50,34 +50,14 @@
         "description": "Have a Roblox Verified Badge next to your name!"
     },
     {
-        "name": "Efaz's Cookie Destroyer",
-        "url": "https://www.efaz.dev/cookiedestroyer",
-        "download_url": "https://cdn.efaz.dev/py/download?fileName=CookieDestroyer.py",
+        "name": "Efaz's Builder Font Remover",
+        "url": "https://www.efaz.dev/remove-builder-font",
+        "download_url": "https://chromewebstore.google.com/detail/efazs-builder-font-remove/hapbigglmmihgdmpficddjdmfgikalcp",
         "discontinued": false,
         "showInProjectsPage": true,
         "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
         "dateDiscontinued": "None",
-        "description": "Destroy a Roblox Cookie in just a few moments!"
-    },
-    {
-        "name": "Efaz's Roblox In-Game UGC Tracer",
-        "url": "https://www.efaz.dev/ingameugctracer",
-        "download_url": "https://cdn.efaz.dev/py/download?fileName=RobloxInGameUGCTracer.py",
-        "discontinued": false,
-        "showInProjectsPage": true,
-        "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
-        "dateDiscontinued": "None",
-        "description": "Get Game IDs and Link of an In-Game Limited!"
-    },
-    {
-        "name": "Efaz's Roblox Account Bulk Verifier",
-        "url": "https://www.efaz.dev/bulkrobloxverifier",
-        "download_url": "https://cdn.efaz.dev/py/download?fileName=VerifyAllRobloxAccounts.py",
-        "discontinued": false,
-        "showInProjectsPage": true,
-        "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
-        "dateDiscontinued": "None",
-        "description": "Bulk Verify Roblox accounts with just a valid cookie!"
+        "description": "Chrome extension that removes the Builder font on the Roblox website and replaces it with the old font again!"
     },
     {
         "name": "Efaz's Roblox Charts/Discover Renamer",
@@ -110,16 +90,6 @@
         "description": "An extension that replaces Connections on Roblox back to Friends!"
     },
     {
-        "name": "Efaz's Roblox Logo Changer",
-        "url": "https://www.efaz.dev/roblox-logo-changer",
-        "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-logo-changer/cpickeibcibgfokapikmokmfgnjlglph",
-        "discontinued": false,
-        "showInProjectsPage": true,
-        "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
-        "dateDiscontinued": "None",
-        "description": "An extension that replaces the Roblox logo to custom ones!"
-    },
-    {
         "name": "Efaz's Roblox Foundation Color Accents",
         "url": "https://www.efaz.dev/roblox-foundation-color-accents",
         "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-foundation-color-accents/ofblldaagkkmhajigieajamomjcbohgf",
@@ -130,14 +100,24 @@
         "description": "An extension that can change the accent colors of the new Roblox Foundation blue color to something else!"
     },
     {
-        "name": "Efaz's Roblox Extension",
-        "url": "https://www.efaz.dev/roblox-extension",
-        "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-extension/iehkcelgogmkojgggahdefcdncfeiadf",
+        "name": "Efaz's Roblox Logo Changer",
+        "url": "https://www.efaz.dev/roblox-logo-changer",
+        "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-logo-changer/cpickeibcibgfokapikmokmfgnjlglph",
         "discontinued": false,
         "showInProjectsPage": true,
         "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
         "dateDiscontinued": "None",
-        "description": "An extension that contains all of my Roblox Chrome extensions at once!"
+        "description": "An extension that replaces the Roblox logo to custom ones!"
+    },
+    {
+        "name": "Efaz's Form System",
+        "url": "https://www.efaz.dev/formsystem",
+        "download_url": "https://forms.efaz.dev",
+        "discontinued": false,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "Try it out!", "ProjectPage": "Try it out!"},
+        "dateDiscontinued": "None",
+        "description": "Javascript Form System that allows you to make forms and send it to API Links!"
     },
     {
         "name": "Roblox URL Scheme Launcher",
@@ -160,14 +140,34 @@
         "description": "A simple redirect to discord.gg"
     },
     {
-        "name": "Efaz's Form System",
-        "url": "https://www.efaz.dev/formsystem",
-        "download_url": "https://forms.efaz.dev",
-        "discontinued": false,
+        "name": "Efaz's Cookie Destroyer",
+        "url": "https://www.efaz.dev/cookiedestroyer",
+        "download_url": "https://cdn.efaz.dev/py/download?fileName=CookieDestroyer.py",
+        "discontinued": true,
         "showInProjectsPage": true,
-        "buttonText": {"ProjectsPage": "Try it out!", "ProjectPage": "Try it out!"},
-        "dateDiscontinued": "None",
-        "description": "Javascript Form System that allows you to make forms and send it to API Links!"
+        "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
+        "dateDiscontinued": "End of Summer 2025",
+        "description": "Destroy a Roblox Cookie in just a few moments!"
+    },
+    {
+        "name": "Efaz's Roblox In-Game UGC Tracer",
+        "url": "https://www.efaz.dev/ingameugctracer",
+        "download_url": "https://cdn.efaz.dev/py/download?fileName=RobloxInGameUGCTracer.py",
+        "discontinued": true,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
+        "dateDiscontinued": "End of Summer 2025",
+        "description": "Get Game IDs and Link of an In-Game Limited!"
+    },
+    {
+        "name": "Efaz's Roblox Account Bulk Verifier",
+        "url": "https://www.efaz.dev/bulkrobloxverifier",
+        "download_url": "https://cdn.efaz.dev/py/download?fileName=VerifyAllRobloxAccounts.py",
+        "discontinued": true,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
+        "dateDiscontinued": "End of Summer 2025",
+        "description": "Bulk Verify Roblox accounts with just a valid cookie!"
     },
     {
         "name": "Merch Code System",
