@@ -264,14 +264,12 @@ br {
         margin-top: 0;
     }
     button {
-        width: 100%;
         min-width: 0;
         font-size: 1rem;
         text-align: center;
         margin: 0;
     }
     input {
-        width: 100%;
         min-width: 0;
         font-size: 1rem;
         margin: 0;
@@ -321,7 +319,6 @@ br {
 
     button, input, textarea {
         font-size: 1em;
-        width: 100%;
     }
 
     img {
