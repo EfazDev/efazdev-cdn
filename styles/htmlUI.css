@@ -24,6 +24,8 @@ body {
     background: linear-gradient(180deg, #0a0a0a, #111111, #1c1c1c);
     color: #fff;
     min-height: 100vh;
+    height: 100%;
+    width: 100%;
     margin: 0;
     padding: 0;
     position: fixed;
@@ -297,7 +299,6 @@ br {
     }
 
     body {
-        padding: 1.25rem;
         align-items: center;
     }
 
