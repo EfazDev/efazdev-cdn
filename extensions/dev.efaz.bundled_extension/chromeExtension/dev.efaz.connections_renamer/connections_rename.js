@@ -195,7 +195,39 @@ inject.js:
                             for (let i = 0; i < back_links.length; i++) {
                                 let header = back_links[i]
                                 if ((header.innerHTML.includes("Connection") || header.innerHTML.includes("Connections"))) {
-                                    header.innerHTML = header.innerHTML.replace("Connections", newName)
+                                    header.innerHTML = header.innerHTML.replace("Connection", newNameWithoutEndingS)
+                                }
+                            }
+
+                            let input_fields = document.querySelectorAll(".input-field")
+                            for (let i = 0; i < input_fields.length; i++) {
+                                let header = input_fields[i]
+                                if (header.placeholder && (header.placeholder.includes("Connection") || header.placeholder.includes("Connections"))) {
+                                    header.placeholder = header.placeholder.replace("Connection", newNameWithoutEndingS)
+                                }
+                            }
+
+                            let play_with_other_text = document.querySelectorAll(".play-with-others-text")
+                            for (let i = 0; i < play_with_other_text.length; i++) {
+                                let header = play_with_other_text[i]
+                                if (header.innerHTML && header.innerHTML.includes("connection")) {
+                                    header.innerHTML = header.innerHTML.replace("connection", newNameWithoutEndingS.toLowerCase())
+                                }
+                            }
+
+                            let friends_in_server = document.querySelectorAll(".friends-in-server-label")
+                            for (let i = 0; i < friends_in_server.length; i++) {
+                                let header = friends_in_server[i]
+                                if (header.innerHTML && header.innerHTML.includes("Connection")) {
+                                    header.innerHTML = header.innerHTML.replace("Connection", newNameWithoutEndingS)
+                                }
+                            }
+
+                            let server_list_headers = document.querySelectorAll(".server-list-header")
+                            for (let i = 0; i < server_list_headers.length; i++) {
+                                let header = server_list_headers[i]
+                                if (header.innerHTML && header.innerHTML.includes("Connection")) {
+                                    header.innerHTML = header.innerHTML.replace("Connection", newNameWithoutEndingS)
                                 }
                             }
 
