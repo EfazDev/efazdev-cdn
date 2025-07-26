@@ -72,7 +72,7 @@ inject.js:
                         let rbx_icon_sector = ".app-icon-mac { background-image: url(rbx_icon) !important; } .app-icon-windows { background-image: url(rbx_icon) !important; } .app-icon-ios { background-image: url(rbx_icon) !important; } .app-icon-android { background-image: url(rbx_icon) !important; }";
                         let rbx_studio_icon_sector = ".studio-icon-mac { background-image: url(rbx_studio_icon) !important; } .studio-icon-windows { background-image: url(rbx_studio_icon) !important; }";
                         let rbx_top_left_icon_sector = ".icon-logo-r { background-image: url(top_left_icon) !important; } .game-social-links>.btn-secondary-lg .icon-social-media-roblox { background-position: 0 0px !important; background-image: url(top_left_icon); }";
-                        let rbx_top_left_name_sector = ".icon-logo { background-image: url(top_left_name) !important; background-size: cover !important; } .icon-default-logo { background-image: url(top_left_name) !important; height:70px !important; }";
+                        let rbx_top_left_name_sector = ".icon-logo { background-image: url(top_left_name) !important; background-size: contain !important; background-position: center, center !important; } .icon-default-logo { background-image: url(top_left_name) !important; height:70px !important; }";
                         async function injectCSS() {
                             if (settings["projectedImage"] && settings["projectedImage"].startsWith("data")) {
                                 let all_links = Array.from(document.querySelectorAll("link"));
