@@ -223,6 +223,49 @@ inject.js:
                                 }
                             }
 
+                            let popover_buttons = document.querySelectorAll("div.popover-content > div > li > button")
+                            for (let i = 0; i < popover_buttons.length; i++) {
+                                let header = popover_buttons[i]
+                                if (header.innerHTML && header.innerHTML.includes("Connection")) {
+                                    header.innerHTML = header.innerHTML.replace("Connection", newNameWithoutEndingS)
+                                }
+                            }
+
+                            let friend_subtitles = document.querySelectorAll(".friends-subtitle")
+                            for (let i = 0; i < friend_subtitles.length; i++) {
+                                let header = friend_subtitles[i]
+                                if (header.innerHTML && header.innerHTML.includes("Connection")) {
+                                    header.innerHTML = header.innerHTML.replace("Connection", newNameWithoutEndingS)
+                                }
+                            }
+
+                            let friend_search_bar = document.querySelectorAll(".friends-filter-searchbar-input")
+                            for (let i = 0; i < friend_search_bar.length; i++) {
+                                let header = friend_search_bar[i]
+                                if (header.placeholder && header.placeholder.includes("connection")) {
+                                    header.placeholder = header.placeholder.replace("connection", newNameWithoutEndingS.toLowerCase())
+                                }
+                            }
+
+                            let create_connection_btn = document.querySelectorAll(".tooltip-container.create-friend-link-btn > button")
+                            for (let i = 0; i < create_connection_btn.length; i++) {
+                                let header = create_connection_btn[i]
+                                if (header.innerHTML && header.innerHTML.includes("Connection")) {
+                                    header.innerHTML = header.innerHTML.replace("Connection", newNameWithoutEndingS)
+                                }
+                            }
+
+                            let roseal_tooltips = document.querySelectorAll(".roseal-tooltip")
+                            for (let i = 0; i < roseal_tooltips.length; i++) {
+                                let header = roseal_tooltips[i]
+                                if (header.innerHTML && header.innerHTML.includes("connection")) {
+                                    header.innerHTML = header.innerHTML.replace("connection", newNameWithoutEndingS.toLowerCase())
+                                }
+                                if (header.innerHTML && header.innerHTML.includes("Connection")) {
+                                    header.innerHTML = header.innerHTML.replace("Connection", newNameWithoutEndingS)
+                                }
+                            }
+
                             let server_list_headers = document.querySelectorAll(".server-list-header")
                             for (let i = 0; i < server_list_headers.length; i++) {
                                 let header = server_list_headers[i]

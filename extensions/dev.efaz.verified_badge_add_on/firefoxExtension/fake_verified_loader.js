@@ -435,7 +435,11 @@ function start() {
                                         username_containers.forEach((usr_con) => {
                                             if (usr_con.innerHTML.includes(displayName)) {
                                                 if (vIconPlaced(usr_con.innerHTML)) { return ; }
-                                                usr_con.innerHTML = `${usr_con.innerHTML} ${name_html}`;
+                                                if (usr_con.className == "dynamic-ellipsis-item user-name-container text-link") {
+                                                    usr_con.innerHTML = `${usr_con.innerHTML} ${name_html.replace("width='28'", "width='14'").replace("height='28'", "height='14'")}`;
+                                                } else {
+                                                    usr_con.innerHTML = `${usr_con.innerHTML} ${name_html}`;
+                                                }
                                             }
                                         });
                                     }
