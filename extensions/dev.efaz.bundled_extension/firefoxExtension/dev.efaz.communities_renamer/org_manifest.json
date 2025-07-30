@@ -1,6 +1,6 @@
 {
-    "name": "Efaz's Roblox Communities Renamer",
-    "description": "Tired of Roblox renaming Groups to Communities? Well, you can change that using this extension!",
+    "name": "__MSG_dev_efaz_communities_renamer_exName__",
+    "description": "__MSG_dev_efaz_communities_renamer_exDescription__",
     "version": "1.2.1",
     "manifest_version": 3,
     "author": "EfazDev",
@@ -11,6 +11,7 @@
         "48": "icon48.png",
         "128": "icon128.png"
     },
+    "default_locale": "en",
     "background": {
         "service_worker": "main.js"
     },
@@ -33,7 +34,7 @@
     ],
     "action": {
         "default_popup": "settings.html",
-        "default_title": "Efaz's Roblox Communities Renamer",
+        "default_title": "__MSG_dev_efaz_communities_renamer_exName__",
         "default_icon": "icon128.png"
     },
     "web_accessible_resources": [

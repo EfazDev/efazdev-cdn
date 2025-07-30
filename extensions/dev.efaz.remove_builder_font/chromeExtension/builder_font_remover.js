@@ -86,6 +86,13 @@ inject.js:
         }
     }
     function timeout(func, ms) { setTimeout(func, ms); }
+    function getTran(id) { 
+        if (!(chrome.i18n.getMessage(storage_key.replaceAll(".", "_") + "_" + id) == "")) {
+            return chrome.i18n.getMessage(storage_key.replaceAll(".", "_") + "_" + id)
+        } else if (!(chrome.i18n.getMessage(id.replaceAll(".", "_")) == "")) {
+            return chrome.i18n.getMessage(id.replaceAll(".", "_"))
+        }
+    }
     async function overwriteResourcesUrl(made_css, source, subdomain_type, old_font_on_sub) {
         if (!(source == "https://oldfont.efaz.dev/")) {
             var font_locations = JSON.parse(JSON.stringify(based_font_locations));
@@ -205,7 +212,13 @@ inject.js:
                     if (!(user_settings[storage_key])) { user_settings[storage_key] = {} }
                     await loopThroughArrayAsync(jso["settings"], async (i, v) => {
                         if (typeof(user_settings[storage_key][i]) == "undefined") {
-                            if (!(typeof(v["default"]) == "undefined")) {user_settings[storage_key][i] = v["default"]}
+                            if (!(typeof(v["default"]) == "undefined")) {
+                                if (!(getTran(i + "_default") == null)) {
+                                    user_settings[storage_key][i] = (getTran(i + "_default"))
+                                } else {
+                                    user_settings[storage_key][i] = (v["default"])
+                                }
+                            }
                         }
                     })
                     if (callback) { callback(user_settings) }

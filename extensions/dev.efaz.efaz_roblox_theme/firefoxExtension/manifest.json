@@ -1,6 +1,6 @@
 {
-    "name": "Efaz's Roblox Theme",
-    "description": "An extension that creates the Efaz's Theme inside the Roblox website!",
+    "name": "__MSG_dev_efaz_efaz_roblox_theme_exName__",
+    "description": "__MSG_dev_efaz_roblox_theme_exDescription__",
     "version": "1.2.3",
     "manifest_version": 3,
     "author": "EfazDev",
@@ -11,6 +11,7 @@
         "48": "icon48.png",
         "128": "icon128.png"
     },
+    "default_locale": "en",
     "background": {
         "scripts": [
             "main.js"
@@ -40,7 +41,7 @@
         }
     ],
     "action": {
-        "default_title": "Efaz's Roblox Theme",
+        "default_title": "__MSG_dev_efaz_efaz_roblox_theme_exName__",
         "default_icon": "icon128.png"
     },
     "permissions": [

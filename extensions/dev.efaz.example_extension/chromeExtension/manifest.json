@@ -1,7 +1,7 @@
 {
-    "name": "Example Extension",
-    "description": "A plain extension.",
-    "version": "1.4.7",
+    "name": "__MSG_dev_efaz_example_extension_exName__",
+    "description": "__MSG_dev_efaz_example_extension_exDescription__",
+    "version": "1.5.0",
     "manifest_version": 3,
     "author": "EfazDev",
     "homepage_url": "https://www.efaz.dev/",
@@ -11,6 +11,7 @@
         "48": "icon48.png",
         "128": "icon128.png"
     },
+    "default_locale": "en",
     "background": {
         "service_worker": "main.js"
     },
@@ -21,7 +22,7 @@
     },
     "action": {
         "default_popup": "settings.html",
-        "default_title": "Example Extension",
+        "default_title": "__MSG_dev_efaz_example_extension_exName__",
         "default_icon": "icon128.png"
     },
     "web_accessible_resources": [

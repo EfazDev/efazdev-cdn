@@ -40,6 +40,13 @@ inject.js:
             }
         }
     }
+    function getTran(id) { 
+        if (!(chrome.i18n.getMessage(storage_key.replaceAll(".", "_") + "_" + id) == "")) {
+            return chrome.i18n.getMessage(storage_key.replaceAll(".", "_") + "_" + id)
+        } else if (!(chrome.i18n.getMessage(id.replaceAll(".", "_")) == "")) {
+            return chrome.i18n.getMessage(id.replaceAll(".", "_"))
+        }
+    }
     async function getSettings(storage_key, callback) {
         return fetch(getChromeURL("settings.json")).then((res) => {
             if (res.ok) { return res.json(); }
@@ -50,7 +57,13 @@ inject.js:
                     if (!(user_settings[storage_key])) { user_settings[storage_key] = {} }
                     await loopThroughArrayAsync(jso["settings"], async (i, v) => {
                         if (typeof(user_settings[storage_key][i]) == "undefined") {
-                            if (!(typeof(v["default"]) == "undefined")) {user_settings[storage_key][i] = v["default"]}
+                            if (!(typeof(v["default"]) == "undefined")) {
+                                if (!(getTran(i + "_default") == null)) {
+                                    user_settings[storage_key][i] = (getTran(i + "_default"))
+                                } else {
+                                    user_settings[storage_key][i] = (v["default"])
+                                }
+                            }
                         }
                     })
                     if (callback) { callback(user_settings) }

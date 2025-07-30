@@ -66,22 +66,53 @@ function compareVersions(version1, version2) {
     return 0;
 }
 
+async function localizeAll(s) {
+    if (s) {
+        await loopThroughArrayAsync(s, (i, v) => {
+            if (typeof(v) == "string") {
+                var q = v.replace(/__MSG_(\w+)__/g, function(match, v1) {
+                    return v1 ? chrome.i18n.getMessage(v1) : "";
+                });
+                if (v != q) { s[i] = q; }
+            }
+        })
+        return s
+    } else {
+        let objs = Array.from(document.getElementsByTagName("html"))
+        loopThroughArray(objs, (_, obj) => {
+            var valStrH = obj.innerHTML.toString();
+            var valNewH = valStrH.replace(/__MSG_(\w+)__/g, function(match, v1) {
+                return v1 ? chrome.i18n.getMessage(v1) : "";
+            });
+            if (valNewH != valStrH) { obj.innerHTML = valNewH; }
+        })
+    }
+}
+
 async function loadChanges2() {
+    await localizeAll()
     let system_settings = await fetch(chrome.runtime.getURL("settings.json")).then((re) => { if (re.ok) { return re.json() } else { return {} } });
     let man_json = await fetch(chrome.runtime.getURL("manifest.json")).then((re) => { if (re.ok) { return re.json() } else { return {} } });
+    function getTran(id) { 
+        if (!(chrome.i18n.getMessage(system_settings["name"].replaceAll(".", "_") + "_" + id) == "")) {
+            return chrome.i18n.getMessage(system_settings["name"].replaceAll(".", "_") + "_" + id)
+        } else if (!(chrome.i18n.getMessage(id.replaceAll(".", "_")) == "")) {
+            return chrome.i18n.getMessage(id.replaceAll(".", "_"))
+        }
+    }
     const extensions = system_settings["extensions"]
     await loopThroughArrayAsync(extensions, async (_, exName) => {
-        let manifest = await fetch(chrome.runtime.getURL(exName + "/org_manifest.json")).then((re) => { if (re.ok) { return re.json() } else { return {} } });
+        let manifest = await fetch(chrome.runtime.getURL(exName + "/org_manifest.json")).then((re) => { if (re.ok) { return re.json() } else { return {} } }).then((re) => { return localizeAll(re) });
         let settings = await fetch(chrome.runtime.getURL(exName + "/settings.json")).then((re) => { if (re.ok) { return re.json() } else { return {} } });
 
         document.getElementById("extens_vers").innerText = `v${man_json["version"]}`
-        document.getElementById("window_title").innerText = `Bundle Settings`
+        document.getElementById("window_title").innerText = getTran("settingsBundleSettings")
 
         if (document.getElementById(exName) == null) {
-            var generated_html_element = `<label for="${exName}">${settings["bundledDisplayName"]} v${manifest["version"]}: <span class="gradient-border"><button type="submit" id="${exName}">Open Settings!</button></span>`
+            var generated_html_element = `<label for="${exName}">${getTran(exName + "_bundleName")} v${manifest["version"]}: <span class="gradient-border"><button type="submit" id="${exName}">${getTran("settingsOpenSettings")}</button></span>`
             var beforeElement = document.getElementById("reviewDetails")
             if (settings["hidden"] == true && !(window.location.href.includes("resize=true"))) {
-                generated_html_element = `<label style="display: none;" for="${exName}">${settings["name"]} v${manifest["version"]}: <span class="gradient-border"><button type="submit" id="${exName}">Open Settings!</button></span>`
+                generated_html_element = `<label style="display: none;" for="${exName}">${settings["name"]} v${manifest["version"]}: <span class="gradient-border"><button type="submit" id="${exName}">${getTran("settingsOpenSettings")}</button></span>`
             } else {
                 generated_html_element = `${generated_html_element}`
             }
@@ -100,13 +131,14 @@ async function loadChanges2() {
                         .replaceAll('<script src="setting_colors.js"></script>', '<script class="reexecute" src="' + exName + "/setting_colors.js" + '"></script>')
                         .replaceAll('<script src="reset_cache.js"></script>', '<script class="reexecute" src="' + exName + "/reset_cache.js" + '"></script>')
                         .replaceAll("</meta>", "")
-                    webpage = webpage.replaceAll('<span class="gradient-border"><button type=\'submit\' id="submitbutton" class="center">Save Settings!</button></span><br><br>', '<span class="gradient-border"><button type=\'submit\' id="submitbutton" class="center">Save Settings!</button></span> <span class="gradient-border"><button type="submit" id="goBackToBundledPage">Return to Extensions page!</button></span><br><br>')
+                    webpage = webpage.replaceAll('<span class="gradient-border"><button type=\'submit\' id="submitbutton" class="center">__MSG_settingsSaveBtn__</button></span><br><br>', '<span class="gradient-border"><button type=\'submit\' id="submitbutton" class="center">__MSG_settingsSaveBtn__</button></span> <span class="gradient-border"><button type="submit" id="goBackToBundledPage">__MSG_settingsGoBackBtn__</button></span><br><br>')
                     
                     // Run HTML
                     var newElement = new DOMParser().parseFromString(webpage, "text/html")
                     document.extensionName = exName
                     document.head.innerHTML = newElement.head.innerHTML
                     document.body.innerHTML = newElement.body.innerHTML
+                    await localizeAll()
 
                     // Execute Runners
                     var classes = document.getElementsByClassName("reexecute")
@@ -134,9 +166,10 @@ async function loadChanges2() {
                         button2.addEventListener("click", async () => {
                             var changes_are_made = false
                             await loopThroughArrayAsync(changes_made, (_, v) => { if (v == true) { changes_are_made = true } })
-                            if ((changes_are_made == true && confirm("Are you sure you want to return back to the Extensions page without saving?")) || changes_are_made == false) {
+                            if ((changes_are_made == true && confirm(getTran("settingsGoBackConfirmation"))) || changes_are_made == false) {
                                 document.body.innerHTML = innerBody
                                 document.head.innerHTML = innerHead
+                                await localizeAll()
                                 setTimeout(() => {loadChanges2()}, 200)
                             }
                         })
@@ -150,7 +183,7 @@ async function loadChanges2() {
 
     if (navigator.onLine == false) {
         /* User is offline */
-        document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | Network Offline`
+        document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | ${getTran("settingsNetworkOffline")}`
         document.getElementById("css").innerText = `${document.getElementById("css").innerText}
         body {
             font-family: arial !important;
@@ -169,7 +202,7 @@ async function loadChanges2() {
             } else if (system_settings["uploadedChromeExtensionID"]) {
                 /* User used an extracted zip file of the extension instead of using the Chrome Web Store */
                 document.getElementById("extensionLink").href = `https://chromewebstore.google.com/detail/extension/${system_settings["uploadedChromeExtensionID"]}`
-                document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | Unpacked`
+                document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | ${getTran("settingsUnpacked")}`
             }
             document.getElementById("extensionLink").style = ""
         } else {
@@ -183,10 +216,10 @@ async function loadChanges2() {
             } else if (system_settings["uploadedChromeExtensionID"]) {
                 /* User used an extracted zip file of the extension instead of using the Firefox Add-on Store */
                 document.getElementById("extensionLink").href = `https://addons.mozilla.org/en-US/firefox/addon/${system_settings["uploadedFirefoxExtensionID"]}`
-                document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | Unpacked`
+                document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | ${getTran("settingsUnpacked")}`
             }
             document.getElementById("extensionLink").children[0].src = "https://cdn.efaz.dev/png/firefox_addons.png"
-            document.getElementById("extensionLink").children[0].title = "Firefox Add-ons"
+            document.getElementById("extensionLink").children[0].title = getTran("firefoxAddons")
             document.getElementById("extensionLink").style = ""
         } else {
             document.getElementById("extensionLink").remove()
@@ -209,7 +242,7 @@ async function loadChanges2() {
                             console.log("This user is currently at the latest version!")
                         } else if (compared == -1) {
                             /* User has an update available */
-                            document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | <button id="openChromeExtensionSettings">Update Available to v${j[system_settings["name"]]}!</button>`
+                            document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | <button id="openChromeExtensionSettings">${getTran("settingsUpdateAvailable")} v${j[system_settings["name"]]}!</button>`
                             document.getElementById("openChromeExtensionSettings").addEventListener("click", () => {
                                 if (system_settings["browserMode"] == "chrome") {
                                     if (system_settings["chromeWebstoreLinkEnabled"] == true && !(chrome.runtime.id == system_settings["uploadedChromeExtensionID"])) {
@@ -228,7 +261,7 @@ async function loadChanges2() {
                             console.log(`New version found! v${man_json["version"]} > v${j[system_settings["name"]]}`)
                         } else {
                             /* User is running beta version of the extension */
-                            document.getElementById("extens_vers").innerText = `v${man_json["version"]} Beta`
+                            document.getElementById("extens_vers").innerText = `v${man_json["version"]} ${getTran("settingsBeta")}`
                             console.log(`User is in beta version of the extension!`)
                         }
                     } else {
@@ -238,7 +271,7 @@ async function loadChanges2() {
                             console.log("This user is currently at the latest version!")
                         } else if (compared == -1) {
                             /* User has an update available */
-                            document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | <button id="openChromeExtensionSettings">Update Available to v${j["version"]}!</button>`
+                            document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | <button id="openChromeExtensionSettings">${getTran("settingsUpdateAvailable")} v${j["version"]}!</button>`
                             document.getElementById("openChromeExtensionSettings").addEventListener("click", () => {
                                 if (system_settings["browserMode"] == "chrome") {
                                     if (system_settings["chromeWebstoreLinkEnabled"] == true && !(chrome.runtime.id == system_settings["uploadedChromeExtensionID"])) {
@@ -257,7 +290,7 @@ async function loadChanges2() {
                             console.log(`New version found! v${man_json["version"]} > v${j["version"]}`)
                         } else {
                             /* User is running beta version of the extension */
-                            document.getElementById("extens_vers").innerText = `v${man_json["version"]} Beta`
+                            document.getElementById("extens_vers").innerText = `v${man_json["version"]} ${getTran("settingsBeta")}`
                             console.log(`User is in beta version of the extension!`)
                         }
                     }

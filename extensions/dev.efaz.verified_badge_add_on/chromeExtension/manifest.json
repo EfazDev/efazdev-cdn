@@ -1,7 +1,7 @@
 {
-    "name": "Efaz's Roblox Verified Badge Add-on",
-    "description": "An extension that adds the Roblox Verification Checkmark next to your name or group on the website! [Visual effect]",
-    "version": "1.7.9",
+    "name": "__MSG_dev_efaz_verified_badge_add_on_exName__",
+    "description": "__MSG_dev_efaz_verified_badge_add_on_exDescription__",
+    "version": "1.8.0",
     "manifest_version": 3,
     "author": "EfazDev",
     "homepage_url": "https://www.efaz.dev/fake-roblox-verified-badge",
@@ -11,6 +11,7 @@
         "48": "icon48.png",
         "128": "icon128.png"
     },
+    "default_locale": "en",
     "externally_connectable": {
         "matches": [
             "https://cdn.efaz.dev/*"
@@ -33,7 +34,7 @@
     },
     "action": {
         "default_popup": "settings.html",
-        "default_title": "Efaz's Roblox Verified Badge Add-on",
+        "default_title": "__MSG_dev_efaz_verified_badge_add_on_exName__",
         "default_icon": "icon128.png"
     },
     "content_security_policy": {

@@ -106,7 +106,7 @@ async function saveData() {
             }
         });
         await storage.set(items, () => {
-            alert("Saved data!")
+            alert(chrome.i18n.getMessage("settingsSavedData"))
         });
     });
 }
@@ -132,13 +132,44 @@ function compareVersions(version1, version2) {
     return 0;
 }
 
+async function localizeAll(s) {
+    if (s) {
+        await loopThroughArrayAsync(s, (i, v) => {
+            if (typeof(v) == "string") {
+                var q = v.replace(/__MSG_(\w+)__/g, function(match, v1) {
+                    return v1 ? chrome.i18n.getMessage(v1) : "";
+                });
+                if (v != q) { s[i] = q; }
+            }
+        })
+        return s
+    } else {
+        let objs = Array.from(document.getElementsByTagName("html"))
+        loopThroughArray(objs, (_, obj) => {
+            var valStrH = obj.innerHTML.toString();
+            var valNewH = valStrH.replace(/__MSG_(\w+)__/g, function(match, v1) {
+                return v1 ? chrome.i18n.getMessage(v1) : "";
+            });
+            if (valNewH != valStrH) { obj.innerHTML = valNewH; }
+        })
+    }
+}
+
 async function loadChanges() {
+    await localizeAll()
     fetch("settings.json").then(setting_res => {
         return setting_res.json()
     }).then(async (settings) => {
         system_settings = settings
         if (system_settings["typeOfStorage"]) {
             storage = chrome.storage[system_settings["typeOfStorage"]] 
+        }
+        function getTran(id) { 
+            if (!(chrome.i18n.getMessage(system_settings["name"].replaceAll(".", "_") + "_" + id) == "")) {
+                return chrome.i18n.getMessage(system_settings["name"].replaceAll(".", "_") + "_" + id)
+            } else if (!(chrome.i18n.getMessage(id.replaceAll(".", "_")) == "")) {
+                return chrome.i18n.getMessage(id.replaceAll(".", "_"))
+            }
         }
         storage.get([system_settings["name"]], function (items) {
             if (Object.keys(system_settings["settings"]).length == 1) {
@@ -152,16 +183,16 @@ async function loadChanges() {
                                 gene_lis = `${gene_lis} ${i}="${v}"`
                             })
                         }
-                        var generated_html_element = `<label for="${key}" id="${key}_label">${val["text"]}: <input type="${val["type"]}" id="${key}" name="${key}"${gene_lis}>`
+                        var generated_html_element = `<label for="${key}" id="${key}_label">${getTran(key + "_mes")}: <input type="${val["type"]}" id="${key}" name="${key}"${gene_lis}>`
                         var beforeElement = document.getElementById("reviewDetails")
                         if (val["hidden"] == true && !(window.location.href.includes("resize=true"))) {
-                            generated_html_element = `<label style="display: none;" for="${key}" id="${key}_label">${val["text"]}: <input type="${val["type"]}" id="${key}" name="${key}"${gene_lis}>`
+                            generated_html_element = `<label style="display: none;" for="${key}" id="${key}_label">${getTran(key + "_mes")}: <input type="${val["type"]}" id="${key}" name="${key}"${gene_lis}>`
                         } else {
                             if (val["alternateFileInput"] == true && val["type"] == "file") {
-                                generated_html_element = `<label for="${key}" id="${key}_label">${val["text"]}: <input type="${val["type"]}" style="display: none;" id="${key}" name="${key}"${gene_lis}><button id="${key}_triggerButton">No file selected</button>`
+                                generated_html_element = `<label for="${key}" id="${key}_label">${getTran(key + "_mes")}: <input type="${val["type"]}" style="display: none;" id="${key}" name="${key}"${gene_lis}><button id="${key}_triggerButton">${getTran("settingsNoFileSelected")}</button>`
                             }
                             if (val["reset"] == true) {
-                                generated_html_element = `${generated_html_element} <button id="reset_${key}">Reset!</button>`
+                                generated_html_element = `${generated_html_element} <button id="reset_${key}">${getTran("settingsReset")}</button>`
                             } else {
                                 generated_html_element = `${generated_html_element}`
                             }
@@ -170,6 +201,9 @@ async function loadChanges() {
                         beforeElement.outerHTML = `${generated_html_element}${document.getElementById("reviewDetails").outerHTML}`
                     }
                     var selected = val["default"]
+                    if (!(getTran(key + "_default") == null)) {
+                        selected = (getTran(key + "_default"))
+                    }
                     if (items[system_settings["name"]]) {
                         if (!(typeof (items[system_settings["name"]][key]) == "undefined")) {
                             selected = items[system_settings["name"]][key]
@@ -253,7 +287,7 @@ async function loadChanges() {
                                 if (main_selection.files.length > 0) {
                                     button.textContent = main_selection.files[0].name;
                                 } else {
-                                    button.textContent = "No file selected";
+                                    button.textContent = getTran("settingsNoFileSelected");
                                 }
                             })
                             if (items[system_settings["name"]] && items[system_settings["name"]][key + "_filename"]) {
@@ -275,7 +309,11 @@ async function loadChanges() {
                                     main_selection.setAttribute("file_url", val["default"])
                                     main_selection.dispatchEvent(new Event("change"))
                                 } else {
-                                    main_selection.value = val["default"]
+                                    if (!(getTran(key + "_default") == null)) {
+                                        main_selection.value = (getTran(key + "_default"))
+                                    } else {
+                                        main_selection.value = val["default"]
+                                    }
                                 }
                             })
                         }
@@ -286,134 +324,133 @@ async function loadChanges() {
         const submitButton = document.getElementById("submitbutton");
         submitButton.addEventListener("click", saveData);
 
-        fetch("manifest.json").then(man_res => {
-            return man_res.json()
-        }).then(man_json => {
-            /* Fulfill basic manifest details */
-            var extension_name = man_json["name"]
-            var extension_version = man_json["version"]
-            var extension_icon = man_json["icons"]["32"]
+        /* Fulfill basic manifest details */
+        var man_json = await localizeAll(chrome.runtime.getManifest());
+        var extension_name = man_json["name"]
+        var extension_version = man_json["version"]
+        var extension_icon = man_json["icons"]["32"]
 
-            document.getElementById("extens_name").innerHTML = `Extension Name: ${extension_name} ${`<img src="${extension_icon}" height="16" width="16" style="vertical-align: middle;">`}`
-            document.getElementById("extens_vers").innerText = `v${extension_version}`
-            document.getElementById("window_title").innerText = `${extension_name} Settings`
+        document.getElementById("extens_name").innerHTML = `${getTran("settingsExName")} ${extension_name} ${`<img src="${extension_icon}" height="16" width="16" style="vertical-align: middle;">`}`
+        document.getElementById("extens_vers").innerText = `v${extension_version}`
+        document.getElementById("window_title").innerText = `${extension_name} ${getTran("settings")}`
 
-            if (navigator.onLine == false) {
-                /* User is offline */
-                document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | Network Offline`
-                document.getElementById("css").innerText = `${document.getElementById("css").innerText}
-                body {
-                    font-family: arial !important;
-                    color: white;
-                    overflow: hidden;
-                    background-color: #000000;
-                }
-                `
+        if (navigator.onLine == false) {
+            /* User is offline */
+            document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | ${getTran("settingsNetworkOffline")}`
+            document.getElementById("css").innerText = `${document.getElementById("css").innerText}
+            body {
+                font-family: arial !important;
+                color: white;
+                overflow: hidden;
+                background-color: #000000;
             }
+            `
+        }
 
-            if (system_settings["browserMode"] == "chrome") {
-                if (system_settings["chromeWebstoreLinkEnabled"] == true) {
-                    if (chrome.runtime.id == system_settings["uploadedChromeExtensionID"]) {
-                        /* User is using the Chrome Web Store */
-                        document.getElementById("extensionLink").href = `https://chromewebstore.google.com/detail/extension/${chrome.runtime.id}`
-                    } else if (system_settings["uploadedChromeExtensionID"]) {
-                        /* User used an extracted zip file of the extension instead of using the Chrome Web Store */
-                        document.getElementById("extensionLink").href = `https://chromewebstore.google.com/detail/extension/${system_settings["uploadedChromeExtensionID"]}`
-                        document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | Unpacked`
-                    }
-                    document.getElementById("extensionLink").style = ""
-                } else {
-                    document.getElementById("extensionLink").remove()
+        if (system_settings["browserMode"] == "chrome") {
+            if (system_settings["chromeWebstoreLinkEnabled"] == true) {
+                if (chrome.runtime.id == system_settings["uploadedChromeExtensionID"]) {
+                    /* User is using the Chrome Web Store */
+                    document.getElementById("extensionLink").href = `https://chromewebstore.google.com/detail/extension/${chrome.runtime.id}`
+                } else if (system_settings["uploadedChromeExtensionID"]) {
+                    /* User used an extracted zip file of the extension instead of using the Chrome Web Store */
+                    document.getElementById("extensionLink").href = `https://chromewebstore.google.com/detail/extension/${system_settings["uploadedChromeExtensionID"]}`
+                    document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | ${getTran("settingsUnpacked")}`
                 }
-            } else if (system_settings["browserMode"] == "firefox") {
-                if (system_settings["firefoxWebstoreLinkEnabled"] == true) {
-                    if (chrome.runtime.id == system_settings["uploadedFirefoxExtensionID"]) {
-                        /* User is using the Firefox Add-on Store */
-                        document.getElementById("extensionLink").href = `https://addons.mozilla.org/en-US/firefox/addon/${chrome.runtime.id}`
-                    } else if (system_settings["uploadedChromeExtensionID"]) {
-                        /* User used an extracted zip file of the extension instead of using the Firefox Add-on Store */
-                        document.getElementById("extensionLink").href = `https://addons.mozilla.org/en-US/firefox/addon/${system_settings["uploadedFirefoxExtensionID"]}`
-                        document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | Unpacked`
-                    }
-                    document.getElementById("extensionLink").style = ""
-                } else {
-                    document.getElementById("extensionLink").remove()
-                }
+                document.getElementById("extensionLink").style = ""
+            } else {
+                document.getElementById("extensionLink").remove()
             }
+        } else if (system_settings["browserMode"] == "firefox") {
+            if (system_settings["firefoxWebstoreLinkEnabled"] == true) {
+                if (chrome.runtime.id == system_settings["uploadedFirefoxExtensionID"]) {
+                    /* User is using the Firefox Add-on Store */
+                    document.getElementById("extensionLink").href = `https://addons.mozilla.org/en-US/firefox/addon/${chrome.runtime.id}`
+                } else if (system_settings["uploadedChromeExtensionID"]) {
+                    /* User used an extracted zip file of the extension instead of using the Firefox Add-on Store */
+                    document.getElementById("extensionLink").href = `https://addons.mozilla.org/en-US/firefox/addon/${system_settings["uploadedFirefoxExtensionID"]}`
+                    document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | ${getTran("settingsUnpacked")}`
+                }
+                document.getElementById("extensionLink").children[0].src = "https://cdn.efaz.dev/png/firefox_addons.png"
+                document.getElementById("extensionLink").children[0].title = getTran("firefoxAddons")
+                document.getElementById("extensionLink").style = ""
+            } else {
+                document.getElementById("extensionLink").remove()
+            }
+        }
 
-            if (settings["scanForManifestUpdates"] == true) {
-                if (navigator.onLine == true) {
-                    /* Update check */
-                    fetch(system_settings["onlineManifestFile"]).then(r => {
-                        if (r.ok) {
-                            return r.json()
-                        }
-                    }).then(j => {
-                        if (j) {
-                            if (settings["isVersionServer"] == true) {
-                                var compared = compareVersions(man_json["version"], j[settings["name"]])
-                                if (j[settings["name"]] == man_json["version"]) {
-                                    /* User is running the latest non-beta version. */
-                                    console.log("This user is currently at the latest version!")
-                                } else if (compared == -1) {
-                                    /* User has an update available */
-                                    document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | <button id="openChromeExtensionSettings">Update Available to v${j[settings["name"]]}!</button>`
-                                    document.getElementById("openChromeExtensionSettings").addEventListener("click", () => {
-                                        if (system_settings["browserMode"] == "chrome") {
-                                            if (system_settings["chromeWebstoreLinkEnabled"] == true && !(chrome.runtime.id == system_settings["uploadedChromeExtensionID"])) {
-                                                chrome.tabs.create({ url: `https://chromewebstore.google.com/detail/extension/${system_settings["uploadedChromeExtensionID"]}` });
-                                            } else {
-                                                chrome.tabs.create({ url: "chrome://extensions/" });
-                                            }
-                                        } else if (system_settings["browserMode"] == "firefox") {
-                                            if (system_settings["firefoxWebstoreLinkEnabled"] == true && !(chrome.runtime.id == system_settings["uploadedFirefoxExtensionID"])) {
-                                                chrome.tabs.create({ url: `https://addons.mozilla.org/en-US/firefox/addon/${system_settings["uploadedFirefoxExtensionID"]}` });
-                                            } else {
-                                                chrome.tabs.create({ url: "about:debugging#/runtime/this-firefox" });
-                                            }
+        if (settings["scanForManifestUpdates"] == true) {
+            if (navigator.onLine == true) {
+                /* Update check */
+                fetch(system_settings["onlineManifestFile"]).then(r => {
+                    if (r.ok) {
+                        return r.json()
+                    }
+                }).then(j => {
+                    if (j) {
+                        if (settings["isVersionServer"] == true) {
+                            var compared = compareVersions(man_json["version"], j[settings["name"]])
+                            if (j[settings["name"]] == man_json["version"]) {
+                                /* User is running the latest non-beta version. */
+                                console.log("This user is currently at the latest version!")
+                            } else if (compared == -1) {
+                                /* User has an update available */
+                                document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | <button id="openChromeExtensionSettings">${getTran("settingsUpdateAvailable")} v${j[settings["name"]]}!</button>`
+                                document.getElementById("openChromeExtensionSettings").addEventListener("click", () => {
+                                    if (system_settings["browserMode"] == "chrome") {
+                                        if (system_settings["chromeWebstoreLinkEnabled"] == true && !(chrome.runtime.id == system_settings["uploadedChromeExtensionID"])) {
+                                            chrome.tabs.create({ url: `https://chromewebstore.google.com/detail/extension/${system_settings["uploadedChromeExtensionID"]}` });
+                                        } else {
+                                            chrome.tabs.create({ url: "chrome://extensions/" });
                                         }
-                                    });
-                                    console.log(`New version found! v${man_json["version"]} > v${j[settings["name"]]}`)
-                                } else {
-                                    /* User is running beta version of the extension */
-                                    document.getElementById("extens_vers").innerText = `v${extension_version} Beta`
-                                    console.log(`User is in beta version of the extension!`)
-                                }
+                                    } else if (system_settings["browserMode"] == "firefox") {
+                                        if (system_settings["firefoxWebstoreLinkEnabled"] == true && !(chrome.runtime.id == system_settings["uploadedFirefoxExtensionID"])) {
+                                            chrome.tabs.create({ url: `https://addons.mozilla.org/en-US/firefox/addon/${system_settings["uploadedFirefoxExtensionID"]}` });
+                                        } else {
+                                            chrome.tabs.create({ url: "about:debugging#/runtime/this-firefox" });
+                                        }
+                                    }
+                                });
+                                console.log(`New version found! v${man_json["version"]} > v${j[settings["name"]]}`)
                             } else {
-                                var compared = compareVersions(man_json["version"], j["version"])
-                                if (j["version"] == man_json["version"]) {
-                                    /* User is running the latest non-beta version. */
-                                    console.log("This user is currently at the latest version!")
-                                } else if (compared == -1) {
-                                    /* User has an update available */
-                                    document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | <button id="openChromeExtensionSettings">Update Available to v${j["version"]}!</button>`
-                                    document.getElementById("openChromeExtensionSettings").addEventListener("click", () => {
-                                        if (system_settings["browserMode"] == "chrome") {
-                                            if (system_settings["chromeWebstoreLinkEnabled"] == true && !(chrome.runtime.id == system_settings["uploadedChromeExtensionID"])) {
-                                                chrome.tabs.create({ url: `https://chromewebstore.google.com/detail/extension/${system_settings["uploadedChromeExtensionID"]}` });
-                                            } else {
-                                                chrome.tabs.create({ url: "chrome://extensions/" });
-                                            }
-                                        } else if (system_settings["browserMode"] == "firefox") {
-                                            if (system_settings["firefoxWebstoreLinkEnabled"] == true && !(chrome.runtime.id == system_settings["uploadedFirefoxExtensionID"])) {
-                                                chrome.tabs.create({ url: `https://addons.mozilla.org/en-US/firefox/addon/${system_settings["uploadedFirefoxExtensionID"]}` });
-                                            } else {
-                                                chrome.tabs.create({ url: "about:debugging#/runtime/this-firefox" });
-                                            }
+                                /* User is running beta version of the extension */
+                                document.getElementById("extens_vers").innerText = `v${extension_version} ${getTran("settingsBeta")}`
+                                console.log(`User is in beta version of the extension!`)
+                            }
+                        } else {
+                            var compared = compareVersions(man_json["version"], j["version"])
+                            if (j["version"] == man_json["version"]) {
+                                /* User is running the latest non-beta version. */
+                                console.log("This user is currently at the latest version!")
+                            } else if (compared == -1) {
+                                /* User has an update available */
+                                document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | <button id="openChromeExtensionSettings">${getTran("settingsUpdateAvailable")} v${j["version"]}!</button>`
+                                document.getElementById("openChromeExtensionSettings").addEventListener("click", () => {
+                                    if (system_settings["browserMode"] == "chrome") {
+                                        if (system_settings["chromeWebstoreLinkEnabled"] == true && !(chrome.runtime.id == system_settings["uploadedChromeExtensionID"])) {
+                                            chrome.tabs.create({ url: `https://chromewebstore.google.com/detail/extension/${system_settings["uploadedChromeExtensionID"]}` });
+                                        } else {
+                                            chrome.tabs.create({ url: "chrome://extensions/" });
                                         }
-                                    });
-                                    console.log(`New version found! v${man_json["version"]} > v${j["version"]}`)
-                                } else {
-                                    /* User is running beta version of the extension */
-                                    document.getElementById("extens_vers").innerText = `v${extension_version} Beta`
-                                    console.log(`User is in beta version of the extension!`)
-                                }
+                                    } else if (system_settings["browserMode"] == "firefox") {
+                                        if (system_settings["firefoxWebstoreLinkEnabled"] == true && !(chrome.runtime.id == system_settings["uploadedFirefoxExtensionID"])) {
+                                            chrome.tabs.create({ url: `https://addons.mozilla.org/en-US/firefox/addon/${system_settings["uploadedFirefoxExtensionID"]}` });
+                                        } else {
+                                            chrome.tabs.create({ url: "about:debugging#/runtime/this-firefox" });
+                                        }
+                                    }
+                                });
+                                console.log(`New version found! v${man_json["version"]} > v${j["version"]}`)
+                            } else {
+                                /* User is running beta version of the extension */
+                                document.getElementById("extens_vers").innerText = `v${extension_version} ${getTran("settingsBeta")}`
+                                console.log(`User is in beta version of the extension!`)
                             }
                         }
-                    })
-                }
+                    }
+                })
             }
-        })
+        }
     })
 }
 

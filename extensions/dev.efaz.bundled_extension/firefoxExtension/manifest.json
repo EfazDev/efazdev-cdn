@@ -1,6 +1,6 @@
 {
-    "name": "Efaz's Roblox Extension",
-    "description": "Tired of installing all of Efaz's extensions? Well, you can install and use them all in this one extension!",
+    "name": "__MSG_dev_efaz_bundled_extension_exName__",
+    "description": "__MSG_dev_efaz_bundled_extension_exDescription__",
     "version": "1.5.2",
     "manifest_version": 3,
     "author": "EfazDev",
@@ -11,6 +11,7 @@
         "48": "icon48.png",
         "128": "icon128.png"
     },
+    "default_locale": "en",
     "background": {
         "scripts": [
             "main.js"
@@ -57,7 +58,7 @@
         }
     ],
     "action": {
-        "default_title": "Efaz's Roblox Extension",
+        "default_title": "__MSG_dev_efaz_bundled_extension_exName__",
         "default_icon": "icon128.png"
     },
     "permissions": [

@@ -59,7 +59,7 @@ for i in os.listdir(extensions_folder):
             shutil.copy(os.path.join(current_path_location, "resources", "firefox_builder_main.js" if i == "dev.efaz.remove_builder_font" or i == "dev.efaz.bundled_extension" else "firefox_main.js"), os.path.join(extensions_folder, i, "firefoxExtension", "main.js"))
             if i == "dev.efaz.bundled_extension":
                 for res in os.listdir(os.path.join(extensions_folder, i, "firefoxExtension")):
-                    if os.path.isdir(os.path.join(extensions_folder, i, "firefoxExtension", res)):
+                    if os.path.isdir(os.path.join(extensions_folder, i, "firefoxExtension", res)) and not (res == "_locales"):
                         rese = os.path.join(extensions_folder, i, "firefoxExtension", res)
                         with open(os.path.join(rese, "settings.json"), "r") as f: man2 = json.load(f)
                         man2["browserMode"] = "firefox"

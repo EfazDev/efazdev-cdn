@@ -1,6 +1,6 @@
 {
-    "name": "Efaz's Builder Font Remover",
-    "description": "Remember the old Gotham font that Roblox had used before? Why not bring it back!",
+    "name": "__MSG_dev_efaz_remove_builder_font_exName__",
+    "description": "__MSG_dev_efaz_remove_builder_font_exDescription__",
     "version": "1.7.2",
     "manifest_version": 3,
     "author": "EfazDev",
@@ -11,6 +11,7 @@
         "48": "icon48.png",
         "128": "icon128.png"
     },
+    "default_locale": "en",
     "background": {
         "scripts": [
             "main.js"
@@ -44,7 +45,7 @@
         }
     ],
     "action": {
-        "default_title": "Efaz's Builder Font Remover",
+        "default_title": "__MSG_dev_efaz_remove_builder_font_exName__",
         "default_icon": "icon128.png"
     },
     "permissions": [

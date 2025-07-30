@@ -28,6 +28,13 @@ inject.js:
                 return chrome.runtime.getURL(resource)
             }
         }
+        function getTran(id) { 
+            if (!(chrome.i18n.getMessage(storage_key.replaceAll(".", "_") + "_" + id) == "")) {
+                return chrome.i18n.getMessage(storage_key.replaceAll(".", "_") + "_" + id)
+            } else if (!(chrome.i18n.getMessage(id.replaceAll(".", "_")) == "")) {
+                return chrome.i18n.getMessage(id.replaceAll(".", "_"))
+            }
+        }
         async function loopThroughArrayAsync(array, callback) {
             if (typeof (array) == "object") {
                 if (Array.isArray(array)) {
@@ -52,7 +59,13 @@ inject.js:
                         if (!(user_settings[storage_key])) { user_settings[storage_key] = {} }
                         await loopThroughArrayAsync(jso["settings"], async (i, v) => {
                             if (typeof(user_settings[storage_key][i]) == "undefined") {
-                                if (!(typeof(v["default"]) == "undefined")) {user_settings[storage_key][i] = v["default"]}
+                                if (!(typeof(v["default"]) == "undefined")) {
+                                    if (!(getTran(i + "_default") == null)) {
+                                        user_settings[storage_key][i] = (getTran(i + "_default"))
+                                    } else {
+                                        user_settings[storage_key][i] = (v["default"])
+                                    }
+                                }
                             }
                         })
                         if (callback) { callback(user_settings) }
@@ -69,21 +82,40 @@ inject.js:
             if (enabled == true) {
                 let tab = window.location
                 if (tab.href) {
+                    const localeSets = {
+                        "English": ["games", "charts", "discover", "Charts"],
+                        "Español": ["games", "charts", "discover", "Destacadas"],
+                        "Français": ["games", "charts", "discover", "Charts"]
+                    }
                     if (tab.hostname == "www.roblox.com") {
+                        /* Set Names */
                         let newName = settings["newName"];
-                        let isGames = newName.toLowerCase() == "games";
-                        let isCharts = newName.toLowerCase() == "charts";
                         let amountOfSecondsBeforeLoop = (typeof(settings["startTime"]) == "string" && Number(settings["startTime"])) ? Number(settings["startTime"]) : 75
+                        
                         /* Clean New Name to prevent crashes */
                         var div = document.createElement("div");
                         div.innerHTML = newName;
                         newName = div.textContent.replace(/<\/[^>]+(>|$)/g, "");
                         /* Clean New Name to prevent crashes */
                         function injectRename() {
+                            /* Get Set Roblox Language */
+                            let meta_tags = document.querySelectorAll("meta")
+                            let localeSet = null
+                            for (let i = 0; i < meta_tags.length; i++) {
+                                if (meta_tags[i].getAttribute("name") == "locale-data") {
+                                    localeSet = localeSets[meta_tags[i].getAttribute("data-language-name")]
+                                }
+                            }
+                            if (!(localeSet)) {
+                                localeSet = localeSets["English"]
+                            }
+                            let isGames = newName.toLowerCase() == localeSet[0];
+                            let isCharts = newName.toLowerCase() == localeSet[1];
+
                             let topbar_headers = document.querySelectorAll(".font-header-2.nav-menu-title.text-header")
                             for (let i = 0; i < topbar_headers.length; i++) {
                                 let header = topbar_headers[i]
-                                if (header.href && header.textContent.includes("Charts") && !(header.textContent.includes(newName))) {
+                                if (header.href && header.textContent.includes(localeSet[3]) && !(header.textContent.includes(newName))) {
                                     if (isGames == true) {
                                         header.href = header.href.replace("charts", "games")
                                         header.href = header.href.replace("discover", "games")
@@ -114,7 +146,7 @@ inject.js:
                             }
 
                             if (settings["replaceURLwithDiscoverURL"] == true) {
-                                if (window.location.pathname == "/charts") {
+                                if (window.location.pathname.includes("/charts")) {
                                     if (isCharts == false) {
                                         if (isGames == true) {
                                             window.history.pushState({ id: "100" }, newName, window.location.href.replace("/charts#/", "/games#/"));
@@ -125,7 +157,7 @@ inject.js:
                                 }
                             }
 
-                            if (window.location.pathname == `/discover` || window.location.pathname == `/charts` || window.location.pathname == `/games`) {
+                            if (window.location.pathname.includes("/discover") || window.location.pathname.includes("/charts") || window.location.pathname.includes("/games")) {
                                 let page_headers = document.querySelectorAll(".games-list-header")
                                 for (let i = 0; i < page_headers.length; i++) {
                                     let header = page_headers[i]
@@ -144,7 +176,7 @@ inject.js:
                                     for (let i = 0; i < titles.length; i++) {
                                         let header = titles[i]
                                         if (!(header.textContent.includes(newName))) {
-                                            header.textContent = header.textContent.replaceAll("Charts", newName)
+                                            header.textContent = header.textContent.replaceAll(localeSet[3], newName)
                                         }
                                     }
                                 }

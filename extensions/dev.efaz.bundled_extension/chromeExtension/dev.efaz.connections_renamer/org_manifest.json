@@ -1,6 +1,6 @@
 {
-    "name": "Efaz's Roblox Connections Renamer",
-    "description": "Tired of Roblox renaming Friends to Connections? Well, you can change that using this extension!",
+    "name": "__MSG_dev_efaz_connections_renamer_exName__",
+    "description": "__MSG_dev_efaz_connections_renamer_exDescription__",
     "version": "1.0.6",
     "manifest_version": 3,
     "author": "EfazDev",
@@ -11,6 +11,7 @@
         "48": "icon48.png",
         "128": "icon128.png"
     },
+    "default_locale": "en",
     "background": {
         "service_worker": "main.js"
     },
@@ -33,7 +34,7 @@
     ],
     "action": {
         "default_popup": "settings.html",
-        "default_title": "Efaz's Roblox Connections Renamer",
+        "default_title": "__MSG_dev_efaz_connections_renamer_exName__",
         "default_icon": "icon128.png"
     },
     "content_security_policy": {
