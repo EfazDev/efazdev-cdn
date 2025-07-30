@@ -4,7 +4,7 @@
         "description": "Extension name"
     },
     "dev_efaz_bundled_extension_exDescription": {
-        "message": "Marre d'installer toutes les extensions d'Efaz ? Désormais, vous pouvez toutes les installer et les utiliser dans une seule extension!",
+        "message": "Marre d'installer toutes les extensions d'Efaz? Désormais, vous pouvez toutes les installer et les utiliser dans une seule extension!",
         "description": "Extension description"
     },
     "dev_efaz_communities_renamer_exName": {
@@ -16,7 +16,7 @@
         "description": "Extension bundle display name"
     },
     "dev_efaz_communities_renamer_exDescription": {
-        "message": "Marre que Roblox renomme « Groupes » en « Communautés » ? Cette extension vous permet de le changer!",
+        "message": "Marre que Roblox renomme « Groupes » en « Communautés »? Cette extension vous permet de le changer!",
         "description": "Extension description"
     },
     "dev_efaz_communities_renamer_enabled_mes": {
@@ -204,7 +204,7 @@
         "description": "Extension bundle display name"
     },
     "dev_efaz_roblox_logo_changer_exDescription": {
-        "message": "Marre du logo actuel de Roblox ? Vous pouvez le changer avec cette extension!",
+        "message": "Marre du logo actuel de Roblox? Vous pouvez le changer avec cette extension!",
         "description": "Extension description"
     },
     "dev_efaz_roblox_logo_changer_enabled_mes": {
@@ -256,7 +256,7 @@
         "description": "Extension bundle display name"
     },
     "dev_efaz_charts_renamer_exDescription": {
-        "message": "Marre que Roblox renomme « Jeux/Découvrir » en « Graphiques » ? Cette extension vous permet de le changer!",
+        "message": "Marre que Roblox renomme « Jeux/Découvrir » en « Graphiques »? Cette extension vous permet de le changer!",
         "description": "Extension description"
     },
     "dev_efaz_charts_renamer_enabled_mes": {
@@ -292,7 +292,7 @@
         "description": "Extension bundle display name"
     },
     "dev_efaz_connections_renamer_exDescription": {
-        "message": "Marre que Roblox renomme « Amis » en « Connexions » ? Cette extension vous permet de le changer!",
+        "message": "Marre que Roblox renomme « Amis » en « Connexions »? Cette extension vous permet de le changer!",
         "description": "Extension description"
     },
     "dev_efaz_connections_renamer_enabled_mes": {
@@ -328,7 +328,7 @@
         "description": "Extension bundle display name"
     },
     "dev_efaz_remove_builder_font_exDescription": {
-        "message": "Vous vous souvenez de l'ancienne police Gotham utilisée avant par Roblox ? Pourquoi ne pas la rétablir!",
+        "message": "Vous vous souvenez de l'ancienne police Gotham utilisée avant par Roblox? Pourquoi ne pas la rétablir!",
         "description": "Extension description"
     },
     "dev_efaz_remove_builder_font_enabled_mes": {
@@ -432,7 +432,7 @@
         "description": "Extension bundle display name"
     },
     "dev_efaz_roblox_foundation_color_accents_exDescription": {
-        "message": "Vous vous souvenez quand les boutons de Roblox étaient verts et sont maintenant bleus ? Avec cette extension, vous pouvez choisir n'importe quelle couleur!",
+        "message": "Vous vous souvenez quand les boutons de Roblox étaient verts et sont maintenant bleus? Avec cette extension, vous pouvez choisir n'importe quelle couleur!",
         "description": "Extension description"
     },
     "dev_efaz_roblox_foundation_color_accents_enabled_mes": {
@@ -472,39 +472,39 @@
         "description": "Setting text for applyToPrimaryBtn"
     },
     "dev_efaz_verified_badge_add_on_set_red_color": {
-        "message": "Définir la couleur rouge!",
+        "message": "Rouge!",
         "description": "Color button for red"
     },
     "dev_efaz_verified_badge_add_on_set_orange_color": {
-        "message": "Définir la couleur orange!",
+        "message": "Orange!",
         "description": "Color button for orange"
     },
     "dev_efaz_verified_badge_add_on_set_yellow_color": {
-        "message": "Définir la couleur jaune!",
+        "message": "Jaune!",
         "description": "Color button for yellow"
     },
     "dev_efaz_verified_badge_add_on_set_lime_color": {
-        "message": "Définir la couleur lime!",
+        "message": "Lime!",
         "description": "Color button for lime"
     },
     "dev_efaz_verified_badge_add_on_set_cyan_color": {
-        "message": "Définir la couleur cian!",
+        "message": "Cian!",
         "description": "Color button for cyan"
     },
     "dev_efaz_verified_badge_add_on_set_blue_color": {
-        "message": "Définir la couleur bleue!",
+        "message": "Bleue!",
         "description": "Color button for blue"
     },
     "dev_efaz_verified_badge_add_on_set_purple_color": {
-        "message": "Définir la couleur pourpre!",
+        "message": "Pourpre!",
         "description": "Color button for purple"
     },
     "dev_efaz_verified_badge_add_on_set_pink_color": {
-        "message": "Définir la couleur rose!",
+        "message": "Rose!",
         "description": "Color button for pink"
     },
     "dev_efaz_verified_badge_add_on_set_old_green_color": {
-        "message": "Définir l'ancienne couleur verte!",
+        "message": "Vieux Vert!",
         "description": "Color button for old Roblox green"
     },
     "dev_efaz_verified_badge_add_on_badgeIdentification1": {

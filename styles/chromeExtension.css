@@ -80,7 +80,7 @@ p {
     text-align: left;
 }
 label {
-    display: flex;
+    display: flow;
     align-items: center;
     max-width: 600px;
     margin-bottom: 5px;
@@ -98,6 +98,7 @@ e {
 em {
     margin-bottom: 10px;
     display: block;
+    width: 90%;
 }
 a {
     max-width: 600px;

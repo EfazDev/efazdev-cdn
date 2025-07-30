@@ -50,10 +50,6 @@ printMainMessage(f"Extensions: {json.dumps(extensions_added)}")
 printWarnMessage("--- Updating Bundle Information ---")
 printMainMessage("Opening Settings JSON..")
 with open(os.path.join(extension_path, "settings.json"), "r") as f: se = json.load(f)
-translations = {}
-for lo in os.listdir(f"{extension_path}/_locales"):
-    if os.path.isdir(f"{extension_path}/_locales/{lo}"):
-        with open(f"{extension_path}/_locales/{lo}/messages.json", "r") as f: translations[lo] = json.load(f)
 printMainMessage("Opening Manifest JSON..")
 with open(os.path.join(extension_path, "manifest.json"), "r") as f: ma = json.load(f)
 mans = {}
@@ -63,9 +59,6 @@ for i in extensions_added:
     printMainMessage(f"Opening JSONs for {i}..")
     with open(f"{extension_path}/{i}/manifest.json", "r") as f: mans[i] = json.load(f)
     with open(f"{extension_path}/{i}/settings.json", "r") as f: ses[i] = json.load(f)
-    for lo in os.listdir(f"{extension_path}/{i}/_locales"):
-        if os.path.isdir(f"{extension_path}/{i}/_locales/{lo}"):
-            with open(f"{extension_path}/{i}/_locales/{lo}/messages.json", "r") as f: locales[f"{i}|{lo}"] = json.load(f)
 content_scripts = []
 content_css = []
 web_accessible_resources = []
@@ -117,14 +110,6 @@ ma["web_accessible_resources"] = [
     }
 ]
 ma["permissions"] = manifest_permissions
-for i, v in locales.items():
-    s = i.split("|")[1]
-    if not (translations.get(s) == None):
-        for e, k in v.items():
-            if not translations[s].get(e): translations[s][e] = k
-for i, v in translations.items():
-    if os.path.exists(f"{extension_path}/_locales/{i}/messages.json"):
-        with open(f"{extension_path}/_locales/{i}/messages.json", "w") as f: json.dump(v, f, indent=4, ensure_ascii=False)
 printMainMessage(f"Manifest Permissions: {json.dumps(manifest_permissions)}")
 printMainMessage(f"Content Scripts/CSS: {json.dumps(content_scripts)} + {json.dumps(content_css)}")
 printMainMessage(f"Web Accessible Resources: {json.dumps(web_accessible_resources)}")
