@@ -83,14 +83,14 @@ inject.js:
                 let tab = window.location
                 if (tab.href) {
                     const localeSets = {
-                        "English": ["Connections", "Connection", "Connect", "Connection", "Connection", "Add ", "Un", "Connect"],
-                        "Español": ["Conexiones", "Conexion", "Conectar", "conexion", "conexión", "Añadir ", "Eliminar ", "Conectar"],
-                        "Français": ["Connexions", "Connexion", "Connexion", "connexion", "connexion", "Ajouter une ", "Supprimer ", "Connexion"],
+                        "English": ["Connections", "Connection", "Connect", "Connection", "Add ", "Un", "Remove "],
+                        "Español": ["Conexiones", "Conexion", "Conectar", "conexión", "Añadir ", "Eliminar ", "Eliminar "],
+                        "Français": ["Connexions", "Connexion", "Connexion", "connexion", "Ajouter une ", "Supprimer ", "Supprimer "],
                     }
                     if (tab.hostname == "www.roblox.com") {
                         /* Set Names */
                         let newName = settings["newName"];
-                        let newNameWithoutEndingS = settings["newName"].endsWith("s") ? settings["newName"].slice(0, -1) : settings["newName"];
+                        let newNameWithoutEndingS = settings["newName"].replace(/ies$/, "y").replace(/es$/, "").replace(/s$/, "");
                         let amountOfSecondsBeforeLoop = (typeof(settings["startTime"]) == "string" && Number(settings["startTime"])) ? Number(settings["startTime"]) : 75
                         
                         /* Clean New Name to prevent crashes */
@@ -115,103 +115,109 @@ inject.js:
                                 localeSet = localeSets["English"]
                             }
 
+                            function addRename(header) {
+                                function m(a) {
+                                    if (!header[a]) { return }
+                                    if (header[a].includes(localeSet[0]) ) {
+                                        header[a] = header[a].replaceAll(localeSet[0], newName)
+                                    }
+                                    if (header[a].includes(localeSet[0].toLowerCase())) {
+                                        header[a] = header[a].replaceAll(localeSet[0].toLowerCase(), newName.toLowerCase())
+                                    }
+                                    if (header[a].includes(localeSet[1])) {
+                                        header[a] = header[a].replaceAll(localeSet[1], newNameWithoutEndingS)
+                                    }
+                                    if (header[a].includes(localeSet[1].toLowerCase())) {
+                                        header[a] = header[a].replaceAll(localeSet[1].toLowerCase(), newNameWithoutEndingS.toLowerCase())
+                                    }
+                                    if (header[a].includes(localeSet[2])) {
+                                        header[a] = header[a].replaceAll(localeSet[2], newName)
+                                    }
+                                    if (header[a].includes(localeSet[2].toLowerCase())) {
+                                        header[a] = header[a].replaceAll(localeSet[2].toLowerCase(), newName.toLowerCase())
+                                    }
+                                    if (header[a].includes(localeSet[3])) {
+                                        header[a] = header[a].replaceAll(localeSet[3], newNameWithoutEndingS.toLowerCase())
+                                    }
+                                }
+                                m("innerHTML")
+                                m("placeholder")
+                            }
+
                             let sidebar_headers = document.querySelectorAll(".font-header-2.dynamic-ellipsis-item")
                             for (let i = 0; i < sidebar_headers.length; i++) {
                                 let header = sidebar_headers[i]
-                                if (header.innerHTML.includes(localeSet[2]) && !(header.innerHTML.includes(newName))) {
-                                    header.innerHTML = newName
-                                }
+                                addRename(header)
                             }
 
                             let group_webblox_dropdown = document.querySelectorAll(".web-blox-css-mui-184cbry")
                             for (let i = 0; i < group_webblox_dropdown.length; i++) {
                                 let header = group_webblox_dropdown[i]
-                                if (header.innerHTML.includes(localeSet[1]) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
-                                    header.innerHTML = header.innerHTML.replace(localeSet[1], newNameWithoutEndingS)
-                                }
+                                addRename(header)
                             }
 
                             let title_page_text = document.querySelectorAll(".friends-title")
                             for (let i = 0; i < title_page_text.length; i++) {
                                 let header = title_page_text[i]
-                                if (header.innerHTML.includes(localeSet[0]) && !(header.innerHTML.includes(newName))) {
-                                    header.innerHTML = header.innerHTML.replace(localeSet[0], newName)
-                                }
-                                if (header.innerHTML.includes(localeSet[3]) && !(header.innerHTML.includes(newName.toLowerCase()))) {
-                                    header.innerHTML = header.innerHTML.replace(localeSet[3], newName.toLowerCase())
-                                }
+                                addRename(header)
                             }
 
                             let buttons_text = document.querySelectorAll(".web-blox-css-tss-1283320-Button-textContainer")
                             for (let i = 0; i < buttons_text.length; i++) {
                                 let header = buttons_text[i]
-                                if (header.innerHTML.includes(localeSet[6] + localeSet[4]) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
-                                    header.innerHTML = header.innerHTML.replace(localeSet[6] + localeSet[4], localeSet[6] + newNameWithoutEndingS.toLowerCase())
+                                if (header.innerHTML.includes(localeSet[6] + localeSet[3]) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
+                                    header.innerHTML = header.innerHTML.replace(localeSet[6] + localeSet[3], localeSet[5] + newNameWithoutEndingS.toLowerCase())
                                 } else if (header.innerHTML.includes(localeSet[1]) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                     header.innerHTML = header.innerHTML.replace(localeSet[1], newNameWithoutEndingS)
                                 } else if (header.innerHTML.includes(localeSet[1].toLowerCase()) && !(header.innerHTML.includes(newNameWithoutEndingS.toLowerCase()))) {
                                     header.innerHTML = header.innerHTML.replace(localeSet[1].toLowerCase(), newNameWithoutEndingS.toLowerCase())
-                                } else if (header.innerHTML.includes(localeSet[4]) && !(header.innerHTML.includes(newNameWithoutEndingS.toLowerCase()))) {
-                                    header.innerHTML = header.innerHTML.replace(localeSet[4], newNameWithoutEndingS.toLowerCase())
+                                } else if (header.innerHTML.includes(localeSet[3]) && !(header.innerHTML.includes(newNameWithoutEndingS.toLowerCase()))) {
+                                    header.innerHTML = header.innerHTML.replace(localeSet[3], newNameWithoutEndingS.toLowerCase())
                                 }
                             }
 
                             let search_headers = document.querySelectorAll(".section-title.ng-binding ng-scope.font-header-1")
                             for (let i = 0; i < search_headers.length; i++) {
                                 let header = search_headers[i]
-                                if (header.innerHTML.includes(localeSet[0]) && !(header.innerHTML.includes(newName))) {
-                                    header.innerHTML = header.innerHTML.replace(localeSet[0], newName)
-                                }
+                                addRename(header)
                             }
 
                             let friends_search_link = document.querySelectorAll(".friends-filter-searchbar-input")
                             for (let i = 0; i < friends_search_link.length; i++) {
                                 let header = friends_search_link[i]
-                                if (header.placeholder.includes(localeSet[0]) && !(header.placeholder.includes(newName))) {
-                                    header.placeholder = header.placeholder.replace(localeSet[0], `${newName}`)
-                                }
+                                addRename(header)
                             }
 
                             let friends_headers = document.querySelectorAll(".ng-binding")
                             for (let i = 0; i < friends_headers.length; i++) {
                                 let header = friends_headers[i]
-                                if (header.innerHTML.includes(localeSet[0]) && !(header.innerHTML.includes(newName))) {
-                                    header.innerHTML = header.innerHTML.replace(localeSet[0], newName)
-                                }
+                                addRename(header)
                             }
 
                             let most_text_frames = document.querySelectorAll(".ng-binding")
                             for (let i = 0; i < most_text_frames.length; i++) {
                                 let header = most_text_frames[i]
-                                if (header.innerHTML.includes(localeSet[1]) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
-                                    if (settings["massEdit"] == true) {
-                                        header.innerHTML = header.innerHTML.replace(localeSet[1], newNameWithoutEndingS)
-                                    }
+                                if (settings["massEdit"] == true) {
+                                    addRename(header)
                                 }
                             }
 
                             let amount_text_summary = document.querySelectorAll(".amount")
                             for (let i = 0; i < amount_text_summary.length; i++) {
                                 let header = amount_text_summary[i]
-                                if (header.innerHTML.includes(localeSet[1]) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
-                                    header.innerHTML = header.innerHTML.replace(localeSet[1], newNameWithoutEndingS)
-                                }
+                                addRename(header)
                             }
 
                             let selected_labels = document.querySelectorAll(".rbx-selection-label")
                             for (let i = 0; i < selected_labels.length; i++) {
                                 let header = selected_labels[i]
-                                if (header.innerHTML.includes(localeSet[1]) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
-                                    header.innerHTML = header.innerHTML.replace(localeSet[1], newNameWithoutEndingS)
-                                }
+                                addRename(header)
                             }
 
                             let item_descriptions = document.querySelectorAll(".item-description")
                             for (let i = 0; i < item_descriptions.length; i++) {
                                 let header = item_descriptions[i]
-                                if (header.innerHTML.includes(localeSet[1]) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
-                                    header.innerHTML = header.innerHTML.replace(localeSet[1], newNameWithoutEndingS)
-                                }
+                                addRename(header)
                             }
 
                             let friends_subtitle = document.querySelectorAll(".friends-subtitle")
@@ -225,145 +231,107 @@ inject.js:
                             let previous_names = document.querySelectorAll(".text-pastname.ng-binding")
                             for (let i = 0; i < previous_names.length; i++) {
                                 let header = previous_names[i]
-                                if (header.innerHTML.includes(localeSet[1]) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
-                                    header.innerHTML = header.innerHTML.replace(localeSet[1], newNameWithoutEndingS)
-                                }
+                                addRename(header)
                             }
 
                             let back_links = document.querySelectorAll(".back-link")
                             for (let i = 0; i < back_links.length; i++) {
                                 let header = back_links[i]
-                                if ((header.innerHTML.includes(localeSet[1]) || header.innerHTML.includes(localeSet[0]))) {
-                                    header.innerHTML = header.innerHTML.replace(localeSet[1], newNameWithoutEndingS)
-                                }
+                                addRename(header)
                             }
 
                             let input_fields = document.querySelectorAll(".input-field")
                             for (let i = 0; i < input_fields.length; i++) {
                                 let header = input_fields[i]
-                                if (header.placeholder && (header.placeholder.includes(localeSet[1]) || header.placeholder.includes(localeSet[0]))) {
-                                    header.placeholder = header.placeholder.replace(localeSet[1], newNameWithoutEndingS)
-                                }
-                                if (header.placeholder && (header.placeholder.includes(localeSet[3]))) {
-                                    header.placeholder = header.placeholder.replace(localeSet[3], newNameWithoutEndingS.toLowerCase())
-                                }
+                                addRename(header)
                             }
 
                             let play_with_other_text = document.querySelectorAll(".play-with-others-text")
                             for (let i = 0; i < play_with_other_text.length; i++) {
                                 let header = play_with_other_text[i]
-                                if (header.innerHTML && header.innerHTML.includes(localeSet[3])) {
-                                    header.innerHTML = header.innerHTML.replace(localeSet[3], newNameWithoutEndingS.toLowerCase())
-                                }
+                                addRename(header)
                             }
 
                             let friends_in_server = document.querySelectorAll(".friends-in-server-label")
                             for (let i = 0; i < friends_in_server.length; i++) {
                                 let header = friends_in_server[i]
-                                if (header.innerHTML && header.innerHTML.includes(localeSet[1])) {
-                                    header.innerHTML = header.innerHTML.replace(localeSet[1], newNameWithoutEndingS)
-                                }
+                                addRename(header)
                             }
 
                             let popover_buttons = document.querySelectorAll("div.popover-content > div > li > button")
                             for (let i = 0; i < popover_buttons.length; i++) {
                                 let header = popover_buttons[i]
-                                if (header.innerHTML && header.innerHTML.includes(localeSet[1])) {
-                                    header.innerHTML = header.innerHTML.replace(localeSet[1], newNameWithoutEndingS)
-                                }
+                                addRename(header)
                             }
 
                             let friend_subtitles = document.querySelectorAll(".friends-subtitle")
                             for (let i = 0; i < friend_subtitles.length; i++) {
                                 let header = friend_subtitles[i]
-                                if (header.innerHTML && header.innerHTML.includes(localeSet[1])) {
-                                    header.innerHTML = header.innerHTML.replace(localeSet[1], newNameWithoutEndingS)
-                                }
+                                addRename(header)
                             }
 
                             let friend_search_bar = document.querySelectorAll(".friends-filter-searchbar-input")
                             for (let i = 0; i < friend_search_bar.length; i++) {
                                 let header = friend_search_bar[i]
-                                if (header.placeholder && header.placeholder.includes(localeSet[3])) {
-                                    header.placeholder = header.placeholder.replace(localeSet[3], newNameWithoutEndingS.toLowerCase())
-                                }
+                                addRename(header)
                             }
 
                             let create_connection_btn = document.querySelectorAll(".tooltip-container.create-friend-link-btn > button")
                             for (let i = 0; i < create_connection_btn.length; i++) {
                                 let header = create_connection_btn[i]
-                                if (header.innerHTML && header.innerHTML.includes(localeSet[1])) {
-                                    header.innerHTML = header.innerHTML.replace(localeSet[1], newNameWithoutEndingS)
-                                }
+                                addRename(header)
                             }
 
                             let roseal_tooltips = document.querySelectorAll(".roseal-tooltip")
                             for (let i = 0; i < roseal_tooltips.length; i++) {
                                 let header = roseal_tooltips[i]
-                                if (header.innerHTML && header.innerHTML.includes(localeSet[3])) {
-                                    header.innerHTML = header.innerHTML.replace(localeSet[3], newNameWithoutEndingS.toLowerCase())
-                                }
-                                if (header.innerHTML && header.innerHTML.includes(localeSet[1])) {
-                                    header.innerHTML = header.innerHTML.replace(localeSet[1], newNameWithoutEndingS)
-                                }
+                                addRename(header)
                             }
 
                             let server_list_headers = document.querySelectorAll(".server-list-header")
                             for (let i = 0; i < server_list_headers.length; i++) {
                                 let header = server_list_headers[i]
-                                if (header.innerHTML && header.innerHTML.includes(localeSet[1])) {
-                                    header.innerHTML = header.innerHTML.replace(localeSet[1], newNameWithoutEndingS)
-                                }
+                                addRename(header)
                             }
 
                             let font_bodies = document.querySelectorAll(".font-body")
                             for (let i = 0; i < font_bodies.length; i++) {
                                 let header = font_bodies[i]
-                                if ((header.innerHTML.includes(localeSet[1]) || header.innerHTML.includes(localeSet[0])) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
-                                    header.innerHTML = header.innerHTML.replace(localeSet[1], newNameWithoutEndingS)
-                                }
+                                addRename(header)
                             }
 
                             let emphasises = document.querySelectorAll(".text-emphasis")
                             for (let i = 0; i < emphasises.length; i++) {
                                 let header = emphasises[i]
-                                if ((header.innerHTML.includes(localeSet[1]) || header.innerHTML.includes(localeSet[0])) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
-                                    header.innerHTML = header.innerHTML.replace(localeSet[1], newNameWithoutEndingS)
-                                }
+                                addRename(header)
                             }
 
                             let text_contents = document.querySelectorAll(".text-content")
                             for (let i = 0; i < text_contents.length; i++) {
                                 let header = text_contents[i]
-                                if ((header.innerHTML.includes(localeSet[1]) || header.innerHTML.includes(localeSet[0])) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
-                                    header.innerHTML = header.innerHTML.replace(localeSet[1], newNameWithoutEndingS)
-                                }
+                                addRename(header)
                             }
 
                             let friend_tooltips = document.querySelectorAll("#friendsTooltip")
                             for (let i = 0; i < friend_tooltips.length; i++) {
                                 let header = friend_tooltips[i]
-                                if ((header.innerHTML.includes(localeSet[1]) || header.innerHTML.includes(localeSet[0])) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
-                                    header.innerHTML = header.innerHTML.replace(localeSet[1], newNameWithoutEndingS)
-                                }
+                                addRename(header)
                             }
 
                             let player_list_headers = document.querySelectorAll(".people-list-header")
                             for (let i = 0; i < player_list_headers.length; i++) {
                                 let header = player_list_headers[i]
-                                if ((header.innerHTML.includes(localeSet[1]) || header.innerHTML.includes(localeSet[0])) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
-                                    header.innerHTML = header.innerHTML.replace(localeSet[1], newNameWithoutEndingS)
-                                }
+                                addRename(header)
                             }
 
                             let friend_list_titles = document.querySelectorAll(".friends-carousel-tile-labels")
                             for (let i = 0; i < friend_list_titles.length; i++) {
                                 let header = friend_list_titles[i]
-                                if (header.nodeName == "DIV" && header.innerHTML.includes(localeSet[7]) && !(header.innerHTML.includes(newName))) {
-                                    if (!(header.innerHTML.includes(localeSet[6]))) {
-                                        header.innerHTML = header.innerHTML.replace(localeSet[7], localeSet[5] + newName)
+                                if (header.nodeName == "DIV" && header.innerHTML.includes(localeSet[2])) {
+                                    if (!(header.innerHTML.includes(localeSet[4] + newName))) {
+                                        header.innerHTML = header.innerHTML.replaceAll(localeSet[2], localeSet[4] + newName)
                                     }
-                                    header.innerHTML = header.innerHTML.replace(localeSet[2], newName)
+                                    addRename(header)
                                 }
                             }
 
@@ -371,8 +339,8 @@ inject.js:
                             for (let i = 0; i < all_links.length; i++) {
                                 let header = all_links[i]
                                 if (settings["massEdit"] == true) {
-                                    if (!(header.className == "profile-header-social-count") && header.innerHTML.includes(localeSet[1]) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
-                                        header.innerHTML = header.innerHTML.replace(localeSet[1], newNameWithoutEndingS)
+                                    if (!(header.className == "profile-header-social-count")) {
+                                        addRename(header)
                                     }
                                 }
                             }
@@ -381,18 +349,14 @@ inject.js:
                             for (let i = 0; i < all_labels.length; i++) {
                                 let header = all_labels[i]
                                 if (settings["massEdit"] == true) {
-                                    if ((header.innerHTML.includes(localeSet[1]) || header.innerHTML.includes(localeSet[0])) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
-                                        header.innerHTML = header.innerHTML.replace(localeSet[1], newNameWithoutEndingS)
-                                    }
+                                    addRename(header)
                                 }
                             }
 
                             let all_profile_headers = document.querySelectorAll(".profile-header-social-count-label")
                             for (let i = 0; i < all_profile_headers.length; i++) {
                                 let header = all_profile_headers[i]
-                                if ((header.innerHTML.includes(localeSet[1]) || header.innerHTML.includes(localeSet[0])) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
-                                    header.innerHTML = header.innerHTML.replace(localeSet[1], newNameWithoutEndingS)
-                                }
+                                addRename(header)
                             }
 
                             if (window.location.pathname.includes("/connections") || window.location.pathname.includes("/friends")) {    

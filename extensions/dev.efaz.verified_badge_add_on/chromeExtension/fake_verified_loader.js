@@ -85,6 +85,10 @@ function applyChangesToHTML(json, user_checkmark_color) {
     return cache_html[json["id"]]
 }
 function vIconPlaced(html) { return html.includes("data-rblx-badge-icon") || html.includes("replicate-badge-addon-prompt") || html.includes("Verified Badge Icon") }
+function getIfLinkIsGroup(link) { return link && link.includes("/groups/") || link.includes("/communities/") }
+function getIfLinkIsUserProfile(link) { return link && link.includes("/users/") && link.includes("/profile") }
+function getIfLinkIsUser(link, userId) {  return (link && getIfLinkIsUserProfile(link) && link.includes("/" + userId + "/profile"))  }
+function generateInstantPromise(value) { return new Promise((resolve, reject) => { resolve(value) }); }
 function start() {
     if (enabled) {
         let user_checkmark_color = "%230066FF"
@@ -92,10 +96,6 @@ function start() {
         let cache_groups = null;
         let custom_checkmark_color = settings["color"]
         if (custom_checkmark_color) { user_checkmark_color = custom_checkmark_color.replace("#", "%23"); }
-        function getIfLinkIsGroup(link) { return link.includes("/groups/") || link.includes("/communities/") }
-        function getIfLinkIsUserProfile(link) { return link.includes("/users/") && link.includes("/profile") }
-        function getIfLinkIsUser(link, userId) {  return (getIfLinkIsUserProfile(link) && link.includes("/" + userId + "/profile"))  }
-        function generateInstantPromise(value) { return new Promise((resolve, reject) => { resolve(value) }); }
         async function getUserData(id, isMain) {
             if (broken_context == true) { return generateInstantPromise(null)
             } else {

@@ -1,0 +1,202 @@
+{
+    "enabled_mes": {
+        "message": "Enable Extension",
+        "description": "Enable Extension text"
+    },
+    "thanksTitle": {
+        "message": "Thank you for installing",
+        "description": "Thanks for installing text"
+    },
+    "thankYou": {
+        "message": "Thank You!",
+        "description": "Thanks text"
+    },
+    "thanksSettings": {
+        "message": "If you would like to view extension settings,",
+        "description": "Part of extension settings text"
+    },
+    "thanksWebsite": {
+        "message": "If you would like to go to my website,",
+        "description": "Part of open website text"
+    },
+    "thanksClickHere": {
+        "message": "click here",
+        "description": "Other part of thank text"
+    },
+    "thanksVersionNum": {
+        "message": "Version Number:",
+        "description": "Version number"
+    },
+    "settings": {
+        "message": "Settings",
+        "description": "Settings text"
+    },
+    "settingsHello": {
+        "message": "Hello!",
+        "description": "Settings hello."
+    },
+    "settingsLoading": {
+        "message": "Loading..",
+        "description": "Loading text"
+    },
+    "settingsDetails": {
+        "message": "System Details",
+        "description": "System detail text"
+    },
+    "settingsExName": {
+        "message": "Extension Name:",
+        "description": "Extension name text"
+    },
+    "settingsExEnable": {
+        "message": "Enable Extension:",
+        "description": "Enable Extension text"
+    },
+    "settingsUpdateAvailable": {
+        "message": "Update Available to",
+        "description": "Update available text"
+    },
+    "settingsUnpacked": {
+        "message": "Unpacked",
+        "description": "Unpacked text"
+    },
+    "settingsBeta": {
+        "message": "Beta",
+        "description": "Beta version text"
+    },
+    "settingsMadeBy": {
+        "message": "Extension is made by @EfazDev. This extension is not made by Roblox.",
+        "description": "Credits text"
+    },
+    "settingsMadeBy2": {
+        "message": "These extensions are made by @EfazDev. This extension is not affiliated or made by Roblox. THIS PROJECT IS OPEN-SOURCE, DO NOT PAY FOR THIS.",
+        "description": "Credits 2 text"
+    },
+    "settingsPrivacyPolicy": {
+        "message": "View Privacy Policy",
+        "description": "View Privacy Policy text"
+    },
+    "settingsBundleSettings": {
+        "message": "Bundle Settings",
+        "description": "View Bundle Settings text"
+    },
+    "settingsNetworkOffline": {
+        "message": "Network Offline",
+        "description": "No internet text"
+    },
+    "settingsReset": {
+        "message": "Reset!",
+        "description": "Reset text"
+    },
+    "settingsExtensions": {
+        "message": "Extensions",
+        "description": "Extensions text"
+    },
+    "settingsNoFileSelected": {
+        "message": "No file selected",
+        "description": "No file text"
+    },
+    "settingsExtensionSettingsTitle": {
+        "message": "Extension Settings",
+        "description": "Extension settings title"
+    },
+    "settingsOpenSettings": {
+        "message": "Open Settings!",
+        "description": "Open settings for bundled extension"
+    },
+    "settingsReviewDetails": {
+        "message": "Review Details!",
+        "description": "Review details text"
+    },
+    "settingsSaveBtn": {
+        "message": "Save Settings!",
+        "description": "Save settings text"
+    },
+    "settingsGoBackBtn": {
+        "message": "Return to Extensions page!",
+        "description": "Save settings text"
+    },
+    "settingsSavedData": {
+        "message": "Saved data!",
+        "description": "Saved data message"
+    },
+    "settingsJustExtension": {
+        "message": "just a extension settings page",
+        "description": "just extension description"
+    },
+    "myWebsite": {
+        "message": "My Website",
+        "description": "Website Link Title"
+    },
+    "chromeWebstore": {
+        "message": "Chrome Webstore",
+        "description": "Webstore Link Title"
+    },
+    "firefoxAddons": {
+        "message": "Firefox Add-ons",
+        "description": "Webstore 2 Link Title"
+    },
+    "twitter": {
+        "message": "Twitter",
+        "description": "Twitter Link Title"
+    },
+    "discord": {
+        "message": "Discord",
+        "description": "Discord Link Title"
+    },
+    "youtube": {
+        "message": "YouTube",
+        "description": "YouTube Link Title"
+    },
+    "dev_efaz_roblox_logo_changer_exName": {
+        "message": "Efaz's Roblox Logo Changer",
+        "description": "Extension name"
+    },
+    "dev_efaz_roblox_logo_changer_bundleName": {
+        "message": "Roblox Logo Changer",
+        "description": "Extension bundle display name"
+    },
+    "dev_efaz_roblox_logo_changer_exDescription": {
+        "message": "Tired of the current Roblox logo? Well, you can change it using this extension!",
+        "description": "Extension description"
+    },
+    "dev_efaz_roblox_logo_changer_enabled_mes": {
+        "message": "Enable Extension",
+        "description": "Enable Extension text"
+    },
+    "dev_efaz_roblox_logo_changer_loopSeconds_mes": {
+        "message": "Start Loop Time (ms)",
+        "description": "Setting text for loopSeconds"
+    },
+    "dev_efaz_roblox_logo_changer_rbxIcon_mes": {
+        "message": "Set Roblox Player Icon",
+        "description": "Setting text for rbxIcon"
+    },
+    "dev_efaz_roblox_logo_changer_rbxStudioIcon_mes": {
+        "message": "Set Roblox Studio Icon",
+        "description": "Setting text for rbxStudioIcon"
+    },
+    "dev_efaz_roblox_logo_changer_topLeftLogo_mes": {
+        "message": "Set Roblox Icon (Main Web)",
+        "description": "Setting text for topLeftLogo"
+    },
+    "dev_efaz_roblox_logo_changer_topLeftName_mes": {
+        "message": "Set Roblox Name (Main Web)",
+        "description": "Setting text for topLeftName"
+    },
+    "dev_efaz_roblox_logo_changer_projectedImage_mes": {
+        "message": "Set Roblox Website Tab Icon",
+        "description": "Setting text for projectedImage"
+    },
+    "dev_efaz_roblox_logo_changer_projectedImage2_mes": {
+        "message": "Set Creator Dashboard Icon",
+        "description": "Setting text for projectedImage2"
+    },
+    "dev_efaz_roblox_logo_changer_projectedImage3_mes": {
+        "message": "Set DevForum Tab Icon",
+        "description": "Setting text for projectedImage3"
+    },
+    "dev_efaz_roblox_logo_changer_projectedImage4_mes": {
+        "message": "Set Other Website Tab Icon",
+        "description": "Setting text for projectedImage4"
+    }
+}

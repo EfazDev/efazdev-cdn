@@ -324,7 +324,7 @@
         "description": "Nombre de la extensión"
     },
     "dev_efaz_remove_builder_font_bundleName": {
-        "message": "Eliminador de fuentes de Efaz's Builder",
+        "message": "Eliminador de fuentes Builder",
         "description": "Nombre para mostrar del paquete de extensión"
     },
     "dev_efaz_remove_builder_font_exDescription": {

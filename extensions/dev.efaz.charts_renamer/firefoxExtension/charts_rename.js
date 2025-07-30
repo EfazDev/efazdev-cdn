@@ -112,6 +112,12 @@ inject.js:
                             let isGames = newName.toLowerCase() == localeSet[0];
                             let isCharts = newName.toLowerCase() == localeSet[1];
 
+                            function addRename(header) {
+                                if (!(header.textContent.includes(newName))) {
+                                    header.textContent = header.textContent.replaceAll(localeSet[3], newName)
+                                }
+                            }
+
                             let topbar_headers = document.querySelectorAll(".font-header-2.nav-menu-title.text-header")
                             for (let i = 0; i < topbar_headers.length; i++) {
                                 let header = topbar_headers[i]
@@ -123,7 +129,7 @@ inject.js:
                                         header.href = header.href.replace("charts", "discover")
                                         header.href = header.href.replace("games", "discover")
                                     }
-                                    header.textContent = newName
+                                    addRename(header)
                                 }
                             }
 
@@ -142,6 +148,7 @@ inject.js:
                                             header.href = header.href.replace("games", "discover")
                                         }
                                     }
+                                    addRename(header)
                                 }
                             }
 
@@ -164,9 +171,7 @@ inject.js:
                                     if (!(header.innerHTML.includes(newName))) {
                                         for (let e = 0; e < header.children.length; e++) {
                                             let child = header.children[e]
-                                            if (!(child.textContent.includes(newName))) {
-                                                child.textContent = `${newName}`
-                                            }
+                                            addRename(child)
                                         }
                                     }
                                 }
@@ -175,9 +180,7 @@ inject.js:
                                     let titles = document.querySelectorAll("title")
                                     for (let i = 0; i < titles.length; i++) {
                                         let header = titles[i]
-                                        if (!(header.textContent.includes(newName))) {
-                                            header.textContent = header.textContent.replaceAll(localeSet[3], newName)
-                                        }
+                                        addRename(header)
                                     }
                                 }
                             }

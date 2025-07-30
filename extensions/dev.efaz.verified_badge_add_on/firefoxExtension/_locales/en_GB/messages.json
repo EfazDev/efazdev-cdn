@@ -1,0 +1,258 @@
+{
+    "enabled_mes": {
+        "message": "Enable Extension",
+        "description": "Enable Extension text"
+    },
+    "thanksTitle": {
+        "message": "Thank you for installing",
+        "description": "Thanks for installing text"
+    },
+    "thankYou": {
+        "message": "Thank You!",
+        "description": "Thanks text"
+    },
+    "thanksSettings": {
+        "message": "If you would like to view extension settings,",
+        "description": "Part of extension settings text"
+    },
+    "thanksWebsite": {
+        "message": "If you would like to go to my website,",
+        "description": "Part of open website text"
+    },
+    "thanksClickHere": {
+        "message": "click here",
+        "description": "Other part of thank text"
+    },
+    "thanksVersionNum": {
+        "message": "Version Number:",
+        "description": "Version number"
+    },
+    "settings": {
+        "message": "Settings",
+        "description": "Settings text"
+    },
+    "settingsHello": {
+        "message": "Hello!",
+        "description": "Settings hello."
+    },
+    "settingsLoading": {
+        "message": "Loading..",
+        "description": "Loading text"
+    },
+    "settingsDetails": {
+        "message": "System Details",
+        "description": "System detail text"
+    },
+    "settingsExName": {
+        "message": "Extension Name:",
+        "description": "Extension name text"
+    },
+    "settingsExEnable": {
+        "message": "Enable Extension:",
+        "description": "Enable Extension text"
+    },
+    "settingsUpdateAvailable": {
+        "message": "Update Available to",
+        "description": "Update available text"
+    },
+    "settingsUnpacked": {
+        "message": "Unpacked",
+        "description": "Unpacked text"
+    },
+    "settingsBeta": {
+        "message": "Beta",
+        "description": "Beta version text"
+    },
+    "settingsMadeBy": {
+        "message": "Extension is made by @EfazDev. This extension is not made by Roblox.",
+        "description": "Credits text"
+    },
+    "settingsMadeBy2": {
+        "message": "These extensions are made by @EfazDev. This extension is not affiliated or made by Roblox. THIS PROJECT IS OPEN-SOURCE, DO NOT PAY FOR THIS.",
+        "description": "Credits 2 text"
+    },
+    "settingsPrivacyPolicy": {
+        "message": "View Privacy Policy",
+        "description": "View Privacy Policy text"
+    },
+    "settingsBundleSettings": {
+        "message": "Bundle Settings",
+        "description": "View Bundle Settings text"
+    },
+    "settingsNetworkOffline": {
+        "message": "Network Offline",
+        "description": "No internet text"
+    },
+    "settingsReset": {
+        "message": "Reset!",
+        "description": "Reset text"
+    },
+    "settingsExtensions": {
+        "message": "Extensions",
+        "description": "Extensions text"
+    },
+    "settingsNoFileSelected": {
+        "message": "No file selected",
+        "description": "No file text"
+    },
+    "settingsExtensionSettingsTitle": {
+        "message": "Extension Settings",
+        "description": "Extension settings title"
+    },
+    "settingsOpenSettings": {
+        "message": "Open Settings!",
+        "description": "Open settings for bundled extension"
+    },
+    "settingsReviewDetails": {
+        "message": "Review Details!",
+        "description": "Review details text"
+    },
+    "settingsSaveBtn": {
+        "message": "Save Settings!",
+        "description": "Save settings text"
+    },
+    "settingsGoBackBtn": {
+        "message": "Return to Extensions page!",
+        "description": "Save settings text"
+    },
+    "settingsSavedData": {
+        "message": "Saved data!",
+        "description": "Saved data message"
+    },
+    "settingsJustExtension": {
+        "message": "just a extension settings page",
+        "description": "just extension description"
+    },
+    "myWebsite": {
+        "message": "My Website",
+        "description": "Website Link Title"
+    },
+    "chromeWebstore": {
+        "message": "Chrome Webstore",
+        "description": "Webstore Link Title"
+    },
+    "firefoxAddons": {
+        "message": "Firefox Add-ons",
+        "description": "Webstore 2 Link Title"
+    },
+    "twitter": {
+        "message": "Twitter",
+        "description": "Twitter Link Title"
+    },
+    "discord": {
+        "message": "Discord",
+        "description": "Discord Link Title"
+    },
+    "youtube": {
+        "message": "YouTube",
+        "description": "YouTube Link Title"
+    },
+    "dev_efaz_verified_badge_add_on_exName": {
+        "message": "Efaz's Roblox Verified Badge Add-on",
+        "description": "Extension name"
+    },
+    "dev_efaz_verified_badge_add_on_bundleName": {
+        "message": "Verified Badge Add-on",
+        "description": "Extension bundle display name"
+    },
+    "dev_efaz_verified_badge_add_on_exDescription": {
+        "message": "An extension that adds the Roblox Verification Checkmark next to your name or group on the website! [Visual effect]",
+        "description": "Extension description"
+    },
+    "dev_efaz_verified_badge_add_on_enabled_mes": {
+        "message": "Enable Extension",
+        "description": "Enable Extension text"
+    },
+    "dev_efaz_verified_badge_add_on_allowAlertMessages_mes": {
+        "message": "Allow Alerts by Extension",
+        "description": "Setting text for allowAlertMessages"
+    },
+    "dev_efaz_verified_badge_add_on_startTime_mes": {
+        "message": "Start Loop Time (ms)",
+        "description": "Setting text for startTime"
+    },
+    "dev_efaz_verified_badge_add_on_color_mes": {
+        "message": "Custom Colour Checkmark (HEX)",
+        "description": "Setting text for color"
+    },
+    "dev_efaz_verified_badge_add_on_groupsIncluded_mes": {
+        "message": "Include Groups Owned by You",
+        "description": "Setting text for groupsIncluded"
+    },
+    "dev_efaz_verified_badge_add_on_verifiedPrompt_mes": {
+        "message": "Enable Verified Badge Prompt",
+        "description": "Setting text for verifiedPrompt"
+    },
+    "dev_efaz_verified_badge_add_on_verifiedBadgeBetweenAccounts_mes": {
+        "message": "Enable Verified Badge Between Accounts",
+        "description": "Setting text for verifiedBadgeBetweenAccounts"
+    },
+    "dev_efaz_verified_badge_add_on_allowEfazDevApprovedBadges_mes": {
+        "message": "Approve Verified Badges on Users Approved by EfazDev",
+        "description": "Setting text for allowEfazDevApprovedBadges"
+    },
+    "dev_efaz_verified_badge_add_on_useCustomApprovedBadgesByUser_mes": {
+        "message": "Enable Customised Approval",
+        "description": "Setting text for useCustomApprovedBadgesByUser"
+    },
+    "dev_efaz_verified_badge_add_on_resetCache1": {
+        "message": "Reset User Cache!",
+        "description": "Reset cache text for users"
+    },
+    "dev_efaz_verified_badge_add_on_resetCache2": {
+        "message": "Reset Group Cache!",
+        "description": "Reset cache text for groups"
+    },
+    "dev_efaz_verified_badge_add_on_setApproved": {
+        "message": "Set Approved Users JSON! (not needed)",
+        "description": "Set approved json text"
+    },
+    "dev_efaz_verified_badge_add_on_set_red_color": {
+        "message": "Set Red Colour!",
+        "description": "Color button for red"
+    },
+    "dev_efaz_verified_badge_add_on_set_orange_color": {
+        "message": "Set Orange Colour!",
+        "description": "Color button for orange"
+    },
+    "dev_efaz_verified_badge_add_on_set_yellow_color": {
+        "message": "Set Yellow Colour!",
+        "description": "Color button for yellow"
+    },
+    "dev_efaz_verified_badge_add_on_set_lime_color": {
+        "message": "Set Lime Colour!",
+        "description": "Color button for lime"
+    },
+    "dev_efaz_verified_badge_add_on_set_cyan_color": {
+        "message": "Set Cyan Colour!",
+        "description": "Color button for cyan"
+    },
+    "dev_efaz_verified_badge_add_on_set_blue_color": {
+        "message": "Set Blue Colour!",
+        "description": "Color button for blue"
+    },
+    "dev_efaz_verified_badge_add_on_set_purple_color": {
+        "message": "Set Purple Colour!",
+        "description": "Color button for purple"
+    },
+    "dev_efaz_verified_badge_add_on_set_pink_color": {
+        "message": "Set Pink Colour!",
+        "description": "Color button for pink"
+    },
+    "dev_efaz_verified_badge_add_on_set_old_green_color": {
+        "message": "Set Old Green Colour!",
+        "description": "Color button for old Roblox green"
+    },
+    "dev_efaz_verified_badge_add_on_badgeIdentification1": {
+        "message": "This badge identifies that the user is using Efaz's Roblox Verified Badge Add-on! Please know that the verified badge is not real and is visually added.",
+        "description": "Badge identification 1"
+    },
+    "dev_efaz_verified_badge_add_on_badgeIdentification2": {
+        "message": "This badge identifies that the user was verified by Efaz for their authenticity! Please know that the verified badge was not given by Roblox, was maybe not asked for their approval, and is visually added.",
+        "description": "Badge identification 2"
+    },
+    "dev_efaz_verified_badge_add_on_badgeIdentification3": {
+        "message": "This badge identifies that this user was trusted under the approval JSON selected by you! Please know that the verified badge was not given by Roblox and is visually added.",
+        "description": "Badge identification 3"
+    }
+}
