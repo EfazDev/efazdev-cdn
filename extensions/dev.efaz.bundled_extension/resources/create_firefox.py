@@ -30,6 +30,7 @@ for i in os.listdir(extensions_folder):
     if not (i == "versions") and os.path.isdir(os.path.join(extensions_folder, i)) and not os.path.islink(os.path.join(extensions_folder, i)):
         printMainMessage(f"Generating {i} Firefox Extension..")
         if os.path.exists(os.path.join(extensions_folder, i, "firefoxExtension")): shutil.rmtree(os.path.join(extensions_folder, i, "firefoxExtension"), ignore_errors=True)
+        if os.path.exists(os.path.join(extensions_folder, i, "zip", "firefoxExtension.zip")): os.remove(os.path.join(extensions_folder, i, "zip", "firefoxExtension.zip"))
         if os.path.exists(os.path.join(extensions_folder, i, "chromeExtension")):
             shutil.copytree(os.path.join(extensions_folder, i, "chromeExtension"), os.path.join(extensions_folder, i, "firefoxExtension"), dirs_exist_ok=True)
             with open(os.path.join(extensions_folder, i, "firefoxExtension", "manifest.json"), "r") as f: man = json.load(f)
