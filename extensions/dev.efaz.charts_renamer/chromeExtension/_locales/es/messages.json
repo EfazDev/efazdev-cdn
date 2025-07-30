@@ -1,186 +1,186 @@
 {
     "enabled_mes": {
         "message": "Habilitar extensión",
-        "description": "Enable Extension text"
+        "description": "Habilitar el texto de la extensión"
     },
     "thanksTitle": {
-        "message": "Gracias por instalar",
-        "description": "Thanks for installing text"
+        "message": "Gracias por Instalando",
+        "description": "Texto de agradecimiento por la instalación"
     },
     "thankYou": {
         "message": "¡Gracias!",
-        "description": "Thanks text"
+        "description": "Texto de agradecimiento"
     },
     "thanksSettings": {
-        "message": "Si deseas ver la configuración de la extensión,",
-        "description": "Part of extension settings text"
+        "message": "Si desea ver la configuración de la extensión",
+        "description": "Parte del texto de configuración de la extensión"
     },
     "thanksWebsite": {
-        "message": "Si deseas ir a mi sitio web,",
-        "description": "Part of open website text"
+        "message": "Si desea visitar mi sitio web",
+        "description": "Parte del texto de apertura del sitio web"
     },
     "thanksClickHere": {
-        "message": "haz clic aquí",
-        "description": "Other part of thank text"
+        "message": "haga clic aquí",
+        "description": "Otra parte del texto de agradecimiento"
     },
     "thanksVersionNum": {
         "message": "Número de versión:",
-        "description": "Version number"
+        "description": "Número de versión"
     },
     "settings": {
         "message": "Configuración",
-        "description": "Settings text"
+        "description": "Texto de configuración"
     },
     "settingsHello": {
         "message": "¡Hola!",
-        "description": "Settings hello."
+        "description": "Configuración, hola."
     },
     "settingsLoading": {
         "message": "Cargando...",
-        "description": "Loading text"
+        "description": "Cargando texto"
     },
     "settingsDetails": {
         "message": "Detalles del sistema",
-        "description": "System detail text"
+        "description": "Texto de detalles del sistema"
     },
     "settingsExName": {
         "message": "Nombre de la extensión:",
-        "description": "Extension name text"
+        "description": "Texto del nombre de la extensión"
     },
     "settingsExEnable": {
         "message": "Habilitar extensión:",
-        "description": "Enable Extension text"
+        "description": "Texto de habilitar extensión"
     },
     "settingsUpdateAvailable": {
-        "message": "Actualización disponible a",
-        "description": "Update available text"
+        "message": "Actualización disponible para",
+        "description": "Texto de actualización disponible"
     },
     "settingsUnpacked": {
-        "message": "Sin empaquetar",
-        "description": "Unpacked text"
+        "message": "Desempaquetado",
+        "description": "Texto desempaquetado"
     },
     "settingsBeta": {
         "message": "Beta",
-        "description": "Beta version text"
+        "description": "Texto de la versión beta"
     },
     "settingsMadeBy": {
-        "message": "Extensión creada por @EfazDev. Esta extensión no fue creada por Roblox.",
-        "description": "Credits text"
+        "message": "La extensión fue creada por @EfazDev. Esta extensión no fue creada por Roblox.",
+        "description": "Texto de los créditos"
     },
     "settingsMadeBy2": {
-        "message": "Estas extensiones fueron creadas por @EfazDev. Esta extensión no está afiliada ni fue creada por Roblox. ESTE PROYECTO ES DE CÓDIGO ABIERTO, NO PAGUES POR ÉL.",
-        "description": "Credits 2 text"
+        "message": "Estas extensiones fueron creadas por @EfazDev. Esta extensión no está afiliada ni creada por Roblox. ESTE PROYECTO ES DE CÓDIGO ABIERTO, NO PAGUE POR ELLO.",
+        "description": "Texto de los créditos 2"
     },
     "settingsPrivacyPolicy": {
-        "message": "Ver política de privacidad",
-        "description": "View Privacy Policy text"
+        "message": "Ver la política de privacidad",
+        "description": "Ver el texto de la política de privacidad"
     },
     "settingsBundleSettings": {
         "message": "Configuración del paquete",
-        "description": "View Bundle Settings text"
+        "description": "Ver el texto de la configuración del paquete"
     },
     "settingsNetworkOffline": {
-        "message": "Red sin conexión",
-        "description": "No internet text"
+        "message": "Red desconectada",
+        "description": "Sin texto de internet"
     },
     "settingsReset": {
         "message": "¡Restablecer!",
-        "description": "Reset text"
+        "description": "Restablecer texto"
     },
     "settingsExtensions": {
         "message": "Extensiones",
-        "description": "Extensions text"
+        "description": "Texto de extensiones"
     },
     "settingsNoFileSelected": {
-        "message": "Ningún archivo seleccionado",
-        "description": "No file text"
+        "message": "No se ha seleccionado ningún archivo",
+        "description": "No hay texto de archivo"
     },
     "settingsExtensionSettingsTitle": {
         "message": "Configuración de la extensión",
-        "description": "Extension settings title"
+        "description": "Título de la configuración de la extensión"
     },
     "settingsOpenSettings": {
         "message": "¡Abrir configuración!",
-        "description": "Open settings for bundled extension"
+        "description": "Abrir configuración de la extensión incluida"
     },
     "settingsReviewDetails": {
         "message": "¡Revisar detalles!",
-        "description": "Review details text"
+        "description": "Texto de los detalles de la revisión"
     },
     "settingsSaveBtn": {
         "message": "¡Guardar configuración!",
-        "description": "Save settings text"
+        "description": "Texto para guardar configuración"
     },
     "settingsGoBackBtn": {
         "message": "¡Volver a la página de extensiones!",
-        "description": "Save settings text"
+        "description": "Texto para guardar configuración"
     },
     "settingsSavedData": {
         "message": "¡Datos guardados!",
-        "description": "Saved data message"
+        "description": "Mensaje de datos guardados"
     },
     "settingsJustExtension": {
-        "message": "solo una página de configuración de extensión",
-        "description": "just extension description"
+        "message": "solo una página de configuración de la extensión",
+        "description": "solo descripción de la extensión"
     },
     "myWebsite": {
         "message": "Mi sitio web",
-        "description": "Website Link Title"
+        "description": "Título del enlace del sitio web"
     },
     "chromeWebstore": {
-        "message": "Tienda web de Chrome",
-        "description": "Webstore Link Title"
+        "message": "Chrome Webstore",
+        "description": "Título del enlace de la tienda web"
     },
     "firefoxAddons": {
         "message": "Complementos de Firefox",
-        "description": "Webstore 2 Link Title"
+        "description": "Título del enlace de la tienda web 2"
     },
     "twitter": {
         "message": "Twitter",
-        "description": "Twitter Link Title"
+        "description": "Título del enlace de Twitter"
     },
     "discord": {
         "message": "Discord",
-        "description": "Discord Link Title"
+        "description": "Título del enlace de Discord"
     },
     "youtube": {
         "message": "YouTube",
-        "description": "YouTube Link Title"
+        "description": "Título del enlace de YouTube"
     },
     "dev_efaz_charts_renamer_exName": {
-        "message": "Renombrador de Charts de Roblox de Efaz",
-        "description": "Extension name"
+        "message": "Renombrador de gráficos de Roblox de Efaz",
+        "description": "Nombre de la extensión"
     },
     "dev_efaz_charts_renamer_bundleName": {
-        "message": "Renombrador de Charts",
-        "description": "Extension bundle display name"
+        "message": "Renombrador de gráficos",
+        "description": "Nombre para mostrar del paquete de extensión"
     },
     "dev_efaz_charts_renamer_exDescription": {
-        "message": "¿Cansado de que Roblox renombre Juegos/Descubrir a Charts? ¡Con esta extensión puedes cambiarlo!",
-        "description": "Extension description"
+        "message": "¿Cansado de que Roblox cambie el nombre de Juegos/Descubrir a Gráficos? ¡Puedes cambiarlo con esta extensión!",
+        "description": "Descripción de la extensión"
     },
     "dev_efaz_charts_renamer_enabled_mes": {
         "message": "Habilitar extensión",
-        "description": "Enable Extension text"
+        "description": "Habilitar texto de extensión"
     },
     "dev_efaz_charts_renamer_newName_mes": {
-        "message": "Reemplazar 'Charts' por",
-        "description": "Setting text for newName"
+        "message": "Reemplazar gráficos con",
+        "description": "Configurando texto para newName"
     },
     "dev_efaz_charts_renamer_newName_default": {
         "message": "Descubrir",
-        "description": "Setting default value for newName"
+        "description": "Configurando valor predeterminado para newName"
     },
     "dev_efaz_charts_renamer_startTime_mes": {
         "message": "Tiempo de inicio del bucle (ms)",
-        "description": "Setting text for startTime"
+        "description": "Configurando texto para startTime"
     },
     "dev_efaz_charts_renamer_replaceURLwithDiscoverURL_mes": {
-        "message": "Reemplazar la URL /charts por /discover o /games",
-        "description": "Setting text for replaceURLwithDiscoverURL"
+        "message": "Reemplazar la URL de /charts con /discover o /games",
+        "description": "Configurando texto para reemplazarURLconDescubrirURL"
     },
     "dev_efaz_charts_renamer_changeTitleHtml_mes": {
-        "message": "Reemplazar el nombre de la pestaña por el nuevo nombre",
-        "description": "Setting text for changeTitleHtml"
+        "message": "Reemplazar el nombre de la pestaña con el nuevo nombre",
+        "description": "Configurando el texto para changeTitleHtml"
     }
 }

@@ -1,258 +1,258 @@
 {
     "enabled_mes": {
         "message": "Habilitar extensión",
-        "description": "Enable Extension text"
+        "description": "Habilitar el texto de la extensión"
     },
     "thanksTitle": {
-        "message": "Gracias por instalar",
-        "description": "Thanks for installing text"
+        "message": "Gracias por Instalando",
+        "description": "Texto de agradecimiento por la instalación"
     },
     "thankYou": {
         "message": "¡Gracias!",
-        "description": "Thanks text"
+        "description": "Texto de agradecimiento"
     },
     "thanksSettings": {
-        "message": "Si deseas ver la configuración de la extensión,",
-        "description": "Part of extension settings text"
+        "message": "Si desea ver la configuración de la extensión",
+        "description": "Parte del texto de configuración de la extensión"
     },
     "thanksWebsite": {
-        "message": "Si deseas ir a mi sitio web,",
-        "description": "Part of open website text"
+        "message": "Si desea visitar mi sitio web",
+        "description": "Parte del texto de apertura del sitio web"
     },
     "thanksClickHere": {
-        "message": "haz clic aquí",
-        "description": "Other part of thank text"
+        "message": "haga clic aquí",
+        "description": "Otra parte del texto de agradecimiento"
     },
     "thanksVersionNum": {
         "message": "Número de versión:",
-        "description": "Version number"
+        "description": "Número de versión"
     },
     "settings": {
         "message": "Configuración",
-        "description": "Settings text"
+        "description": "Texto de configuración"
     },
     "settingsHello": {
         "message": "¡Hola!",
-        "description": "Settings hello."
+        "description": "Configuración, hola."
     },
     "settingsLoading": {
         "message": "Cargando...",
-        "description": "Loading text"
+        "description": "Cargando texto"
     },
     "settingsDetails": {
         "message": "Detalles del sistema",
-        "description": "System detail text"
+        "description": "Texto de detalles del sistema"
     },
     "settingsExName": {
         "message": "Nombre de la extensión:",
-        "description": "Extension name text"
+        "description": "Texto del nombre de la extensión"
     },
     "settingsExEnable": {
         "message": "Habilitar extensión:",
-        "description": "Enable Extension text"
+        "description": "Texto de habilitar extensión"
     },
     "settingsUpdateAvailable": {
-        "message": "Actualización disponible a",
-        "description": "Update available text"
+        "message": "Actualización disponible para",
+        "description": "Texto de actualización disponible"
     },
     "settingsUnpacked": {
-        "message": "Sin empaquetar",
-        "description": "Unpacked text"
+        "message": "Desempaquetado",
+        "description": "Texto desempaquetado"
     },
     "settingsBeta": {
         "message": "Beta",
-        "description": "Beta version text"
+        "description": "Texto de la versión beta"
     },
     "settingsMadeBy": {
-        "message": "Extensión creada por @EfazDev. Esta extensión no fue creada por Roblox.",
-        "description": "Credits text"
+        "message": "La extensión fue creada por @EfazDev. Esta extensión no fue creada por Roblox.",
+        "description": "Texto de los créditos"
     },
     "settingsMadeBy2": {
-        "message": "Estas extensiones fueron creadas por @EfazDev. Esta extensión no está afiliada ni fue creada por Roblox. ESTE PROYECTO ES DE CÓDIGO ABIERTO, NO PAGUES POR ÉL.",
-        "description": "Credits 2 text"
+        "message": "Estas extensiones fueron creadas por @EfazDev. Esta extensión no está afiliada ni creada por Roblox. ESTE PROYECTO ES DE CÓDIGO ABIERTO, NO PAGUE POR ELLO.",
+        "description": "Texto de los créditos 2"
     },
     "settingsPrivacyPolicy": {
-        "message": "Ver política de privacidad",
-        "description": "View Privacy Policy text"
+        "message": "Ver la política de privacidad",
+        "description": "Ver el texto de la política de privacidad"
     },
     "settingsBundleSettings": {
         "message": "Configuración del paquete",
-        "description": "View Bundle Settings text"
+        "description": "Ver el texto de la configuración del paquete"
     },
     "settingsNetworkOffline": {
-        "message": "Red sin conexión",
-        "description": "No internet text"
+        "message": "Red desconectada",
+        "description": "Sin texto de internet"
     },
     "settingsReset": {
         "message": "¡Restablecer!",
-        "description": "Reset text"
+        "description": "Restablecer texto"
     },
     "settingsExtensions": {
         "message": "Extensiones",
-        "description": "Extensions text"
+        "description": "Texto de extensiones"
     },
     "settingsNoFileSelected": {
-        "message": "Ningún archivo seleccionado",
-        "description": "No file text"
+        "message": "No se ha seleccionado ningún archivo",
+        "description": "No hay texto de archivo"
     },
     "settingsExtensionSettingsTitle": {
         "message": "Configuración de la extensión",
-        "description": "Extension settings title"
+        "description": "Título de la configuración de la extensión"
     },
     "settingsOpenSettings": {
         "message": "¡Abrir configuración!",
-        "description": "Open settings for bundled extension"
+        "description": "Abrir configuración de la extensión incluida"
     },
     "settingsReviewDetails": {
         "message": "¡Revisar detalles!",
-        "description": "Review details text"
+        "description": "Texto de los detalles de la revisión"
     },
     "settingsSaveBtn": {
         "message": "¡Guardar configuración!",
-        "description": "Save settings text"
+        "description": "Texto para guardar configuración"
     },
     "settingsGoBackBtn": {
         "message": "¡Volver a la página de extensiones!",
-        "description": "Save settings text"
+        "description": "Texto para guardar configuración"
     },
     "settingsSavedData": {
         "message": "¡Datos guardados!",
-        "description": "Saved data message"
+        "description": "Mensaje de datos guardados"
     },
     "settingsJustExtension": {
-        "message": "solo una página de configuración de extensión",
-        "description": "just extension description"
+        "message": "solo una página de configuración de la extensión",
+        "description": "solo descripción de la extensión"
     },
     "myWebsite": {
         "message": "Mi sitio web",
-        "description": "Website Link Title"
+        "description": "Título del enlace del sitio web"
     },
     "chromeWebstore": {
-        "message": "Tienda web de Chrome",
-        "description": "Webstore Link Title"
+        "message": "Chrome Webstore",
+        "description": "Título del enlace de la tienda web"
     },
     "firefoxAddons": {
         "message": "Complementos de Firefox",
-        "description": "Webstore 2 Link Title"
+        "description": "Título del enlace de la tienda web 2"
     },
     "twitter": {
         "message": "Twitter",
-        "description": "Twitter Link Title"
+        "description": "Título del enlace de Twitter"
     },
     "discord": {
         "message": "Discord",
-        "description": "Discord Link Title"
+        "description": "Título del enlace de Discord"
     },
     "youtube": {
         "message": "YouTube",
-        "description": "YouTube Link Title"
+        "description": "Título del enlace de YouTube"
     },
     "dev_efaz_verified_badge_add_on_exName": {
         "message": "Complemento de insignia verificada de Roblox de Efaz",
-        "description": "Extension name"
+        "description": "Nombre de la extensión"
     },
     "dev_efaz_verified_badge_add_on_bundleName": {
         "message": "Complemento de insignia verificada",
-        "description": "Extension bundle display name"
+        "description": "Nombre para mostrar del paquete de extensión"
     },
     "dev_efaz_verified_badge_add_on_exDescription": {
-        "message": "Una extensión que añade la marca de verificación de Roblox junto a tu nombre o grupo en el sitio web. ¡[Efecto visual]!",
-        "description": "Extension description"
+        "message": "Una extensión que agrega la marca de verificación de Roblox junto a tu nombre o grupo en el sitio web. [Efecto visual]",
+        "description": "Descripción de la extensión"
     },
     "dev_efaz_verified_badge_add_on_enabled_mes": {
         "message": "Habilitar extensión",
-        "description": "Enable Extension text"
+        "description": "Habilitar texto de la extensión"
     },
     "dev_efaz_verified_badge_add_on_allowAlertMessages_mes": {
-        "message": "Permitir alertas por la extensión",
-        "description": "Setting text for allowAlertMessages"
+        "message": "Permitir alertas por extensión",
+        "description": "Configurar texto para allowAlertMessages"
     },
     "dev_efaz_verified_badge_add_on_startTime_mes": {
         "message": "Tiempo de inicio del bucle (ms)",
-        "description": "Setting text for startTime"
+        "description": "Configurar texto para startTime"
     },
     "dev_efaz_verified_badge_add_on_color_mes": {
-        "message": "Marca de verificación de color personalizado (HEX)",
-        "description": "Setting text for color"
+        "message": "Marca de verificación de color personalizada (HEX)",
+        "description": "Configuración del texto del color"
     },
     "dev_efaz_verified_badge_add_on_groupsIncluded_mes": {
         "message": "Incluir grupos de tu propiedad",
-        "description": "Setting text for groupsIncluded"
+        "description": "Configuración del texto para grupos incluidos"
     },
     "dev_efaz_verified_badge_add_on_verifiedPrompt_mes": {
-        "message": "Habilitar mensaje de insignia verificada",
-        "description": "Setting text for verifiedPrompt"
+        "message": "Habilitar aviso de insignia verificada",
+        "description": "Configuración del texto para verifiedPrompt"
     },
     "dev_efaz_verified_badge_add_on_verifiedBadgeBetweenAccounts_mes": {
         "message": "Habilitar insignia verificada entre cuentas",
-        "description": "Setting text for verifiedBadgeBetweenAccounts"
+        "description": "Configuración Texto para verifiedBadgeBetweenAccounts"
     },
     "dev_efaz_verified_badge_add_on_allowEfazDevApprovedBadges_mes": {
         "message": "Aprobar insignias verificadas en usuarios aprobados por EfazDev",
-        "description": "Setting text for allowEfazDevApprovedBadges"
+        "description": "Configuración del texto para allowEfazDevApprovedBadges"
     },
     "dev_efaz_verified_badge_add_on_useCustomApprovedBadgesByUser_mes": {
         "message": "Habilitar aprobación personalizada",
-        "description": "Setting text for useCustomApprovedBadgesByUser"
+        "description": "Configuración del texto para useCustomApprovedBadgesByUser"
     },
     "dev_efaz_verified_badge_add_on_resetCache1": {
-        "message": "¡Restablecer caché de usuarios!",
-        "description": "Reset cache text for users"
+        "message": "¡Restablecer caché de usuario!",
+        "description": "Restablecer texto de caché para usuarios"
     },
     "dev_efaz_verified_badge_add_on_resetCache2": {
-        "message": "¡Restablecer caché de grupos!",
-        "description": "Reset cache text for groups"
+        "message": "¡Restablecer caché de grupo!",
+        "description": "Restablecer texto de caché para grupos"
     },
     "dev_efaz_verified_badge_add_on_setApproved": {
-        "message": "¡Establecer JSON de usuarios aprobados! (no necesario)",
-        "description": "Set approved json text"
+        "message": "¡Establecer JSON de usuarios aprobados! (No es necesario)",
+        "description": "Establecer texto JSON de aprobado"
     },
     "dev_efaz_verified_badge_add_on_set_red_color": {
-        "message": "¡Rojo!",
-        "description": "Color button for red"
+        "message": "¡Configurar color rojo!",
+        "description": "Botón de color para rojo"
     },
     "dev_efaz_verified_badge_add_on_set_orange_color": {
-        "message": "¡Naranja!",
-        "description": "Color button for orange"
+        "message": "Configurar naranja\" ¡Color!",
+        "description": "Botón de color naranja"
     },
     "dev_efaz_verified_badge_add_on_set_yellow_color": {
-        "message": "¡Amarillo!",
-        "description": "Color button for yellow"
+        "message": "¡Establecer color amarillo!",
+        "description": "Botón de color amarillo"
     },
     "dev_efaz_verified_badge_add_on_set_lime_color": {
-        "message": "¡Lima!",
-        "description": "Color button for lime"
+        "message": "¡Establecer color lima!",
+        "description": "Botón de color lima"
     },
     "dev_efaz_verified_badge_add_on_set_cyan_color": {
-        "message": "¡Cian!",
-        "description": "Color button for cyan"
+        "message": "¡Establecer color cian!",
+        "description": "Botón de color cian"
     },
     "dev_efaz_verified_badge_add_on_set_blue_color": {
-        "message": "¡Azul!",
-        "description": "Color button for blue"
+        "message": "¡Establecer color azul!",
+        "description": "Botón de color para azul"
     },
     "dev_efaz_verified_badge_add_on_set_purple_color": {
-        "message": "¡Púrpura!",
-        "description": "Color button for purple"
+        "message": "¡Establecer color morado!",
+        "description": "Botón de color para morado"
     },
     "dev_efaz_verified_badge_add_on_set_pink_color": {
-        "message": "¡Rosa!",
-        "description": "Color button for pink"
+        "message": "¡Establecer color rosa!",
+        "description": "Botón de color para rosa"
     },
     "dev_efaz_verified_badge_add_on_set_old_green_color": {
-        "message": "¡Verde antiguo!",
-        "description": "Color button for old Roblox green"
+        "message": "¡Establecer color verde antiguo!",
+        "description": "Botón de color para verde antiguo de Roblox"
     },
     "dev_efaz_verified_badge_add_on_badgeIdentification1": {
-        "message": "Esta insignia indica que el usuario está usando el complemento de insignia verificada de Roblox de Efaz. Ten en cuenta que la insignia verificada no es real y se añade solo de forma visual.",
-        "description": "Badge identification 1"
+        "message": "¡Esta insignia identifica que el usuario está usando el complemento de insignia verificada de Roblox de Efaz! Tenga en cuenta que la insignia verificada no es real y se agregó visualmente.",
+        "description": "Identificación de la insignia 1"
     },
     "dev_efaz_verified_badge_add_on_badgeIdentification2": {
-        "message": "Esta insignia indica que el usuario fue verificado por Efaz por su autenticidad. Ten en cuenta que la insignia verificada no fue otorgada por Roblox, quizá no se solicitó su aprobación y se añade de forma visual.",
-        "description": "Badge identification 2"
+        "message": "¡Esta insignia identifica que Efaz verificó la autenticidad del usuario! Tenga en cuenta que Roblox no proporcionó la insignia verificada, posiblemente no se le solicitó su aprobación y se agregó visualmente.",
+        "description": "Identificación de la insignia 2"
     },
     "dev_efaz_verified_badge_add_on_badgeIdentification3": {
-        "message": "Esta insignia indica que este usuario fue confiado según el JSON de aprobación que seleccionaste. Ten en cuenta que la insignia verificada no fue otorgada por Roblox y se añade de forma visual.",
-        "description": "Badge identification 3"
+        "message": "¡Esta insignia identifica que este usuario fue confiable según el JSON de aprobación seleccionado por usted! Tenga en cuenta que la insignia verificada La insignia no fue otorgada por Roblox y se agregó visualmente.",
+        "description": "Identificación de la insignia 3"
     }
 }

@@ -1,198 +1,198 @@
 {
     "enabled_mes": {
         "message": "Habilitar extensión",
-        "description": "Enable Extension text"
+        "description": "Habilitar el texto de la extensión"
     },
     "thanksTitle": {
-        "message": "Gracias por instalar",
-        "description": "Thanks for installing text"
+        "message": "Gracias por Instalando",
+        "description": "Texto de agradecimiento por la instalación"
     },
     "thankYou": {
         "message": "¡Gracias!",
-        "description": "Thanks text"
+        "description": "Texto de agradecimiento"
     },
     "thanksSettings": {
-        "message": "Si deseas ver la configuración de la extensión,",
-        "description": "Part of extension settings text"
+        "message": "Si desea ver la configuración de la extensión",
+        "description": "Parte del texto de configuración de la extensión"
     },
     "thanksWebsite": {
-        "message": "Si deseas ir a mi sitio web,",
-        "description": "Part of open website text"
+        "message": "Si desea visitar mi sitio web",
+        "description": "Parte del texto de apertura del sitio web"
     },
     "thanksClickHere": {
-        "message": "haz clic aquí",
-        "description": "Other part of thank text"
+        "message": "haga clic aquí",
+        "description": "Otra parte del texto de agradecimiento"
     },
     "thanksVersionNum": {
         "message": "Número de versión:",
-        "description": "Version number"
+        "description": "Número de versión"
     },
     "settings": {
         "message": "Configuración",
-        "description": "Settings text"
+        "description": "Texto de configuración"
     },
     "settingsHello": {
         "message": "¡Hola!",
-        "description": "Settings hello."
+        "description": "Configuración, hola."
     },
     "settingsLoading": {
         "message": "Cargando...",
-        "description": "Loading text"
+        "description": "Cargando texto"
     },
     "settingsDetails": {
         "message": "Detalles del sistema",
-        "description": "System detail text"
+        "description": "Texto de detalles del sistema"
     },
     "settingsExName": {
         "message": "Nombre de la extensión:",
-        "description": "Extension name text"
+        "description": "Texto del nombre de la extensión"
     },
     "settingsExEnable": {
         "message": "Habilitar extensión:",
-        "description": "Enable Extension text"
+        "description": "Texto de habilitar extensión"
     },
     "settingsUpdateAvailable": {
-        "message": "Actualización disponible a",
-        "description": "Update available text"
+        "message": "Actualización disponible para",
+        "description": "Texto de actualización disponible"
     },
     "settingsUnpacked": {
-        "message": "Sin empaquetar",
-        "description": "Unpacked text"
+        "message": "Desempaquetado",
+        "description": "Texto desempaquetado"
     },
     "settingsBeta": {
         "message": "Beta",
-        "description": "Beta version text"
+        "description": "Texto de la versión beta"
     },
     "settingsMadeBy": {
-        "message": "Extensión creada por @EfazDev. Esta extensión no fue creada por Roblox.",
-        "description": "Credits text"
+        "message": "La extensión fue creada por @EfazDev. Esta extensión no fue creada por Roblox.",
+        "description": "Texto de los créditos"
     },
     "settingsMadeBy2": {
-        "message": "Estas extensiones fueron creadas por @EfazDev. Esta extensión no está afiliada ni fue creada por Roblox. ESTE PROYECTO ES DE CÓDIGO ABIERTO, NO PAGUES POR ÉL.",
-        "description": "Credits 2 text"
+        "message": "Estas extensiones fueron creadas por @EfazDev. Esta extensión no está afiliada ni creada por Roblox. ESTE PROYECTO ES DE CÓDIGO ABIERTO, NO PAGUE POR ELLO.",
+        "description": "Texto de los créditos 2"
     },
     "settingsPrivacyPolicy": {
-        "message": "Ver política de privacidad",
-        "description": "View Privacy Policy text"
+        "message": "Ver la política de privacidad",
+        "description": "Ver el texto de la política de privacidad"
     },
     "settingsBundleSettings": {
         "message": "Configuración del paquete",
-        "description": "View Bundle Settings text"
+        "description": "Ver el texto de la configuración del paquete"
     },
     "settingsNetworkOffline": {
-        "message": "Red sin conexión",
-        "description": "No internet text"
+        "message": "Red desconectada",
+        "description": "Sin texto de internet"
     },
     "settingsReset": {
         "message": "¡Restablecer!",
-        "description": "Reset text"
+        "description": "Restablecer texto"
     },
     "settingsExtensions": {
         "message": "Extensiones",
-        "description": "Extensions text"
+        "description": "Texto de extensiones"
     },
     "settingsNoFileSelected": {
-        "message": "Ningún archivo seleccionado",
-        "description": "No file text"
+        "message": "No se ha seleccionado ningún archivo",
+        "description": "No hay texto de archivo"
     },
     "settingsExtensionSettingsTitle": {
         "message": "Configuración de la extensión",
-        "description": "Extension settings title"
+        "description": "Título de la configuración de la extensión"
     },
     "settingsOpenSettings": {
         "message": "¡Abrir configuración!",
-        "description": "Open settings for bundled extension"
+        "description": "Abrir configuración de la extensión incluida"
     },
     "settingsReviewDetails": {
         "message": "¡Revisar detalles!",
-        "description": "Review details text"
+        "description": "Texto de los detalles de la revisión"
     },
     "settingsSaveBtn": {
         "message": "¡Guardar configuración!",
-        "description": "Save settings text"
+        "description": "Texto para guardar configuración"
     },
     "settingsGoBackBtn": {
         "message": "¡Volver a la página de extensiones!",
-        "description": "Save settings text"
+        "description": "Texto para guardar configuración"
     },
     "settingsSavedData": {
         "message": "¡Datos guardados!",
-        "description": "Saved data message"
+        "description": "Mensaje de datos guardados"
     },
     "settingsJustExtension": {
-        "message": "solo una página de configuración de extensión",
-        "description": "just extension description"
+        "message": "solo una página de configuración de la extensión",
+        "description": "solo descripción de la extensión"
     },
     "myWebsite": {
         "message": "Mi sitio web",
-        "description": "Website Link Title"
+        "description": "Título del enlace del sitio web"
     },
     "chromeWebstore": {
-        "message": "Tienda web de Chrome",
-        "description": "Webstore Link Title"
+        "message": "Chrome Webstore",
+        "description": "Título del enlace de la tienda web"
     },
     "firefoxAddons": {
         "message": "Complementos de Firefox",
-        "description": "Webstore 2 Link Title"
+        "description": "Título del enlace de la tienda web 2"
     },
     "twitter": {
         "message": "Twitter",
-        "description": "Twitter Link Title"
+        "description": "Título del enlace de Twitter"
     },
     "discord": {
         "message": "Discord",
-        "description": "Discord Link Title"
+        "description": "Título del enlace de Discord"
     },
     "youtube": {
         "message": "YouTube",
-        "description": "YouTube Link Title"
+        "description": "Título del enlace de YouTube"
     },
     "dev_efaz_roblox_foundation_color_accents_exName": {
-        "message": "Acentos de color Foundation de Roblox de Efaz",
-        "description": "Extension name"
+        "message": "Acentos de color de la Fundación Roblox de Efaz",
+        "description": "Nombre de la extensión"
     },
     "dev_efaz_roblox_foundation_color_accents_bundleName": {
-        "message": "Acentos de color Foundation",
-        "description": "Extension bundle display name"
+        "message": "Acentos de color de la Fundación",
+        "description": "Nombre para mostrar del paquete de extensión"
     },
     "dev_efaz_roblox_foundation_color_accents_exDescription": {
-        "message": "¿Recuerdas cuando los botones de Roblox eran verdes y ahora son azules? ¡Con esta extensión puedes cambiar a cualquier color!",
-        "description": "Extension description"
+        "message": "¿Recuerdas cuando Roblox solía tener botones verdes y ahora son azules? ¡Puedes cambiar a cualquier color con esta extensión!",
+        "description": "Descripción de la extensión"
     },
     "dev_efaz_roblox_foundation_color_accents_enabled_mes": {
         "message": "Habilitar extensión",
-        "description": "Enable Extension text"
+        "description": "Habilitar texto de la extensión"
     },
     "dev_efaz_roblox_foundation_color_accents_loopSeconds_mes": {
         "message": "Tiempo de inicio del bucle (ms)",
-        "description": "Setting text for loopSeconds"
+        "description": "Configurando el texto para los segundos del bucle"
     },
     "dev_efaz_roblox_foundation_color_accents_color_mes": {
         "message": "Elige un color de acento",
-        "description": "Setting text for color"
+        "description": "Configurando el texto para color"
     },
     "dev_efaz_roblox_foundation_color_accents_enableImageBackground_mes": {
         "message": "Habilitar fondo de imagen",
-        "description": "Setting text for enableImageBackground"
+        "description": "Configurar texto para enableImageBackground"
     },
     "dev_efaz_roblox_foundation_color_accents_projectedImage_mes": {
         "message": "Establecer fondo de imagen",
-        "description": "Setting text for projectedImage"
+        "description": "Configurar texto para projectedImage"
     },
     "dev_efaz_roblox_foundation_color_accents_overwriteCreateDashboard_mes": {
-        "message": "Cambiar colores en el panel de creador",
-        "description": "Setting text for overwriteCreateDashboard"
+        "message": "Cambiar colores en el Panel del Creador",
+        "description": "Configurar texto para overwriteCreateDashboard"
     },
     "dev_efaz_roblox_foundation_color_accents_includeGraphInDashboard_mes": {
-        "message": "Incluir gráficos en el panel de creador",
-        "description": "Setting text for includeGraphInDashboard"
+        "message": "Incluir gráficos en el Panel del Creador",
+        "description": "Configurando texto para includeGraphInDashboard"
     },
     "dev_efaz_roblox_foundation_color_accents_overwriteSuccessColor_mes": {
-        "message": "Sobrescribir color de éxito",
-        "description": "Setting text for overwriteSuccessColor"
+        "message": "Sobrescribir color correcto",
+        "description": "Configurando texto para overwriteSuccessColor"
     },
     "dev_efaz_roblox_foundation_color_accents_applyToPrimaryBtn_mes": {
-        "message": "Aplicar a botones primarios",
-        "description": "Setting text for applyToPrimaryBtn"
+        "message": "Aplicar a botones principales",
+        "description": "Configurando texto para applyToPrimaryBtn"
     }
 }
