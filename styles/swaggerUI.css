@@ -18,6 +18,13 @@
     }
 }
 
+@font-face {
+    font-family: mainfont;
+    font-weight: bold;
+    font-display: swap;
+    src: url(https://cdn.efaz.dev/styles/mainFont.woff2) format("woff2"), url(https://cdn.efaz.dev/styles/mainFont.woff) format("woff");
+}
+
 .swagger-ui .topbar .download-url-wrapper {
     display: flex;
 }
@@ -40,6 +47,10 @@
 }
 .swagger-ui .info>div {
     margin: 0 0 -15px !important;
+}
+
+.topbar-wrapper > a > p {
+    font-family: mainfont, arial, sans-serif;
 }
 
 /* Copied Warning Message CSS from https://catalog.roblox.com/docs/resources/Docs.css */
