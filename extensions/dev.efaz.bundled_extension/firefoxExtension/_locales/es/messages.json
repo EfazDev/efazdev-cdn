@@ -427,51 +427,55 @@
         "message": "¡Establecer JSON de usuarios aprobados! (No es necesario)",
         "description": "Establecer texto JSON de aprobado"
     },
-    "dev_efaz_roblox_foundation_color_accents_exName": {
+    "foundation_color_accents_exName": {
         "message": "Acentos de color de la Fundación Roblox de Efaz",
         "description": "Nombre de la extensión"
     },
-    "dev_efaz_roblox_foundation_color_accents_bundleName": {
+    "dev_efaz_foundation_color_accents_exName": {
+        "message": "Acentos de color de la Fundación Roblox de Efaz",
+        "description": "Nombre de la extensión"
+    },
+    "dev_efaz_foundation_color_accents_bundleName": {
         "message": "Acentos de color de la Fundación",
         "description": "Nombre para mostrar del paquete de extensión"
     },
-    "dev_efaz_roblox_foundation_color_accents_exDescription": {
+    "dev_efaz_foundation_color_accents_exDescription": {
         "message": "¿Recuerdas cuando Roblox solía tener botones verdes y ahora son azules? ¡Puedes cambiar a cualquier color con esta extensión!",
         "description": "Descripción de la extensión"
     },
-    "dev_efaz_roblox_foundation_color_accents_enabled_mes": {
+    "dev_efaz_foundation_color_accents_enabled_mes": {
         "message": "Habilitar extensión",
         "description": "Habilitar texto de la extensión"
     },
-    "dev_efaz_roblox_foundation_color_accents_loopSeconds_mes": {
+    "dev_efaz_foundation_color_accents_loopSeconds_mes": {
         "message": "Tiempo de inicio del bucle (ms)",
         "description": "Configurando el texto para los segundos del bucle"
     },
-    "dev_efaz_roblox_foundation_color_accents_color_mes": {
+    "dev_efaz_foundation_color_accents_color_mes": {
         "message": "Elige un color de acento",
         "description": "Configurando el texto para color"
     },
-    "dev_efaz_roblox_foundation_color_accents_enableImageBackground_mes": {
+    "dev_efaz_foundation_color_accents_enableImageBackground_mes": {
         "message": "Habilitar fondo de imagen",
         "description": "Configurar texto para enableImageBackground"
     },
-    "dev_efaz_roblox_foundation_color_accents_projectedImage_mes": {
+    "dev_efaz_foundation_color_accents_projectedImage_mes": {
         "message": "Establecer fondo de imagen",
         "description": "Configurar texto para projectedImage"
     },
-    "dev_efaz_roblox_foundation_color_accents_overwriteCreateDashboard_mes": {
+    "dev_efaz_foundation_color_accents_overwriteCreateDashboard_mes": {
         "message": "Cambiar colores en el Panel del Creador",
         "description": "Configurar texto para overwriteCreateDashboard"
     },
-    "dev_efaz_roblox_foundation_color_accents_includeGraphInDashboard_mes": {
+    "dev_efaz_foundation_color_accents_includeGraphInDashboard_mes": {
         "message": "Incluir gráficos en el Panel del Creador",
         "description": "Configurando texto para includeGraphInDashboard"
     },
-    "dev_efaz_roblox_foundation_color_accents_overwriteSuccessColor_mes": {
+    "dev_efaz_foundation_color_accents_overwriteSuccessColor_mes": {
         "message": "Sobrescribir color correcto",
         "description": "Configurando texto para overwriteSuccessColor"
     },
-    "dev_efaz_roblox_foundation_color_accents_applyToPrimaryBtn_mes": {
+    "dev_efaz_foundation_color_accents_applyToPrimaryBtn_mes": {
         "message": "Aplicar a botones principales",
         "description": "Configurando texto para applyToPrimaryBtn"
     },

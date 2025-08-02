@@ -423,51 +423,55 @@
         "message": "Définir le JSON des utilisateurs approuvés! (non requis)",
         "description": "Définir le texte JSON approuvé"
     },
-    "dev_efaz_roblox_foundation_color_accents_exName": {
+    "foundation_color_accents_exName": {
         "message": "Couleurs de la Fondation Roblox d'Efaz",
         "description": "Nom de l'extension"
     },
-    "dev_efaz_roblox_foundation_color_accents_bundleName": {
+    "dev_efaz_foundation_color_accents_exName": {
+        "message": "Couleurs de la Fondation Roblox d'Efaz",
+        "description": "Nom de l'extension"
+    },
+    "dev_efaz_foundation_color_accents_bundleName": {
         "message": "Couleurs de la Fondation",
         "description": "Nom d'affichage du bundle d'extension"
     },
-    "dev_efaz_roblox_foundation_color_accents_exDescription": {
+    "dev_efaz_foundation_color_accents_exDescription": {
         "message": "Vous souvenez-vous de l'époque où les boutons Roblox étaient verts, mais maintenant bleus? Vous pouvez changer la couleur de votre choix grâce à cette extension!",
         "description": "Description de l'extension"
     },
-    "dev_efaz_roblox_foundation_color_accents_enabled_mes": {
+    "dev_efaz_foundation_color_accents_enabled_mes": {
         "message": "Activer l'extension",
         "description": "Activer le texte de l'extension"
     },
-    "dev_efaz_roblox_foundation_color_accents_loopSeconds_mes": {
+    "dev_efaz_foundation_color_accents_loopSeconds_mes": {
         "message": "Durée de début de boucle (ms)",
         "description": "Définition du texte pour loopSeconds"
     },
-    "dev_efaz_roblox_foundation_color_accents_color_mes": {
+    "dev_efaz_foundation_color_accents_color_mes": {
         "message": "Choisir une couleur d'accentuation",
         "description": "Définition du texte pour la couleur"
     },
-    "dev_efaz_roblox_foundation_color_accents_enableImageBackground_mes": {
+    "dev_efaz_foundation_color_accents_enableImageBackground_mes": {
         "message": "Activer l'arrière-plan de l'image",
         "description": "Définition du texte pour enableImageBackground"
     },
-    "dev_efaz_roblox_foundation_color_accents_projectedImage_mes": {
+    "dev_efaz_foundation_color_accents_projectedImage_mes": {
         "message": "Définir l'arrière-plan de l'image",
         "description": "Définir le texte pour l'image projetée"
     },
-    "dev_efaz_roblox_foundation_color_accents_overwriteCreateDashboard_mes": {
+    "dev_efaz_foundation_color_accents_overwriteCreateDashboard_mes": {
         "message": "Modifier les couleurs sur le tableau de bord du créateur",
         "description": "Définir le texte pour overwriteCreateDashboard"
     },
-    "dev_efaz_roblox_foundation_color_accents_includeGraphInDashboard_mes": {
+    "dev_efaz_foundation_color_accents_includeGraphInDashboard_mes": {
         "message": "Inclure les graphiques sur le tableau de bord du créateur",
         "description": "Définir le texte pour includeGraphInDashboard"
     },
-    "dev_efaz_roblox_foundation_color_accents_overwriteSuccessColor_mes": {
+    "dev_efaz_foundation_color_accents_overwriteSuccessColor_mes": {
         "message": "Écraser la couleur de réussite",
         "description": "Définir le texte pour overwriteSuccessColor"
     },
-    "dev_efaz_roblox_foundation_color_accents_applyToPrimaryBtn_mes": {
+    "dev_efaz_foundation_color_accents_applyToPrimaryBtn_mes": {
         "message": "Appliquer aux boutons principaux",
         "description": "Définition du texte pour applyToPrimaryBtn"
     },

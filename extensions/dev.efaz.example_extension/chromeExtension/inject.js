@@ -52,27 +52,35 @@ inject.js:
     }
 
     async function getSettings(storage_key, callback) {
-        return fetch(getChromeURL("settings.json")).then((res) => {
+        return await fetch(getChromeURL("settings.json")).then((res) => {
             if (res.ok) { return res.json(); }
-        }).then(jso => {
+        }).then(async (jso) => {
             if (jso) {
-                return storage.get(storage_key).then(async (user_settings) => {
-                    if (!user_settings) { user_settings = {} }
-                    if (!(user_settings[storage_key])) { user_settings[storage_key] = {} }
-                    await loopThroughArrayAsync(jso["settings"], async (i, v) => {
-                        if (typeof(user_settings[storage_key][i]) == "undefined") {
-                            if (!(typeof(v["default"]) == "undefined")) {
-                                if (!(getTran(i + "_default") == null)) {
-                                    user_settings[storage_key][i] = (getTran(i + "_default"))
-                                } else {
-                                    user_settings[storage_key][i] = (v["default"])
-                                }
+                let te = await storage.get(storage_key);
+                let user_settings = {}
+                if (te && te[storage_key]) {
+                    user_settings = te;
+                } else if (jso["old_name"]) {
+                    let old = await storage.get(jso["old_name"]);
+                    if (old) {
+                        user_settings = old;
+                        user_settings = {[storage_key]: user_settings[jso["old_name"]]}
+                    }
+                }
+                if (!(user_settings[storage_key])) { user_settings[storage_key] = {} }
+                await loopThroughArrayAsync(jso["settings"], async (i, v) => {
+                    if (typeof(user_settings[storage_key][i]) == "undefined") {
+                        if (!(typeof(v["default"]) == "undefined")) {
+                            if (!(getTran(i + "_default") == null)) {
+                                user_settings[storage_key][i] = (getTran(i + "_default"))
+                            } else {
+                                user_settings[storage_key][i] = (v["default"])
                             }
                         }
-                    })
-                    if (callback) { callback(user_settings) }
-                    return user_settings
+                    }
                 })
+                if (callback) { callback(user_settings) }
+                return user_settings
             }
         })
     }
