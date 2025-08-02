@@ -112,10 +112,27 @@ inject.js:
                             let isGames = newName.toLowerCase() == localeSet[0];
                             let isCharts = newName.toLowerCase() == localeSet[1];
 
+                            function blacklisted(header, attribute) {
+                                if ((header.getAttribute("ng-bind") && header.getAttribute("ng-bind").includes("group.description"))) { return true; }
+                                if (header.getAttribute("ng-bind") == "$ctrl.data.currentRoleName" || header.getAttribute("ng-bind") == "role.name" || (header.getAttribute("ng-bind") && header.getAttribute("ng-bind").includes("role.name")) || (header.getAttribute("ng-bind") && header.getAttribute("ng-bind").includes("currentRoleFilter"))) { return true; }
+                                if (header.getAttribute("ng-bind-html") == "piece.content" || (header.getAttribute("ng-if") && header.getAttribute("ng-if").includes("chatUser.previewMessage"))) { return true; }
+                                if ((header.getAttribute("ng-bind-html") && header.getAttribute("ng-bind-html").includes("log"))) { return true; }
+                                if ((header.getAttribute("ng-bind-html") && header.getAttribute("ng-bind-html").includes("post.body")) || (header.getAttribute("ng-bind-html") && header.getAttribute("ng-bind-html").includes("library.currentGroup")) || (header.getAttribute("ng-bind") && header.getAttribute("ng-bind").includes("post."))) { return true; }
+                                return false;
+                            }
+
                             function addRename(header) {
-                                if (!(header.textContent.includes(newName))) {
-                                    header.textContent = header.textContent.replaceAll(localeSet[3], newName)
+                                function m(a) {
+                                    if (!header[a]) { return }
+                                    if (blacklisted(header, a)) { return }
+                                    if (header[a].includes(localeSet[3])) {
+                                        header[a] = header[a].replaceAll(localeSet[3], newName)
+                                    }
+                                    if (header[a].includes(localeSet[3].toLowerCase())) {
+                                        header[a] = header[a].replaceAll(localeSet[3].toLowerCase(), newName.toLowerCase())
+                                    }
                                 }
+                                m("innerHTML")
                             }
 
                             let topbar_headers = document.querySelectorAll(".font-header-2.nav-menu-title.text-header")
@@ -150,6 +167,24 @@ inject.js:
                                     }
                                     addRename(header)
                                 }
+                            }
+
+                            let button_toggle_label = document.querySelectorAll(".btn-toggle-label")
+                            for (let i = 0; i < button_toggle_label.length; i++) {
+                                let header = button_toggle_label[i]
+                                addRename(header)
+                            }
+
+                            let text_descriptions = document.querySelectorAll(".text-description")
+                            for (let i = 0; i < text_descriptions.length; i++) {
+                                let header = text_descriptions[i]
+                                addRename(header)
+                            }
+
+                            let h3_texts = document.querySelectorAll("h3")
+                            for (let i = 0; i < h3_texts.length; i++) {
+                                let header = h3_texts[i]
+                                addRename(header)
                             }
 
                             if (settings["replaceURLwithDiscoverURL"] == true) {

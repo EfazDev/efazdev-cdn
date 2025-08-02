@@ -115,9 +115,19 @@ inject.js:
                                 localeSet = localeSets["English"]
                             }
 
+                            function blacklisted(header, attribute) {
+                                if ((header.getAttribute("ng-bind") && header.getAttribute("ng-bind").includes("group.description"))) { return true; }
+                                if (header.getAttribute("ng-bind") == "$ctrl.data.currentRoleName" || header.getAttribute("ng-bind") == "role.name" || (header.getAttribute("ng-bind") && header.getAttribute("ng-bind").includes("role.name")) || (header.getAttribute("ng-bind") && header.getAttribute("ng-bind").includes("currentRoleFilter"))) { return true; }
+                                if (header.getAttribute("ng-bind-html") == "piece.content" || (header.getAttribute("ng-if") && header.getAttribute("ng-if").includes("chatUser.previewMessage"))) { return true; }
+                                if ((header.getAttribute("ng-bind-html") && header.getAttribute("ng-bind-html").includes("log"))) { return true; }
+                                if ((header.getAttribute("ng-bind-html") && header.getAttribute("ng-bind-html").includes("post.body")) || (header.getAttribute("ng-bind-html") && header.getAttribute("ng-bind-html").includes("library.currentGroup")) || (header.getAttribute("ng-bind") && header.getAttribute("ng-bind").includes("post."))) { return true; }
+                                return false;
+                            }
+
                             function addRename(header) {
                                 function m(a) {
                                     if (!header[a]) { return }
+                                    if (blacklisted(header, a)) { return }
                                     if (header.href && settings["replaceURLwithGroupsURL"] == true) {
                                         header.href = header.href.replace("communities", "groups")
                                     }
@@ -168,12 +178,6 @@ inject.js:
                                 addRename(header)
                             }
 
-                            let friends_headers = document.querySelectorAll(".ng-binding")
-                            for (let i = 0; i < friends_headers.length; i++) {
-                                let header = friends_headers[i]
-                                addRename(header)
-                            }
-
                             let my_communities_link = document.querySelectorAll(".btn-secondary-xs.btn-more.see-all-link-icon.ng-binding.ng-scope")
                             for (let i = 0; i < my_communities_link.length; i++) {
                                 let header = my_communities_link[i]
@@ -189,7 +193,6 @@ inject.js:
                             let most_text_frames = document.querySelectorAll(".ng-binding")
                             for (let i = 0; i < most_text_frames.length; i++) {
                                 let header = most_text_frames[i]
-                                if (header.getAttribute("ng-bind") == "role.name" || header.getAttribute("ng-bind") == "$ctrl.data.currentRoleName") { continue };
                                 if (settings["massEdit"] == true) {
                                     addRename(header)
                                 }
@@ -232,6 +235,42 @@ inject.js:
                                 addRename(header)
                             }
 
+                            let button_toggle_label = document.querySelectorAll(".btn-toggle-label")
+                            for (let i = 0; i < button_toggle_label.length; i++) {
+                                let header = button_toggle_label[i]
+                                addRename(header)
+                            }
+
+                            let text_descriptions = document.querySelectorAll(".text-description")
+                            for (let i = 0; i < text_descriptions.length; i++) {
+                                let header = text_descriptions[i]
+                                addRename(header)
+                            }
+
+                            let input_fields = document.querySelectorAll(".input-field")
+                            for (let i = 0; i < input_fields.length; i++) {
+                                let header = input_fields[i]
+                                addRename(header)
+                            }
+
+                            let large_text_fields = document.querySelectorAll(".text-label-large, .text-caption-large, .text-body-large, .text-heading-large")
+                            for (let i = 0; i < large_text_fields.length; i++) {
+                                let header = large_text_fields[i]
+                                addRename(header)
+                            }
+
+                            let small_text_fields = document.querySelectorAll(".text-label-small, .text-caption-small, .text-body-small, .text-heading-small")
+                            for (let i = 0; i < small_text_fields.length; i++) {
+                                let header = small_text_fields[i]
+                                addRename(header)
+                            }
+
+                            let h3_texts = document.querySelectorAll("h3")
+                            for (let i = 0; i < h3_texts.length; i++) {
+                                let header = h3_texts[i]
+                                addRename(header)
+                            }
+
                             let previous_names = document.querySelectorAll(".text-pastname.ng-binding")
                             for (let i = 0; i < previous_names.length; i++) {
                                 let header = previous_names[i]
@@ -262,6 +301,12 @@ inject.js:
                                 addRename(header)
                             }
 
+                            let block_words_descriptions = document.querySelectorAll(".keyword-block-list-section-header > div")
+                            for (let i = 0; i < block_words_descriptions.length; i++) {
+                                let header = block_words_descriptions[i]
+                                addRename(header)
+                            }
+
                             let text_contents = document.querySelectorAll(".text-content")
                             for (let i = 0; i < text_contents.length; i++) {
                                 let header = text_contents[i]
@@ -276,7 +321,7 @@ inject.js:
                                         header.href = header.href.replace("/communities", "/groups")
                                     }
                                 }
-                                if (header.getAttribute("ng-click") == "$ctrl.updateRole(role)") { continue; }
+                                if (header.getAttribute("ng-click") == "$ctrl.updateRole(role)" || header.getAttribute("ng-click") == "$ctrl.updateRoleFilter(role)") { continue; }
                                 if (settings["massEdit"] == true) {
                                     addRename(header)
                                 }

@@ -115,9 +115,19 @@ inject.js:
                                 localeSet = localeSets["English"]
                             }
 
+                            function blacklisted(header, attribute) {
+                                if ((header.getAttribute("ng-bind") && header.getAttribute("ng-bind").includes("group.description"))) { return true; }
+                                if (header.getAttribute("ng-bind") == "$ctrl.data.currentRoleName" || header.getAttribute("ng-bind") == "role.name" || (header.getAttribute("ng-bind") && header.getAttribute("ng-bind").includes("role.name")) || (header.getAttribute("ng-bind") && header.getAttribute("ng-bind").includes("currentRoleFilter"))) { return true; }
+                                if (header.getAttribute("ng-bind-html") == "piece.content" || (header.getAttribute("ng-if") && header.getAttribute("ng-if").includes("chatUser.previewMessage"))) { return true; }
+                                if ((header.getAttribute("ng-bind-html") && header.getAttribute("ng-bind-html").includes("log"))) { return true; }
+                                if ((header.getAttribute("ng-bind-html") && header.getAttribute("ng-bind-html").includes("post.body")) || (header.getAttribute("ng-bind-html") && header.getAttribute("ng-bind-html").includes("library.currentGroup")) || (header.getAttribute("ng-bind") && header.getAttribute("ng-bind").includes("post."))) { return true; }
+                                return false;
+                            }
+
                             function addRename(header) {
                                 function m(a) {
                                     if (!header[a]) { return }
+                                    if (blacklisted(header, a)) { return }
                                     if (header[a].includes(localeSet[0]) ) {
                                         header[a] = header[a].replaceAll(localeSet[0], newName)
                                     }
@@ -165,6 +175,7 @@ inject.js:
                             let buttons_text = document.querySelectorAll(".web-blox-css-tss-1283320-Button-textContainer")
                             for (let i = 0; i < buttons_text.length; i++) {
                                 let header = buttons_text[i]
+                                if (blacklisted(header)) { continue; } 
                                 if (header.innerHTML.includes(localeSet[6] + localeSet[3]) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
                                     header.innerHTML = header.innerHTML.replace(localeSet[6] + localeSet[3], localeSet[5] + newNameWithoutEndingS.toLowerCase())
                                 } else if (header.innerHTML.includes(localeSet[1]) && !(header.innerHTML.includes(newNameWithoutEndingS))) {
@@ -185,12 +196,6 @@ inject.js:
                             let friends_search_link = document.querySelectorAll(".friends-filter-searchbar-input")
                             for (let i = 0; i < friends_search_link.length; i++) {
                                 let header = friends_search_link[i]
-                                addRename(header)
-                            }
-
-                            let friends_headers = document.querySelectorAll(".ng-binding")
-                            for (let i = 0; i < friends_headers.length; i++) {
-                                let header = friends_headers[i]
                                 addRename(header)
                             }
 
@@ -246,6 +251,18 @@ inject.js:
                                 addRename(header)
                             }
 
+                            let large_text_fields = document.querySelectorAll(".text-label-large, .text-caption-large, .text-body-large, .text-heading-large")
+                            for (let i = 0; i < large_text_fields.length; i++) {
+                                let header = large_text_fields[i]
+                                addRename(header)
+                            }
+
+                            let small_text_fields = document.querySelectorAll(".text-label-small, .text-caption-small, .text-body-small, .text-heading-small")
+                            for (let i = 0; i < small_text_fields.length; i++) {
+                                let header = small_text_fields[i]
+                                addRename(header)
+                            }
+
                             let play_with_other_text = document.querySelectorAll(".play-with-others-text")
                             for (let i = 0; i < play_with_other_text.length; i++) {
                                 let header = play_with_other_text[i]
@@ -285,6 +302,24 @@ inject.js:
                             let roseal_tooltips = document.querySelectorAll(".roseal-tooltip")
                             for (let i = 0; i < roseal_tooltips.length; i++) {
                                 let header = roseal_tooltips[i]
+                                addRename(header)
+                            }
+
+                            let button_toggle_label = document.querySelectorAll(".btn-toggle-label")
+                            for (let i = 0; i < button_toggle_label.length; i++) {
+                                let header = button_toggle_label[i]
+                                addRename(header)
+                            }
+
+                            let text_descriptions = document.querySelectorAll(".text-description")
+                            for (let i = 0; i < text_descriptions.length; i++) {
+                                let header = text_descriptions[i]
+                                addRename(header)
+                            }
+
+                            let h3_texts = document.querySelectorAll("h3")
+                            for (let i = 0; i < h3_texts.length; i++) {
+                                let header = h3_texts[i]
                                 addRename(header)
                             }
 
@@ -328,6 +363,7 @@ inject.js:
                             for (let i = 0; i < friend_list_titles.length; i++) {
                                 let header = friend_list_titles[i]
                                 if (header.nodeName == "DIV" && header.innerHTML.includes(localeSet[2])) {
+                                    if (blacklisted(header)) { continue; } 
                                     if (!(header.innerHTML.includes(localeSet[4] + newName))) {
                                         header.innerHTML = header.innerHTML.replaceAll(localeSet[2], localeSet[4] + newName)
                                     }

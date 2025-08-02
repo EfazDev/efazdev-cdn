@@ -163,6 +163,10 @@
         "message": "Retour à la page Extensions!",
         "description": "Texte des paramètres d'enregistrement"
     },
+    "settingsGoBackConfirmation": {
+        "message": "Êtes-vous sûr de vouloir revenir en arrière sans enregistrer?",
+        "description": "Confirmer l'annulation de l'enregistrement avant de quitter le texte"
+    },
     "settingsSavedData": {
         "message": "Données enregistrées!",
         "description": "Message des données enregistrées"

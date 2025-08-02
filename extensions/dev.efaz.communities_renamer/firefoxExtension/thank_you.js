@@ -8,6 +8,42 @@ thank_you.js:
 
 */
 
+async function loopThroughArrayAsync(array, callback) {
+    if (typeof (array) == "object") {
+        if (Array.isArray(array)) {
+            for (let a = 0; a < array.length; a++) {
+                var value = array[a]
+                await callback(a, value)
+            }
+        } else {
+            var generated_keys = Object.keys(array);
+            for (let a = 0; a < generated_keys.length; a++) {
+                var key = generated_keys[a]
+                var value = array[key]
+                await callback(key, value)
+            }
+        }
+    }
+}
+
+function loopThroughArray(array, callback) {
+    if (typeof (array) == "object") {
+        if (Array.isArray(array)) {
+            for (let a = 0; a < array.length; a++) {
+                var value = array[a]
+                callback(a, value)
+            }
+        } else {
+            var generated_keys = Object.keys(array);
+            for (let a = 0; a < generated_keys.length; a++) {
+                var key = generated_keys[a]
+                var value = array[key]
+                callback(key, value)
+            }
+        }
+    }
+}
+
 async function localizeAll(s) {
     if (s) {
         await loopThroughArrayAsync(s, (i, v) => {
