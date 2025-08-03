@@ -291,6 +291,12 @@ inject.js:
                                 addRename(header)
                             }
 
+                            let private_server_tooltip = document.querySelectorAll("#private-server-tooltip")
+                            for (let i = 0; i < private_server_tooltip.length; i++) {
+                                let header = private_server_tooltip[i]
+                                addRename(header)
+                            }
+
                             let back_links = document.querySelectorAll(".back-link")
                             for (let i = 0; i < back_links.length; i++) {
                                 let header = back_links[i]
