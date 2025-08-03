@@ -289,6 +289,12 @@ inject.js:
                                 addRename(header)
                             }
 
+                            let private_server_tooltip = document.querySelectorAll("#private-server-tooltip")
+                            for (let i = 0; i < private_server_tooltip.length; i++) {
+                                let header = private_server_tooltip[i]
+                                addRename(header)
+                            }
+
                             let friend_subtitles = document.querySelectorAll(".friends-subtitle")
                             for (let i = 0; i < friend_subtitles.length; i++) {
                                 let header = friend_subtitles[i]
