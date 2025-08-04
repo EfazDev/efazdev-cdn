@@ -1,0 +1,46 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'unsafe-inline'; script-src-elem *; img-src data: https://cdn.efaz.dev self; media-src *; font-src *; connect-src *;">
+    <title id="window_title">__MSG_settingsExtensionSettingsTitle__</title>
+    <meta name="title" content="__MSG_settingsExtensionSettingsTitle__">
+    <meta name="description" content="__MSG_settingsJustExtension__">
+    <link href="https://cdn.efaz.dev/styles/chromeExtension.css" rel="stylesheet" />
+    <style id="css"></style>
+    <style>
+        html {
+            width: 500px;
+            height: 580px;
+        }
+    </style>
+    <script src="settings.js"></script>
+</head>
+
+<body style='min-height: 100%; min-width:100%; background-color: rgb(255, 75, 0);'>
+    <div id='main_menu'><img src='https://cdn.efaz.dev/png/logo.png' class="center" height='64' width='64'>
+        <h1 id='title1'>__MSG_settingsHello__</h1>
+
+        <h3>------ __MSG_settingsDetails__ ------</h3>
+        <label id="extens_name">__MSG_settingsExName__ __MSG_settingsLoading__</label>
+        <label for="enabled" id="enabled_label">__MSG_settingsExEnable__ <input type="checkbox" id="enabled" name="enabled"></label>
+        <h3 id="extensionSettings">------ __MSG_settingsExtensionSettingsTitle__ ------</h3>
+        <h3 id="reviewDetails">------ __MSG_settingsReviewDetails__ ------</h3>
+        <span class="gradient-border"><button type='submit' id="submitbutton" class="center">__MSG_settingsSaveBtn__</button></span><br><br>
+        <em>__MSG_settingsMadeBy__</em>
+        <ul>
+            <li><a target="_blank" href="https://www.efaz.dev"><img class="resize-img" title="__MSG_myWebsite__"
+                        src="https://cdn.efaz.dev/png/logo.png" height="24" width="24"></a></li>
+            <li><a target="_blank" id="extensionLink" href="https://chromewebstore.google.com/detail/extension/"><img class="resize-img" title="__MSG_chromeWebstore__"
+                src="https://cdn.efaz.dev/png/chrome_webstore.png" alt height="24" width="24"></a></li>
+            <li><a target="_blank" href="https://twitter.efaz.dev"><img class="resize-img" title="__MSG_twitter__"
+                        src="https://cdn.efaz.dev/png/twitter_logo.png" height="24" width="24"></a></li>
+            <li><a target="_blank" href="https://discord.efaz.dev"><img class="resize-img" title="__MSG_discord__"
+                        src="https://cdn.efaz.dev/png/discord_logo.png" alt height="24" width="24"></a></li>
+            <li><a target="_blank" href="https://youtube.efaz.dev"><img class="resize-img" title="__MSG_youtube__"
+                src="https://cdn.efaz.dev/png/youtube_logo.png" alt height="24" width="24"></a></li>
+        </ul>
+        <p id="extens_vers">__MSG_settingsLoading__</p>
+    </div>
+</body>
+
+</html>

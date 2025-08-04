@@ -155,6 +155,10 @@
         "message": "¡Volver a la página de extensiones!",
         "description": "Texto para guardar configuración"
     },
+    "settingsGoBackConfirmation": {
+        "message": "¿Seguro que quieres volver atrás sin guardar?",
+        "description": "Confirma si quieres deshacer el guardado antes de salir del texto"
+    },
     "settingsSavedData": {
         "message": "¡Datos guardados!",
         "description": "Mensaje de datos guardados"
@@ -186,5 +190,9 @@
     "youtube": {
         "message": "YouTube",
         "description": "Título del enlace de YouTube"
+    },
+    "foundation_color_accents_exName": {
+        "message": "Acentos de color de la Fundación Roblox de Efaz",
+        "description": "Nombre de la extensión"
     }
 }

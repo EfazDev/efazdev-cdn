@@ -115,6 +115,10 @@
         "message": "¡Volver a la página de extensiones!",
         "description": "Texto para guardar configuración"
     },
+    "settingsGoBackConfirmation": {
+        "message": "¿Seguro que quieres volver atrás sin guardar?",
+        "description": "Confirma si quieres deshacer el guardado antes de salir del texto"
+    },
     "settingsSavedData": {
         "message": "¡Datos guardados!",
         "description": "Mensaje de datos guardados"
@@ -182,5 +186,9 @@
     "dev_efaz_charts_renamer_changeTitleHtml_mes": {
         "message": "Reemplazar el nombre de la pestaña con el nuevo nombre",
         "description": "Configurando el texto para changeTitleHtml"
+    },
+    "foundation_color_accents_exName": {
+        "message": "Acentos de color de la Fundación Roblox de Efaz",
+        "description": "Nombre de la extensión"
     }
 }

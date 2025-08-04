@@ -1,7 +1,7 @@
 {
     "name": "__MSG_dev_efaz_bundled_extension_exName__",
     "description": "__MSG_dev_efaz_bundled_extension_exDescription__",
-    "version": "1.5.9",
+    "version": "1.6.0",
     "manifest_version": 3,
     "author": "EfazDev",
     "homepage_url": "https://www.efaz.dev/roblox-extension",
@@ -23,8 +23,10 @@
             "js": [
                 "dev.efaz.communities_renamer/community_rename.js",
                 "dev.efaz.roblox_logo_changer/logo_changer.js",
+                "dev.efaz.marketplace_renamer/marketplace_rename.js",
                 "dev.efaz.charts_renamer/charts_rename.js",
                 "dev.efaz.foundation_color_accents/foundation_colors.js",
+                "dev.efaz.experiences_renamer/experiences_rename.js",
                 "dev.efaz.connections_renamer/connections_rename.js",
                 "dev.efaz.remove_builder_font/builder_font_remover.js",
                 "dev.efaz.verified_badge_add_on/fake_verified_loader.js"
@@ -44,8 +46,10 @@
             "resources": [
                 "dev.efaz.communities_renamer/settings.json",
                 "dev.efaz.roblox_logo_changer/settings.json",
+                "dev.efaz.marketplace_renamer/settings.json",
                 "dev.efaz.charts_renamer/settings.json",
                 "dev.efaz.foundation_color_accents/settings.json",
+                "dev.efaz.experiences_renamer/settings.json",
                 "dev.efaz.connections_renamer/settings.json",
                 "dev.efaz.remove_builder_font/change_font.css",
                 "dev.efaz.remove_builder_font/change_font2.css",

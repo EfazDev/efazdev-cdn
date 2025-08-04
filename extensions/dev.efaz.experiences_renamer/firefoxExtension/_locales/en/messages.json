@@ -1,0 +1,190 @@
+{
+    "enabled_mes": {
+        "message": "Enable Extension",
+        "description": "Enable Extension text"
+    },
+    "thanksTitle": {
+        "message": "Thank you for installing",
+        "description": "Thanks for installing text"
+    },
+    "thankYou": {
+        "message": "Thank You!",
+        "description": "Thanks text"
+    },
+    "thanksSettings": {
+        "message": "If you would like to view extension settings,",
+        "description": "Part of extension settings text"
+    },
+    "thanksWebsite": {
+        "message": "If you would like to go to my website,",
+        "description": "Part of open website text"
+    },
+    "thanksClickHere": {
+        "message": "click here",
+        "description": "Other part of thank text"
+    },
+    "thanksVersionNum": {
+        "message": "Version Number:",
+        "description": "Version number"
+    },
+    "settings": {
+        "message": "Settings",
+        "description": "Settings text"
+    },
+    "settingsHello": {
+        "message": "Hello!",
+        "description": "Settings hello."
+    },
+    "settingsLoading": {
+        "message": "Loading..",
+        "description": "Loading text"
+    },
+    "settingsDetails": {
+        "message": "System Details",
+        "description": "System detail text"
+    },
+    "settingsExName": {
+        "message": "Extension Name:",
+        "description": "Extension name text"
+    },
+    "settingsExEnable": {
+        "message": "Enable Extension:",
+        "description": "Enable Extension text"
+    },
+    "settingsUpdateAvailable": {
+        "message": "Update Available to",
+        "description": "Update available text"
+    },
+    "settingsUnpacked": {
+        "message": "Unpacked",
+        "description": "Unpacked text"
+    },
+    "settingsBeta": {
+        "message": "Beta",
+        "description": "Beta version text"
+    },
+    "settingsMadeBy": {
+        "message": "Extension is made by @EfazDev. This extension is not made by Roblox.",
+        "description": "Credits text"
+    },
+    "settingsMadeBy2": {
+        "message": "These extensions are made by @EfazDev. This extension is not affiliated or made by Roblox. THIS PROJECT IS OPEN-SOURCE, DO NOT PAY FOR THIS.",
+        "description": "Credits 2 text"
+    },
+    "settingsPrivacyPolicy": {
+        "message": "View Privacy Policy",
+        "description": "View Privacy Policy text"
+    },
+    "settingsBundleSettings": {
+        "message": "Bundle Settings",
+        "description": "View Bundle Settings text"
+    },
+    "settingsNetworkOffline": {
+        "message": "Network Offline",
+        "description": "No internet text"
+    },
+    "settingsReset": {
+        "message": "Reset!",
+        "description": "Reset text"
+    },
+    "settingsExtensions": {
+        "message": "Extensions",
+        "description": "Extensions text"
+    },
+    "settingsNoFileSelected": {
+        "message": "No file selected",
+        "description": "No file text"
+    },
+    "settingsExtensionSettingsTitle": {
+        "message": "Extension Settings",
+        "description": "Extension settings title"
+    },
+    "settingsOpenSettings": {
+        "message": "Open Settings!",
+        "description": "Open settings for bundled extension"
+    },
+    "settingsReviewDetails": {
+        "message": "Review Details!",
+        "description": "Review details text"
+    },
+    "settingsSaveBtn": {
+        "message": "Save Settings!",
+        "description": "Save settings text"
+    },
+    "settingsGoBackBtn": {
+        "message": "Return to Extensions page!",
+        "description": "Save settings text"
+    },
+    "settingsGoBackConfirmation": {
+        "message": "Are you sure you want to go back without saving?",
+        "description": "Confirm unsaving before exiting text"
+    },
+    "settingsSavedData": {
+        "message": "Saved data!",
+        "description": "Saved data message"
+    },
+    "settingsJustExtension": {
+        "message": "just a extension settings page",
+        "description": "just extension description"
+    },
+    "myWebsite": {
+        "message": "My Website",
+        "description": "Website Link Title"
+    },
+    "chromeWebstore": {
+        "message": "Chrome Webstore",
+        "description": "Webstore Link Title"
+    },
+    "firefoxAddons": {
+        "message": "Firefox Add-ons",
+        "description": "Webstore 2 Link Title"
+    },
+    "twitter": {
+        "message": "Twitter",
+        "description": "Twitter Link Title"
+    },
+    "discord": {
+        "message": "Discord",
+        "description": "Discord Link Title"
+    },
+    "youtube": {
+        "message": "YouTube",
+        "description": "YouTube Link Title"
+    },
+    "foundation_color_accents_exName": {
+        "message": "Efaz's Roblox Foundation Color Accents",
+        "description": "Extension name"
+    },
+    "dev_efaz_experiences_renamer_exName": {
+        "message": "Efaz's Roblox Experiences Renamer",
+        "description": "Extension name"
+    },
+    "dev_efaz_experiences_renamer_bundleName": {
+        "message": "Experiences Renamer",
+        "description": "Extension bundle display name"
+    },
+    "dev_efaz_experiences_renamer_exDescription": {
+        "message": "Tired of Roblox renaming Games to Experiences? Well, you can change that using this extension!",
+        "description": "Extension description"
+    },
+    "dev_efaz_experiences_renamer_enabled_mes": {
+        "message": "Enable Extension",
+        "description": "Enable Extension text"
+    },
+    "dev_efaz_experiences_renamer_newName_mes": {
+        "message": "Replace Experiences with",
+        "description": "Setting text for newName"
+    },
+    "dev_efaz_experiences_renamer_newName_default": {
+        "message": "Games",
+        "description": "Setting default value for newName"
+    },
+    "dev_efaz_experiences_renamer_startTime_mes": {
+        "message": "Start Loop Time (ms)",
+        "description": "Setting text for startTime"
+    },
+    "dev_efaz_experiences_renamer_massEdit_mes": {
+        "message": "Mass Edit HTML Contents with Experience or Experiences Text",
+        "description": "Setting text for massEdit"
+    }
+}

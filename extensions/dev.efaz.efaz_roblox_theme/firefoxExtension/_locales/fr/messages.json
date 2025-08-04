@@ -163,6 +163,10 @@
         "message": "Retour à la page Extensions!",
         "description": "Texte des paramètres d'enregistrement"
     },
+    "settingsGoBackConfirmation": {
+        "message": "Êtes-vous sûr de vouloir revenir en arrière sans enregistrer?",
+        "description": "Confirmer l'annulation de l'enregistrement avant de quitter le texte"
+    },
     "settingsSavedData": {
         "message": "Données enregistrées!",
         "description": "Message des données enregistrées"
@@ -246,6 +250,70 @@
     "dev_efaz_roblox_logo_changer_projectedImage4_mes": {
         "message": "Définir l'icône de l'onglet d'un autre site web",
         "description": "Définir le texte pour l'image projetée4"
+    },
+    "dev_efaz_marketplace_renamer_exName": {
+        "message": "Renommage de la Marketplace Roblox d'Efaz",
+        "description": "Nom de l'extension"
+    },
+    "dev_efaz_marketplace_renamer_bundleName": {
+        "message": "Renommage de la Marketplace",
+        "description": "Nom d'affichage du bundle d'extensions"
+    },
+    "dev_efaz_marketplace_renamer_exDescription": {
+        "message": "Marre de voir Roblox renommer le catalogue en Marketplace? Vous pouvez changer cela grâce à cette extension!",
+        "description": "Description de l'extension"
+    },
+    "dev_efaz_marketplace_renamer_enabled_mes": {
+        "message": "Activer l'extension",
+        "description": "Texte d'activation de l'extension"
+    },
+    "dev_efaz_marketplace_renamer_newName_mes": {
+        "message": "Remplacer Marketplace par",
+        "description": "Définition du texte pour newName"
+    },
+    "dev_efaz_marketplace_renamer_newName_default": {
+        "message": "Catalogue",
+        "description": "Définition de la valeur par défaut pour newName"
+    },
+    "dev_efaz_marketplace_renamer_startTime_mes": {
+        "message": "Durée de début de boucle (ms)",
+        "description": "Définition du texte pour startTime"
+    },
+    "dev_efaz_marketplace_renamer_changeTitleHtml_mes": {
+        "message": "Remplacer le nom de l'onglet par le nouveau nom",
+        "description": "Définition du texte pour changeTitleHtml"
+    },
+    "dev_efaz_experiences_renamer_exName": {
+        "message": "Renommer les expériences Roblox d'Efaz",
+        "description": "Nom de l'extension"
+    },
+    "dev_efaz_experiences_renamer_bundleName": {
+        "message": "Renommage des expériences",
+        "description": "Nom d'affichage du bundle d'extension"
+    },
+    "dev_efaz_experiences_renamer_exDescription": {
+        "message": "Marre de Roblox qui renomme les jeux en expériences? Vous pouvez changer ça avec cette extension!",
+        "description": "Description de l'extension"
+    },
+    "dev_efaz_experiences_renamer_enabled_mes": {
+        "message": "Activer l'extension",
+        "description": "Texte d'activation de l'extension"
+    },
+    "dev_efaz_experiences_renamer_newName_mes": {
+        "message": "Remplacer les expériences par",
+        "description": "Définition du texte pour newName"
+    },
+    "dev_efaz_experiences_renamer_newName_default": {
+        "message": "Jeux",
+        "description": "Définition de la valeur par défaut pour newName"
+    },
+    "dev_efaz_experiences_renamer_startTime_mes": {
+        "message": "Durée de début de boucle (ms)",
+        "description": "Définition du texte pour startTime"
+    },
+    "dev_efaz_experiences_renamer_massEdit_mes": {
+        "message": "Modification en masse du contenu HTML avec expérience ou texte de expériences",
+        "description": "Définition du texte pour massEdit"
     },
     "dev_efaz_charts_renamer_exName": {
         "message": "Renommage des classements Roblox d'Efaz",

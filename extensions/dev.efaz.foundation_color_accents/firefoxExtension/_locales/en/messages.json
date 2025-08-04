@@ -115,6 +115,10 @@
         "message": "Return to Extensions page!",
         "description": "Save settings text"
     },
+    "settingsGoBackConfirmation": {
+        "message": "Are you sure you want to go back without saving?",
+        "description": "Confirm unsaving before exiting text"
+    },
     "settingsSavedData": {
         "message": "Saved data!",
         "description": "Saved data message"

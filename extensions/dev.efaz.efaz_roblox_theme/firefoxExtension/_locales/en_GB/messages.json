@@ -163,6 +163,10 @@
         "message": "Return to Extensions page!",
         "description": "Save settings text"
     },
+    "settingsGoBackConfirmation": {
+        "message": "Are you sure you want to go back without saving?",
+        "description": "Confirm unsaving before exiting text"
+    },
     "settingsSavedData": {
         "message": "Saved data!",
         "description": "Saved data message"
@@ -194,6 +198,10 @@
     "youtube": {
         "message": "YouTube",
         "description": "YouTube Link Title"
+    },
+    "foundation_color_accents_exName": {
+        "message": "Efaz's Roblox Foundation Colour Accents",
+        "description": "Extension name"
     },
     "dev_efaz_roblox_logo_changer_exName": {
         "message": "Efaz's Roblox Logo Changer",
@@ -246,6 +254,70 @@
     "dev_efaz_roblox_logo_changer_projectedImage4_mes": {
         "message": "Set Other Website Tab Icon",
         "description": "Setting text for projectedImage4"
+    },
+    "dev_efaz_marketplace_renamer_exName": {
+        "message": "Efaz's Roblox Marketplace Renamer",
+        "description": "Extension name"
+    },
+    "dev_efaz_marketplace_renamer_bundleName": {
+        "message": "Marketplace Renamer",
+        "description": "Extension bundle display name"
+    },
+    "dev_efaz_marketplace_renamer_exDescription": {
+        "message": "Tired of Roblox renaming Catalog to Marketplace? Well, you can change that using this extension!",
+        "description": "Extension description"
+    },
+    "dev_efaz_marketplace_renamer_enabled_mes": {
+        "message": "Enable Extension",
+        "description": "Enable Extension text"
+    },
+    "dev_efaz_marketplace_renamer_newName_mes": {
+        "message": "Replace Marketplace with",
+        "description": "Setting text for newName"
+    },
+    "dev_efaz_marketplace_renamer_newName_default": {
+        "message": "Catalog",
+        "description": "Setting default value for newName"
+    },
+    "dev_efaz_marketplace_renamer_startTime_mes": {
+        "message": "Start Loop Time (ms)",
+        "description": "Setting text for startTime"
+    },
+    "dev_efaz_marketplace_renamer_changeTitleHtml_mes": {
+        "message": "Replace Tab Name with New Name",
+        "description": "Setting text for changeTitleHtml"
+    },
+    "dev_efaz_experiences_renamer_exName": {
+        "message": "Efaz's Roblox Experiences Renamer",
+        "description": "Extension name"
+    },
+    "dev_efaz_experiences_renamer_bundleName": {
+        "message": "Experiences Renamer",
+        "description": "Extension bundle display name"
+    },
+    "dev_efaz_experiences_renamer_exDescription": {
+        "message": "Tired of Roblox renaming Games to Experiences? Well, you can change that using this extension!",
+        "description": "Extension description"
+    },
+    "dev_efaz_experiences_renamer_enabled_mes": {
+        "message": "Enable Extension",
+        "description": "Enable Extension text"
+    },
+    "dev_efaz_experiences_renamer_newName_mes": {
+        "message": "Replace Experiences with",
+        "description": "Setting text for newName"
+    },
+    "dev_efaz_experiences_renamer_newName_default": {
+        "message": "Games",
+        "description": "Setting default value for newName"
+    },
+    "dev_efaz_experiences_renamer_startTime_mes": {
+        "message": "Start Loop Time (ms)",
+        "description": "Setting text for startTime"
+    },
+    "dev_efaz_experiences_renamer_massEdit_mes": {
+        "message": "Mass Edit HTML Contents with Experience or Experiences Text",
+        "description": "Setting text for massEdit"
     },
     "dev_efaz_charts_renamer_exName": {
         "message": "Efaz's Roblox Charts Renamer",
@@ -422,10 +494,6 @@
     "dev_efaz_verified_badge_add_on_setApproved": {
         "message": "Set Approved Users JSON! (not needed)",
         "description": "Set approved json text"
-    },
-    "foundation_color_accents_exName": {
-        "message": "Efaz's Roblox Foundation Colour Accents",
-        "description": "Extension name"
     },
     "dev_efaz_foundation_color_accents_exName": {
         "message": "Efaz's Roblox Foundation Colour Accents",

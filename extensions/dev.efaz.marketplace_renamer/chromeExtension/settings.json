@@ -1,0 +1,40 @@
+{
+    "name": "dev.efaz.marketplace_renamer",
+    "settings": {
+        "enabled": {
+            "text": "Enable Extension",
+            "type": "checkbox",
+            "default": true
+        },
+        "newName": {
+            "text": "Replace Marketplace with",
+            "type": "text",
+            "default": "Catalog",
+            "reset": true,
+            "neededSettings": ["enabled"]
+        },
+        "startTime": {
+            "text": "Start Loop Time (ms)",
+            "type": "number",
+            "default": 500,
+            "reset": true,
+            "neededSettings": ["enabled"]
+        },
+        "changeTitleHtml": {
+            "text": "Replace Tab Name with New Name",
+            "type": "checkbox",
+            "default": true,
+            "neededSettings": ["enabled"]
+        }
+    },
+    "bundledDisplayName": "Marketplace Renamer",
+    "typeOfStorage": "sync",
+    "chromeWebstoreLinkEnabled": true,
+    "firefoxWebstoreLinkEnabled": true,
+    "uploadedChromeExtensionID": "eghkpfdncgmcaifihhfgihcenboakjck",
+    "uploadedFirefoxExtensionID": "efaz-s-roblox-marketplace-renamer",
+    "scanForManifestUpdates": true,
+    "isVersionServer": true,
+    "browserMode": "chrome",
+    "onlineManifestFile": "https://cdn.efaz.dev/extensions/versions/public.json"
+}

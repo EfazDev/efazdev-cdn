@@ -253,6 +253,12 @@ inject.js:
                                 addRename(header)
                             }
 
+                            let section_content = document.querySelectorAll(".section-content > .small")
+                            for (let i = 0; i < section_content.length; i++) {
+                                let header = section_content[i]
+                                addRename(header)
+                            }
+
                             let input_fields = document.querySelectorAll(".input-field")
                             for (let i = 0; i < input_fields.length; i++) {
                                 let header = input_fields[i]
@@ -390,7 +396,13 @@ inject.js:
                                 let header = all_links[i]
                                 if (settings["massEdit"] == true) {
                                     if (!(header.className == "profile-header-social-count")) {
-                                        addRename(header)
+                                        if (header.childNodes.length > 0) {
+                                            loopThroughArrayAsync(Array.from(header.childNodes), (_, v) => {
+                                                addRename(v)
+                                            })
+                                        } else {
+                                            addRename(header)
+                                        }
                                     }
                                 }
                             }

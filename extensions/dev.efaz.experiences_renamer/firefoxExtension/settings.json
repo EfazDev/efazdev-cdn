@@ -1,0 +1,46 @@
+{
+    "name": "dev.efaz.experiences_renamer",
+    "settings": {
+        "enabled": {
+            "text": "Enable Extension",
+            "type": "checkbox",
+            "default": true
+        },
+        "newName": {
+            "text": "Replace Experiences with",
+            "type": "text",
+            "default": "Games",
+            "reset": true,
+            "neededSettings": [
+                "enabled"
+            ]
+        },
+        "startTime": {
+            "text": "Start Loop Time (ms)",
+            "type": "number",
+            "default": 500,
+            "reset": true,
+            "neededSettings": [
+                "enabled"
+            ]
+        },
+        "massEdit": {
+            "text": "Mass Edit HTML Contents with Community or Communities Text",
+            "type": "checkbox",
+            "default": true,
+            "neededSettings": [
+                "enabled"
+            ]
+        }
+    },
+    "bundledDisplayName": "Experiences Renamer",
+    "typeOfStorage": "sync",
+    "chromeWebstoreLinkEnabled": true,
+    "firefoxWebstoreLinkEnabled": true,
+    "uploadedChromeExtensionID": "eghkpfdncgmcaifihhfgihcenboakjck",
+    "uploadedFirefoxExtensionID": "efaz-s-roblox-experiences-renamer",
+    "scanForManifestUpdates": true,
+    "isVersionServer": true,
+    "browserMode": "firefox",
+    "onlineManifestFile": "https://cdn.efaz.dev/extensions/versions/public.json"
+}

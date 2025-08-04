@@ -4,8 +4,10 @@
     "extensions": [
         "dev.efaz.communities_renamer",
         "dev.efaz.roblox_logo_changer",
+        "dev.efaz.marketplace_renamer",
         "dev.efaz.charts_renamer",
         "dev.efaz.foundation_color_accents",
+        "dev.efaz.experiences_renamer",
         "dev.efaz.connections_renamer",
         "dev.efaz.remove_builder_font",
         "dev.efaz.verified_badge_add_on"

@@ -192,6 +192,12 @@ inject.js:
                                 addRename(header)
                             }
 
+                            let join_communities_btn = document.querySelectorAll(".web-blox-css-tss-1283320-Button-textContainer")
+                            for (let i = 0; i < join_communities_btn.length; i++) {
+                                let header = join_communities_btn[i]
+                                addRename(header)
+                            }
+
                             let create_community_button = document.querySelectorAll(".btn-secondary-md.create-group-button.ng-binding")
                             for (let i = 0; i < create_community_button.length; i++) {
                                 let header = create_community_button[i]
@@ -337,7 +343,13 @@ inject.js:
                                 }
                                 if (header.getAttribute("ng-click") == "$ctrl.updateRole(role)" || header.getAttribute("ng-click") == "$ctrl.updateRoleFilter(role)") { continue; }
                                 if (settings["massEdit"] == true) {
-                                    addRename(header)
+                                    if (header.childNodes.length > 0) {
+                                        loopThroughArrayAsync(Array.from(header.childNodes), (_, v) => {
+                                            addRename(v)
+                                        })
+                                    } else {
+                                        addRename(header)
+                                    }
                                 }
                             }
 

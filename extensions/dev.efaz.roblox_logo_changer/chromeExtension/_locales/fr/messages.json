@@ -115,6 +115,10 @@
         "message": "Retour à la page Extensions!",
         "description": "Texte des paramètres d'enregistrement"
     },
+    "settingsGoBackConfirmation": {
+        "message": "Êtes-vous sûr de vouloir revenir en arrière sans enregistrer?",
+        "description": "Confirmer l'annulation de l'enregistrement avant de quitter le texte"
+    },
     "settingsSavedData": {
         "message": "Données enregistrées!",
         "description": "Message des données enregistrées"
@@ -198,5 +202,9 @@
     "dev_efaz_roblox_logo_changer_projectedImage4_mes": {
         "message": "Définir l'icône de l'onglet d'un autre site web",
         "description": "Définir le texte pour l'image projetée4"
+    },
+    "foundation_color_accents_exName": {
+        "message": "Couleurs de la Fondation Roblox d'Efaz",
+        "description": "Nom de l'extension"
     }
 }

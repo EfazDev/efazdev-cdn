@@ -1,0 +1,190 @@
+{
+    "enabled_mes": {
+        "message": "Activer l'extension",
+        "description": "Activer le texte de l'extension"
+    },
+    "thanksTitle": {
+        "message": "Merci pour l'installation",
+        "description": "Merci pour l'installation"
+    },
+    "thankYou": {
+        "message": "Merci!",
+        "description": "Texte de remerciement"
+    },
+    "thanksSettings": {
+        "message": "Si vous souhaitez consulter les paramètres de l'extension,",
+        "description": "Extrait du texte des paramètres de l'extension"
+    },
+    "thanksWebsite": {
+        "message": "Si vous souhaitez accéder à mon site web,",
+        "description": "Extrait du texte du site web ouvert"
+    },
+    "thanksClickHere": {
+        "message": "Cliquez ici",
+        "description": "Autre partie du texte de remerciement"
+    },
+    "thanksVersionNum": {
+        "message": "Numéro de version:",
+        "description": "Numéro de version"
+    },
+    "settings": {
+        "message": "Paramètres",
+        "description": "Texte des paramètres"
+    },
+    "settingsHello": {
+        "message": "Bonjour!",
+        "description": "Paramètres Bonjour."
+    },
+    "settingsLoading": {
+        "message": "Chargement...",
+        "description": "Chargement du texte"
+    },
+    "settingsDetails": {
+        "message": "Détails du système",
+        "description": "Détails du système"
+    },
+    "settingsExName": {
+        "message": "Nom de l'extension:",
+        "description": "Nom de l'extension"
+    },
+    "settingsExEnable": {
+        "message": "Activer l'extension:",
+        "description": "Activer l'extension"
+    },
+    "settingsUpdateAvailable": {
+        "message": "Mise à jour disponible pour",
+        "description": "Mise à jour disponible"
+    },
+    "settingsUnpacked": {
+        "message": "Décompressé",
+        "description": "Décompressé"
+    },
+    "settingsBeta": {
+        "message": "Bêta",
+        "description": "Version bêta"
+    },
+    "settingsMadeBy": {
+        "message": "L'extension est créée par @EfazDev. Cette extension n'est pas créée par Roblox.",
+        "description": "Texte des crédits"
+    },
+    "settingsMadeBy2": {
+        "message": "Ces extensions sont créées par @EfazDev. Cette extension n'est ni affiliée ni créée par Roblox. CE PROJET EST OPEN SOURCE, NE PAYEZ PAS POUR CELA.",
+        "description": "Texte des crédits 2"
+    },
+    "settingsPrivacyPolicy": {
+        "message": "Voir la politique de confidentialité",
+        "description": "Voir la politique de confidentialité"
+    },
+    "settingsBundleSettings": {
+        "message": "Paramètres du pack",
+        "description": "Voir les paramètres du pack"
+    },
+    "settingsNetworkOffline": {
+        "message": "Réseau hors ligne",
+        "description": "Texte sans internet"
+    },
+    "settingsReset": {
+        "message": "Réinitialiser!",
+        "description": "Texte de réinitialisation"
+    },
+    "settingsExtensions": {
+        "message": "Extensions",
+        "description": "Texte des extensions"
+    },
+    "settingsNoFileSelected": {
+        "message": "Aucun fichier sélectionné",
+        "description": "Aucun fichier texte"
+    },
+    "settingsExtensionSettingsTitle": {
+        "message": "Paramètres de l'extension",
+        "description": "Titre des paramètres de l'extension"
+    },
+    "settingsOpenSettings": {
+        "message": "Ouvrir les paramètres!",
+        "description": "Ouvrir les paramètres de l'extension fournie"
+    },
+    "settingsReviewDetails": {
+        "message": "Avis sur les détails!",
+        "description": "Texte des détails de l'avis"
+    },
+    "settingsSaveBtn": {
+        "message": "Enregistrer les paramètres!",
+        "description": "Texte des paramètres d'enregistrement"
+    },
+    "settingsGoBackBtn": {
+        "message": "Retour à la page Extensions!",
+        "description": "Texte des paramètres d'enregistrement"
+    },
+    "settingsGoBackConfirmation": {
+        "message": "Êtes-vous sûr de vouloir revenir en arrière sans enregistrer?",
+        "description": "Confirmer l'annulation de l'enregistrement avant de quitter le texte"
+    },
+    "settingsSavedData": {
+        "message": "Données enregistrées!",
+        "description": "Message des données enregistrées"
+    },
+    "settingsJustExtension": {
+        "message": "Paramètres d'une extension uniquement\" page",
+        "description": "Description de l'extension uniquement"
+    },
+    "myWebsite": {
+        "message": "Mon site web",
+        "description": "Titre du lien du site web"
+    },
+    "chromeWebstore": {
+        "message": "Chrome Webstore",
+        "description": "Titre du lien de la boutique en ligne"
+    },
+    "firefoxAddons": {
+        "message": "Modules complémentaires Firefox",
+        "description": "Titre du lien de la boutique en ligne 2"
+    },
+    "twitter": {
+        "message": "Twitter",
+        "description": "Titre du lien Twitter"
+    },
+    "discord": {
+        "message": "Discord",
+        "description": "Titre du lien Discord"
+    },
+    "youtube": {
+        "message": "YouTube",
+        "description": "Titre du lien YouTube"
+    },
+    "dev_efaz_marketplace_renamer_exName": {
+        "message": "Renommage de la Marketplace Roblox d'Efaz",
+        "description": "Nom de l'extension"
+    },
+    "dev_efaz_marketplace_renamer_bundleName": {
+        "message": "Renommage de la Marketplace",
+        "description": "Nom d'affichage du bundle d'extensions"
+    },
+    "dev_efaz_marketplace_renamer_exDescription": {
+        "message": "Marre de voir Roblox renommer le catalogue en Marketplace? Vous pouvez changer cela grâce à cette extension!",
+        "description": "Description de l'extension"
+    },
+    "dev_efaz_marketplace_renamer_enabled_mes": {
+        "message": "Activer l'extension",
+        "description": "Texte d'activation de l'extension"
+    },
+    "dev_efaz_marketplace_renamer_newName_mes": {
+        "message": "Remplacer Marketplace par",
+        "description": "Définition du texte pour newName"
+    },
+    "dev_efaz_marketplace_renamer_newName_default": {
+        "message": "Catalogue",
+        "description": "Définition de la valeur par défaut pour newName"
+    },
+    "dev_efaz_marketplace_renamer_startTime_mes": {
+        "message": "Durée de début de boucle (ms)",
+        "description": "Définition du texte pour startTime"
+    },
+    "dev_efaz_marketplace_renamer_changeTitleHtml_mes": {
+        "message": "Remplacer le nom de l'onglet par le nouveau nom",
+        "description": "Définition du texte pour changeTitleHtml"
+    },
+    "foundation_color_accents_exName": {
+        "message": "Couleurs de la Fondation Roblox d'Efaz",
+        "description": "Nom de l'extension"
+    }
+}

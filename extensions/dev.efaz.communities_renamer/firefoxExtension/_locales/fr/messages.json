@@ -155,6 +155,10 @@
         "message": "Retour à la page Extensions!",
         "description": "Texte des paramètres d'enregistrement"
     },
+    "settingsGoBackConfirmation": {
+        "message": "Êtes-vous sûr de vouloir revenir en arrière sans enregistrer?",
+        "description": "Confirmer l'annulation de l'enregistrement avant de quitter le texte"
+    },
     "settingsSavedData": {
         "message": "Données enregistrées!",
         "description": "Message des données enregistrées"
@@ -186,5 +190,9 @@
     "youtube": {
         "message": "YouTube",
         "description": "Titre du lien YouTube"
+    },
+    "foundation_color_accents_exName": {
+        "message": "Couleurs de la Fondation Roblox d'Efaz",
+        "description": "Nom de l'extension"
     }
 }

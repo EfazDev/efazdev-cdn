@@ -115,6 +115,10 @@
         "message": "Retour à la page Extensions!",
         "description": "Texte des paramètres d'enregistrement"
     },
+    "settingsGoBackConfirmation": {
+        "message": "Êtes-vous sûr de vouloir revenir en arrière sans enregistrer?",
+        "description": "Confirmer l'annulation de l'enregistrement avant de quitter le texte"
+    },
     "settingsSavedData": {
         "message": "Données enregistrées!",
         "description": "Message des données enregistrées"
@@ -206,6 +210,10 @@
     "dev_efaz_verified_badge_add_on_setApproved": {
         "message": "Définir le JSON des utilisateurs approuvés! (non requis)",
         "description": "Définir le texte JSON approuvé"
+    },
+    "foundation_color_accents_exName": {
+        "message": "Couleurs de la Fondation Roblox d'Efaz",
+        "description": "Nom de l'extension"
     },
     "dev_efaz_verified_badge_add_on_set_red_color": {
         "message": "Définir la couleur rouge!",
