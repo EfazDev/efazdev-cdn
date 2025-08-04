@@ -11,10 +11,12 @@
             var defaultt = "https://api.efaz.dev/api/projects/" + urlParams.get("extension") + "/web-store/chrome"
             var listOfDownloads = {
                 "web-store": {
-                    "chrome": defaultt
+                    "chrome": "https://api.efaz.dev/api/projects/" + urlParams.get("extension") + "/web-store/chrome",
+                    "firefox": "https://api.efaz.dev/api/projects/" + urlParams.get("extension") + "/web-store/firefox"
                 },
                 "open-source": {
-                    "chrome": "https://api.efaz.dev/api/projects/" + urlParams.get("extension") + "/open-source/chrome"
+                    "chrome": "https://api.efaz.dev/api/projects/" + urlParams.get("extension") + "/open-source/chrome",
+                    "firefox": "https://api.efaz.dev/api/projects/" + urlParams.get("extension") + "/open-source/firefox"
                 }
             }
             if (urlParams.get("type") && urlParams.get("browser")) {
