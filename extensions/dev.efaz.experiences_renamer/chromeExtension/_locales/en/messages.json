@@ -186,5 +186,9 @@
     "dev_efaz_experiences_renamer_massEdit_mes": {
         "message": "Mass Edit HTML Contents with Experience or Experiences Text",
         "description": "Setting text for massEdit"
+    },
+    "dev_efaz_experiences_renamer_includeCreatorDashboard_mes": {
+        "message": "Include Creator Dashboard",
+        "description": "Setting text for includeCreatorDashboard"
     }
 }

@@ -315,6 +315,10 @@
         "message": "Modification en masse du contenu HTML avec expérience ou texte de expériences",
         "description": "Définition du texte pour massEdit"
     },
+    "dev_efaz_experiences_renamer_includeCreatorDashboard_mes": {
+        "message": "Tableau de bord du créateur d'inclusions",
+        "description": "Paramètres pour includeCreatorDashboard"
+    },
     "dev_efaz_charts_renamer_exName": {
         "message": "Renommage des classements Roblox d'Efaz",
         "description": "Nom de l'extension"

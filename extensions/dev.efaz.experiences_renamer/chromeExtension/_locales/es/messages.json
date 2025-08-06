@@ -186,5 +186,9 @@
     "foundation_color_accents_exName": {
         "message": "Acentos de color de la Fundación Roblox de Efaz",
         "description": "Nombre de la extensión"
+    },
+    "dev_efaz_experiences_renamer_includeCreatorDashboard_mes": {
+        "message": "Incluir el Panel del Creador",
+        "description": "Texto de configuración para includeCreatorDashboard"
     }
 }

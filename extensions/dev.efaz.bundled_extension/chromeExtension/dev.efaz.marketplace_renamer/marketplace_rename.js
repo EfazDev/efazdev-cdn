@@ -92,7 +92,7 @@ inject.js:
                 if (tab.href) {
                     const localeSets = {
                         "English": ["Marketplace"],
-                        "Español": ["Marketplace"],
+                        "Español": ["Mercado"],
                         "Français": ["Marketplace"]
                     }
                     if (tab.hostname == "www.roblox.com") {
@@ -127,7 +127,7 @@ inject.js:
                                 return false;
                             }
 
-                            function addRename(header) {
+                            function addRename(header, k) {
                                 function m(a) {
                                     if (!header[a]) { return }
                                     if (blacklisted(header, a)) { return }
@@ -138,7 +138,12 @@ inject.js:
                                         header[a] = header[a].replaceAll(localeSet[0].toLowerCase(), newName.toLowerCase())
                                     }
                                 }
-                                m("innerHTML")
+                                if (k) {
+                                    m(k)
+                                } else {
+                                    m("innerHTML")
+                                    m("title")
+                                }
                             }
 
                             let topbar_headers = document.querySelectorAll(".font-header-2.nav-menu-title.text-header")

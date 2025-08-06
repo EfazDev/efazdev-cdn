@@ -132,7 +132,7 @@ inject.js:
                                 return false;
                             }
 
-                            function addRename(header) {
+                            function addRename(header, k) {
                                 function m(a) {
                                     if (!header[a]) { return }
                                     if (blacklisted(header, a)) { return }
@@ -149,8 +149,13 @@ inject.js:
                                         header[a] = header[a].replaceAll(localeSet[1].toLowerCase(), newNameWithoutEndingS.toLowerCase())
                                     }
                                 }
-                                m("innerHTML")
-                                m("placeholder")
+                                if (k) {
+                                    m(k)
+                                } else {
+                                    m("innerHTML")
+                                    m("placeholder")
+                                    m("title")
+                                }
                             }
 
                             let sidebar_headers = document.querySelectorAll(".font-header-2.dynamic-ellipsis-item")
@@ -221,9 +226,21 @@ inject.js:
                                 addRename(header)
                             }
 
-                            let dropdown_menu = document.querySelectorAll(".dropdown-menu > li > a")
+                            let dropdown_menu = document.querySelectorAll(".dropdown-menu > li > a > span.navbar-list-option-suffix")
                             for (let i = 0; i < dropdown_menu.length; i++) {
                                 let header = dropdown_menu[i]
+                                addRename(header)
+                            }
+
+                            let dropdown_menu_2 = document.querySelectorAll(".popover-content > .dropdown-menu > li > a")
+                            for (let i = 0; i < dropdown_menu_2.length; i++) {
+                                let header = dropdown_menu_2[i]
+                                addRename(header)
+                            }
+
+                            let more_tooltip = document.querySelectorAll(".info-tooltip-container, .games-info-tooltip, #games-info-tooltip")
+                            for (let i = 0; i < more_tooltip.length; i++) {
+                                let header = more_tooltip[i]
                                 addRename(header)
                             }
 
@@ -279,6 +296,12 @@ inject.js:
                             let download_rbx_message = document.querySelectorAll(".web-blox-css-tss-jc8j2r-message > span")
                             for (let i = 0; i < download_rbx_message.length; i++) {
                                 let header = download_rbx_message[i]
+                                addRename(header)
+                            }
+
+                            let game_list_containers = document.querySelectorAll(".container-list.games-detail > h2")
+                            for (let i = 0; i < game_list_containers.length; i++) {
+                                let header = game_list_containers[i]
                                 addRename(header)
                             }
 
@@ -400,7 +423,7 @@ inject.js:
                                 return false;
                             }
 
-                            function addRename(header) {
+                            function addRename(header, k) {
                                 function m(a) {
                                     if (!header[a]) { return }
                                     if (blacklisted(header, a)) { return }
@@ -417,8 +440,13 @@ inject.js:
                                         header[a] = header[a].replaceAll(localeSet[1].toLowerCase(), newNameWithoutEndingS.toLowerCase())
                                     }
                                 }
-                                m("innerHTML")
-                                m("placeholder")
+                                if (k) {
+                                    m(k)
+                                } else {
+                                    m("innerHTML")
+                                    m("placeholder")
+                                    m("title")
+                                }
                             }
                             let btn_text_container_1 = document.querySelectorAll(".web-blox-css-tss-1283320-Button-textContainer")
                             for (let i = 0; i < btn_text_container_1.length; i++) {
@@ -445,6 +473,11 @@ inject.js:
                                 let header = medium_labels_3[i]
                                 addRename(header)
                             }
+                            let medium_labels_4 = document.querySelectorAll(".web-blox-css-mui-1xqo902")
+                            for (let i = 0; i < medium_labels_4.length; i++) {
+                                let header = medium_labels_4[i]
+                                addRename(header)
+                            }
                             let basic_labels_1 = document.querySelectorAll(".web-blox-css-mui-lbf0y3")
                             for (let i = 0; i < basic_labels_1.length; i++) {
                                 let header = basic_labels_1[i]
@@ -453,6 +486,16 @@ inject.js:
                             let body_1 = document.querySelectorAll(".web-blox-css-mui-gea1as-Typography-body1")
                             for (let i = 0; i < body_1.length; i++) {
                                 let header = body_1[i]
+                                addRename(header)
+                            }
+                            let body_2 = document.querySelectorAll(".web-blox-css-mui-15wphe8-Typography-body1")
+                            for (let i = 0; i < body_2.length; i++) {
+                                let header = body_2[i]
+                                addRename(header)
+                            }
+                            let body_3 = document.querySelectorAll(".web-blox-css-mui-1v9omcg-Typography-body1")
+                            for (let i = 0; i < body_3.length; i++) {
+                                let header = body_3[i]
                                 addRename(header)
                             }
                             let title_description = document.querySelectorAll(".web-blox-css-tss-5nnsl2-Typography-body1-Typography-colorSecondary-Typography-root-titleDescription")
@@ -467,7 +510,9 @@ inject.js:
                             }
                             timeout(() => injectRename(), amountOfSecondsBeforeLoop)
                         }
-                        injectRename()
+                        if (settings["includeCreatorDashboard"] == true) {
+                            injectRename()
+                        }
                     }
                 }
             }

@@ -20,6 +20,12 @@
             "reset": true,
             "neededSettings": ["enabled"]
         },
+        "includeCreatorDashboard": {
+            "text": "Include Creator Dashboard",
+            "type": "checkbox",
+            "default": true,
+            "neededSettings": ["enabled"]
+        },
         "massEdit": {
             "text": "Mass Edit HTML Contents with Community or Communities Text",
             "type": "checkbox",
@@ -31,8 +37,8 @@
     "typeOfStorage": "sync",
     "chromeWebstoreLinkEnabled": true,
     "firefoxWebstoreLinkEnabled": true,
-    "uploadedChromeExtensionID": "eghkpfdncgmcaifihhfgihcenboakjck",
-    "uploadedFirefoxExtensionID": "efaz-s-roblox-experiences-renamer",
+    "uploadedChromeExtensionID": "bifmkgmhcilgfcmmnlejgahbjoclaogc",
+    "uploadedFirefoxExtensionID": "efaz-s-experiences-renamer",
     "scanForManifestUpdates": true,
     "isVersionServer": true,
     "browserMode": "chrome",

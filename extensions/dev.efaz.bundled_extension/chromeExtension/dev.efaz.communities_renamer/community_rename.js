@@ -132,7 +132,7 @@ inject.js:
                                 return false;
                             }
 
-                            function addRename(header) {
+                            function addRename(header, k) {
                                 function m(a) {
                                     if (!header[a]) { return }
                                     if (blacklisted(header, a)) { return }
@@ -152,8 +152,13 @@ inject.js:
                                         header[a] = header[a].replaceAll(localeSet[1].toLowerCase(), newNameWithoutEndingS.toLowerCase())
                                     }
                                 }
-                                m("innerHTML")
-                                m("placeholder")
+                                if (k) {
+                                    m(k)
+                                } else {
+                                    m("innerHTML")
+                                    m("placeholder")
+                                    m("title")
+                                }
                             }
 
                             let sidebar_headers = document.querySelectorAll(".font-header-2.dynamic-ellipsis-item")

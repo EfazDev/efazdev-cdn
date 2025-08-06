@@ -30,7 +30,7 @@ for i in os.listdir(extensions_folder):
 printMainMessage(f"Extensions: {json.dumps(extensions_added)}")
 printWarnMessage("--- Handling Translations ---")
 locales = {}
-for i in extensions_added:
+for i in extensions_added + ["dev.efaz.bundled_extension"]:
     printMainMessage(f"Opening JSONs for {i}..")
     for lo in os.listdir(f"{extensions_folder}/{i}/chromeExtension/_locales"):
         if os.path.isdir(f"{extensions_folder}/{i}/chromeExtension/_locales/{lo}"):
@@ -55,6 +55,10 @@ for i, v in locales.items():
     for e, k in v.items():
         if e.startswith("dev_efaz") and not e.startswith(s[0].replace(".", "_")): continue
         m[e] = k
+    if locales.get(f"dev.efaz.bundled_extension|{s[1]}"):
+        for e, k in locales[f"dev.efaz.bundled_extension|{s[1]}"].items():
+            if e.startswith("dev_efaz") and not e.startswith(s[0].replace(".", "_")): continue
+            m[e] = k
     if not os.path.exists(f"{extensions_folder}/{s[0]}/chromeExtension/_locales/{s[1]}"): os.makedirs(f"{extensions_folder}/{s[0]}/chromeExtension/_locales/{s[1]}")
     with open(f"{extensions_folder}/{s[0]}/chromeExtension/_locales/{s[1]}/messages.json", "w") as f: json.dump(m, f, indent=4, ensure_ascii=False)
 printSuccessMessage("SUCCESS!")
