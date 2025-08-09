@@ -113,7 +113,7 @@ inject.js:
                         let converted_rgb = hexToRgb(settings["color"]);
                         async function injectCSS() {
                             // Normal Elements
-                            let all_links = Array.from(document.querySelectorAll("link"))
+                            let all_links = document.querySelectorAll("link")
                             await loopThroughArrayAsync(all_links, async (_, header) => {
                                 if (!(header.getAttribute("baseColoringAdded") == "true") && header.rel && header.rel == "stylesheet" && (affect_bundles.includes(header.getAttribute("data-bundlename"))) && header.href) {
                                     let fetchLink = header.href
@@ -159,7 +159,7 @@ inject.js:
                             })
 
                             // WebBlox Elements
-                            let all_styles = Array.from(document.querySelectorAll("style"));
+                            let all_styles = document.querySelectorAll("style");
                             await loopThroughArrayAsync(all_styles, async (_, header) => {
                                 if (!(header.getAttribute("baseColoringAdded") == "true") && !(header.getAttribute("onerror"))) {
                                     let change_made = false;
@@ -288,7 +288,7 @@ inject.js:
                                 } 
 
                                 var converted_rgb = hexToRgb(settings["color"]);
-                                var all_styles = Array.from(document.querySelectorAll("style"));
+                                var all_styles = document.querySelectorAll("style");
                                 await loopThroughArrayAsync(all_styles, async (_, header) => {
                                     var target_sheet = "";
                                     if (header.sheet) {
@@ -306,7 +306,7 @@ inject.js:
 
                                 var all_buttons = document.querySelectorAll("button");
                                 var all_icons = document.querySelectorAll("svg");
-                                all_buttons = Array.from(all_buttons).concat(Array.from(all_icons));
+                                all_buttons = [...all_buttons, ...all_icons];
                                 await loopThroughArrayAsync(all_buttons, async (_, header) => {
                                     var att_name = "fill"
                                     if (header.getAttribute(att_name) && !(header.getAttribute(att_name).includes(`${converted_rgb["r"]}, ${converted_rgb["g"]}, ${converted_rgb["b"]}`) || header.getAttribute(att_name).includes(settings["color"]))) {
@@ -350,7 +350,7 @@ inject.js:
                                     var all_paths_svg = document.querySelectorAll("path");
                                     var all_span = document.querySelectorAll("span");
                                     var all_rect = document.querySelectorAll("rect");
-                                    var new_combined_list = Array.from(all_span).concat(Array.from(all_paths_svg)).concat(Array.from(all_rect));
+                                    var new_combined_list = [...all_span, ...all_paths_svg, ...all_rect];
                                     await loopThroughArrayAsync(new_combined_list, async (_, header) => {
                                         var att_name = "fill"
                                         if (header.getAttribute(att_name) && !(header.getAttribute(att_name).includes(`${converted_rgb["r"]}, ${converted_rgb["g"]}, ${converted_rgb["b"]}`) || header.getAttribute(att_name).includes(settings["color"]))) {

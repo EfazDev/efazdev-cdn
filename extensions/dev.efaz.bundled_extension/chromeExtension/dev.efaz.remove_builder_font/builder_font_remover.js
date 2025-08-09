@@ -291,25 +291,26 @@ inject.js:
                         // This is for new WebBlox objects that were added in 2025.
                         async function injectCSS2(css) {
                             if (css) {
-                                let selectors = Array.from(document.querySelectorAll("style"));
+                                let selectors = document.querySelectorAll("style");
                                 await loopThroughArrayAsync(selectors, async (_, selector) => {
-                                    if (!(selector.textContent.includes("Efaz's Builder Font Remover")) && (selector.getAttribute("data-emotion") == "web-blox-css-mui-global" || selector.getAttribute("data-emotion") == "web-blox-css-mui")) {
+                                    let selector_val = selector.textContent
+                                    if (!(selector_val.includes("Efaz's Builder Font Remover")) && (selector.getAttribute("data-emotion") == "web-blox-css-mui-global" || selector.getAttribute("data-emotion") == "web-blox-css-mui")) {
                                         let sheet_text = sheetToString(selector.sheet)
                                         if (sheet_text.includes("@font-face")) {
-                                            if (selector.textContent == "") {
+                                            if (selector_val == "") {
                                                 selector.textContent = `${sheet_text.replaceAll("Builder Sans", "BuilderRemove").replaceAll("Builder Mono", "BuilderMono")} \n\n${css}`
-                                            } else if (selector.textContent.includes("/fonts/builder-sans/")) {
+                                            } else if (selector_val.includes("/fonts/builder-sans/")) {
                                                 selector.textContent = `${sheet_text.replaceAll("Builder Sans", "BuilderRemove").replaceAll("Builder Mono", "BuilderMono")} \n\n${css}`
                                             }
                                         }
                                     } else if (selector.getAttribute("data-emotion") == "web-blox-css-tss" || selector.getAttribute("data-emotion") == "web-blox-css-mui") {
                                         if (!(selector.getAttribute("scanned-builder-font-remove") == "true")) {
                                             let sheet_text = sheetToString(selector.sheet)
-                                            if (sheet_text != "") { selector.textContent = selector.textContent + sheet_text; }
+                                            if (sheet_text != "") { selector.textContent = selector_val + sheet_text; selector_val = selector.textContent; }
                                             selector.setAttribute("scanned-builder-font-remove", "true")
                                         }
-                                        if (!(selector.textContent.includes("Efaz's Builder Font Remover")) && selector.textContent.includes("Builder Sans")) {
-                                            selector.textContent = `${selector.textContent.replaceAll("Builder Sans", "BuilderRemove").replaceAll("Builder Mono", "BuilderMono")} \n\n${css}`
+                                        if (!(selector_val.includes("Efaz's Builder Font Remover")) && selector_val.includes("Builder Sans")) {
+                                            selector.textContent = `${selector_val.replaceAll("Builder Sans", "BuilderRemove").replaceAll("Builder Mono", "BuilderMono")} \n\n${css}`
                                         }
                                     }
                                 })
@@ -320,7 +321,7 @@ inject.js:
                                     style.textContent = css
                                     document.head.append(style)
                                 }
-                                let all_links = Array.from(document.querySelectorAll("link"));
+                                let all_links = document.querySelectorAll("link");
                                 await loopThroughArrayAsync(all_links, async (_, header) => {
                                     if (header.rel && header.rel == "stylesheet" && header.getAttribute("data-bundlename") == "Builder" && header.href) {
                                         header.remove()
@@ -356,12 +357,12 @@ inject.js:
                                 if (css) {
                                     let new_tries = 0
                                     if (tries) { new_tries = tries }
-                                    let roblox_provided_stylesheets = Array.from(document.querySelectorAll("discourse-assets-stylesheets"));
+                                    let roblox_provided_stylesheets = document.querySelectorAll("discourse-assets-stylesheets");
                                     let found = false
                                     if (roblox_provided_stylesheets.length > 0) {
                                         roblox_provided_stylesheets = roblox_provided_stylesheets[0];
                                         if (roblox_provided_stylesheets.children.length > 0) {
-                                            let roblox_provided_stylesheets_children = Array.from(roblox_provided_stylesheets.children);
+                                            let roblox_provided_stylesheets_children = roblox_provided_stylesheets.children;
                                             await loopThroughArrayAsync(roblox_provided_stylesheets_children, async (_, selector) => {
                                                 if (selector && (selector.getAttribute("data-theme-name") == "light" || selector.getAttribute("data-theme-name") == "dark" || selector.getAttribute("data-theme-name") == "roblox dark" || selector.getAttribute("data-theme-name") == "grey amber")) {
                                                     selector.remove()
@@ -419,10 +420,11 @@ inject.js:
                                         let selector = selectors[q]
                                         let sheet_text = sheetToString(selector.sheet)
                                         if (selector.getAttribute("data-emotion") == "web-blox-css-mui-global" && sheet_text.includes("@font-face")) {
-                                            if (!(selector.textContent.includes("Efaz's Builder Font Remover"))) {
-                                                if (selector.textContent == "") {
+                                            let selector_val = selector.textContent
+                                            if (!(selector_val.includes("Efaz's Builder Font Remover"))) {
+                                                if (selector_val == "") {
                                                     selector.textContent = `${sheet_text} \n\n${css}`
-                                                } else if (selector.textContent.includes("/fonts/builder-sans/")) {
+                                                } else if (selector_val.includes("/fonts/builder-sans/")) {
                                                     selector.textContent = `${sheet_text} \n\n${css}`
                                                 }
                                             }
@@ -464,11 +466,12 @@ inject.js:
                                     for (q = 0; q < selectors.length; q++) {
                                         let selector = selectors[q]
                                         if ((selector.getAttribute("data-emotion") == "web-blox-css-mui-global" || selector.getAttribute("data-emotion") == "css-global") && sheetToString(selector.sheet).includes("@font-face")) {
-                                            if (selector.textContent == "") {
+                                            let selector_val = selector.textContent
+                                            if (selector_val == "") {
                                                 selector.textContent = css
                                                 found = true
-                                            } else if (selector.textContent.includes("@font-face") && selector.textContent.includes("BuilderSans")) {
-                                                selector.textContent = `${selector.textContent} \n\n${css}`
+                                            } else if (selector_val.includes("@font-face") && selector_val.includes("BuilderSans")) {
+                                                selector.textContent = `${selector_val} \n\n${css}`
                                                 found = true
                                             }
                                         }

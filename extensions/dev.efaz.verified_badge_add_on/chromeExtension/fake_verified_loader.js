@@ -360,7 +360,7 @@ function start() {
                                 return div.firstChild;
                             }
                             function addPromptButtonInput() {
-                                let list_item = Array.from(document.querySelectorAll("span"));
+                                let list_item = document.querySelectorAll("span");
                                 if (list_item.length > 0) {
                                     list_item.forEach((verified_badge_contain) => {
                                         if (verified_badge_contain.getAttribute("replicate-badge-addon-prompt")) {
@@ -376,7 +376,7 @@ function start() {
                             function looped() {
                                 if (enabled == true) {
                                     if (getIfLinkIsUserProfile(window.location.pathname) && getIfLinkIsUser(window.location.pathname, userId.toString())) {
-                                        let main_headers = Array.from(document.querySelectorAll(".profile-name.text-overflow"));
+                                        let main_headers = document.querySelectorAll(".profile-name.text-overflow");
                                         if (main_headers.length > 0) {
                                             main_headers.forEach((main_header) => {
                                                 if (main_header.offsetParent && main_header.offsetParent.className == "header-title") {
@@ -398,7 +398,7 @@ function start() {
                                             });
                                         }
 
-                                        let main_headers2 = Array.from(document.querySelectorAll(".profile-header-title-container"));
+                                        let main_headers2 = document.querySelectorAll(".profile-header-title-container");
                                         if (main_headers2.length > 0) {
                                             main_headers2.forEach((main_header) => {
                                                 if (vIconPlaced(main_header.innerHTML)) { return ; }
@@ -408,7 +408,7 @@ function start() {
                                             });
                                         }
 
-                                        let premium_logos = Array.from(document.querySelectorAll(".premium-badge-right-aligned"));
+                                        let premium_logos = document.querySelectorAll(".premium-badge-right-aligned");
                                         if (premium_logos.length > 0) {
                                             premium_logos.forEach((premium) => {
                                                 if (premium && premium.className == "premium-badge-right-aligned") {
@@ -417,7 +417,7 @@ function start() {
                                             });
                                         }
 
-                                        let premium_logos2 = Array.from(document.querySelectorAll(".profile-header-premium-badge"));
+                                        let premium_logos2 = document.querySelectorAll(".profile-header-premium-badge");
                                         if (premium_logos2.length > 0) {
                                             premium_logos2.forEach((premium) => {
                                                 if (premium) {
@@ -427,7 +427,7 @@ function start() {
                                         }
                                     }
 
-                                    let name_on_side = Array.from(document.querySelectorAll(".font-header-2.dynamic-ellipsis-item"));
+                                    let name_on_side = document.querySelectorAll(".font-header-2.dynamic-ellipsis-item");
                                     if (name_on_side.length > 0) {
                                         name_on_side.forEach((main_name_on_side) => {
                                             if (main_name_on_side.outerHTML.includes(displayName) && main_name_on_side.parentElement && main_name_on_side.parentElement.href) {
@@ -439,7 +439,7 @@ function start() {
                                         });
                                     }
 
-                                    let username_containers = Array.from(document.querySelectorAll(".user-name-container"));
+                                    let username_containers = document.querySelectorAll(".user-name-container");
                                     if (username_containers.length > 0) {
                                         username_containers.forEach((usr_con) => {
                                             if (usr_con.innerHTML.includes(displayName)) {
@@ -456,7 +456,7 @@ function start() {
                                     function sectorA() { // Roblox Groups Main Handler
                                         if (getIfLinkIsGroup(window.location.pathname)) {
                                             function attachExtra() {
-                                                let group_guilded_posts = Array.from(document.querySelectorAll(".text-name.name"));
+                                                let group_guilded_posts = document.querySelectorAll(".text-name.name");
                                                 if (group_guilded_posts.length > 0) {
                                                     group_guilded_posts.forEach((shout) => {
                                                         if (shout.className == "text-name name" && shout.innerHTML.includes(displayName) && getIfLinkIsUserProfile(shout.href) && getIfLinkIsUser(shout.href, userId.toString())) {
@@ -466,7 +466,7 @@ function start() {
                                                     })
                                                 }
 
-                                                let name_in_group = Array.from(document.querySelectorAll(".list-item.member.ng-scope"));
+                                                let name_in_group = document.querySelectorAll(".list-item.member.ng-scope");
                                                 if (name_in_group.length > 0) {
                                                     name_in_group.forEach((main_name_on_group) => {
                                                         if (main_name_on_group && main_name_on_group.children[0] && main_name_on_group.children[0].children[0] && getIfLinkIsUserProfile(main_name_on_group.children[0].children[0].href) && getIfLinkIsUser(main_name_on_group.children[0].children[0].href, userId.toString())) {
@@ -478,7 +478,7 @@ function start() {
                                                     });
                                                 }
 
-                                                let group_wall = Array.from(document.querySelectorAll(".text-label-medium.content-emphasis.ng-binding.ng-scope"));
+                                                let group_wall = document.querySelectorAll(".text-label-medium.content-emphasis.ng-binding.ng-scope");
                                                 if (group_wall.length > 0) {
                                                     group_wall.forEach((main_name_on_group) => {
                                                         if (main_name_on_group.outerHTML.includes(displayName) && main_name_on_group.className == "text-label-medium content-emphasis ng-binding ng-scope" && getIfLinkIsUserProfile(main_name_on_group.href) && getIfLinkIsUser(main_name_on_group.href, userId.toString())) {
@@ -488,7 +488,7 @@ function start() {
                                                     });
                                                 }
 
-                                                let group_payouts_auto = Array.from(document.querySelectorAll(".avatar-card-name.text-lead.text-overflow.ng-binding.ng-scope"));
+                                                let group_payouts_auto = document.querySelectorAll(".avatar-card-name.text-lead.text-overflow.ng-binding.ng-scope");
                                                 if (group_payouts_auto.length > 0) {
                                                     group_payouts_auto.forEach((main_name_on_group) => {
                                                         if (main_name_on_group.innerHTML.includes(displayName) && getIfLinkIsUserProfile(main_name_on_group.href) && getIfLinkIsUser(main_name_on_group.href, userId.toString())) {
@@ -503,11 +503,11 @@ function start() {
                                             function refresh() {
                                                 let identified_id = window.location.pathname.match(/[0-9]+/);
                                                 if (identified_id && identified_id[0]) {
-                                                    let group_owners = Array.from(document.querySelectorAll(".MuiLink-underlineHover.web-blox-css-mui-94v26k"));
+                                                    let group_owners = document.querySelectorAll(".MuiLink-underlineHover.web-blox-css-mui-94v26k");
                                                     if (group_owners.length > 0) {
                                                         if (settings) {
                                                             if (settings["groupsIncluded"] == true) {
-                                                                let group_list_verified_logo = Array.from(document.querySelectorAll(".groups-list-item"));
+                                                                let group_list_verified_logo = document.querySelectorAll(".groups-list-item");
                                                                 if (group_list_verified_logo.length > 0) {
                                                                     group_list_verified_logo.forEach((main_name_on_group) => {
                                                                         if (main_name_on_group.children[1] && main_name_on_group.children[1].children[0] && main_name_on_group.children[1].children[0].children[0] && main_name_on_group.children[1].children[0].children[0].children[0]) {
@@ -539,7 +539,7 @@ function start() {
                                                                                 }
                                                                                 if (settings) {
                                                                                     if (settings["groupsIncluded"] == true) {
-                                                                                        let group_name = Array.from(document.querySelectorAll(".profile-header-details-community-name.text-heading-large"));
+                                                                                        let group_name = document.querySelectorAll(".profile-header-details-community-name.text-heading-large");
                                                                                         if (group_name.length > 0) {
                                                                                             group_name.forEach((main_name_on_group) => {
                                                                                                 if (vIconPlaced(main_name_on_group.innerHTML)) {
@@ -564,7 +564,7 @@ function start() {
                                         }
                                     }
                                     function sectorB() { // Creator Name
-                                        let unamec_2 = Array.from(document.querySelectorAll(".creator-name.text-link"));
+                                        let unamec_2 = document.querySelectorAll(".creator-name.text-link");
                                         if (unamec_2.length > 0) {
                                             unamec_2.forEach((usr_con) => {
                                                 if (usr_con.outerHTML.includes(username_at) && usr_con.className == "creator-name text-link") {
@@ -595,7 +595,7 @@ function start() {
                                             });
                                         }
 
-                                        let unamec_7 = Array.from(document.querySelectorAll(".avatar-name.text-overflow.ng-binding"));
+                                        let unamec_7 = document.querySelectorAll(".avatar-name.text-overflow.ng-binding");
                                         if (unamec_7.length > 0) {
                                             unamec_7.forEach((usr_con) => {
                                                 if (usr_con.outerHTML.includes(displayName) && usr_con.className == "avatar-name text-overflow ng-binding") {
@@ -610,11 +610,11 @@ function start() {
                                             });
                                         }
 
-                                        let unamec_8 = Array.from(document.querySelectorAll(".text-overflow.avatar-name.ng-binding.ng-scope"));
+                                        let unamec_8 = document.querySelectorAll(".text-overflow.avatar-name.ng-binding.ng-scope");
                                         if (unamec_8.length > 0) {
                                             unamec_8.forEach((usr_con) => {
                                                 if (usr_con.outerHTML.includes(displayName) && usr_con.className == "text-overflow avatar-name ng-binding ng-scope") {
-                                                    let unamec_9 = Array.from(document.querySelectorAll(".text-overflow.avatar-card-label.ng-binding.ng-scope"));
+                                                    let unamec_9 = document.querySelectorAll(".text-overflow.avatar-card-label.ng-binding.ng-scope");
                                                     if (unamec_9.length > 0) {
                                                         unamec_9.forEach((usr_con_2) => {
                                                             if (usr_con.offsetParent == usr_con_2.offsetParent) {
@@ -633,7 +633,7 @@ function start() {
                                         addPromptButtonInput()
                                     }
                                     function sectorC() { // Roblox Avatar Cards
-                                        let unamec_7 = Array.from(document.querySelectorAll(".avatar-name.text-overflow.ng-binding"));
+                                        let unamec_7 = document.querySelectorAll(".avatar-name.text-overflow.ng-binding");
                                         if (unamec_7.length > 0) {
                                             unamec_7.forEach((usr_con) => {
                                                 if (usr_con.outerHTML.includes(displayName) && usr_con.className == "avatar-name text-overflow ng-binding") {
@@ -651,7 +651,7 @@ function start() {
                                         addPromptButtonInput()
                                     }
                                     function sectorD() { // Resellers
-                                        let unamec_10 = Array.from(document.querySelectorAll(".text-name.username.ng-binding"));
+                                        let unamec_10 = document.querySelectorAll(".text-name.username.ng-binding");
                                         if (unamec_10.length > 0) {
                                             unamec_10.forEach((usr_con) => {
                                                 if (usr_con.outerHTML.includes(username) && usr_con.className == "text-name username ng-binding") {
@@ -663,7 +663,7 @@ function start() {
                                         }
                                     }
                                     function sectorE() { // More Avatar Cards
-                                        let unamec_11 = Array.from(document.querySelectorAll(".text-overflow.avatar-name"));
+                                        let unamec_11 = document.querySelectorAll(".text-overflow.avatar-name");
                                         if (unamec_11.length > 0) {
                                             unamec_11.forEach((usr_con) => {
                                                 if (usr_con && usr_con.outerHTML.includes(displayName) && getIfLinkIsUserProfile(usr_con.href) && getIfLinkIsUser(usr_con.href, userId.toString()) && usr_con.className == "text-overflow avatar-name") {
@@ -675,7 +675,7 @@ function start() {
                                         }
                                     }
                                     function sectorF() { // Game Cards
-                                        let unamec_12 = Array.from(document.querySelectorAll(".text-overflow.game-card-name.ng-binding"));
+                                        let unamec_12 = document.querySelectorAll(".text-overflow.game-card-name.ng-binding");
                                         if (unamec_12.length > 0) {
                                             unamec_12.forEach((usr_con) => {
                                                 if (include_groups == true) {
@@ -699,7 +699,7 @@ function start() {
                                             });
                                         }
 
-                                        let unamec_13 = Array.from(document.querySelectorAll(".ng-binding.slide-item-name.text-overflow.groups.font-title"));
+                                        let unamec_13 = document.querySelectorAll(".ng-binding.slide-item-name.text-overflow.groups.font-title");
                                         if (unamec_13.length > 0) {
                                             unamec_13.forEach((usr_con) => {
                                                 if (include_groups == true) {
@@ -724,7 +724,7 @@ function start() {
                                         }
                                     }
                                     function sectorG() { // Messages
-                                        let unamec_12 = Array.from(document.querySelectorAll(".paired-name.message-summary-username.positionAboveLink.font-header-2.ng-scope"));
+                                        let unamec_12 = document.querySelectorAll(".paired-name.message-summary-username.positionAboveLink.font-header-2.ng-scope");
                                         if (unamec_12.length > 0) {
                                             unamec_12.forEach((usr_con) => {
                                                 if (usr_con.children[0] && usr_con.className == "paired-name message-summary-username positionAboveLink font-header-2 ng-scope") {
@@ -736,7 +736,7 @@ function start() {
                                             });
                                         }
 
-                                        let unamec_13 = Array.from(document.querySelectorAll(".paired-name.text-name.username-container.font-header-2"));
+                                        let unamec_13 = document.querySelectorAll(".paired-name.text-name.username-container.font-header-2");
                                         if (unamec_13.length > 0) {
                                             unamec_13.forEach((usr_con) => {
                                                 if (usr_con.children[0] && usr_con.className == "paired-name text-name username-container font-header-2") {
@@ -749,7 +749,7 @@ function start() {
                                         }
                                     }
                                     function sectorH() { // More Names
-                                        let unamec_4 = Array.from(document.querySelectorAll(".text-name"));
+                                        let unamec_4 = document.querySelectorAll(".text-name");
                                         if (unamec_4.length > 0) {
                                             unamec_4.forEach((usr_con) => {
                                                 if (!(usr_con.parentElement)) { return ; }
@@ -774,7 +774,7 @@ function start() {
                                             });
                                         }
 
-                                        let unamec_5 = Array.from(document.querySelectorAll(".rbx-private-owner"));
+                                        let unamec_5 = document.querySelectorAll(".rbx-private-owner");
                                         if (unamec_5.length > 0) {
                                             unamec_5.forEach((usr_con) => {
                                                 if (!(usr_con.children && usr_con.children[1])) { return ; }
@@ -788,7 +788,7 @@ function start() {
                                         }
                                     }
 
-                                    let unamec_2 = Array.from(document.querySelectorAll(".creator-name.text-link"));
+                                    let unamec_2 = document.querySelectorAll(".creator-name.text-link");
                                     if (unamec_2.length > 0) {
                                         unamec_2.forEach((usr_con) => {
                                             if (usr_con.outerHTML.includes(username_at) && usr_con.className == "creator-name text-link") {
@@ -811,7 +811,7 @@ function start() {
                                         });
                                     }
 
-                                    let unamec_3 = Array.from(document.querySelectorAll(".text-name.text-overflow"));
+                                    let unamec_3 = document.querySelectorAll(".text-name.text-overflow");
                                     if (unamec_3.length > 0) {
                                         unamec_3.forEach((usr_con) => {
                                             if (usr_con.outerHTML.includes(username_at) && usr_con.className == "text-name text-overflow") {
@@ -835,7 +835,7 @@ function start() {
                                         });
                                     }
 
-                                    let unamec_4 = Array.from(document.querySelectorAll(".text-name"));
+                                    let unamec_4 = document.querySelectorAll(".text-name");
                                     if (unamec_4.length > 0) {
                                         unamec_4.forEach((usr_con) => {
                                             if (!(usr_con.parentElement)) { return ; }
@@ -860,7 +860,7 @@ function start() {
                                         });
                                     }
 
-                                    let unamec_5 = Array.from(document.querySelectorAll(".text-overflow.age-bracket-label-username.font-caption-header"));
+                                    let unamec_5 = document.querySelectorAll(".text-overflow.age-bracket-label-username.font-caption-header");
                                     if (unamec_5.length > 0) {
                                         unamec_5.forEach((usr_con) => {
                                             if (usr_con.outerHTML.includes(displayName) && usr_con.className == "text-overflow age-bracket-label-username font-caption-header") {
@@ -871,7 +871,7 @@ function start() {
                                         });
                                     }
 
-                                    let unamec_6 = Array.from(document.querySelectorAll(".text-name.name.ng-binding"));
+                                    let unamec_6 = document.querySelectorAll(".text-name.name.ng-binding");
                                     if (unamec_6.length > 0) {
                                         unamec_6.forEach((usr_con) => {
                                             if (usr_con.outerHTML.includes(displayName) && usr_con.className == "text-name name ng-binding") {
@@ -882,7 +882,7 @@ function start() {
                                         });
                                     }
 
-                                    let unamec_7 = Array.from(document.querySelectorAll(".avatar-name.text-overflow.ng-binding"));
+                                    let unamec_7 = document.querySelectorAll(".avatar-name.text-overflow.ng-binding");
                                     if (unamec_7.length > 0) {
                                         unamec_7.forEach((usr_con) => {
                                             if (usr_con.outerHTML.includes(displayName) && usr_con.className == "avatar-name text-overflow ng-binding") {
@@ -897,11 +897,11 @@ function start() {
                                     }
 
                                     setTimeout(function () {
-                                        let unamec_8 = Array.from(document.querySelectorAll(".text-overflow.avatar-name.ng-binding.ng-scope"));
+                                        let unamec_8 = document.querySelectorAll(".text-overflow.avatar-name.ng-binding.ng-scope");
                                         if (unamec_8.length > 0) {
                                             unamec_8.forEach((usr_con) => {
                                                 if (usr_con.outerHTML.includes(displayName) && usr_con.className == "text-overflow avatar-name ng-binding ng-scope") {
-                                                    let unamec_9 = Array.from(document.querySelectorAll(".text-overflow.avatar-card-label.ng-binding.ng-scope"));
+                                                    let unamec_9 = document.querySelectorAll(".text-overflow.avatar-card-label.ng-binding.ng-scope");
                                                     if (unamec_9.length > 0) {
                                                         unamec_9.forEach((usr_con_2) => {
                                                             if (usr_con.offsetParent == usr_con_2.offsetParent) {
@@ -917,7 +917,7 @@ function start() {
                                             });
                                         }
 
-                                        let friends_username_containers = Array.from(document.querySelectorAll(".text-link.friend-link.ng-isolate-scope"));
+                                        let friends_username_containers = document.querySelectorAll(".text-link.friend-link.ng-isolate-scope");
                                         if (friends_username_containers.length > 0) {
                                             friends_username_containers.forEach((usr_con) => {
                                                 if (usr_con.href && usr_con.className == "text-link friend-link ng-isolate-scope") {
@@ -945,7 +945,7 @@ function start() {
                                             });
                                         }
 
-                                        let friends_scroll_containers = Array.from(document.querySelectorAll(".friends-carousel-tile-labels"));
+                                        let friends_scroll_containers = document.querySelectorAll(".friends-carousel-tile-labels");
                                         if (friends_scroll_containers.length > 0) {
                                             friends_scroll_containers.forEach((usr_con) => {
                                                 if (usr_con.href && usr_con.className == "friends-carousel-tile-labels") {

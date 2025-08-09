@@ -144,7 +144,7 @@ async function localizeAll(s) {
         })
         return s
     } else {
-        let objs = Array.from(document.getElementsByTagName("html"))
+        let objs = document.getElementsByTagName("html")
         loopThroughArray(objs, (_, obj) => {
             var valStrH = obj.innerHTML.toString();
             var valNewH = valStrH.replace(/__MSG_(\w+)__/g, function(match, v1) {

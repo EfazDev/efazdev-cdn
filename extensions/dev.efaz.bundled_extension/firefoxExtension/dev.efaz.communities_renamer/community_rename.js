@@ -109,104 +109,105 @@ inject.js:
                         var div = document.createElement("div");
                         div.innerHTML = newNameWithoutEndingS;
                         newNameWithoutEndingS = div.textContent.replace(/<\/[^>]+(>|$)/g, "");
-                        /* Clean New Name to prevent crashes */
+                        
+                        /* Set basic query names to find */
+                        let query_names = [
+                            '.font-header-2.dynamic-ellipsis-item', 
+                            '.dynamic-overflow-container.text-nav', 
+                            '.web-blox-css-mui-184cbry', 
+                            '.groups-list-heading',
+                            '.section-title.ng-binding.ng-scope.font-header-1', 
+                            '.btn-secondary-xs.btn-more.see-all-link-icon.ng-binding.ng-scope', 
+                            '.web-blox-css-tss-1283320-Button-textContainer', 
+                            '.summary-transaction-label', 
+                            '.amount', 
+                            '.modal-title', 
+                            '.modal-message', 
+                            '.section-content-off', 
+                            '.text-pastname', 
+                            '.roseal-menu-item > button',
+                            '.item-description', 
+                            '.btn-secondary-md.group-form-button.ng-binding', 
+                            '.btn-toggle-label', 
+                            '.text-description', 
+                            '.input-field', 
+                            '.text-label-large', 
+                            '.text-caption-large', 
+                            '.text-body-large', 
+                            '.text-heading-large', 
+                            '.text-label-small', 
+                            '.text-caption-small', 
+                            '.text-body-small', 
+                            '.text-heading-small', 
+                            '.text-label', 
+                            'h3', 
+                            '.text-pastname.ng-binding', 
+                            '#private-server-tooltip', 
+                            '.back-link', 
+                            '.font-body', 
+                            '.text-emphasis', 
+                            '.keyword-block-list-section-header > div', 
+                            '.text-content',
+                            ".transaction-type-dropdown > div > .dropdown-menu > li > a",
+                            ".btn-secondary-md.create-group-button.ng-binding",
+                            ".small.text.create-group-text.ng-binding.ng-scope",
+                            ".rbx-selection-label",
+                            ".groups-list-search-input"
+                        ].join(", ")
+
+                        /* Run rename loop */
+                        let localeSet = null
+                        function blacklisted(header, attribute) {
+                            const ngBind = header.getAttribute("ng-bind");
+                            const ngBindHtml = header.getAttribute("ng-bind-html");
+                            const ngIf = header.getAttribute("ng-if");
+                            if (ngBind && (ngBind.includes("group.description") || ngBind === "$ctrl.data.currentRoleName" || ngBind === "role.name" || ngBind.includes("role.name") || ngBind.includes("currentRoleFilter") || ngBind.includes("post."))) { return true; }
+                            if (ngBindHtml && (ngBindHtml === "piece.content" || ngBindHtml.includes("log") || ngBindHtml.includes("post.body") || ngBindHtml.includes("library.currentGroup"))) { return true; }
+                            if (ngIf && ngIf.includes("chatUser.previewMessage")) { return true; }
+                            return false;
+                        }
+                        function addRename(header, k) {
+                            function m(a) {
+                                if (!header[a]) { return }
+                                if (blacklisted(header, a)) { return }
+                                let val = header[a]
+                                if (val.includes(localeSet[0])) {
+                                    val = val.replaceAll(localeSet[0], newName)
+                                }
+                                if (val.includes(localeSet[0].toLowerCase())) {
+                                    val = val.replaceAll(localeSet[0].toLowerCase(), newName.toLowerCase())
+                                }
+                                if (val.includes(localeSet[1])) {
+                                    val = val.replaceAll(localeSet[1], newNameWithoutEndingS)
+                                }
+                                if (val.includes(localeSet[1].toLowerCase())) {
+                                    val = val.replaceAll(localeSet[1].toLowerCase(), newNameWithoutEndingS.toLowerCase())
+                                }
+                                if (header[a] != val) { header[a] = val }
+
+                            }
+                            if (k) {
+                                m(k)
+                            } else {
+                                if (header.href && settings["replaceURLwithGroupsURL"] == true) {
+                                    header.href = header.href.replace("communities", "groups")
+                                }
+                                m("innerHTML")
+                                m("placeholder")
+                                m("title")
+                            }
+                        }
                         function injectRename() {
-                            /* Get Set Roblox Language */
                             let meta_tags = document.querySelectorAll("meta")
-                            let localeSet = null
+                            let clear_local_set = false;
                             for (let i = 0; i < meta_tags.length; i++) {
                                 if (meta_tags[i].getAttribute("name") == "locale-data") {
                                     localeSet = localeSets[meta_tags[i].getAttribute("data-language-name")]
                                 }
                             }
                             if (!(localeSet)) {
-                                localeSet = localeSets["English"]
-                            }
-
-                            function blacklisted(header, attribute) {
-                                if ((header.getAttribute("ng-bind") && header.getAttribute("ng-bind").includes("group.description"))) { return true; }
-                                if (header.getAttribute("ng-bind") == "$ctrl.data.currentRoleName" || header.getAttribute("ng-bind") == "role.name" || (header.getAttribute("ng-bind") && header.getAttribute("ng-bind").includes("role.name")) || (header.getAttribute("ng-bind") && header.getAttribute("ng-bind").includes("currentRoleFilter"))) { return true; }
-                                if (header.getAttribute("ng-bind-html") == "piece.content" || (header.getAttribute("ng-if") && header.getAttribute("ng-if").includes("chatUser.previewMessage"))) { return true; }
-                                if ((header.getAttribute("ng-bind-html") && header.getAttribute("ng-bind-html").includes("log"))) { return true; }
-                                if ((header.getAttribute("ng-bind-html") && header.getAttribute("ng-bind-html").includes("post.body")) || (header.getAttribute("ng-bind-html") && header.getAttribute("ng-bind-html").includes("library.currentGroup")) || (header.getAttribute("ng-bind") && header.getAttribute("ng-bind").includes("post."))) { return true; }
-                                return false;
-                            }
-
-                            function addRename(header, k) {
-                                function m(a) {
-                                    if (!header[a]) { return }
-                                    if (blacklisted(header, a)) { return }
-                                    if (header.href && settings["replaceURLwithGroupsURL"] == true) {
-                                        header.href = header.href.replace("communities", "groups")
-                                    }
-                                    if (header[a].includes(localeSet[0])) {
-                                        header[a] = header[a].replaceAll(localeSet[0], newName)
-                                    }
-                                    if (header[a].includes(localeSet[0].toLowerCase())) {
-                                        header[a] = header[a].replaceAll(localeSet[0].toLowerCase(), newName.toLowerCase())
-                                    }
-                                    if (header[a].includes(localeSet[1])) {
-                                        header[a] = header[a].replaceAll(localeSet[1], newNameWithoutEndingS)
-                                    }
-                                    if (header[a].includes(localeSet[1].toLowerCase())) {
-                                        header[a] = header[a].replaceAll(localeSet[1].toLowerCase(), newNameWithoutEndingS.toLowerCase())
-                                    }
-                                }
-                                if (k) {
-                                    m(k)
-                                } else {
-                                    m("innerHTML")
-                                    m("placeholder")
-                                    m("title")
-                                }
-                            }
-
-                            let sidebar_headers = document.querySelectorAll(".font-header-2.dynamic-ellipsis-item")
-                            for (let i = 0; i < sidebar_headers.length; i++) {
-                                let header = sidebar_headers[i]
-                                addRename(header)
-                            }
-
-                            let sidebar_link_headers = document.querySelectorAll(".dynamic-overflow-container.text-nav")
-                            for (let i = 0; i < sidebar_link_headers.length; i++) {
-                                let header = sidebar_link_headers[i]
-                                addRename(header)
-                            }
-
-                            let group_webblox_dropdown = document.querySelectorAll(".web-blox-css-mui-184cbry")
-                            for (let i = 0; i < group_webblox_dropdown.length; i++) {
-                                let header = group_webblox_dropdown[i]
-                                addRename(header)
-                            }
-
-                            let group_header_name = document.querySelectorAll(".groups-list-heading")
-                            for (let i = 0; i < group_header_name.length; i++) {
-                                let header = group_header_name[i]
-                                addRename(header)
-                            }
-
-                            let search_headers = document.querySelectorAll(".section-title.ng-binding.ng-scope.font-header-1")
-                            for (let i = 0; i < search_headers.length; i++) {
-                                let header = search_headers[i]
-                                addRename(header)
-                            }
-
-                            let my_communities_link = document.querySelectorAll(".btn-secondary-xs.btn-more.see-all-link-icon.ng-binding.ng-scope")
-                            for (let i = 0; i < my_communities_link.length; i++) {
-                                let header = my_communities_link[i]
-                                addRename(header)
-                            }
-
-                            let join_communities_btn = document.querySelectorAll(".web-blox-css-tss-1283320-Button-textContainer")
-                            for (let i = 0; i < join_communities_btn.length; i++) {
-                                let header = join_communities_btn[i]
-                                addRename(header)
-                            }
-
-                            let create_community_button = document.querySelectorAll(".btn-secondary-md.create-group-button.ng-binding")
-                            for (let i = 0; i < create_community_button.length; i++) {
-                                let header = create_community_button[i]
-                                addRename(header)
+                                localeSet = localeSets["English"];
+                                clear_local_set = true;
                             }
 
                             let most_text_frames = document.querySelectorAll(".ng-binding")
@@ -217,131 +218,17 @@ inject.js:
                                 }
                             }
 
-                            let small_create_community_text = document.querySelectorAll(".small.text.create-group-text.ng-binding.ng-scope")
-                            for (let i = 0; i < small_create_community_text.length; i++) {
-                                let header = small_create_community_text[i]
-                                addRename(header)
-                            }
-
-                            let transaction_page_summary = document.querySelectorAll(".summary-transaction-label")
-                            for (let i = 0; i < transaction_page_summary.length; i++) {
-                                let header = transaction_page_summary[i]
-                                addRename(header)
-                            }
-
-                            let amount_text_summary = document.querySelectorAll(".amount")
-                            for (let i = 0; i < amount_text_summary.length; i++) {
-                                let header = amount_text_summary[i]
-                                addRename(header)
-                            }
-
-                            let selected_labels = document.querySelectorAll(".rbx-selection-label")
-                            for (let i = 0; i < selected_labels.length; i++) {
-                                let header = selected_labels[i]
-                                if (header.getAttribute("ng-bind") == "role.name" || header.getAttribute("ng-bind") == "$ctrl.data.currentRoleName") { continue };
-                                addRename(header)
-                            }
-
-                            let item_descriptions = document.querySelectorAll(".item-description")
-                            for (let i = 0; i < item_descriptions.length; i++) {
-                                let header = item_descriptions[i]
-                                addRename(header)
-                            }
-
-                            let shout_community_button = document.querySelectorAll(".btn-secondary-md.group-form-button.ng-binding")
-                            for (let i = 0; i < shout_community_button.length; i++) {
-                                let header = shout_community_button[i]
-                                addRename(header)
-                            }
-
-                            let button_toggle_label = document.querySelectorAll(".btn-toggle-label")
-                            for (let i = 0; i < button_toggle_label.length; i++) {
-                                let header = button_toggle_label[i]
-                                addRename(header)
-                            }
-
-                            let text_descriptions = document.querySelectorAll(".text-description")
-                            for (let i = 0; i < text_descriptions.length; i++) {
-                                let header = text_descriptions[i]
-                                addRename(header)
-                            }
-
-                            let input_fields = document.querySelectorAll(".input-field")
-                            for (let i = 0; i < input_fields.length; i++) {
-                                let header = input_fields[i]
-                                addRename(header)
-                            }
-
-                            let large_text_fields = document.querySelectorAll(".text-label-large, .text-caption-large, .text-body-large, .text-heading-large")
-                            for (let i = 0; i < large_text_fields.length; i++) {
-                                let header = large_text_fields[i]
-                                addRename(header)
-                            }
-
-                            let small_text_fields = document.querySelectorAll(".text-label-small, .text-caption-small, .text-body-small, .text-heading-small")
-                            for (let i = 0; i < small_text_fields.length; i++) {
-                                let header = small_text_fields[i]
-                                addRename(header)
-                            }
-
-                            let h3_texts = document.querySelectorAll("h3")
-                            for (let i = 0; i < h3_texts.length; i++) {
-                                let header = h3_texts[i]
-                                addRename(header)
-                            }
-
-                            let previous_names = document.querySelectorAll(".text-pastname.ng-binding")
-                            for (let i = 0; i < previous_names.length; i++) {
-                                let header = previous_names[i]
-                                addRename(header)
-                            }
-
-                            let search_communities_link = document.querySelectorAll(".groups-list-search-input")
-                            for (let i = 0; i < search_communities_link.length; i++) {
-                                let header = search_communities_link[i]
-                                addRename(header)
-                            }
-
-                            let private_server_tooltip = document.querySelectorAll("#private-server-tooltip")
-                            for (let i = 0; i < private_server_tooltip.length; i++) {
-                                let header = private_server_tooltip[i]
-                                addRename(header)
-                            }
-
-                            let back_links = document.querySelectorAll(".back-link")
-                            for (let i = 0; i < back_links.length; i++) {
-                                let header = back_links[i]
-                                addRename(header)
-                            }
-
-                            let font_bodies = document.querySelectorAll(".font-body")
-                            for (let i = 0; i < font_bodies.length; i++) {
-                                let header = font_bodies[i]
-                                addRename(header)
-                            }
-
-                            let emphasises = document.querySelectorAll(".text-emphasis")
-                            for (let i = 0; i < emphasises.length; i++) {
-                                let header = emphasises[i]
-                                addRename(header)
-                            }
-
-                            let block_words_descriptions = document.querySelectorAll(".keyword-block-list-section-header > div")
-                            for (let i = 0; i < block_words_descriptions.length; i++) {
-                                let header = block_words_descriptions[i]
-                                addRename(header)
-                            }
-
-                            let text_contents = document.querySelectorAll(".text-content")
-                            for (let i = 0; i < text_contents.length; i++) {
-                                let header = text_contents[i]
+                            let query_selectors = document.querySelectorAll(query_names)
+                            for (let i = 0; i < query_selectors.length; i++) {
+                                let header = query_selectors[i]
                                 addRename(header)
                             }
 
                             let all_links = document.querySelectorAll("a")
                             for (let i = 0; i < all_links.length; i++) {
                                 let header = all_links[i]
-                                if (header.href && header.href.includes("/communities") && !(header.innerHTML.includes(newName))) {
+                                let innerHTML = header.innerHTML
+                                if (header.href && header.href.includes("/communities") && !(innerHTML.includes(newName))) {
                                     if (settings["replaceURLwithGroupsURL"] == true) {
                                         header.href = header.href.replace("/communities", "/groups")
                                     }
@@ -349,7 +236,7 @@ inject.js:
                                 if (header.getAttribute("ng-click") == "$ctrl.updateRole(role)" || header.getAttribute("ng-click") == "$ctrl.updateRoleFilter(role)") { continue; }
                                 if (settings["massEdit"] == true) {
                                     if (header.childNodes.length > 0) {
-                                        loopThroughArrayAsync(Array.from(header.childNodes), (_, v) => {
+                                        loopThroughArrayAsync(header.childNodes, (_, v) => {
                                             addRename(v)
                                         })
                                     } else {
@@ -377,12 +264,14 @@ inject.js:
                                     let titles = document.querySelectorAll("title")
                                     for (let i = 0; i < titles.length; i++) {
                                         let header = titles[i]
-                                        if (header.textContent.includes(localeSet[0])) {
-                                            header.textContent = header.textContent.replaceAll(localeSet[0], newName)
+                                        let val = header.textContent
+                                        if (val.includes(localeSet[0])) {
+                                            header.textContent = val.replaceAll(localeSet[0], newName)
                                         }
                                     }
                                 }
                             }
+                            if (clear_local_set == true) { localeSet = null; }
                             timeout(() => { injectRename() }, amountOfSecondsBeforeLoop)
                         }
                         injectRename()

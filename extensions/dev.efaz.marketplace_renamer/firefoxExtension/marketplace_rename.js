@@ -104,46 +104,58 @@ inject.js:
                         var div = document.createElement("div");
                         div.innerHTML = newName;
                         newName = div.textContent.replace(/<\/[^>]+(>|$)/g, "");
-                        /* Clean New Name to prevent crashes */
+
+                        /* Set basic query names to find */
+                        let query_names = [
+                            ".btn-toggle-label",
+                            ".heading > a",
+                            ".text-description",
+                            "h3",
+                            ".navbar-list-option-suffix"
+                        ].join(", ")
+                        
+                        /* Run rename loop */
+                        let localeSet = null
+                        function blacklisted(header, attribute) {
+                            const ngBind = header.getAttribute("ng-bind");
+                            const ngBindHtml = header.getAttribute("ng-bind-html");
+                            const ngIf = header.getAttribute("ng-if");
+                            if (ngBind && (ngBind.includes("group.description") || ngBind === "$ctrl.data.currentRoleName" || ngBind === "role.name" || ngBind.includes("role.name") || ngBind.includes("currentRoleFilter") || ngBind.includes("post."))) { return true; }
+                            if (ngBindHtml && (ngBindHtml === "piece.content" || ngBindHtml.includes("log") || ngBindHtml.includes("post.body") || ngBindHtml.includes("library.currentGroup"))) { return true; }
+                            if (ngIf && ngIf.includes("chatUser.previewMessage")) { return true; }
+                            return false;
+                        }
+                        function addRename(header, k) {
+                            function m(a) {
+                                if (!header[a]) { return }
+                                if (blacklisted(header, a)) { return }
+                                let val = header[a]
+                                if (val.includes(localeSet[0])) {
+                                    val = val.replaceAll(localeSet[0], newName)
+                                }
+                                if (val.includes(localeSet[0].toLowerCase())) {
+                                    val = val.replaceAll(localeSet[0].toLowerCase(), newName.toLowerCase())
+                                }
+                                if (header[a] != val) { header[a] = val }
+                            }
+                            if (k) {
+                                m(k)
+                            } else {
+                                m("innerHTML")
+                                m("title")
+                            }
+                        }
                         function injectRename() {
-                            /* Get Set Roblox Language */
                             let meta_tags = document.querySelectorAll("meta")
-                            let localeSet = null
+                            let clear_local_set = false;
                             for (let i = 0; i < meta_tags.length; i++) {
                                 if (meta_tags[i].getAttribute("name") == "locale-data") {
                                     localeSet = localeSets[meta_tags[i].getAttribute("data-language-name")]
                                 }
                             }
                             if (!(localeSet)) {
-                                localeSet = localeSets["English"]
-                            }
-
-                            function blacklisted(header, attribute) {
-                                if ((header.getAttribute("ng-bind") && header.getAttribute("ng-bind").includes("group.description"))) { return true; }
-                                if (header.getAttribute("ng-bind") == "$ctrl.data.currentRoleName" || header.getAttribute("ng-bind") == "role.name" || (header.getAttribute("ng-bind") && header.getAttribute("ng-bind").includes("role.name")) || (header.getAttribute("ng-bind") && header.getAttribute("ng-bind").includes("currentRoleFilter"))) { return true; }
-                                if (header.getAttribute("ng-bind-html") == "piece.content" || (header.getAttribute("ng-if") && header.getAttribute("ng-if").includes("chatUser.previewMessage"))) { return true; }
-                                if ((header.getAttribute("ng-bind-html") && header.getAttribute("ng-bind-html").includes("log"))) { return true; }
-                                if ((header.getAttribute("ng-bind-html") && header.getAttribute("ng-bind-html").includes("post.body")) || (header.getAttribute("ng-bind-html") && header.getAttribute("ng-bind-html").includes("library.currentGroup")) || (header.getAttribute("ng-bind") && header.getAttribute("ng-bind").includes("post."))) { return true; }
-                                return false;
-                            }
-
-                            function addRename(header, k) {
-                                function m(a) {
-                                    if (!header[a]) { return }
-                                    if (blacklisted(header, a)) { return }
-                                    if (header[a].includes(localeSet[0])) {
-                                        header[a] = header[a].replaceAll(localeSet[0], newName)
-                                    }
-                                    if (header[a].includes(localeSet[0].toLowerCase())) {
-                                        header[a] = header[a].replaceAll(localeSet[0].toLowerCase(), newName.toLowerCase())
-                                    }
-                                }
-                                if (k) {
-                                    m(k)
-                                } else {
-                                    m("innerHTML")
-                                    m("title")
-                                }
+                                localeSet = localeSets["English"];
+                                clear_local_set = true;
                             }
 
                             let topbar_headers = document.querySelectorAll(".font-header-2.nav-menu-title.text-header")
@@ -162,33 +174,9 @@ inject.js:
                                 }
                             }
 
-                            let button_toggle_label = document.querySelectorAll(".btn-toggle-label")
-                            for (let i = 0; i < button_toggle_label.length; i++) {
-                                let header = button_toggle_label[i]
-                                addRename(header)
-                            }
-
-                            let headers = document.querySelectorAll(".heading > a")
-                            for (let i = 0; i < headers.length; i++) {
-                                let header = headers[i]
-                                addRename(header)
-                            }
-
-                            let text_descriptions = document.querySelectorAll(".text-description")
-                            for (let i = 0; i < text_descriptions.length; i++) {
-                                let header = text_descriptions[i]
-                                addRename(header)
-                            }
-
-                            let h3_texts = document.querySelectorAll("h3")
-                            for (let i = 0; i < h3_texts.length; i++) {
-                                let header = h3_texts[i]
-                                addRename(header)
-                            }
-
-                            let navigation_bars = document.querySelectorAll(".navbar-list-option-suffix")
-                            for (let i = 0; i < navigation_bars.length; i++) {
-                                let header = navigation_bars[i]
+                            let query_selectors = document.querySelectorAll(query_names)
+                            for (let i = 0; i < query_selectors.length; i++) {
+                                let header = query_selectors[i]
                                 addRename(header)
                             }
 
@@ -212,6 +200,7 @@ inject.js:
                                     }
                                 }
                             }
+                            if (clear_local_set == true) { localeSet = null; }
                             timeout(() => injectRename(), amountOfSecondsBeforeLoop)
                         }
                         injectRename()

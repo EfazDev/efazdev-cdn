@@ -96,7 +96,7 @@ inject.js:
                         let rbx_top_left_name_sector = ".icon-logo { background-image: url(top_left_name) !important; background-size: contain !important; background-position: center, center !important; } .icon-default-logo { background-image: url(top_left_name) !important; height:70px !important; }";
                         async function injectCSS() {
                             if (settings["projectedImage"] && settings["projectedImage"].startsWith("data")) {
-                                let all_links = Array.from(document.querySelectorAll("link"));
+                                let all_links = document.querySelectorAll("link");
                                 await loopThroughArrayAsync(all_links, async (_, header) => {
                                     if (header.rel && header.rel == "icon" && header.href && !(header.href == settings["projectedImage"])) {
                                         header.setAttribute("href", settings["projectedImage"])
@@ -146,7 +146,7 @@ inject.js:
                         let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
                         async function injectCSS() {
                             if (settings["projectedImage2"] && settings["projectedImage2"].startsWith("data")) {
-                                var all_links = Array.from(document.querySelectorAll("link"));
+                                var all_links = document.querySelectorAll("link");
                                 await loopThroughArrayAsync(all_links, async (_, header) => {
                                     if (header.rel && header.rel == "icon" && header.href && !(header.href == settings["projectedImage2"])) {
                                         header.setAttribute("href", settings["projectedImage2"])
@@ -161,7 +161,7 @@ inject.js:
                                 }
                             }
                             if (settings["rbxStudioIcon"] && settings["rbxStudioIcon"].startsWith("data")) {
-                                var all_icons = Array.from(document.querySelectorAll(".web-blox-css-tss-1hgd7ws-studioIcon"))
+                                var all_icons = document.querySelectorAll(".web-blox-css-tss-1hgd7ws-studioIcon")
                                 await loopThroughArrayAsync(all_icons, async (_, header) => {
                                     if (header.getAttribute("width") == "64") {
                                         header.setAttribute("src", settings["rbxStudioIcon"])
@@ -175,7 +175,7 @@ inject.js:
                         let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
                         async function injectCSS() {
                             if (settings["projectedImage3"] && settings["projectedImage3"].startsWith("data")) {
-                                var all_links = Array.from(document.querySelectorAll("link"))
+                                var all_links = document.querySelectorAll("link")
                                 await loopThroughArrayAsync(all_links, async (_, header) => {
                                     if (header.rel && header.rel == "icon" && header.href && !(header.href == settings["projectedImage3"])) {
                                         header.setAttribute("href", settings["projectedImage3"])
@@ -198,7 +198,7 @@ inject.js:
                         let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
                         async function injectCSS() {
                             if (settings["projectedImage4"] && settings["projectedImage4"].startsWith("data")) {
-                                var all_links = Array.from(document.querySelectorAll("link"))
+                                var all_links = document.querySelectorAll("link")
                                 await loopThroughArrayAsync(all_links, async (_, header) => {
                                     if (header.rel && header.rel == "icon" && header.href && !(header.href == settings["projectedImage4"])) {
                                         header.setAttribute("href", settings["projectedImage4"])
