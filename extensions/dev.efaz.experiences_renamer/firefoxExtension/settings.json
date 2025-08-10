@@ -15,7 +15,7 @@
                 "enabled"
             ]
         },
-        "newnewNameWithoutEndingSName": {
+        "newNameWithoutEndingS": {
             "text": "Replace Experience with",
             "type": "text",
             "default": "Game",

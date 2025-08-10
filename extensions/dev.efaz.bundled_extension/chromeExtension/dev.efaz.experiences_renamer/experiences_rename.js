@@ -266,7 +266,6 @@ inject.js:
                             }
                             all_labels = null;
                             if (clear_local_set == true) { localeSet = null; }
-                            timeout(() => injectRename(), amountOfSecondsBeforeLoop);
                         }
                         function startRenameLoop() {
                             if (renameLoopId) { clearTimeout(renameLoopId); };
@@ -311,7 +310,8 @@ inject.js:
                             ".web-blox-css-mui-15wphe8-Typography-body1",
                             ".web-blox-css-mui-1v9omcg-Typography-body1",
                             ".web-blox-css-mui-1rj7vct-Typography-caption",
-                            ".web-blox-css-tss-5nnsl2-Typography-body1-Typography-colorSecondary-Typography-root-titleDescription"
+                            ".web-blox-css-tss-5nnsl2-Typography-body1-Typography-colorSecondary-Typography-root-titleDescription",
+                            ".web-blox-css-tss-1optsd1-Typography-largeLabel2-Typography-largeLabel1-TreeItem-content-Typography-body2-treeItemContent"
                         ].join(", ");
 
                         /* Run rename loop */
@@ -330,15 +330,19 @@ inject.js:
                                 let changed = false;
                                 if (val.includes(localeSet[0])) {
                                     val = val.replaceAll(localeSet[0], newName);
+                                    changed = true;
                                 }
                                 if (val.includes(localeSet[0].toLowerCase())) {
                                     val = val.replaceAll(localeSet[0].toLowerCase(), newName.toLowerCase());
+                                    changed = true;
                                 }
                                 if (val.includes(localeSet[1])) {
                                     val = val.replaceAll(localeSet[1], newNameWithoutEndingS);
+                                    changed = true;
                                 }
                                 if (val.includes(localeSet[1].toLowerCase())) {
                                     val = val.replaceAll(localeSet[1].toLowerCase(), newNameWithoutEndingS.toLowerCase());
+                                    changed = true;
                                 }
                                 if (changed == true) { header[a] = val; }
                             }
@@ -351,11 +355,15 @@ inject.js:
                             }
                         }
                         function injectRename() {
-                            let meta_tag = document.querySelector("a > div > .web-blox-css-mui-9iedg7.MuiChip-label");
-                            if (meta_tag) {
-                                localeSet = localeSets[meta_tag.textContent];
-                            } else {
-                                localeSet = localeSets["English"];
+                            let clear_local_set = false;
+                            if (!(localeSet)) {
+                                let meta_tag = document.querySelector("a > div > .web-blox-css-mui-9iedg7.MuiChip-label");
+                                if (meta_tag) { localeSet = localeSets[meta_tag.textContent]; }
+                                if (!(localeSet)) {
+                                    localeSet = localeSets["English"];
+                                    clear_local_set = true;
+                                }
+                                meta_tag = null;
                             }
                             let query_selectors = document.querySelectorAll(query_names);
                             for (let i = 0; i < query_selectors.length; i++) {
@@ -369,6 +377,7 @@ inject.js:
                                 addRename(header);
                             }
                             titles = null;
+                            if (clear_local_set == true) { localeSet = null; }
                         }
                         function startRenameLoop() {
                             if (renameLoopId) { clearTimeout(renameLoopId); };
