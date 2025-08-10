@@ -175,6 +175,14 @@
         "message": "Jeux",
         "description": "Définition de la valeur par défaut pour newName"
     },
+    "dev_efaz_experiences_renamer_newNameWithoutEndingS_mes": {
+        "message": "Remplacer l'expérience par",
+        "description": "Définition du texte pour newNameWithoutEndingS"
+    },
+    "dev_efaz_experiences_renamer_newNameWithoutEndingS_default": {
+        "message": "Jeu",
+        "description": "Définition de la valeur par défaut pour newNameWithoutEndingS"
+    },
     "dev_efaz_experiences_renamer_startTime_mes": {
         "message": "Durée de début de boucle (ms)",
         "description": "Définition du texte pour startTime"
@@ -183,12 +191,12 @@
         "message": "Modification en masse du contenu HTML avec expérience ou texte de expériences",
         "description": "Définition du texte pour massEdit"
     },
-    "foundation_color_accents_exName": {
-        "message": "Couleurs de la Fondation Roblox d'Efaz",
-        "description": "Nom de l'extension"
-    },
     "dev_efaz_experiences_renamer_includeCreatorDashboard_mes": {
         "message": "Tableau de bord du créateur d'inclusions",
         "description": "Paramètres pour includeCreatorDashboard"
+    },
+    "foundation_color_accents_exName": {
+        "message": "Couleurs de la Fondation Roblox d'Efaz",
+        "description": "Nom de l'extension"
     }
 }

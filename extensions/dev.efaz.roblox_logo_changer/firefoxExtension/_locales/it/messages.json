@@ -1,0 +1,210 @@
+{
+    "enabled_mes": {
+        "message": "Abilita Estensione",
+        "description": "Enable Extension text"
+    },
+    "thanksTitle": {
+        "message": "Grazie per aver installato",
+        "description": "Thanks for installing text"
+    },
+    "thankYou": {
+        "message": "Grazie!",
+        "description": "Thanks text"
+    },
+    "thanksSettings": {
+        "message": "Se vuoi visualizzare le impostazioni dell'estensione,",
+        "description": "Part of extension settings text"
+    },
+    "thanksWebsite": {
+        "message": "Se vuoi visitare il mio sito web,",
+        "description": "Part of open website text"
+    },
+    "thanksClickHere": {
+        "message": "clicca qui",
+        "description": "Other part of thank text"
+    },
+    "thanksVersionNum": {
+        "message": "Numero Versione:",
+        "description": "Version number"
+    },
+    "settings": {
+        "message": "Impostazioni",
+        "description": "Settings text"
+    },
+    "settingsHello": {
+        "message": "Ciao!",
+        "description": "Settings hello."
+    },
+    "settingsLoading": {
+        "message": "Caricamento...",
+        "description": "Loading text"
+    },
+    "settingsDetails": {
+        "message": "Dettagli Sistema",
+        "description": "System detail text"
+    },
+    "settingsExName": {
+        "message": "Nome Estensione:",
+        "description": "Extension name text"
+    },
+    "settingsExEnable": {
+        "message": "Abilita Estensione:",
+        "description": "Enable Extension text"
+    },
+    "settingsUpdateAvailable": {
+        "message": "Aggiornamento Disponibile per",
+        "description": "Update available text"
+    },
+    "settingsUnpacked": {
+        "message": "Non impacchettato",
+        "description": "Unpacked text"
+    },
+    "settingsBeta": {
+        "message": "Beta",
+        "description": "Beta version text"
+    },
+    "settingsMadeBy": {
+        "message": "Estensione creata da @EfazDev. Questa estensione non è creata da Roblox.",
+        "description": "Credits text"
+    },
+    "settingsMadeBy2": {
+        "message": "Queste estensioni sono create da @EfazDev. Questa estensione non è affiliata né creata da Roblox. QUESTO PROGETTO È OPEN-SOURCE, NON PAGARE PER QUESTO.",
+        "description": "Credits 2 text"
+    },
+    "settingsPrivacyPolicy": {
+        "message": "Visualizza Informativa sulla Privacy",
+        "description": "View Privacy Policy text"
+    },
+    "settingsBundleSettings": {
+        "message": "Impostazioni Pacchetto",
+        "description": "View Bundle Settings text"
+    },
+    "settingsNetworkOffline": {
+        "message": "Rete Offline",
+        "description": "No internet text"
+    },
+    "settingsReset": {
+        "message": "Reimposta!",
+        "description": "Reset text"
+    },
+    "settingsExtensions": {
+        "message": "Estensioni",
+        "description": "Extensions text"
+    },
+    "settingsNoFileSelected": {
+        "message": "Nessun file selezionato",
+        "description": "No file text"
+    },
+    "settingsExtensionSettingsTitle": {
+        "message": "Impostazioni Estensione",
+        "description": "Extension settings title"
+    },
+    "settingsOpenSettings": {
+        "message": "Apri Impostazioni!",
+        "description": "Open settings for bundled extension"
+    },
+    "settingsReviewDetails": {
+        "message": "Rivedi Dettagli!",
+        "description": "Review details text"
+    },
+    "settingsSaveBtn": {
+        "message": "Salva Impostazioni!",
+        "description": "Save settings text"
+    },
+    "settingsGoBackBtn": {
+        "message": "Torna alla pagina Estensioni!",
+        "description": "Save settings text"
+    },
+    "settingsGoBackConfirmation": {
+        "message": "Sei sicuro di voler tornare indietro senza salvare?",
+        "description": "Confirm unsaving before exiting text"
+    },
+    "settingsSavedData": {
+        "message": "Dati salvati!",
+        "description": "Saved data message"
+    },
+    "settingsJustExtension": {
+        "message": "solo una pagina di impostazioni dell'estensione",
+        "description": "just extension description"
+    },
+    "myWebsite": {
+        "message": "Il Mio Sito Web",
+        "description": "Website Link Title"
+    },
+    "chromeWebstore": {
+        "message": "Chrome Webstore",
+        "description": "Webstore Link Title"
+    },
+    "firefoxAddons": {
+        "message": "Componenti Aggiuntivi Firefox",
+        "description": "Webstore 2 Link Title"
+    },
+    "twitter": {
+        "message": "Twitter",
+        "description": "Twitter Link Title"
+    },
+    "discord": {
+        "message": "Discord",
+        "description": "Discord Link Title"
+    },
+    "youtube": {
+        "message": "YouTube",
+        "description": "YouTube Link Title"
+    },
+    "foundation_color_accents_exName": {
+        "message": "Accentazioni di Colore Roblox di Efaz",
+        "description": "Extension name"
+    },
+    "dev_efaz_roblox_logo_changer_exName": {
+        "message": "Cambiatore del Logo Roblox di Efaz",
+        "description": "Extension name"
+    },
+    "dev_efaz_roblox_logo_changer_bundleName": {
+        "message": "Cambiatore Logo Roblox",
+        "description": "Extension bundle display name"
+    },
+    "dev_efaz_roblox_logo_changer_exDescription": {
+        "message": "Stufo del logo attuale di Roblox? Bene, puoi cambiarlo usando questa estensione!",
+        "description": "Extension description"
+    },
+    "dev_efaz_roblox_logo_changer_enabled_mes": {
+        "message": "Abilita Estensione",
+        "description": "Enable Extension text"
+    },
+    "dev_efaz_roblox_logo_changer_loopSeconds_mes": {
+        "message": "Tempo di Avvio Loop (ms)",
+        "description": "Setting text for loopSeconds"
+    },
+    "dev_efaz_roblox_logo_changer_rbxIcon_mes": {
+        "message": "Imposta Icona Giocatore Roblox",
+        "description": "Setting text for rbxIcon"
+    },
+    "dev_efaz_roblox_logo_changer_rbxStudioIcon_mes": {
+        "message": "Imposta Icona Roblox Studio",
+        "description": "Setting text for rbxStudioIcon"
+    },
+    "dev_efaz_roblox_logo_changer_topLeftLogo_mes": {
+        "message": "Imposta Icona Roblox (Web Principale)",
+        "description": "Setting text for topLeftLogo"
+    },
+    "dev_efaz_roblox_logo_changer_topLeftName_mes": {
+        "message": "Imposta Nome Roblox (Web Principale)",
+        "description": "Setting text for topLeftName"
+    },
+    "dev_efaz_roblox_logo_changer_projectedImage_mes": {
+        "message": "Imposta Icona della Scheda del Sito Roblox",
+        "description": "Setting text for projectedImage"
+    },
+    "dev_efaz_roblox_logo_changer_projectedImage2_mes": {
+        "message": "Imposta Icona della Dashboard Creatore",
+        "description": "Setting text for projectedImage2"
+    },
+    "dev_efaz_roblox_logo_changer_projectedImage3_mes": {
+        "message": "Imposta Icona della Scheda DevForum",
+        "description": "Setting text for projectedImage3"
+    },
+    "dev_efaz_roblox_logo_changer_projectedImage4_mes": {
+        "message": "Imposta Icona della Scheda di Altri Siti",
+        "description": "Setting text for projectedImage4"
+    }
+}

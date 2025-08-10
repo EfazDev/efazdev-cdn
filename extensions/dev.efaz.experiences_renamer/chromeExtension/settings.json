@@ -13,6 +13,13 @@
             "reset": true,
             "neededSettings": ["enabled"]
         },
+        "newnewNameWithoutEndingSName": {
+            "text": "Replace Experience with",
+            "type": "text",
+            "default": "Game",
+            "reset": true,
+            "neededSettings": ["enabled"]
+        },
         "startTime": {
             "text": "Start Loop Time (ms)",
             "type": "number",

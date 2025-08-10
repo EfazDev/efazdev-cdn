@@ -23,6 +23,14 @@
         "message": "Groupes",
         "description": "Définition de la valeur par défaut pour newName"
     },
+    "dev_efaz_communities_renamer_newNameWithoutEndingS_mes": {
+        "message": "Remplacer la communauté par",
+        "description": "Définition du texte pour newNameWithoutEndingS"
+    },
+    "dev_efaz_communities_renamer_newNameWithoutEndingS_default": {
+        "message": "Groupe",
+        "description": "Définition de la valeur par défaut pour newNameWithoutEndingS"
+    },
     "dev_efaz_communities_renamer_startTime_mes": {
         "message": "Durée de début de boucle (ms)",
         "description": "Définition du texte pour startTime"

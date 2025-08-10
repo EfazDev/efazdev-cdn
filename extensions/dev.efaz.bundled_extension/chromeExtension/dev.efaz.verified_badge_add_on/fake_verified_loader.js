@@ -1,6 +1,6 @@
 let enabled = true;
 let allow_messages = false;
-let settings = {}
+let settings = {};
 let group_data = {};
 let temp_usr = {};
 let cache_html = {};
@@ -11,30 +11,30 @@ let group_scan = false;
 let storage = chrome.storage.local;
 let storage_key = "dev.efaz.verified_badge_add_on";
 
-function warn(mes) { console.warn(`Verified Badge Loader: ${mes}`) }
+function warn(mes) { console.warn(`Verified Badge Loader: ${mes}`); }
 function timeout(func, ms) { setTimeout(func, ms); }
 function logMessage(message) {
-    if (allow_messages == true) { console.log(`Verified Badge Loader: ${message}`) }
+    if (allow_messages == true) { console.log(`Verified Badge Loader: ${message}`); }
 }
 function genVIcon(close, orgMargin, orgX, orgY, margin, sizeX, sizeY) {
-    let res = close
-    if ((typeof (orgMargin) == "number") && (typeof (margin) == "number")) { res = res.replace(`margin-left: ${orgMargin}px;`, `margin-left: ${margin}px;`) }
-    if ((typeof (orgX) == "number") && (typeof (sizeX) == "number")) { res = res.replace(`width: ${orgX}px;`, `width: ${sizeX}px;`) }
-    if ((typeof (orgY) == "number") && (typeof (sizeY) == "number")) { res = res.replace(`height: ${orgY}px;`, `height: ${sizeY}px;`) }
-    return res
+    let res = close;
+    if ((typeof (orgMargin) == "number") && (typeof (margin) == "number")) { res = res.replace(`margin-left: ${orgMargin}px;`, `margin-left: ${margin}px;`); }
+    if ((typeof (orgX) == "number") && (typeof (sizeX) == "number")) { res = res.replace(`width: ${orgX}px;`, `width: ${sizeX}px;`); }
+    if ((typeof (orgY) == "number") && (typeof (sizeY) == "number")) { res = res.replace(`height: ${orgY}px;`, `height: ${sizeY}px;`); }
+    return res;
 }
-function getTran(id) { 
+function getTran(id) {
     if (!(chrome.i18n.getMessage(storage_key.replaceAll(".", "_") + "_" + id) == "")) {
-        return chrome.i18n.getMessage(storage_key.replaceAll(".", "_") + "_" + id)
+        return chrome.i18n.getMessage(storage_key.replaceAll(".", "_") + "_" + id);
     } else if (!(chrome.i18n.getMessage(id.replaceAll(".", "_")) == "")) {
-        return chrome.i18n.getMessage(id.replaceAll(".", "_"))
+        return chrome.i18n.getMessage(id.replaceAll(".", "_"));
     }
 }
 function applyChangesToHTML(json, user_checkmark_color) {
     if (cache_html[json["id"]]) { return cache_html[json["id"]]; }
     /* All of these HTML variables are extracted from the Roblox Website and modified to be functioned like the actual badge. */
     let profile_html = `<span efaz-verified-badge-addon="true" role="button" tabindex="0" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="jss16"><img class="profile-verified-badge-icon" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="[input_id]" alt="[input_id]"></span>`;
-    let profile2_html = `<span efaz-verified-badge-addon="true" role="button" tabindex="0" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="jss4"><img class="profile-verified-badge-icon" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="[input_id]" alt="[input_id]"></span>`
+    let profile2_html = `<span efaz-verified-badge-addon="true" role="button" tabindex="0" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="jss4"><img class="profile-verified-badge-icon" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="[input_id]" alt="[input_id]"></span>`;
     let name_html = `<img efaz-verified-badge-addon="true" class="verified-badge-icon-catalog-item-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon">`;
     let name_html_larger = `<span efaz-verified-badge-addon="true" role="button" tabindex="0" replicate-badge-addon-prompt="${json["id"]}_true" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="jss292"><img class="verified-badge-icon-group-shout-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span>`;
     let name_side_html = `<img efaz-verified-badge-addon="true" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon" style="margin-left: 2px;width: 12px;height: 12px; background: none !important;">`;
@@ -51,9 +51,9 @@ function applyChangesToHTML(json, user_checkmark_color) {
     /* All of these HTML variables are extracted from the Roblox Website and modified to be functioned like the actual badge. */
 
     /* Apply color changes to HTML above */
-    var hex_color = user_checkmark_color
+    var hex_color = user_checkmark_color;
     if (user_checkmark_color == "%230066ff" || user_checkmark_color == "%230066FF") {  // User's selected color
-        user_checkmark_color = "%230066FF"
+        user_checkmark_color = "%230066FF";
     } else if (appr_efazdev_user[json["id"]] && appr_efazdev_user[json["id"]]["hexColor"]) { // If the main user has selected the default, has EfazDev Approved Users enabled, and there's a color attached to the approved user.
         hex_color = appr_efazdev_user[json["id"]]["hexColor"].replace("#", "%23");
         efaz_approved_prompt_html = efaz_approved_prompt_html.replace("%23FF4B00", hex_color);
@@ -76,35 +76,40 @@ function applyChangesToHTML(json, user_checkmark_color) {
     /* Apply color changes to HTML above */
     if (!(cache_html[json["id"]])) {
         cache_html[json["id"]] = [
-            hex_color, profile_html, profile2_html, name_html, 
-            name_html_larger, name_side_real_html, name_side_html, game_html, 
-            name_small_html, group_name_verified_html, group_owner_name_html, reseller_html, 
+            hex_color, profile_html, profile2_html, name_html,
+            name_html_larger, name_side_real_html, name_side_html, game_html,
+            name_small_html, group_name_verified_html, group_owner_name_html, reseller_html,
             efaz_approved_prompt_html, prompt_html, user_approved_prompt_html, friends_scroll_html
-        ]
+        ];
     }
-    return cache_html[json["id"]]
+    return cache_html[json["id"]];
 }
-function vIconPlaced(html) { return html.includes("data-rblx-badge-icon") || html.includes("replicate-badge-addon-prompt") || html.includes("Verified Badge Icon") }
-function getIfLinkIsGroup(link) { return link && link.includes("/groups/") || link.includes("/communities/") }
-function getIfLinkIsUserProfile(link) { return link && link.includes("/users/") && link.includes("/profile") }
-function getIfLinkIsUser(link, userId) {  return (link && getIfLinkIsUserProfile(link) && link.includes("/" + userId + "/profile"))  }
-function generateInstantPromise(value) { return new Promise((resolve, reject) => { resolve(value) }); }
+function vIconPlaced(html) { return html.includes("data-rblx-badge-icon") || html.includes("replicate-badge-addon-prompt") || html.includes("Verified Badge Icon"); }
+function getIfLinkIsGroup(link) { return link && link.includes("/groups/") || link.includes("/communities/"); }
+function getIfLinkIsUserProfile(link) { return link && link.includes("/users/") && link.includes("/profile"); }
+function getIfLinkIsUser(link, userId) { return (link && getIfLinkIsUserProfile(link) && link.includes("/" + userId + "/profile")); }
+function generateInstantPromise(value) { return new Promise((resolve, reject) => { resolve(value); }); }
 function start() {
     if (enabled) {
-        let user_checkmark_color = "%230066FF"
+        let user_checkmark_color = "%230066FF";
         let broken_context = false;
         let cache_groups = null;
-        let custom_checkmark_color = settings["color"]
+        let custom_checkmark_color = settings["color"];
         if (custom_checkmark_color) { user_checkmark_color = custom_checkmark_color.replace("#", "%23"); }
         async function getUserData(id, isMain) {
-            if (broken_context == true) { return generateInstantPromise(null)
+            if (broken_context == true) {
+                return generateInstantPromise(null);
             } else {
                 return chrome.storage.local.get("user_verification").then((stored_user_data) => {
-                    if (!(typeof (stored_user_data["user_verification"]) == "object")) { stored_user_data["user_verification"] = {} }
-                    if (stored_user_data["user_verification"][id.toString()]) { return stored_user_data["user_verification"][id.toString()]
-                    } else if (temp_usr[id.toString()]) { return temp_usr[id.toString()]
-                    } else if (appr_efazdev_user[id.toString()]) { return appr_efazdev_user[id.toString()]
-                    } else if (appr_user_users[id.toString()]) { return appr_user_users[id.toString()]
+                    if (!(typeof (stored_user_data["user_verification"]) == "object")) { stored_user_data["user_verification"] = {}; }
+                    if (stored_user_data["user_verification"][id.toString()]) {
+                        return stored_user_data["user_verification"][id.toString()];
+                    } else if (temp_usr[id.toString()]) {
+                        return temp_usr[id.toString()];
+                    } else if (appr_efazdev_user[id.toString()]) {
+                        return appr_efazdev_user[id.toString()];
+                    } else if (appr_user_users[id.toString()]) {
+                        return appr_user_users[id.toString()];
                     } else {
                         if (id == "*" || isMain == true) {
                             return fetch("https://users.roblox.com/v1/users/authenticated", {
@@ -117,39 +122,40 @@ function start() {
                                 "mode": "cors",
                                 "credentials": "include"
                             }).then(res => {
-                                if (res.ok) { return res.json()
+                                if (res.ok) {
+                                    return res.json();
                                 } else {
-                                    logMessage("User is not logged in!")
-                                    return null
+                                    logMessage("User is not logged in!");
+                                    return null;
                                 }
                             }).then(json => {
                                 if (json) {
-                                    temp_usr["*"] = json
-                                    stored_user_data["user_verification"][json["id"].toString()] = json
+                                    temp_usr["*"] = json;
+                                    stored_user_data["user_verification"][json["id"].toString()] = json;
                                     return chrome.storage.local.set(stored_user_data).then(() => {
-                                        return json
-                                    })
+                                        return json;
+                                    });
                                 }
                             }).catch(err => {
-                                logMessage(err.message)
-                                return null
+                                logMessage(err.message);
+                                return null;
                             });
                         } else {
                             if (stored_user_data["user_verification"][id.toString()]) {
-                                return stored_user_data["user_verification"][id.toString()]
+                                return stored_user_data["user_verification"][id.toString()];
                             } else {
-                                logMessage("Something went wrong.")
-                                return null
+                                logMessage("Something went wrong.");
+                                return null;
                             }
                         }
                     }
                 }).catch(err => {
                     if (err.toString().includes("Extension context")) {
-                        broken_context = true
-                        return null
+                        broken_context = true;
+                        return null;
                     } else {
-                        warn(`Error with getting approved users: ${err}`)
-                        return null
+                        warn(`Error with getting approved users: ${err}`);
+                        return null;
                     }
                 });
             }
@@ -158,7 +164,8 @@ function start() {
             try {
                 getUserData(id, isMain)
                     .then((res) => {
-                        if (res) { return res
+                        if (res) {
+                            return res;
                         } else { return {}; }
                     })
                     .then((json) => {
@@ -188,54 +195,65 @@ function start() {
                             let displayName = json["displayName"];
 
                             async function approvedGroup(id, onlycached) {
-                                if (broken_context == true) { return { "accepted": false } }
+                                if (broken_context == true) { return { "accepted": false }; }
                                 try {
                                     async function ee(allowed_groups) {
-                                        if (!(typeof (allowed_groups["group_ownership"]) == "object")) { allowed_groups["group_ownership"] = {} }
-                                        let group_keys = Object.keys(allowed_groups["group_ownership"])
-                                        let changes_made = false
+                                        if (!(typeof (allowed_groups["group_ownership"]) == "object")) { allowed_groups["group_ownership"] = {}; }
+                                        let group_keys = Object.keys(allowed_groups["group_ownership"]);
+                                        let changes_made = false;
                                         group_keys.forEach((key) => {
-                                            if (allowed_groups["group_ownership"][key] && allowed_groups["group_ownership"][key]["owner"] == userId && allowed_groups["group_ownership"][key]["accepted"] == false) { allowed_groups["group_ownership"][key]["accepted"] = true; changes_made = true }
-                                        })
+                                            if (allowed_groups["group_ownership"][key] && allowed_groups["group_ownership"][key]["owner"] == userId && allowed_groups["group_ownership"][key]["accepted"] == false) { allowed_groups["group_ownership"][key]["accepted"] = true; changes_made = true; }
+                                        });
                                         if (changes_made == true) {
                                             chrome.storage.local.set(allowed_groups).then(() => {
-                                                logMessage("Saved to chrome storage!")
-                                                group_scan = false
-                                                if (allowed_groups["group_ownership"][id] == false) { return { "accepted": false }
-                                                } else { return allowed_groups["group_ownership"][id] }
-                                            })
+                                                logMessage("Saved to chrome storage!");
+                                                group_scan = false;
+                                                if (allowed_groups["group_ownership"][id] == false) {
+                                                    return { "accepted": false };
+                                                } else { return allowed_groups["group_ownership"][id]; }
+                                            });
                                         }
 
                                         if (typeof (allowed_groups["group_ownership"][id]) == "object") {
-                                            if (appr_efazdev_user[allowed_groups["group_ownership"][id]["owner"]] && (!(allowed_groups["group_ownership"][id]["owner"] == userId))) { return { "accepted": false }
-                                            } else if (appr_user_users[allowed_groups["group_ownership"][id]["owner"]] && (!(allowed_groups["group_ownership"][id]["owner"] == userId))) { return { "accepted": false }
-                                            } else { return allowed_groups["group_ownership"][id] }
-                                        } else if (allowed_groups["group_ownership"][id] == false) { return { "accepted": false }
-                                        } else if (allowed_groups["group_ownership"] && ((!(allowed_groups["group_ownership"][id])) && allowed_groups["group_ownership"][`scan_${userId}`] == true)) { return { "accepted": false }
+                                            if (appr_efazdev_user[allowed_groups["group_ownership"][id]["owner"]] && (!(allowed_groups["group_ownership"][id]["owner"] == userId))) {
+                                                return { "accepted": false };
+                                            } else if (appr_user_users[allowed_groups["group_ownership"][id]["owner"]] && (!(allowed_groups["group_ownership"][id]["owner"] == userId))) {
+                                                return { "accepted": false };
+                                            } else { return allowed_groups["group_ownership"][id]; }
+                                        } else if (allowed_groups["group_ownership"][id] == false) {
+                                            return { "accepted": false };
+                                        } else if (allowed_groups["group_ownership"] && ((!(allowed_groups["group_ownership"][id])) && allowed_groups["group_ownership"][`scan_${userId}`] == true)) {
+                                            return { "accepted": false };
                                         } else {
-                                            if (onlycached == true) { return { "accepted": false }
+                                            if (onlycached == true) {
+                                                return { "accepted": false };
                                             } else {
-                                                if (group_scan == true) { return { "accepted": false }
+                                                if (group_scan == true) {
+                                                    return { "accepted": false };
                                                 } else {
-                                                    group_scan = true
+                                                    group_scan = true;
                                                     if (group_data["temp_group_info"]) {
                                                         if (typeof (allowed_groups["group_ownership"][id]) == "object") {
-                                                            if (appr_efazdev_user[allowed_groups["group_ownership"][id]["owner"]] && (!(allowed_groups["group_ownership"][id]["owner"] == userId))) { return { "accepted": false }
-                                                            } else if (appr_user_users[allowed_groups["group_ownership"][id]["owner"]] && (!(allowed_groups["group_ownership"][id]["owner"] == userId))) { return { "accepted": false }
-                                                            } else { return allowed_groups["group_ownership"][id] }
-                                                        } else if (allowed_groups["group_ownership"][id] == false) { return { "accepted": false }
-                                                        } else if (allowed_groups["group_ownership"] && ((!(allowed_groups["group_ownership"][id])) && allowed_groups["group_ownership"][`scan_${userId}`] == true)) { return { "accepted": false }
-                                                        } else { return { "accepted": false } }
+                                                            if (appr_efazdev_user[allowed_groups["group_ownership"][id]["owner"]] && (!(allowed_groups["group_ownership"][id]["owner"] == userId))) {
+                                                                return { "accepted": false };
+                                                            } else if (appr_user_users[allowed_groups["group_ownership"][id]["owner"]] && (!(allowed_groups["group_ownership"][id]["owner"] == userId))) {
+                                                                return { "accepted": false };
+                                                            } else { return allowed_groups["group_ownership"][id]; }
+                                                        } else if (allowed_groups["group_ownership"][id] == false) {
+                                                            return { "accepted": false };
+                                                        } else if (allowed_groups["group_ownership"] && ((!(allowed_groups["group_ownership"][id])) && allowed_groups["group_ownership"][`scan_${userId}`] == true)) {
+                                                            return { "accepted": false };
+                                                        } else { return { "accepted": false }; }
                                                     } else {
                                                         return fetch(`https://groups.roblox.com/v1/users/${userId}/groups/roles?includeLocked=true&includeNotificationPreferences=true`, { "mode": "cors", "credentials": "include" }).then(grou_res => {
                                                             if (grou_res.ok) { return grou_res.json(); }
                                                         }).then(grou_resjson => {
                                                             if (grou_resjson) {
                                                                 if (grou_resjson["data"]) {
-                                                                    group_data["temp_group_info"] = {}
-                                                                    allowed_groups["group_ownership"][`scan_${userId}`] = true
+                                                                    group_data["temp_group_info"] = {};
+                                                                    allowed_groups["group_ownership"][`scan_${userId}`] = true;
                                                                     grou_resjson["data"].forEach((grou_json) => {
-                                                                        grou_json = grou_json["group"]
+                                                                        grou_json = grou_json["group"];
                                                                         if (grou_json["owner"] && grou_json["owner"]["userId"] == userId) {
                                                                             grou_json["accepted"] = true;
                                                                             allowed_groups["group_ownership"][grou_json["id"]] = {
@@ -243,7 +261,7 @@ function start() {
                                                                                 "name": grou_json["name"],
                                                                                 "id": grou_json["id"],
                                                                                 "owner": grou_json["owner"]["userId"],
-                                                                            }
+                                                                            };
                                                                         } else {
                                                                             if (grou_json["owner"]) {
                                                                                 grou_json["accepted"] = false;
@@ -252,17 +270,17 @@ function start() {
                                                                                     "name": grou_json["name"],
                                                                                     "id": grou_json["id"],
                                                                                     "owner": grou_json["owner"]["userId"],
-                                                                                }
+                                                                                };
                                                                             }
                                                                         }
-                                                                        group_data["temp_group_info"][grou_json["id"]] = allowed_groups["group_ownership"][grou_json["id"]]
-                                                                    })
+                                                                        group_data["temp_group_info"][grou_json["id"]] = allowed_groups["group_ownership"][grou_json["id"]];
+                                                                    });
 
                                                                     if (!(allowed_groups["group_ownership"][id])) {
-                                                                        let user_approved_keys = Object.keys(appr_user_users)
+                                                                        let user_approved_keys = Object.keys(appr_user_users);
                                                                         if (user_approved_keys) {
                                                                             user_approved_keys.forEach((ke) => {
-                                                                                let info = appr_user_users[ke]
+                                                                                let info = appr_user_users[ke];
                                                                                 if (info["approve_groups"]) {
                                                                                     if (info["approve_groups"].includes(id)) {
                                                                                         allowed_groups["group_ownership"][id] = {
@@ -270,17 +288,17 @@ function start() {
                                                                                             "id": id,
                                                                                             "owner": info["id"],
                                                                                             "name": info["approve_groups"][id]["name"],
-                                                                                        }
-                                                                                        group_data["temp_group_info"][id] = allowed_groups["group_ownership"][id]
+                                                                                        };
+                                                                                        group_data["temp_group_info"][id] = allowed_groups["group_ownership"][id];
                                                                                     }
                                                                                 }
-                                                                            })
+                                                                            });
                                                                         }
 
-                                                                        let efazdev_approved_keys = Object.keys(appr_efazdev_user)
+                                                                        let efazdev_approved_keys = Object.keys(appr_efazdev_user);
                                                                         if (efazdev_approved_keys) {
                                                                             efazdev_approved_keys.forEach((ke) => {
-                                                                                let info = appr_efazdev_user[ke]
+                                                                                let info = appr_efazdev_user[ke];
                                                                                 if (info["approve_groups"]) {
                                                                                     if (info["approve_groups"].includes(id)) {
                                                                                         allowed_groups["group_ownership"][id] = {
@@ -288,46 +306,49 @@ function start() {
                                                                                             "id": id,
                                                                                             "owner": info["id"],
                                                                                             "name": info["approve_groups"][id]["name"],
-                                                                                        }
-                                                                                        group_data["temp_group_info"][id] = allowed_groups["group_ownership"][id]
+                                                                                        };
+                                                                                        group_data["temp_group_info"][id] = allowed_groups["group_ownership"][id];
                                                                                     }
                                                                                 }
-                                                                            })
+                                                                            });
                                                                         }
                                                                     }
 
                                                                     return chrome.storage.local.set(allowed_groups).then(() => {
-                                                                        logMessage("Saved to chrome storage!")
-                                                                        group_scan = false
-                                                                        if (allowed_groups["group_ownership"][id] == false) { return { "accepted": false }
-                                                                        } else if (allowed_groups["group_ownership"][id]) { return allowed_groups["group_ownership"][id]
-                                                                        } else { return { "accepted": false } }
-                                                                    })
-                                                                } else { return { "accepted": false } }
-                                                            } else { return { "accepted": false } }
+                                                                        logMessage("Saved to chrome storage!");
+                                                                        group_scan = false;
+                                                                        if (allowed_groups["group_ownership"][id] == false) {
+                                                                            return { "accepted": false };
+                                                                        } else if (allowed_groups["group_ownership"][id]) {
+                                                                            return allowed_groups["group_ownership"][id];
+                                                                        } else { return { "accepted": false }; }
+                                                                    });
+                                                                } else { return { "accepted": false }; }
+                                                            } else { return { "accepted": false }; }
                                                         });
                                                     }
                                                 }
                                             }
                                         }
                                     }
-                                    if (cache_groups) { return await ee(cache_groups)
+                                    if (cache_groups) {
+                                        return await ee(cache_groups);
                                     } else {
                                         cache_groups = {};
                                         return await chrome.storage.local.get("group_ownership").then(async (allowed_groups) => {
                                             cache_groups = allowed_groups;
-                                            return await ee(cache_groups)
+                                            return await ee(cache_groups);
                                         }).catch(err => {
                                             cache_groups = null;
-                                        })
+                                        });
                                     }
                                 } catch (err) {
                                     if (err.toString().includes("Extension context")) {
                                         broken_context = true;
-                                        return { "accepted": false }
+                                        return { "accepted": false };
                                     } else {
                                         warn(`Error with getting approved group: ${err}`);
-                                        return { "accepted": false }
+                                        return { "accepted": false };
                                     }
                                 }
                             }
@@ -365,12 +386,13 @@ function start() {
                                     list_item.forEach((verified_badge_contain) => {
                                         if (verified_badge_contain.getAttribute("replicate-badge-addon-prompt")) {
                                             if (verified_badge_contain.getAttribute("replicate-badge-addon-prompt") == `${userId}_true`) {
-                                                verified_badge_contain.setAttribute("replicate-badge-addon-prompt", "false")
+                                                verified_badge_contain.setAttribute("replicate-badge-addon-prompt", "false");
                                                 verified_badge_contain.addEventListener("click", promptMessage);
                                             }
                                         }
                                     });
                                 }
+                                list_item = null;
                             }
 
                             function looped() {
@@ -380,33 +402,35 @@ function start() {
                                         if (main_headers.length > 0) {
                                             main_headers.forEach((main_header) => {
                                                 if (main_header.offsetParent && main_header.offsetParent.className == "header-title") {
-                                                    if (vIconPlaced(main_header.offsetParent.innerHTML)) { return ; }
+                                                    if (vIconPlaced(main_header.offsetParent.innerHTML)) { return; }
                                                     if (main_header.offsetParent.innerHTML.includes(displayName)) {
-                                                        main_header.offsetParent.appendChild(generateDOMElement(profile_html))
+                                                        main_header.offsetParent.appendChild(generateDOMElement(profile_html));
                                                     }
                                                 } else if (main_header.parentElement && main_header.parentElement.className == "header-title") {
-                                                    if (vIconPlaced(main_header.parentElement.innerHTML)) { return ; }
+                                                    if (vIconPlaced(main_header.parentElement.innerHTML)) { return; }
                                                     if (main_header.parentElement.innerHTML.includes(displayName)) {
-                                                        main_header.parentElement.appendChild(generateDOMElement(profile_html))
+                                                        main_header.parentElement.appendChild(generateDOMElement(profile_html));
                                                     }
                                                 } else if (main_header.parentElement && main_header.parentElement.parentElement && main_header.parentElement.parentElement.className == "header-title") {
-                                                    if (vIconPlaced(main_header.parentElement.parentElement.innerHTML)) { return ; }
+                                                    if (vIconPlaced(main_header.parentElement.parentElement.innerHTML)) { return; }
                                                     if (main_header.parentElement.parentElement.innerHTML.includes(displayName)) {
-                                                        main_header.parentElement.parentElement.appendChild(generateDOMElement(profile_html))
+                                                        main_header.parentElement.parentElement.appendChild(generateDOMElement(profile_html));
                                                     }
                                                 }
                                             });
                                         }
+                                        main_headers = null;
 
                                         let main_headers2 = document.querySelectorAll(".profile-header-title-container");
                                         if (main_headers2.length > 0) {
                                             main_headers2.forEach((main_header) => {
-                                                if (vIconPlaced(main_header.innerHTML)) { return ; }
+                                                if (vIconPlaced(main_header.innerHTML)) { return; }
                                                 if (main_header.innerHTML.includes(displayName)) {
-                                                    main_header.appendChild(generateDOMElement(profile2_html))
+                                                    main_header.appendChild(generateDOMElement(profile2_html));
                                                 }
                                             });
                                         }
+                                        main_headers2 = null;
 
                                         let premium_logos = document.querySelectorAll(".premium-badge-right-aligned");
                                         if (premium_logos.length > 0) {
@@ -416,6 +440,7 @@ function start() {
                                                 }
                                             });
                                         }
+                                        premium_logos = null;
 
                                         let premium_logos2 = document.querySelectorAll(".profile-header-premium-badge");
                                         if (premium_logos2.length > 0) {
@@ -425,6 +450,7 @@ function start() {
                                                 }
                                             });
                                         }
+                                        premium_logos2 = null;
                                     }
 
                                     let name_on_side = document.querySelectorAll(".font-header-2.dynamic-ellipsis-item");
@@ -432,18 +458,19 @@ function start() {
                                         name_on_side.forEach((main_name_on_side) => {
                                             if (main_name_on_side.outerHTML.includes(displayName) && main_name_on_side.parentElement && main_name_on_side.parentElement.href) {
                                                 if (getIfLinkIsUserProfile(main_name_on_side.parentElement.href) && getIfLinkIsUser(main_name_on_side.parentElement.href, userId.toString())) {
-                                                    if (vIconPlaced(main_name_on_side.outerHTML)) { return ; }
+                                                    if (vIconPlaced(main_name_on_side.outerHTML)) { return; }
                                                     main_name_on_side.innerHTML = `${main_name_on_side.innerHTML} ${name_side_real_html}`;
                                                 }
                                             }
                                         });
                                     }
+                                    name_on_side = null;
 
                                     let username_containers = document.querySelectorAll(".user-name-container");
                                     if (username_containers.length > 0) {
                                         username_containers.forEach((usr_con) => {
                                             if (usr_con.innerHTML.includes(displayName)) {
-                                                if (vIconPlaced(usr_con.innerHTML)) { return ; }
+                                                if (vIconPlaced(usr_con.innerHTML)) { return; }
                                                 if (usr_con.className == "dynamic-ellipsis-item user-name-container text-link") {
                                                     usr_con.innerHTML = `${usr_con.innerHTML} ${name_html.replace("width='28'", "width='14'").replace("height='28'", "height='14'")}`;
                                                 } else {
@@ -452,6 +479,7 @@ function start() {
                                             }
                                         });
                                     }
+                                    username_containers = null;
 
                                     function sectorA() { // Roblox Groups Main Handler
                                         if (getIfLinkIsGroup(window.location.pathname)) {
@@ -460,45 +488,49 @@ function start() {
                                                 if (group_guilded_posts.length > 0) {
                                                     group_guilded_posts.forEach((shout) => {
                                                         if (shout.className == "text-name name" && shout.innerHTML.includes(displayName) && getIfLinkIsUserProfile(shout.href) && getIfLinkIsUser(shout.href, userId.toString())) {
-                                                            if (vIconPlaced(shout.parentElement.outerHTML)) { return ; }
+                                                            if (vIconPlaced(shout.parentElement.outerHTML)) { return; }
                                                             shout.outerHTML = `${shout.outerHTML} ${genVIcon(name_side_html, 2, 12, 12, 6, 16, 16)}`;
                                                         }
-                                                    })
+                                                    });
                                                 }
+                                                group_guilded_posts = null;
 
                                                 let name_in_group = document.querySelectorAll(".list-item.member.ng-scope");
                                                 if (name_in_group.length > 0) {
                                                     name_in_group.forEach((main_name_on_group) => {
                                                         if (main_name_on_group && main_name_on_group.children[0] && main_name_on_group.children[0].children[0] && getIfLinkIsUserProfile(main_name_on_group.children[0].children[0].href) && getIfLinkIsUser(main_name_on_group.children[0].children[0].href, userId.toString())) {
                                                             if (main_name_on_group.children[0] && main_name_on_group.children[0].children[2] && main_name_on_group.children[0].children[2].children[0] && main_name_on_group.children[0].children[2].children[0].children[0]) {
-                                                                if (vIconPlaced(main_name_on_group.children[0].children[2].children[0].innerHTML)) { return ; }
-                                                                main_name_on_group.children[0].children[2].children[0].children[0].innerHTML = `${main_name_on_group.children[0].children[2].children[0].children[0].innerHTML} ${genVIcon(name_side_html, 2, 12, 12, 0, 16, 16)}`
+                                                                if (vIconPlaced(main_name_on_group.children[0].children[2].children[0].innerHTML)) { return; }
+                                                                main_name_on_group.children[0].children[2].children[0].children[0].innerHTML = `${main_name_on_group.children[0].children[2].children[0].children[0].innerHTML} ${genVIcon(name_side_html, 2, 12, 12, 0, 16, 16)}`;
                                                             }
                                                         }
                                                     });
                                                 }
+                                                name_in_group = null;
 
                                                 let group_wall = document.querySelectorAll(".text-label-medium.content-emphasis.ng-binding.ng-scope");
                                                 if (group_wall.length > 0) {
                                                     group_wall.forEach((main_name_on_group) => {
                                                         if (main_name_on_group.outerHTML.includes(displayName) && main_name_on_group.className == "text-label-medium content-emphasis ng-binding ng-scope" && getIfLinkIsUserProfile(main_name_on_group.href) && getIfLinkIsUser(main_name_on_group.href, userId.toString())) {
-                                                            if (vIconPlaced(main_name_on_group.innerHTML)) { return ; }
+                                                            if (vIconPlaced(main_name_on_group.innerHTML)) { return; }
                                                             main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${genVIcon(name_side_html, 2, 12, 12, 0, 16, 16)}`;
                                                         }
                                                     });
                                                 }
+                                                group_wall = null;
 
                                                 let group_payouts_auto = document.querySelectorAll(".avatar-card-name.text-lead.text-overflow.ng-binding.ng-scope");
                                                 if (group_payouts_auto.length > 0) {
                                                     group_payouts_auto.forEach((main_name_on_group) => {
                                                         if (main_name_on_group.innerHTML.includes(displayName) && getIfLinkIsUserProfile(main_name_on_group.href) && getIfLinkIsUser(main_name_on_group.href, userId.toString())) {
                                                             if (vIconPlaced(main_name_on_group.parentElement.innerHTML)) {
-                                                                return
+                                                                return;
                                                             }
                                                             main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${genVIcon(name_side_html, 2, 12, 12, -1, 16, 16)}`;
                                                         }
                                                     });
                                                 }
+                                                group_payouts_auto = null;
                                             }
                                             function refresh() {
                                                 let identified_id = window.location.pathname.match(/[0-9]+/);
@@ -522,7 +554,7 @@ function start() {
                                                                                             }
                                                                                             main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${genVIcon(name_side_html, 2, 12, 12, 2, 16, 16)}`;
                                                                                         }
-                                                                                    })
+                                                                                    });
                                                                                 }
                                                                             }
                                                                         }
@@ -548,19 +580,20 @@ function start() {
                                                                                                 main_name_on_group.innerHTML = `${main_name_on_group.innerHTML}${group_name_verified_html}`;
                                                                                             });
                                                                                         }
+                                                                                        group_name = null;
                                                                                     }
                                                                                 }
                                                                             }
                                                                         });
                                                                     }
-                                                                })
+                                                                });
                                                             }
                                                         }
                                                     }
                                                 }
-                                                attachExtra()
+                                                attachExtra();
                                             }
-                                            refresh()
+                                            refresh();
                                         }
                                     }
                                     function sectorB() { // Creator Name
@@ -568,8 +601,8 @@ function start() {
                                         if (unamec_2.length > 0) {
                                             unamec_2.forEach((usr_con) => {
                                                 if (usr_con.outerHTML.includes(username_at) && usr_con.className == "creator-name text-link") {
-                                                    if (!(usr_con.parentElement)) { return ; }
-                                                    if (vIconPlaced(usr_con.parentElement.outerHTML)) { return ; }
+                                                    if (!(usr_con.parentElement)) { return; }
+                                                    if (vIconPlaced(usr_con.parentElement.outerHTML)) { return; }
                                                     usr_con.outerHTML = `${usr_con.outerHTML} ${genVIcon(name_side_html, 2, null, null, -1)}`;
                                                 }
                                             });
@@ -588,12 +621,13 @@ function start() {
                                                                         }
                                                                     }
                                                                 }
-                                                            })
+                                                            });
                                                         }
                                                     }
                                                 }
                                             });
                                         }
+                                        unamec_2 = null;
 
                                         let unamec_7 = document.querySelectorAll(".avatar-name.text-overflow.ng-binding");
                                         if (unamec_7.length > 0) {
@@ -609,6 +643,7 @@ function start() {
                                                 }
                                             });
                                         }
+                                        unamec_7 = null;
 
                                         let unamec_8 = document.querySelectorAll(".text-overflow.avatar-name.ng-binding.ng-scope");
                                         if (unamec_8.length > 0) {
@@ -619,8 +654,8 @@ function start() {
                                                         unamec_9.forEach((usr_con_2) => {
                                                             if (usr_con.offsetParent == usr_con_2.offsetParent) {
                                                                 if (usr_con_2.textContent == `@${username}`) {
-                                                                    if (!(usr_con.parentElement)) { return ; }
-                                                                    if (vIconPlaced(usr_con.parentElement.outerHTML)) { return ; }
+                                                                    if (!(usr_con.parentElement)) { return; }
+                                                                    if (vIconPlaced(usr_con.parentElement.outerHTML)) { return; }
                                                                     usr_con.outerHTML = `${usr_con.outerHTML} ${game_html}`;
                                                                 }
                                                             }
@@ -629,8 +664,9 @@ function start() {
                                                 }
                                             });
                                         }
+                                        unamec_8 = null;
 
-                                        addPromptButtonInput()
+                                        addPromptButtonInput();
                                     }
                                     function sectorC() { // Roblox Avatar Cards
                                         let unamec_7 = document.querySelectorAll(".avatar-name.text-overflow.ng-binding");
@@ -647,32 +683,35 @@ function start() {
                                                 }
                                             });
                                         }
+                                        unamec_7 = null;
 
-                                        addPromptButtonInput()
+                                        addPromptButtonInput();
                                     }
                                     function sectorD() { // Resellers
                                         let unamec_10 = document.querySelectorAll(".text-name.username.ng-binding");
                                         if (unamec_10.length > 0) {
                                             unamec_10.forEach((usr_con) => {
                                                 if (usr_con.outerHTML.includes(username) && usr_con.className == "text-name username ng-binding") {
-                                                    if (!(usr_con.parentElement)) { return ; }
-                                                    if (vIconPlaced(usr_con.parentElement.outerHTML)) { return ; }
+                                                    if (!(usr_con.parentElement)) { return; }
+                                                    if (vIconPlaced(usr_con.parentElement.outerHTML)) { return; }
                                                     usr_con.outerHTML = `${usr_con.outerHTML} ${reseller_html}`;
                                                 }
                                             });
                                         }
+                                        unamec_10 = null;
                                     }
                                     function sectorE() { // More Avatar Cards
                                         let unamec_11 = document.querySelectorAll(".text-overflow.avatar-name");
                                         if (unamec_11.length > 0) {
                                             unamec_11.forEach((usr_con) => {
                                                 if (usr_con && usr_con.outerHTML.includes(displayName) && getIfLinkIsUserProfile(usr_con.href) && getIfLinkIsUser(usr_con.href, userId.toString()) && usr_con.className == "text-overflow avatar-name") {
-                                                    if (!(usr_con.parentElement)) { return ; }
-                                                    if (vIconPlaced(usr_con.parentElement.outerHTML)) { return ; }
+                                                    if (!(usr_con.parentElement)) { return; }
+                                                    if (vIconPlaced(usr_con.parentElement.outerHTML)) { return; }
                                                     usr_con.outerHTML = `${usr_con.outerHTML} ${game_html}`;
                                                 }
                                             });
                                         }
+                                        unamec_11 = null;
                                     }
                                     function sectorF() { // Game Cards
                                         let unamec_12 = document.querySelectorAll(".text-overflow.game-card-name.ng-binding");
@@ -692,12 +731,13 @@ function start() {
                                                                         }
                                                                     }
                                                                 }
-                                                            })
+                                                            });
                                                         }
                                                     }
                                                 }
                                             });
                                         }
+                                        unamec_12 = null;
 
                                         let unamec_13 = document.querySelectorAll(".ng-binding.slide-item-name.text-overflow.groups.font-title");
                                         if (unamec_13.length > 0) {
@@ -716,84 +756,89 @@ function start() {
                                                                         }
                                                                     }
                                                                 }
-                                                            })
+                                                            });
                                                         }
                                                     }
                                                 }
                                             });
                                         }
+                                        unamec_13 = null;
                                     }
                                     function sectorG() { // Messages
                                         let unamec_12 = document.querySelectorAll(".paired-name.message-summary-username.positionAboveLink.font-header-2.ng-scope");
                                         if (unamec_12.length > 0) {
                                             unamec_12.forEach((usr_con) => {
                                                 if (usr_con.children[0] && usr_con.className == "paired-name message-summary-username positionAboveLink font-header-2 ng-scope") {
-                                                    if (vIconPlaced(usr_con.children[0].outerHTML)) { return ; }
+                                                    if (vIconPlaced(usr_con.children[0].outerHTML)) { return; }
                                                     if (usr_con.innerHTML.includes(username_at)) {
                                                         usr_con.children[0].innerHTML = `${usr_con.children[0].innerHTML}${game_html}`;
                                                     }
                                                 }
                                             });
                                         }
+                                        unamec_12 = null;
 
                                         let unamec_13 = document.querySelectorAll(".paired-name.text-name.username-container.font-header-2");
                                         if (unamec_13.length > 0) {
                                             unamec_13.forEach((usr_con) => {
                                                 if (usr_con.children[0] && usr_con.className == "paired-name text-name username-container font-header-2") {
-                                                    if (vIconPlaced(usr_con.children[0].outerHTML)) { return ; }
+                                                    if (vIconPlaced(usr_con.children[0].outerHTML)) { return; }
                                                     if (usr_con.innerHTML.includes(username_at)) {
                                                         usr_con.children[0].innerHTML = `${usr_con.children[0].innerHTML}${game_html}`;
                                                     }
                                                 }
                                             });
                                         }
+                                        unamec_13 = null;
                                     }
                                     function sectorH() { // More Names
                                         let unamec_4 = document.querySelectorAll(".text-name");
                                         if (unamec_4.length > 0) {
                                             unamec_4.forEach((usr_con) => {
-                                                if (!(usr_con.parentElement)) { return ; }
+                                                if (!(usr_con.parentElement)) { return; }
                                                 if (usr_con.parentElement.outerHTML.includes(username) && usr_con.parentElement.outerHTML.includes(userId) && usr_con.className == "text-name") {
-                                                    if (vIconPlaced(usr_con.parentElement.parentElement.outerHTML)) { return ; }
+                                                    if (vIconPlaced(usr_con.parentElement.parentElement.outerHTML)) { return; }
                                                     usr_con.parentElement.outerHTML = `${usr_con.parentElement.outerHTML}${genVIcon(game_html, 4, null, null, 2, null, null)}`;
                                                 } else if (include_groups == true) {
                                                     if (usr_con.href && getIfLinkIsGroup(usr_con.href)) {
                                                         let group_id = usr_con.href.match(/[0-9]+/)[0];
                                                         approvedGroup(group_id).then((info) => {
                                                             if (info["accepted"] == true && usr_con.className == "text-name") {
-                                                                if (!(usr_con.parentElement)) { return ; }
-                                                                if (!(usr_con.parentElement.parentElement)) { return ; }
+                                                                if (!(usr_con.parentElement)) { return; }
+                                                                if (!(usr_con.parentElement.parentElement)) { return; }
                                                                 if (usr_con.parentElement.outerHTML.includes(info["name"])) {
-                                                                    if (vIconPlaced(usr_con.parentElement.parentElement.outerHTML)) { return ; }
+                                                                    if (vIconPlaced(usr_con.parentElement.parentElement.outerHTML)) { return; }
                                                                     usr_con.parentElement.outerHTML = `${usr_con.parentElement.outerHTML}${genVIcon(game_html, 4, null, null, 2, null, null)}`;
                                                                 }
                                                             }
-                                                        })
+                                                        });
                                                     }
                                                 }
                                             });
                                         }
+                                        unamec_4 = null;
 
                                         let unamec_5 = document.querySelectorAll(".rbx-private-owner");
                                         if (unamec_5.length > 0) {
                                             unamec_5.forEach((usr_con) => {
-                                                if (!(usr_con.children && usr_con.children[1])) { return ; }
-                                                if (!(usr_con.children[1].children[0])) { return ; }
-                                                if (!(usr_con.children[1].children[0].children[1])) { return ; }
+                                                if (!(usr_con.children && usr_con.children[1])) { return; }
+                                                if (!(usr_con.children[1].children[0])) { return; }
+                                                if (!(usr_con.children[1].children[0].children[1])) { return; }
                                                 if (usr_con.children[1].href && getIfLinkIsUserProfile(usr_con.children[1].href) && getIfLinkIsUser(usr_con.children[1].href, userId.toString()) && usr_con.className == "rbx-private-owner") {
-                                                    if (vIconPlaced(usr_con.children[1].children[0].children[1].innerHTML)) { return ; }
+                                                    if (vIconPlaced(usr_con.children[1].children[0].children[1].innerHTML)) { return; }
                                                     usr_con.children[1].children[0].children[1].innerHTML = genVIcon(game_html, 4, null, null, 1, null, null);
                                                 }
                                             });
                                         }
+                                        unamec_5 = null;
                                     }
 
                                     let unamec_2 = document.querySelectorAll(".creator-name.text-link");
                                     if (unamec_2.length > 0) {
                                         unamec_2.forEach((usr_con) => {
                                             if (usr_con.outerHTML.includes(username_at) && usr_con.className == "creator-name text-link") {
-                                                if (!(usr_con.parentElement)) { return ; }
-                                                if (vIconPlaced(usr_con.parentElement.outerHTML)) { return ; }
+                                                if (!(usr_con.parentElement)) { return; }
+                                                if (vIconPlaced(usr_con.parentElement.outerHTML)) { return; }
                                                 usr_con.outerHTML = `${usr_con.outerHTML} ${genVIcon(name_side_html, 2, null, null, -1)}`;
                                             }
                                             if (include_groups == true) {
@@ -805,18 +850,19 @@ function start() {
                                                             if (vIconPlaced(usr_con.parentElement.outerHTML)) { return; }
                                                             usr_con.outerHTML = `${usr_con.outerHTML} ${genVIcon(name_side_html, 2, null, null, -1)}`;
                                                         }
-                                                    })
+                                                    });
                                                 }
                                             }
                                         });
                                     }
+                                    unamec_2 = null;
 
                                     let unamec_3 = document.querySelectorAll(".text-name.text-overflow");
                                     if (unamec_3.length > 0) {
                                         unamec_3.forEach((usr_con) => {
                                             if (usr_con.outerHTML.includes(username_at) && usr_con.className == "text-name text-overflow") {
-                                                if (!(usr_con.parentElement)) { return ; }
-                                                if (vIconPlaced(usr_con.parentElement.outerHTML)) { return ; }
+                                                if (!(usr_con.parentElement)) { return; }
+                                                if (vIconPlaced(usr_con.parentElement.outerHTML)) { return; }
                                                 usr_con.outerHTML = `${usr_con.outerHTML}${game_html}`;
                                             } else if (include_groups == true) {
                                                 if (usr_con.href && getIfLinkIsGroup(usr_con.href)) {
@@ -824,77 +870,82 @@ function start() {
                                                     approvedGroup(group_id).then((info) => {
                                                         if (info["accepted"] == true && usr_con.className == "text-name text-overflow") {
                                                             if (usr_con.outerHTML.includes(info["name"])) {
-                                                                if (!(usr_con.parentElement)) { return ; }
-                                                                if (vIconPlaced(usr_con.parentElement.outerHTML)) { return ; }
+                                                                if (!(usr_con.parentElement)) { return; }
+                                                                if (vIconPlaced(usr_con.parentElement.outerHTML)) { return; }
                                                                 usr_con.outerHTML = `${usr_con.outerHTML}${game_html}`;
                                                             }
                                                         }
-                                                    })
+                                                    });
                                                 }
                                             }
                                         });
                                     }
+                                    unamec_3 = null;
 
                                     let unamec_4 = document.querySelectorAll(".text-name");
                                     if (unamec_4.length > 0) {
                                         unamec_4.forEach((usr_con) => {
-                                            if (!(usr_con.parentElement)) { return ; }
+                                            if (!(usr_con.parentElement)) { return; }
                                             if (usr_con.parentElement.outerHTML.includes(username) && usr_con.parentElement.outerHTML.includes(userId) && usr_con.className == "text-name") {
-                                                if (vIconPlaced(usr_con.parentElement.parentElement.outerHTML)) { return ; }
+                                                if (vIconPlaced(usr_con.parentElement.parentElement.outerHTML)) { return; }
                                                 usr_con.parentElement.outerHTML = `${usr_con.parentElement.outerHTML}${genVIcon(game_html, 4, null, null, 2, null, null)}`;
                                             } else if (include_groups == true) {
                                                 if (usr_con.href && getIfLinkIsGroup(usr_con.href)) {
                                                     let group_id = usr_con.href.match(/[0-9]+/)[0];
                                                     approvedGroup(group_id).then((info) => {
                                                         if (info["accepted"] == true && usr_con.className == "text-name") {
-                                                            if (!(usr_con.parentElement)) { return ; }
-                                                            if (!(usr_con.parentElement.parentElement)) { return ; }
+                                                            if (!(usr_con.parentElement)) { return; }
+                                                            if (!(usr_con.parentElement.parentElement)) { return; }
                                                             if (usr_con.parentElement.outerHTML.includes(info["name"])) {
-                                                                if (vIconPlaced(usr_con.parentElement.parentElement.outerHTML)) { return ; }
+                                                                if (vIconPlaced(usr_con.parentElement.parentElement.outerHTML)) { return; }
                                                                 usr_con.parentElement.outerHTML = `${usr_con.parentElement.outerHTML}${genVIcon(game_html, 4, null, null, 2, null, null)}`;
                                                             }
                                                         }
-                                                    })
+                                                    });
                                                 }
                                             }
                                         });
                                     }
+                                    unamec_4 = null;
 
                                     let unamec_5 = document.querySelectorAll(".text-overflow.age-bracket-label-username.font-caption-header");
                                     if (unamec_5.length > 0) {
                                         unamec_5.forEach((usr_con) => {
                                             if (usr_con.outerHTML.includes(displayName) && usr_con.className == "text-overflow age-bracket-label-username font-caption-header") {
-                                                if (!(usr_con.parentElement)) { return ; }
-                                                if (vIconPlaced(usr_con.parentElement.outerHTML)) { return ; }
+                                                if (!(usr_con.parentElement)) { return; }
+                                                if (vIconPlaced(usr_con.parentElement.outerHTML)) { return; }
                                                 usr_con.outerHTML = `${usr_con.outerHTML} ${name_side_html.replace("margin-left: 2px;width: 12px;height: 12px; background: none !important;", "margin-right: 6px; margin-left: -2px; width: 14px; height: 14px; background: none !important;")}`;
                                             }
                                         });
                                     }
+                                    unamec_5 = null;
 
                                     let unamec_6 = document.querySelectorAll(".text-name.name.ng-binding");
                                     if (unamec_6.length > 0) {
                                         unamec_6.forEach((usr_con) => {
                                             if (usr_con.outerHTML.includes(displayName) && usr_con.className == "text-name name ng-binding") {
-                                                if (!(usr_con.parentElement)) { return ; }
-                                                if (vIconPlaced(usr_con.parentElement.outerHTML)) { return ; }
+                                                if (!(usr_con.parentElement)) { return; }
+                                                if (vIconPlaced(usr_con.parentElement.outerHTML)) { return; }
                                                 usr_con.outerHTML = `${usr_con.outerHTML} ${genVIcon(name_side_html, 2, 12, 12, 4, 16, 16)}`;
                                             }
                                         });
                                     }
+                                    unamec_6 = null;
 
                                     let unamec_7 = document.querySelectorAll(".avatar-name.text-overflow.ng-binding");
                                     if (unamec_7.length > 0) {
                                         unamec_7.forEach((usr_con) => {
                                             if (usr_con.outerHTML.includes(displayName) && usr_con.className == "avatar-name text-overflow ng-binding") {
                                                 if (usr_con.parentElement.parentElement.children[1].outerHTML.includes(username_at)) {
-                                                    if (!(usr_con.parentElement)) { return ; }
-                                                    if (!(usr_con.parentElement.parentElement)) { return ; }
-                                                    if (vIconPlaced(usr_con.parentElement.parentElement.parentElement.outerHTML)) { return ; }
+                                                    if (!(usr_con.parentElement)) { return; }
+                                                    if (!(usr_con.parentElement.parentElement)) { return; }
+                                                    if (vIconPlaced(usr_con.parentElement.parentElement.parentElement.outerHTML)) { return; }
                                                     usr_con.outerHTML = `${usr_con.outerHTML} ${name_small_html}`;
                                                 }
                                             }
                                         });
                                     }
+                                    unamec_7 = null;
 
                                     setTimeout(function () {
                                         let unamec_8 = document.querySelectorAll(".text-overflow.avatar-name.ng-binding.ng-scope");
@@ -906,16 +957,18 @@ function start() {
                                                         unamec_9.forEach((usr_con_2) => {
                                                             if (usr_con.offsetParent == usr_con_2.offsetParent) {
                                                                 if (usr_con_2.textContent == `@${username}`) {
-                                                                    if (!(usr_con.parentElement)) { return ; }
-                                                                    if (vIconPlaced(usr_con.parentElement.outerHTML)) { return ; }
+                                                                    if (!(usr_con.parentElement)) { return; }
+                                                                    if (vIconPlaced(usr_con.parentElement.outerHTML)) { return; }
                                                                     usr_con.outerHTML = `${usr_con.outerHTML} ${game_html}`;
                                                                 }
                                                             }
                                                         });
                                                     }
+                                                    unamec_9 = null;
                                                 }
                                             });
                                         }
+                                        unamec_8 = null;
 
                                         let friends_username_containers = document.querySelectorAll(".text-link.friend-link.ng-isolate-scope");
                                         if (friends_username_containers.length > 0) {
@@ -926,17 +979,17 @@ function start() {
                                                         if (usr_con.innerHTML.includes('class="hide"') && usr_con.innerHTML.includes(displayName)) {
                                                             if (usr_con.children[1]) {
                                                                 if (!(user_checkmark_color == "%230066ff" || user_checkmark_color == "%230066FF")) {  // User's selected color
-                                                                    usr_con.children[1].innerHTML = usr_con.children[1].innerHTML.replaceAll(`class="hide"`, "").replaceAll(`%230066FF`, user_checkmark_color)
+                                                                    usr_con.children[1].innerHTML = usr_con.children[1].innerHTML.replaceAll(`class="hide"`, "").replaceAll(`%230066FF`, user_checkmark_color);
                                                                 } else if (appr_efazdev_user[userId] && appr_efazdev_user[userId]["hexColor"]) { // If the main user has selected the default, has EfazDev Approved Users enabled, and there's a color attached to the approved user.
-                                                                    let hex_color = appr_efazdev_user[userId]["hexColor"]
+                                                                    let hex_color = appr_efazdev_user[userId]["hexColor"];
                                                                     hex_color = hex_color.replace("#", "%23");
-                                                                    usr_con.children[1].innerHTML = usr_con.children[1].innerHTML.replaceAll(`class="hide"`, "").replaceAll(`%230066FF`, hex_color)
+                                                                    usr_con.children[1].innerHTML = usr_con.children[1].innerHTML.replaceAll(`class="hide"`, "").replaceAll(`%230066FF`, hex_color);
                                                                 } else if (appr_user_users[userId] && appr_user_users[userId]["hexColor"]) { // If the main user has selected the default, has EfazDev Approved Users enabled, and there's a color attached to the approved user.
-                                                                    let hex_color = appr_user_users[userId]["hexColor"]
+                                                                    let hex_color = appr_user_users[userId]["hexColor"];
                                                                     hex_color = hex_color.replace("#", "%23");
-                                                                    usr_con.children[1].innerHTML = usr_con.children[1].innerHTML.replaceAll(`class="hide"`, "").replaceAll(`%230066FF`, hex_color)
+                                                                    usr_con.children[1].innerHTML = usr_con.children[1].innerHTML.replaceAll(`class="hide"`, "").replaceAll(`%230066FF`, hex_color);
                                                                 } else {
-                                                                    usr_con.children[1].innerHTML = usr_con.children[1].innerHTML.replaceAll(`class="hide"`, "")
+                                                                    usr_con.children[1].innerHTML = usr_con.children[1].innerHTML.replaceAll(`class="hide"`, "");
                                                                 }
                                                             }
                                                         }
@@ -944,6 +997,7 @@ function start() {
                                                 }
                                             });
                                         }
+                                        friends_username_containers = null;
 
                                         let friends_scroll_containers = document.querySelectorAll(".friends-carousel-tile-labels");
                                         if (friends_scroll_containers.length > 0) {
@@ -952,13 +1006,14 @@ function start() {
                                                     let userIdd = usr_con.href.match(/[0-9]+/)[0];
                                                     if (userId == userIdd) {
                                                         if (usr_con.children[0] && usr_con.children[0].children[0]) {
-                                                            if (vIconPlaced(usr_con.children[0].children[0].outerHTML)) { return ; }
+                                                            if (vIconPlaced(usr_con.children[0].children[0].outerHTML)) { return; }
                                                             usr_con.children[0].children[0].innerHTML = `${usr_con.children[0].children[0].innerHTML} ${genVIcon(friends_scroll_html, null, 28, 28, null, 16, 16).replace(`width='28'`, `width='16'`).replace(`height='28'`, `height='16'`)}`;
                                                         }
                                                     }
                                                 }
                                             });
                                         }
+                                        friends_scroll_containers = null;
                                     }, start_time);
 
                                     /* Start all automatic changes and observers */
@@ -974,90 +1029,91 @@ function start() {
 
                                     /* Loop entire function again */
                                     setTimeout(function () {
-                                        addPromptButtonInput()
-                                        looped()
-                                    }, start_time)
+                                        addPromptButtonInput();
+                                        looped();
+                                    }, start_time);
                                     /* Loop entire function again */
                                 }
                             }
-                            looped()
+                            looped();
                         }
                     }).catch(err => {
                         if (err.toString().includes("Extension context")) {
-                            broken_context = true
-                            return { "accepted": false }
+                            broken_context = true;
+                            return { "accepted": false };
                         } else {
                             warn(err);
-                            if (allow_messages == true) { alert("We couldn't apply the verified badge due to an error! Sorry!");
-                            } else { timeout(() => { scanUser(id, isMain) }, start_time) }
+                            if (allow_messages == true) {
+                                alert("We couldn't apply the verified badge due to an error! Sorry!");
+                            } else { timeout(() => { scanUser(id, isMain); }, start_time); }
                         }
-                    })
+                    });
             } catch (err) {
                 warn(err);
                 if (allow_messages == true) alert("We couldn't apply the verified badge due to an error! Sorry!");
             }
         }
         getUserData("*", true).then(json => {
-            if (json && json["id"]) { scanUser(json["id"], true) }
+            if (json && json["id"]) { scanUser(json["id"], true); }
         }).catch(err => {
             warn(err);
             if (allow_messages == true) alert("We couldn't apply the verified badge due to an error! Sorry!");
-        })
+        });
         setTimeout(function () {
             if (settings["verifiedBadgeBetweenAccounts"] == true) {
                 getUserData("*", true).then(json => {
                     if (json && json["id"]) {
                         chrome.storage.local.get("user_verification").then((stored_user_data) => {
                             if (stored_user_data["user_verification"]) {
-                                let ids = Object.keys(stored_user_data["user_verification"])
+                                let ids = Object.keys(stored_user_data["user_verification"]);
                                 ids.forEach((user_id) => {
-                                    if (!(user_id == json["id"])) { scanUser(user_id, false) }
-                                })
+                                    if (!(user_id == json["id"])) { scanUser(user_id, false); }
+                                });
                             }
-                        })
+                        });
                     }
                 }).catch(err => {
                     warn(err);
                     if (allow_messages == true) alert("We couldn't apply the verified badge due to an error! Sorry!");
-                })
+                });
             }
             if (settings["useCustomApprovedBadgesByUser"] == true) {
                 getUserData("*", true).then(json => {
                     if (json && json["id"]) {
                         chrome.storage.local.get("user_verification").then((stored_user_data) => {
                             if (stored_user_data["user_verification"]) {
-                                let ids = Object.keys(appr_user_users)
+                                let ids = Object.keys(appr_user_users);
                                 ids.forEach((user_id) => {
-                                    let approved_user_info = appr_user_users[user_id]
-                                    if (!(approved_user_info["id"] == json["id"].toString())) { scanUser(approved_user_info["id"], false) }
-                                })
+                                    let approved_user_info = appr_user_users[user_id];
+                                    if (!(approved_user_info["id"] == json["id"].toString())) { scanUser(approved_user_info["id"], false); }
+                                });
                             }
-                        })
+                        });
                     }
                 }).catch(err => {
                     warn(err);
                     if (allow_messages == true) alert("We couldn't apply the verified badge due to an error! Sorry!");
-                })
+                });
             }
             if (settings["allowEfazDevApprovedBadges"] == true) {
                 getUserData("*", true).then(json => {
                     if (json && json["id"]) {
                         chrome.storage.local.get("user_verification").then((stored_user_data) => {
                             if (stored_user_data["user_verification"]) {
-                                let ids = Object.keys(appr_efazdev_user)
+                                let ids = Object.keys(appr_efazdev_user);
                                 ids.forEach((user_id) => {
-                                    let approved_user_info = appr_efazdev_user[user_id]
-                                    if (!(approved_user_info["id"] == json["id"].toString())) { scanUser(approved_user_info["id"], false) }
-                                })
+                                    let approved_user_info = appr_efazdev_user[user_id];
+                                    if (!(approved_user_info["id"] == json["id"].toString())) { scanUser(approved_user_info["id"], false); }
+                                });
                             }
-                        })
+                        });
                     }
                 }).catch(err => {
                     warn(err);
                     if (allow_messages == true) alert("We couldn't apply the verified badge due to an error! Sorry!");
-                })
+                });
             }
-        }, start_time * 5)
+        }, start_time * 5);
     }
 }
 function getChromeURL(resource) {
@@ -1065,26 +1121,34 @@ function getChromeURL(resource) {
         // This is for Efaz's Roblox Extension support
         if (chrome.runtime.getManifest()["homepage_url"] == "https://www.efaz.dev/roblox-extension") {
             // This is run under bundled extension [{extension_name}/{resource}]
-            return chrome.runtime.getURL("dev.efaz.verified_badge_add_on" + "/" + resource)
+            return chrome.runtime.getURL("dev.efaz.verified_badge_add_on" + "/" + resource);
         } else {
-            return chrome.runtime.getURL(resource)
+            return chrome.runtime.getURL(resource);
         }
     } catch (_) {
         // This is run under mini extension [{resource}]
-        return chrome.runtime.getURL(resource)
+        return chrome.runtime.getURL(resource);
     }
 }
 async function loopThroughArrayAsync(array, callback) {
-    if (typeof (array) == "object") {
-        if (Array.isArray(array)) {
-            for (let a = 0; a < array.length; a++) {
-                await callback(a, array[a])
-            }
-        } else {
-            var generated_keys = Object.keys(array);
-            for (let a = 0; a < generated_keys.length; a++) {
-                await callback(generated_keys[a], array[generated_keys[a]])
-            }
+    if (Array.isArray(array)) {
+        for (let a = 0; a < array.length; a++) {
+            await callback(a, array[a]);
+        }
+    } else if (array && typeof array === "object") {
+        for (const a in array) {
+            if (Object.hasOwn(array, a)) { await callback(a, array[a]); }
+        }
+    }
+}
+function loopThroughArray(array, callback) {
+    if (Array.isArray(array)) {
+        for (let a = 0; a < array.length; a++) {
+            callback(a, array[a]);
+        }
+    } else if (array && typeof array === "object") {
+        for (const a in array) {
+            if (Object.hasOwn(array, a)) { callback(a, array[a]); }
         }
     }
 }
@@ -1094,74 +1158,75 @@ async function getSettings(storage_key, callback) {
     }).then(async (jso) => {
         if (jso) {
             let te = await storage.get(storage_key);
-            let user_settings = {}
+            let user_settings = {};
             if (te && te[storage_key]) {
                 user_settings = te;
             } else if (jso["old_name"]) {
                 let old = await storage.get(jso["old_name"]);
                 if (old) {
                     user_settings = old;
-                    user_settings = {[storage_key]: user_settings[jso["old_name"]]}
+                    user_settings = { [storage_key]: user_settings[jso["old_name"]] };
                 }
             }
-            if (!(user_settings[storage_key])) { user_settings[storage_key] = {} }
+            if (!(user_settings[storage_key])) { user_settings[storage_key] = {}; }
             await loopThroughArrayAsync(jso["settings"], async (i, v) => {
-                if (typeof(user_settings[storage_key][i]) == "undefined") {
-                    if (!(typeof(v["default"]) == "undefined")) {
+                if (typeof (user_settings[storage_key][i]) == "undefined") {
+                    if (!(typeof (v["default"]) == "undefined")) {
                         if (!(getTran(i + "_default") == null)) {
-                            user_settings[storage_key][i] = (getTran(i + "_default"))
+                            user_settings[storage_key][i] = (getTran(i + "_default"));
                         } else {
-                            user_settings[storage_key][i] = (v["default"])
+                            user_settings[storage_key][i] = (v["default"]);
                         }
                     }
                 }
-            })
-            if (callback) { callback(user_settings) }
-            return user_settings
+            });
+            if (callback) { callback(user_settings); }
+            return user_settings;
         }
-    })
+    });
 }
 async function loader() { // Script Loader
     if (!(window.location.hostname == "www.roblox.com")) { return; }
-    const storage_key = "dev.efaz.verified_badge_add_on"
+    const storage_key = "dev.efaz.verified_badge_add_on";
     getSettings(storage_key, async function (items) {
-        settings = items[storage_key]
+        settings = items[storage_key];
         if (typeof (settings["enabled"]) == "boolean") { enabled = settings["enabled"]; }
         if (typeof (settings["allowAlertMessages"]) == "boolean") { allow_messages = settings["allowAlertMessages"]; }
         if (typeof (settings["startTime"]) == "string" && Number(settings["startTime"])) { start_time = Number(settings["startTime"]); }
         if (settings["allowEfazDevApprovedBadges"] == true) {
             try {
                 let appr_json = await fetch("https://cdn.efaz.dev/extensions/dev.efaz.verified_badge_add_on/resources/approved_users.json").then(appr_res => {
-                    if (appr_res.ok) { return appr_res.json()
-                    } else { return {} }
+                    if (appr_res.ok) {
+                        return appr_res.json();
+                    } else { return {}; }
                 }).catch((err) => {
-                    warn(err)
-                    return {}
-                })
+                    warn(err);
+                    return {};
+                });
                 appr_efazdev_user = appr_json;
             } catch (err) {
-                warn(err)
-                appr_efazdev_user = {}
+                warn(err);
+                appr_efazdev_user = {};
             }
         }
         if (settings["useCustomApprovedBadgesByUser"] == true) {
             try {
                 let appr_json = await chrome.storage.local.get("user_approved_json").then(async (app_json_items) => {
                     if (app_json_items && app_json_items["user_approved_json"]) {
-                        if (typeof (app_json_items["user_approved_json"]) == "object") { return app_json_items["user_approved_json"] } else {
+                        if (typeof (app_json_items["user_approved_json"]) == "object") { return app_json_items["user_approved_json"]; } else {
                             warn("Invalid JSON data.");
-                            return {}
+                            return {};
                         }
-                    } else { return {} }
+                    } else { return {}; }
                 });
                 appr_user_users = appr_json;
             } catch (err) {
-                warn(err)
-                appr_user_users = {}
+                warn(err);
+                appr_user_users = {};
             }
         }
-        if (document.readyState === "complete") { timeout(() => { start() }, start_time) } else { window.addEventListener("DOMContentLoaded", start) }
-        console.log("Starting Verified Badge Loader: Settings Configuration v3")
-    })
+        if (document.readyState === "complete") { timeout(() => { start(); }, start_time); } else { window.addEventListener("DOMContentLoaded", start); }
+        console.log("Starting Verified Badge Loader: Settings Configuration v3");
+    });
 }
-loader() // Start Loader
+loader(); // Start Loader

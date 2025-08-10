@@ -1,0 +1,194 @@
+{
+    "enabled_mes": {
+        "message": "Erweiterung aktivieren",
+        "description": "Text zum Aktivieren der Erweiterung"
+    },
+    "thanksTitle": {
+        "message": "Danke für die Installation",
+        "description": "Text für Dankeschön nach Installation"
+    },
+    "thankYou": {
+        "message": "Vielen Dank!",
+        "description": "Dankestext"
+    },
+    "thanksSettings": {
+        "message": "Wenn du die Erweiterungseinstellungen ansehen möchtest,",
+        "description": "Teil des Texts zu Erweiterungseinstellungen"
+    },
+    "thanksWebsite": {
+        "message": "Wenn du meine Webseite besuchen möchtest,",
+        "description": "Teil des Texts zum Öffnen der Webseite"
+    },
+    "thanksClickHere": {
+        "message": "klicke hier",
+        "description": "Weiterer Teil des Dankestexts"
+    },
+    "thanksVersionNum": {
+        "message": "Versionsnummer:",
+        "description": "Versionsnummer"
+    },
+    "settings": {
+        "message": "Einstellungen",
+        "description": "Text für Einstellungen"
+    },
+    "settingsHello": {
+        "message": "Hallo!",
+        "description": "Begrüßung in Einstellungen"
+    },
+    "settingsLoading": {
+        "message": "Lädt..",
+        "description": "Ladetext"
+    },
+    "settingsDetails": {
+        "message": "Systemdetails",
+        "description": "Text für Systemdetails"
+    },
+    "settingsExName": {
+        "message": "Erweiterungsname:",
+        "description": "Text für Erweiterungsname"
+    },
+    "settingsExEnable": {
+        "message": "Erweiterung aktivieren:",
+        "description": "Text für Erweiterung aktivieren"
+    },
+    "settingsUpdateAvailable": {
+        "message": "Update verfügbar für",
+        "description": "Text für verfügbares Update"
+    },
+    "settingsUnpacked": {
+        "message": "Entpackt",
+        "description": "Text für entpackt"
+    },
+    "settingsBeta": {
+        "message": "Beta",
+        "description": "Text für Beta-Version"
+    },
+    "settingsMadeBy": {
+        "message": "Erweiterung ist von @EfazDev gemacht. Diese Erweiterung ist nicht von Roblox.",
+        "description": "Credits Text"
+    },
+    "settingsMadeBy2": {
+        "message": "Diese Erweiterungen sind von @EfazDev gemacht. Diese Erweiterung ist weder mit Roblox verbunden noch von Roblox gemacht. DAS PROJEKT IST OPEN-SOURCE, BITTE NICHT BEZAHLEN.",
+        "description": "Credits 2 Text"
+    },
+    "settingsPrivacyPolicy": {
+        "message": "Datenschutzrichtlinie ansehen",
+        "description": "Text zum Anzeigen der Datenschutzrichtlinie"
+    },
+    "settingsBundleSettings": {
+        "message": "Bundle-Einstellungen",
+        "description": "Text zum Anzeigen der Bundle-Einstellungen"
+    },
+    "settingsNetworkOffline": {
+        "message": "Netzwerk offline",
+        "description": "Text bei fehlender Internetverbindung"
+    },
+    "settingsReset": {
+        "message": "Zurücksetzen!",
+        "description": "Text für Zurücksetzen"
+    },
+    "settingsExtensions": {
+        "message": "Erweiterungen",
+        "description": "Text für Erweiterungen"
+    },
+    "settingsNoFileSelected": {
+        "message": "Keine Datei ausgewählt",
+        "description": "Text wenn keine Datei ausgewählt wurde"
+    },
+    "settingsExtensionSettingsTitle": {
+        "message": "Erweiterungseinstellungen",
+        "description": "Titel der Erweiterungseinstellungen"
+    },
+    "settingsOpenSettings": {
+        "message": "Einstellungen öffnen!",
+        "description": "Einstellungen der gebündelten Erweiterung öffnen"
+    },
+    "settingsReviewDetails": {
+        "message": "Details überprüfen!",
+        "description": "Text zum Überprüfen der Details"
+    },
+    "settingsSaveBtn": {
+        "message": "Einstellungen speichern!",
+        "description": "Text zum Speichern der Einstellungen"
+    },
+    "settingsGoBackBtn": {
+        "message": "Zurück zur Erweiterungsseite!",
+        "description": "Text zum Zurückkehren ohne Speichern"
+    },
+    "settingsGoBackConfirmation": {
+        "message": "Bist du sicher, dass du ohne Speichern zurückgehen möchtest?",
+        "description": "Bestätigung vor Verlassen ohne Speichern"
+    },
+    "settingsSavedData": {
+        "message": "Daten gespeichert!",
+        "description": "Text für gespeicherte Daten"
+    },
+    "settingsJustExtension": {
+        "message": "nur eine Erweiterungseinstellungsseite",
+        "description": "Beschreibung nur Erweiterung"
+    },
+    "myWebsite": {
+        "message": "Meine Webseite",
+        "description": "Titel des Webseiten-Links"
+    },
+    "chromeWebstore": {
+        "message": "Chrome Webstore",
+        "description": "Titel des Webstore-Links"
+    },
+    "firefoxAddons": {
+        "message": "Firefox Add-ons",
+        "description": "Titel des zweiten Webstore-Links"
+    },
+    "twitter": {
+        "message": "Twitter",
+        "description": "Titel des Twitter-Links"
+    },
+    "discord": {
+        "message": "Discord",
+        "description": "Titel des Discord-Links"
+    },
+    "youtube": {
+        "message": "YouTube",
+        "description": "Titel des YouTube-Links"
+    },
+    "foundation_color_accents_exName": {
+        "message": "Efaz's Roblox Foundation Farb-Akzente",
+        "description": "Name der Erweiterung"
+    },
+    "dev_efaz_charts_renamer_exName": {
+        "message": "Efaz's Roblox Charts Umbenenner",
+        "description": "Name der Erweiterung"
+    },
+    "dev_efaz_charts_renamer_bundleName": {
+        "message": "Charts Umbenenner",
+        "description": "Anzeigename des Bundles"
+    },
+    "dev_efaz_charts_renamer_exDescription": {
+        "message": "Müde, dass Roblox Spiele/Entdecken in Charts umbenennt? Du kannst das mit dieser Erweiterung ändern!",
+        "description": "Beschreibung der Erweiterung"
+    },
+    "dev_efaz_charts_renamer_enabled_mes": {
+        "message": "Erweiterung aktivieren",
+        "description": "Text zum Aktivieren der Erweiterung"
+    },
+    "dev_efaz_charts_renamer_newName_mes": {
+        "message": "Ersetze Charts durch",
+        "description": "Einstellungstext für neuen Namen"
+    },
+    "dev_efaz_charts_renamer_newName_default": {
+        "message": "Entdecken",
+        "description": "Standardwert für neuen Namen"
+    },
+    "dev_efaz_charts_renamer_startTime_mes": {
+        "message": "Startschleifenzeit (ms)",
+        "description": "Einstellungstext für startTime"
+    },
+    "dev_efaz_charts_renamer_replaceURLwithDiscoverURL_mes": {
+        "message": "Ersetze /charts URL mit /discover oder /games",
+        "description": "Einstellungstext für replaceURLwithDiscoverURL"
+    },
+    "dev_efaz_charts_renamer_changeTitleHtml_mes": {
+        "message": "Tab-Name durch neuen Namen ersetzen",
+        "description": "Einstellungstext für changeTitleHtml"
+    }
+}

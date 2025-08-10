@@ -11,40 +11,48 @@ inject.js:
 
 (function () {
     const storage = chrome.storage.local;
-    const storage_key = "dev.efaz.roblox_logo_changer"
+    const storage_key = "dev.efaz.roblox_logo_changer";
     function getChromeURL(resource) {
         try {
             // This is for Efaz's Roblox Extension support
             if (chrome.runtime.getManifest()["homepage_url"] == "https://www.efaz.dev/roblox-extension") {
                 // This is run under bundled extension [{extension_name}/{resource}]
-                return chrome.runtime.getURL("{extension_name_this_is_replace_when_building_bundle_with_folder_name_if_youre_wondering}" + "/" + resource)
+                return chrome.runtime.getURL("{extension_name_this_is_replace_when_building_bundle_with_folder_name_if_youre_wondering}" + "/" + resource);
             } else {
-                return chrome.runtime.getURL(resource)
+                return chrome.runtime.getURL(resource);
             }
         } catch (_) {
             // This is run under mini extension [{resource}]
-            return chrome.runtime.getURL(resource)
+            return chrome.runtime.getURL(resource);
         }
     }
     async function loopThroughArrayAsync(array, callback) {
-        if (typeof (array) == "object") {
-            if (Array.isArray(array)) {
-                for (let a = 0; a < array.length; a++) {
-                    await callback(a, array[a])
-                }
-            } else {
-                var generated_keys = Object.keys(array);
-                for (let a = 0; a < generated_keys.length; a++) {
-                    await callback(generated_keys[a], array[generated_keys[a]])
-                }
+        if (Array.isArray(array)) {
+            for (let a = 0; a < array.length; a++) {
+                await callback(a, array[a]);
+            }
+        } else if (array && typeof array === "object") {
+            for (const a in array) {
+                if (Object.hasOwn(array, a)) { await callback(a, array[a]); }
             }
         }
     }
-    function getTran(id) { 
+    function loopThroughArray(array, callback) {
+        if (Array.isArray(array)) {
+            for (let a = 0; a < array.length; a++) {
+                callback(a, array[a]);
+            }
+        } else if (array && typeof array === "object") {
+            for (const a in array) {
+                if (Object.hasOwn(array, a)) { callback(a, array[a]); }
+            }
+        }
+    }
+    function getTran(id) {
         if (!(chrome.i18n.getMessage(storage_key.replaceAll(".", "_") + "_" + id) == "")) {
-            return chrome.i18n.getMessage(storage_key.replaceAll(".", "_") + "_" + id)
+            return chrome.i18n.getMessage(storage_key.replaceAll(".", "_") + "_" + id);
         } else if (!(chrome.i18n.getMessage(id.replaceAll(".", "_")) == "")) {
-            return chrome.i18n.getMessage(id.replaceAll(".", "_"))
+            return chrome.i18n.getMessage(id.replaceAll(".", "_"));
         }
     }
     async function getSettings(storage_key, callback) {
@@ -53,32 +61,32 @@ inject.js:
         }).then(async (jso) => {
             if (jso) {
                 let te = await storage.get(storage_key);
-                let user_settings = {}
+                let user_settings = {};
                 if (te && te[storage_key]) {
                     user_settings = te;
                 } else if (jso["old_name"]) {
                     let old = await storage.get(jso["old_name"]);
                     if (old) {
                         user_settings = old;
-                        user_settings = {[storage_key]: user_settings[jso["old_name"]]}
+                        user_settings = { [storage_key]: user_settings[jso["old_name"]] };
                     }
                 }
-                if (!(user_settings[storage_key])) { user_settings[storage_key] = {} }
+                if (!(user_settings[storage_key])) { user_settings[storage_key] = {}; }
                 await loopThroughArrayAsync(jso["settings"], async (i, v) => {
-                    if (typeof(user_settings[storage_key][i]) == "undefined") {
-                        if (!(typeof(v["default"]) == "undefined")) {
+                    if (typeof (user_settings[storage_key][i]) == "undefined") {
+                        if (!(typeof (v["default"]) == "undefined")) {
                             if (!(getTran(i + "_default") == null)) {
-                                user_settings[storage_key][i] = (getTran(i + "_default"))
+                                user_settings[storage_key][i] = (getTran(i + "_default"));
                             } else {
-                                user_settings[storage_key][i] = (v["default"])
+                                user_settings[storage_key][i] = (v["default"]);
                             }
                         }
                     }
-                })
-                if (callback) { callback(user_settings) }
-                return user_settings
+                });
+                if (callback) { callback(user_settings); }
+                return user_settings;
             }
-        })
+        });
     }
     function timeout(func, ms) { setTimeout(func, ms); }
 
@@ -86,10 +94,10 @@ inject.js:
         getSettings(storage_key, function (items) {
             let settings = items[storage_key];
             if (settings["enabled"] == true) {
-                let tab = window.location
+                let tab = window.location;
                 if (tab.href) {
                     if (tab.hostname == "www.roblox.com") {
-                        let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
+                        let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100;
                         let rbx_icon_sector = ".app-icon-mac { background-image: url(rbx_icon) !important; } .app-icon-windows { background-image: url(rbx_icon) !important; } .app-icon-ios { background-image: url(rbx_icon) !important; } .app-icon-android { background-image: url(rbx_icon) !important; }";
                         let rbx_studio_icon_sector = ".studio-icon-mac { background-image: url(rbx_studio_icon) !important; } .studio-icon-windows { background-image: url(rbx_studio_icon) !important; }";
                         let rbx_top_left_icon_sector = ".icon-logo-r { background-image: url(top_left_icon) !important; } .game-social-links>.btn-secondary-lg .icon-social-media-roblox { background-position: 0 0px !important; background-image: url(top_left_icon); }";
@@ -99,136 +107,145 @@ inject.js:
                                 let all_links = document.querySelectorAll("link");
                                 await loopThroughArrayAsync(all_links, async (_, header) => {
                                     if (header.rel && header.rel == "icon" && header.href && !(header.href == settings["projectedImage"])) {
-                                        header.setAttribute("href", settings["projectedImage"])
+                                        header.setAttribute("href", settings["projectedImage"]);
                                     }
-                                })
+                                });
+                                all_links = null;
                             }
                             if (settings["rbxIcon"] && settings["rbxIcon"].startsWith("data")) {
                                 if (!(document.getElementById("rbx_icon"))) {
-                                    var d = document.createElement("style")
-                                    d.setAttribute("id", "rbx_icon")
-                                    d.setAttribute("rel", "stylesheet")
-                                    d.textContent = rbx_icon_sector.replaceAll("rbx_icon", settings["rbxIcon"])
-                                    document.head.append(d)
+                                    var d = document.createElement("style");
+                                    d.setAttribute("id", "rbx_icon");
+                                    d.setAttribute("rel", "stylesheet");
+                                    d.textContent = rbx_icon_sector.replaceAll("rbx_icon", settings["rbxIcon"]);
+                                    document.head.append(d);
                                 }
                             }
                             if (settings["rbxStudioIcon"] && settings["rbxStudioIcon"].startsWith("data")) {
                                 if (!(document.getElementById("rbx_studio_icon"))) {
-                                    var d = document.createElement("style")
-                                    d.setAttribute("id", "rbx_studio_icon")
-                                    d.setAttribute("rel", "stylesheet")
-                                    d.textContent = rbx_studio_icon_sector.replaceAll("rbx_studio_icon", settings["rbxStudioIcon"])
-                                    document.head.append(d)
+                                    var d = document.createElement("style");
+                                    d.setAttribute("id", "rbx_studio_icon");
+                                    d.setAttribute("rel", "stylesheet");
+                                    d.textContent = rbx_studio_icon_sector.replaceAll("rbx_studio_icon", settings["rbxStudioIcon"]);
+                                    document.head.append(d);
                                 }
                             }
                             if (settings["topLeftLogo"] && settings["topLeftLogo"].startsWith("data")) {
                                 if (!(document.getElementById("top_left_icon"))) {
-                                    var d = document.createElement("style")
-                                    d.setAttribute("id", "top_left_icon")
-                                    d.setAttribute("rel", "stylesheet")
-                                    d.textContent = rbx_top_left_icon_sector.replaceAll("top_left_icon", settings["topLeftLogo"])
-                                    document.head.append(d)
+                                    var d = document.createElement("style");
+                                    d.setAttribute("id", "top_left_icon");
+                                    d.setAttribute("rel", "stylesheet");
+                                    d.textContent = rbx_top_left_icon_sector.replaceAll("top_left_icon", settings["topLeftLogo"]);
+                                    document.head.append(d);
                                 }
                             }
                             if (settings["topLeftName"] && settings["topLeftName"].startsWith("data")) {
                                 if (!(document.getElementById("top_left_name"))) {
-                                    var d = document.createElement("style")
-                                    d.setAttribute("id", "top_left_name")
-                                    d.setAttribute("rel", "stylesheet")
-                                    d.textContent = rbx_top_left_name_sector.replaceAll("top_left_name", settings["topLeftName"])
-                                    document.head.append(d)
+                                    var d = document.createElement("style");
+                                    d.setAttribute("id", "top_left_name");
+                                    d.setAttribute("rel", "stylesheet");
+                                    d.textContent = rbx_top_left_name_sector.replaceAll("top_left_name", settings["topLeftName"]);
+                                    document.head.append(d);
                                 }
                             }
-                            timeout(() => { injectCSS() }, amountOfSecondsBeforeLoop)
+                            timeout(() => { injectCSS(); }, amountOfSecondsBeforeLoop);
                         }
-                        injectCSS()
+                        injectCSS();
                     } else if (tab.hostname == "create.roblox.com") {
-                        let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
+                        let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100;
                         async function injectCSS() {
                             if (settings["projectedImage2"] && settings["projectedImage2"].startsWith("data")) {
                                 var all_links = document.querySelectorAll("link");
                                 await loopThroughArrayAsync(all_links, async (_, header) => {
                                     if (header.rel && header.rel == "icon" && header.href && !(header.href == settings["projectedImage2"])) {
-                                        header.setAttribute("href", settings["projectedImage2"])
+                                        header.setAttribute("href", settings["projectedImage2"]);
                                     }
-                                })
-                                var creator_hub_icon = document.querySelectorAll(".web-blox-css-tss-nvpyzg-logo")
+                                });
+                                all_links = null;
+                                var creator_hub_icon = document.querySelectorAll(".web-blox-css-tss-nvpyzg-logo");
                                 for (let i = 0; i < creator_hub_icon.length; i++) {
-                                    var header = creator_hub_icon[i]
+                                    var header = creator_hub_icon[i];
                                     if (header.tagName.toLowerCase() == "svg") {
-                                        header.outerHTML = '<img class="' + header.classList.toString() + '" width="' + header.getAttribute("width") + '" height="' + header.getAttribute("height") + '" src="' + settings["projectedImage2"] + '">'
+                                        header.outerHTML = '<img class="' + header.classList.toString() + '" width="' + header.getAttribute("width") + '" height="' + header.getAttribute("height") + '" src="' + settings["projectedImage2"] + '">';
                                     }
                                 }
+                                creator_hub_icon = null;
                             }
                             if (settings["rbxStudioIcon"] && settings["rbxStudioIcon"].startsWith("data")) {
-                                var all_icons = document.querySelectorAll(".web-blox-css-tss-1hgd7ws-studioIcon")
+                                var all_icons = document.querySelectorAll(".web-blox-css-tss-1hgd7ws-studioIcon");
                                 await loopThroughArrayAsync(all_icons, async (_, header) => {
                                     if (header.getAttribute("width") == "64") {
-                                        header.setAttribute("src", settings["rbxStudioIcon"])
+                                        header.setAttribute("src", settings["rbxStudioIcon"]);
                                     }
-                                })
+                                });
+                                all_icons = null;
                             }
-                            timeout(() => { injectCSS() }, amountOfSecondsBeforeLoop)
+                            timeout(() => { injectCSS(); }, amountOfSecondsBeforeLoop);
                         }
-                        injectCSS()
+                        injectCSS();
                     } else if (tab.hostname == "devforum.roblox.com") {
-                        let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
+                        let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100;
                         async function injectCSS() {
                             if (settings["projectedImage3"] && settings["projectedImage3"].startsWith("data")) {
-                                var all_links = document.querySelectorAll("link")
+                                var all_links = document.querySelectorAll("link");
                                 await loopThroughArrayAsync(all_links, async (_, header) => {
                                     if (header.rel && header.rel == "icon" && header.href && !(header.href == settings["projectedImage3"])) {
-                                        header.setAttribute("href", settings["projectedImage3"])
+                                        header.setAttribute("href", settings["projectedImage3"]);
                                     }
-                                })
+                                });
+                                all_links = null;
                             }
                             if (settings["projectedImage2"] && settings["projectedImage2"].startsWith("data")) {
-                                var creator_hub_icon = document.querySelectorAll(".css-nvpyzg-logo")
+                                var creator_hub_icon = document.querySelectorAll(".css-nvpyzg-logo");
                                 for (let i = 0; i < creator_hub_icon.length; i++) {
-                                    var header = creator_hub_icon[i]
+                                    var header = creator_hub_icon[i];
                                     if (header.tagName.toLowerCase() == "svg") {
-                                        header.outerHTML = '<img class="' + header.classList.toString() + '" width="' + header.getAttribute("width") + '" height="' + header.getAttribute("height") + '" src="' + settings["projectedImage2"] + '">'
+                                        header.outerHTML = '<img class="' + header.classList.toString() + '" width="' + header.getAttribute("width") + '" height="' + header.getAttribute("height") + '" src="' + settings["projectedImage2"] + '">';
                                     }
                                 }
+                                creator_hub_icon = null;
                             }
-                            timeout(() => { injectCSS() }, amountOfSecondsBeforeLoop)
+                            timeout(() => { injectCSS(); }, amountOfSecondsBeforeLoop);
                         }
-                        injectCSS()
+                        injectCSS();
                     } else if (tab.hostname.endsWith(".roblox.com")) {
-                        let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100
+                        let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100;
                         async function injectCSS() {
                             if (settings["projectedImage4"] && settings["projectedImage4"].startsWith("data")) {
-                                var all_links = document.querySelectorAll("link")
+                                var all_links = document.querySelectorAll("link");
                                 await loopThroughArrayAsync(all_links, async (_, header) => {
                                     if (header.rel && header.rel == "icon" && header.href && !(header.href == settings["projectedImage4"])) {
-                                        header.setAttribute("href", settings["projectedImage4"])
+                                        header.setAttribute("href", settings["projectedImage4"]);
                                     }
-                                })
+                                });
+                                all_links = null;
                             }
                             if (settings["projectedImage2"] && settings["projectedImage2"].startsWith("data")) {
-                                var creator_hub_icon = document.querySelectorAll(".css-nvpyzg-logo")
+                                var creator_hub_icon = document.querySelectorAll(".css-nvpyzg-logo");
                                 for (let i = 0; i < creator_hub_icon.length; i++) {
-                                    var header = creator_hub_icon[i]
+                                    var header = creator_hub_icon[i];
                                     if (header.tagName.toLowerCase() == "svg") {
-                                        header.outerHTML = '<img class="' + header.className + '" width="' + header.getAttribute("width") + '" height="' + header.getAttribute("height") + '" src="' + settings["projectedImage2"] + '">'
+                                        header.outerHTML = '<img class="' + header.className + '" width="' + header.getAttribute("width") + '" height="' + header.getAttribute("height") + '" src="' + settings["projectedImage2"] + '">';
                                     }
                                 }
-                                var creator_hub_icon2 = document.querySelectorAll(".web-blox-css-mui-v3z1wi img")
+                                creator_hub_icon = null;
+                                var creator_hub_icon2 = document.querySelectorAll(".web-blox-css-mui-v3z1wi img");
                                 for (let i = 0; i < creator_hub_icon2.length; i++) {
-                                    var header = creator_hub_icon2[i]
+                                    var header = creator_hub_icon2[i];
                                     if (header.tagName.toLowerCase() == "img" && header.src.includes("roblox_icon")) {
-                                        header.src = settings["projectedImage2"]
+                                        header.src = settings["projectedImage2"];
                                     }
                                 }
+                                creator_hub_icon2 = null;
                             }
-                            timeout(() => { injectCSS() }, amountOfSecondsBeforeLoop)
+                            timeout(() => { injectCSS(); }, amountOfSecondsBeforeLoop);
                         }
-                        injectCSS()
+                        injectCSS();
                     }
                 }
             }
         });
     } catch (err) {
-        console.log("Failed to add font settings to this tab.")
+        console.log("Failed to add font settings to this tab.");
     }
-})()
+})();

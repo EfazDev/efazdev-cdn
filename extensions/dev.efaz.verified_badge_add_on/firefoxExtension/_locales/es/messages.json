@@ -215,42 +215,6 @@
         "message": "Acentos de color de la Fundación Roblox de Efaz",
         "description": "Nombre de la extensión"
     },
-    "dev_efaz_verified_badge_add_on_set_red_color": {
-        "message": "¡Configurar color rojo!",
-        "description": "Botón de color para rojo"
-    },
-    "dev_efaz_verified_badge_add_on_set_orange_color": {
-        "message": "Configurar naranja\" ¡Color!",
-        "description": "Botón de color naranja"
-    },
-    "dev_efaz_verified_badge_add_on_set_yellow_color": {
-        "message": "¡Establecer color amarillo!",
-        "description": "Botón de color amarillo"
-    },
-    "dev_efaz_verified_badge_add_on_set_lime_color": {
-        "message": "¡Establecer color lima!",
-        "description": "Botón de color lima"
-    },
-    "dev_efaz_verified_badge_add_on_set_cyan_color": {
-        "message": "¡Establecer color cian!",
-        "description": "Botón de color cian"
-    },
-    "dev_efaz_verified_badge_add_on_set_blue_color": {
-        "message": "¡Establecer color azul!",
-        "description": "Botón de color para azul"
-    },
-    "dev_efaz_verified_badge_add_on_set_purple_color": {
-        "message": "¡Establecer color morado!",
-        "description": "Botón de color para morado"
-    },
-    "dev_efaz_verified_badge_add_on_set_pink_color": {
-        "message": "¡Establecer color rosa!",
-        "description": "Botón de color para rosa"
-    },
-    "dev_efaz_verified_badge_add_on_set_old_green_color": {
-        "message": "¡Establecer color verde antiguo!",
-        "description": "Botón de color para verde antiguo de Roblox"
-    },
     "dev_efaz_verified_badge_add_on_badgeIdentification1": {
         "message": "¡Esta insignia identifica que el usuario está usando el complemento de insignia verificada de Roblox de Efaz! Tenga en cuenta que la insignia verificada no es real y se agregó visualmente.",
         "description": "Identificación de la insignia 1"

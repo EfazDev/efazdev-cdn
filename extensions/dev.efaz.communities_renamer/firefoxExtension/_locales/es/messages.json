@@ -23,6 +23,14 @@
         "message": "Grupos",
         "description": "Configurando el valor predeterminado para newName"
     },
+    "dev_efaz_communities_renamer_newNameWithoutEndingS_mes": {
+        "message": "Reemplazar Comunidad por",
+        "description": "Configurando texto para newNameWithoutEndingS"
+    },
+    "dev_efaz_communities_renamer_newNameWithoutEndingS_default": {
+        "message": "Grupo",
+        "description": "Configurando valor predeterminado para newNameWithoutEndingS"
+    },
     "dev_efaz_communities_renamer_startTime_mes": {
         "message": "Tiempo de inicio del bucle (ms)",
         "description": "Configurando el texto para startTime"

@@ -1,0 +1,622 @@
+{
+    "dev_efaz_bundled_extension_exName": {
+        "message": "Efaz's Roblox-Erweiterung",
+        "description": "Name der Erweiterung"
+    },
+    "dev_efaz_bundled_extension_exDescription": {
+        "message": "Müde, alle Erweiterungen von Efaz einzeln zu installieren? Nun, du kannst sie alle in dieser einen Erweiterung installieren und nutzen!",
+        "description": "Beschreibung der Erweiterung"
+    },
+    "enabled_mes": {
+        "message": "Erweiterung aktivieren",
+        "description": "Text zum Aktivieren der Erweiterung"
+    },
+    "thanksTitle": {
+        "message": "Danke für die Installation",
+        "description": "Text für Dankeschön nach Installation"
+    },
+    "thankYou": {
+        "message": "Vielen Dank!",
+        "description": "Dankestext"
+    },
+    "thanksSettings": {
+        "message": "Wenn du die Erweiterungseinstellungen ansehen möchtest,",
+        "description": "Teil des Texts zu Erweiterungseinstellungen"
+    },
+    "thanksWebsite": {
+        "message": "Wenn du meine Webseite besuchen möchtest,",
+        "description": "Teil des Texts zum Öffnen der Webseite"
+    },
+    "thanksClickHere": {
+        "message": "klicke hier",
+        "description": "Weiterer Teil des Dankestexts"
+    },
+    "thanksVersionNum": {
+        "message": "Versionsnummer:",
+        "description": "Versionsnummer"
+    },
+    "settings": {
+        "message": "Einstellungen",
+        "description": "Text für Einstellungen"
+    },
+    "settingsHello": {
+        "message": "Hallo!",
+        "description": "Begrüßung in Einstellungen"
+    },
+    "settingsLoading": {
+        "message": "Lädt..",
+        "description": "Ladetext"
+    },
+    "settingsDetails": {
+        "message": "Systemdetails",
+        "description": "Text für Systemdetails"
+    },
+    "settingsExName": {
+        "message": "Erweiterungsname:",
+        "description": "Text für Erweiterungsname"
+    },
+    "settingsExEnable": {
+        "message": "Erweiterung aktivieren:",
+        "description": "Text für Erweiterung aktivieren"
+    },
+    "settingsUpdateAvailable": {
+        "message": "Update verfügbar für",
+        "description": "Text für verfügbares Update"
+    },
+    "settingsUnpacked": {
+        "message": "Entpackt",
+        "description": "Text für entpackt"
+    },
+    "settingsBeta": {
+        "message": "Beta",
+        "description": "Text für Beta-Version"
+    },
+    "settingsMadeBy": {
+        "message": "Erweiterung ist von @EfazDev gemacht. Diese Erweiterung ist nicht von Roblox.",
+        "description": "Credits Text"
+    },
+    "settingsMadeBy2": {
+        "message": "Diese Erweiterungen sind von @EfazDev gemacht. Diese Erweiterung ist weder mit Roblox verbunden noch von Roblox gemacht. DAS PROJEKT IST OPEN-SOURCE, BITTE NICHT BEZAHLEN.",
+        "description": "Credits 2 Text"
+    },
+    "settingsPrivacyPolicy": {
+        "message": "Datenschutzrichtlinie ansehen",
+        "description": "Text zum Anzeigen der Datenschutzrichtlinie"
+    },
+    "settingsBundleSettings": {
+        "message": "Bundle-Einstellungen",
+        "description": "Text zum Anzeigen der Bundle-Einstellungen"
+    },
+    "settingsNetworkOffline": {
+        "message": "Netzwerk offline",
+        "description": "Text bei fehlender Internetverbindung"
+    },
+    "settingsReset": {
+        "message": "Zurücksetzen!",
+        "description": "Text für Zurücksetzen"
+    },
+    "settingsExtensions": {
+        "message": "Erweiterungen",
+        "description": "Text für Erweiterungen"
+    },
+    "settingsNoFileSelected": {
+        "message": "Keine Datei ausgewählt",
+        "description": "Text wenn keine Datei ausgewählt wurde"
+    },
+    "settingsExtensionSettingsTitle": {
+        "message": "Erweiterungseinstellungen",
+        "description": "Titel der Erweiterungseinstellungen"
+    },
+    "settingsOpenSettings": {
+        "message": "Einstellungen öffnen!",
+        "description": "Einstellungen der gebündelten Erweiterung öffnen"
+    },
+    "settingsReviewDetails": {
+        "message": "Details überprüfen!",
+        "description": "Text zum Überprüfen der Details"
+    },
+    "settingsSaveBtn": {
+        "message": "Einstellungen speichern!",
+        "description": "Text zum Speichern der Einstellungen"
+    },
+    "settingsGoBackBtn": {
+        "message": "Zurück zur Erweiterungsseite!",
+        "description": "Text zum Zurückkehren ohne Speichern"
+    },
+    "settingsGoBackConfirmation": {
+        "message": "Bist du sicher, dass du ohne Speichern zurückgehen möchtest?",
+        "description": "Bestätigung vor Verlassen ohne Speichern"
+    },
+    "settingsSavedData": {
+        "message": "Daten gespeichert!",
+        "description": "Text für gespeicherte Daten"
+    },
+    "settingsJustExtension": {
+        "message": "nur eine Erweiterungseinstellungsseite",
+        "description": "Beschreibung nur Erweiterung"
+    },
+    "myWebsite": {
+        "message": "Meine Webseite",
+        "description": "Titel des Webseiten-Links"
+    },
+    "chromeWebstore": {
+        "message": "Chrome Webstore",
+        "description": "Titel des Webstore-Links"
+    },
+    "firefoxAddons": {
+        "message": "Firefox Add-ons",
+        "description": "Titel des zweiten Webstore-Links"
+    },
+    "twitter": {
+        "message": "Twitter",
+        "description": "Titel des Twitter-Links"
+    },
+    "discord": {
+        "message": "Discord",
+        "description": "Titel des Discord-Links"
+    },
+    "youtube": {
+        "message": "YouTube",
+        "description": "Titel des YouTube-Links"
+    },
+    "foundation_color_accents_exName": {
+        "message": "Efaz's Roblox Foundation Farb-Akzente",
+        "description": "Name der Erweiterung"
+    },
+    "dev_efaz_communities_renamer_exName": {
+        "message": "Efaz's Roblox Communities Renamer",
+        "description": "Name der Erweiterung"
+    },
+    "dev_efaz_communities_renamer_bundleName": {
+        "message": "Communities Renamer",
+        "description": "Anzeigename des Erweiterungs-Bundles"
+    },
+    "dev_efaz_communities_renamer_exDescription": {
+        "message": "Müde, dass Roblox Gruppen in Communities umbenennt? Du kannst das mit dieser Erweiterung ändern!",
+        "description": "Beschreibung der Erweiterung"
+    },
+    "dev_efaz_communities_renamer_enabled_mes": {
+        "message": "Erweiterung aktivieren",
+        "description": "Text zum Aktivieren der Erweiterung"
+    },
+    "dev_efaz_communities_renamer_newName_mes": {
+        "message": "Ersetze Communities durch",
+        "description": "Einstellungstext für neuen Namen"
+    },
+    "dev_efaz_communities_renamer_newName_default": {
+        "message": "Gruppen",
+        "description": "Standardwert für neuen Namen"
+    },
+    "dev_efaz_communities_renamer_newNameWithoutEndingS_mes": {
+        "message": "Ersetze Community durch",
+        "description": "Einstellungstext für neuen Namen ohne Plural-s"
+    },
+    "dev_efaz_communities_renamer_newNameWithoutEndingS_default": {
+        "message": "Gruppe",
+        "description": "Standardwert für neuen Namen ohne Plural-s"
+    },
+    "dev_efaz_communities_renamer_startTime_mes": {
+        "message": "Startschleifenzeit (ms)",
+        "description": "Einstellungstext für Startzeit"
+    },
+    "dev_efaz_communities_renamer_replaceURLwithGroupsURL_mes": {
+        "message": "Ersetze /communities URL mit /groups",
+        "description": "Einstellungstext für URL-Ersetzung"
+    },
+    "dev_efaz_communities_renamer_massEdit_mes": {
+        "message": "Massenbearbeitung von HTML-Inhalten mit Community oder Communities Text",
+        "description": "Einstellungstext für Massenbearbeitung"
+    },
+    "dev_efaz_communities_renamer_changeTitleHtml_mes": {
+        "message": "Ersetze Tab-Namen mit neuem Namen",
+        "description": "Einstellungstext für Tab-Titel-Ersetzung"
+    },
+    "dev_efaz_roblox_logo_changer_exName": {
+        "message": "Efaz's Roblox Logo-Wechsler",
+        "description": "Name der Erweiterung"
+    },
+    "dev_efaz_roblox_logo_changer_bundleName": {
+        "message": "Roblox Logo-Wechsler",
+        "description": "Anzeigename des Bundles"
+    },
+    "dev_efaz_roblox_logo_changer_exDescription": {
+        "message": "Müde vom aktuellen Roblox-Logo? Du kannst es mit dieser Erweiterung ändern!",
+        "description": "Beschreibung der Erweiterung"
+    },
+    "dev_efaz_roblox_logo_changer_enabled_mes": {
+        "message": "Erweiterung aktivieren",
+        "description": "Text zum Aktivieren der Erweiterung"
+    },
+    "dev_efaz_roblox_logo_changer_loopSeconds_mes": {
+        "message": "Startschleifenzeit (ms)",
+        "description": "Einstellungstext für Schleifenzeit"
+    },
+    "dev_efaz_roblox_logo_changer_rbxIcon_mes": {
+        "message": "Setze Roblox Spieler-Icon",
+        "description": "Einstellungstext für Spieler-Icon"
+    },
+    "dev_efaz_roblox_logo_changer_rbxStudioIcon_mes": {
+        "message": "Setze Roblox Studio-Icon",
+        "description": "Einstellungstext für Studio-Icon"
+    },
+    "dev_efaz_roblox_logo_changer_topLeftLogo_mes": {
+        "message": "Setze Roblox Icon (Hauptseite)",
+        "description": "Einstellungstext für Hauptseiten-Icon"
+    },
+    "dev_efaz_roblox_logo_changer_topLeftName_mes": {
+        "message": "Setze Roblox Namen (Hauptseite)",
+        "description": "Einstellungstext für Hauptseitennamen"
+    },
+    "dev_efaz_roblox_logo_changer_projectedImage_mes": {
+        "message": "Setze Roblox Website Tab-Icon",
+        "description": "Einstellungstext für Website Tab-Icon"
+    },
+    "dev_efaz_roblox_logo_changer_projectedImage2_mes": {
+        "message": "Setze Creator Dashboard Icon",
+        "description": "Einstellungstext für Creator Dashboard Icon"
+    },
+    "dev_efaz_roblox_logo_changer_projectedImage3_mes": {
+        "message": "Setze DevForum Tab Icon",
+        "description": "Einstellungstext für DevForum Tab Icon"
+    },
+    "dev_efaz_roblox_logo_changer_projectedImage4_mes": {
+        "message": "Setze Anderes Website Tab Icon",
+        "description": "Einstellungstext für anderes Website Tab Icon"
+    },
+    "dev_efaz_marketplace_renamer_exName": {
+        "message": "Efaz's Roblox Marktplatz-Umbenenner",
+        "description": "Name der Erweiterung"
+    },
+    "dev_efaz_marketplace_renamer_bundleName": {
+        "message": "Marktplatz-Umbenenner",
+        "description": "Anzeigename des Bundles"
+    },
+    "dev_efaz_marketplace_renamer_exDescription": {
+        "message": "Müde, dass Roblox den Katalog in Marktplatz umbenennt? Du kannst das mit dieser Erweiterung ändern!",
+        "description": "Beschreibung der Erweiterung"
+    },
+    "dev_efaz_marketplace_renamer_enabled_mes": {
+        "message": "Erweiterung aktivieren",
+        "description": "Text zum Aktivieren der Erweiterung"
+    },
+    "dev_efaz_marketplace_renamer_newName_mes": {
+        "message": "Ersetze Marktplatz durch",
+        "description": "Einstellungstext für neuen Namen"
+    },
+    "dev_efaz_marketplace_renamer_newName_default": {
+        "message": "Katalog",
+        "description": "Standardwert für neuen Namen"
+    },
+    "dev_efaz_marketplace_renamer_startTime_mes": {
+        "message": "Startschleifenzeit (ms)",
+        "description": "Einstellungstext für Startzeit"
+    },
+    "dev_efaz_marketplace_renamer_changeTitleHtml_mes": {
+        "message": "Tab-Name durch neuen Namen ersetzen",
+        "description": "Einstellungstext für changeTitleHtml"
+    },
+    "dev_efaz_experiences_renamer_exName": {
+        "message": "Efaz's Roblox Experiences Umbenenner",
+        "description": "Name der Erweiterung"
+    },
+    "dev_efaz_experiences_renamer_bundleName": {
+        "message": "Experiences Umbenenner",
+        "description": "Anzeigename des Erweiterungs-Bundles"
+    },
+    "dev_efaz_experiences_renamer_exDescription": {
+        "message": "Müde, dass Roblox Spiele in Experiences umbenennt? Du kannst das mit dieser Erweiterung ändern!",
+        "description": "Beschreibung der Erweiterung"
+    },
+    "dev_efaz_experiences_renamer_enabled_mes": {
+        "message": "Erweiterung aktivieren",
+        "description": "Text zum Aktivieren der Erweiterung"
+    },
+    "dev_efaz_experiences_renamer_newName_mes": {
+        "message": "Ersetze Experiences durch",
+        "description": "Einstellungstext für neuen Namen"
+    },
+    "dev_efaz_experiences_renamer_newName_default": {
+        "message": "Spiele",
+        "description": "Standardwert für neuen Namen"
+    },
+    "dev_efaz_experiences_renamer_newNameWithoutEndingS_mes": {
+        "message": "Ersetze Experience durch",
+        "description": "Einstellungstext für neuen Namen ohne Plural-s"
+    },
+    "dev_efaz_experiences_renamer_newNameWithoutEndingS_default": {
+        "message": "Spiel",
+        "description": "Standardwert für neuen Namen ohne Plural-s"
+    },
+    "dev_efaz_experiences_renamer_startTime_mes": {
+        "message": "Startschleifenzeit (ms)",
+        "description": "Einstellungstext für startTime"
+    },
+    "dev_efaz_experiences_renamer_massEdit_mes": {
+        "message": "Massenbearbeitung von HTML-Inhalten mit Experience oder Experiences Text",
+        "description": "Einstellungstext für massEdit"
+    },
+    "dev_efaz_experiences_renamer_includeCreatorDashboard_mes": {
+        "message": "Creator Dashboard einbeziehen",
+        "description": "Einstellungstext für includeCreatorDashboard"
+    },
+    "dev_efaz_charts_renamer_exName": {
+        "message": "Efaz's Roblox Charts Umbenenner",
+        "description": "Name der Erweiterung"
+    },
+    "dev_efaz_charts_renamer_bundleName": {
+        "message": "Charts Umbenenner",
+        "description": "Anzeigename des Bundles"
+    },
+    "dev_efaz_charts_renamer_exDescription": {
+        "message": "Müde, dass Roblox Spiele/Entdecken in Charts umbenennt? Du kannst das mit dieser Erweiterung ändern!",
+        "description": "Beschreibung der Erweiterung"
+    },
+    "dev_efaz_charts_renamer_enabled_mes": {
+        "message": "Erweiterung aktivieren",
+        "description": "Text zum Aktivieren der Erweiterung"
+    },
+    "dev_efaz_charts_renamer_newName_mes": {
+        "message": "Ersetze Charts durch",
+        "description": "Einstellungstext für neuen Namen"
+    },
+    "dev_efaz_charts_renamer_newName_default": {
+        "message": "Entdecken",
+        "description": "Standardwert für neuen Namen"
+    },
+    "dev_efaz_charts_renamer_startTime_mes": {
+        "message": "Startschleifenzeit (ms)",
+        "description": "Einstellungstext für startTime"
+    },
+    "dev_efaz_charts_renamer_replaceURLwithDiscoverURL_mes": {
+        "message": "Ersetze /charts URL mit /discover oder /games",
+        "description": "Einstellungstext für replaceURLwithDiscoverURL"
+    },
+    "dev_efaz_charts_renamer_changeTitleHtml_mes": {
+        "message": "Tab-Name durch neuen Namen ersetzen",
+        "description": "Einstellungstext für changeTitleHtml"
+    },
+    "dev_efaz_connections_renamer_exName": {
+        "message": "Efaz's Roblox Connections Umbenenner",
+        "description": "Name der Erweiterung"
+    },
+    "dev_efaz_connections_renamer_bundleName": {
+        "message": "Connections Umbenenner",
+        "description": "Anzeigename des Bundles"
+    },
+    "dev_efaz_connections_renamer_exDescription": {
+        "message": "Müde, dass Roblox Freunde in Connections umbenennt? Du kannst das mit dieser Erweiterung ändern!",
+        "description": "Beschreibung der Erweiterung"
+    },
+    "dev_efaz_connections_renamer_enabled_mes": {
+        "message": "Erweiterung aktivieren",
+        "description": "Text zum Aktivieren der Erweiterung"
+    },
+    "dev_efaz_connections_renamer_newName_mes": {
+        "message": "Ersetze Connections durch",
+        "description": "Einstellungstext für neuen Namen"
+    },
+    "dev_efaz_connections_renamer_newName_default": {
+        "message": "Freunde",
+        "description": "Standardwert für neuen Namen"
+    },
+    "dev_efaz_connections_renamer_newNameWithoutEndingS_mes": {
+        "message": "Ersetze Connection durch",
+        "description": "Einstellungstext für neuen Namen ohne Plural-s"
+    },
+    "dev_efaz_connections_renamer_newNameWithoutEndingS_default": {
+        "message": "Freund",
+        "description": "Standardwert für neuen Namen ohne Plural-s"
+    },
+    "dev_efaz_connections_renamer_startTime_mes": {
+        "message": "Startschleifenzeit (ms)",
+        "description": "Einstellungstext für startTime"
+    },
+    "dev_efaz_connections_renamer_massEdit_mes": {
+        "message": "Massenbearbeitung von HTML-Inhalten mit Connection oder Connections Text",
+        "description": "Einstellungstext für massEdit"
+    },
+    "dev_efaz_connections_renamer_changeTitleHtml_mes": {
+        "message": "Tab-Name durch neuen Namen ersetzen",
+        "description": "Einstellungstext für changeTitleHtml"
+    },
+    "dev_efaz_remove_builder_font_exName": {
+        "message": "Efaz's Builder Font Entferner",
+        "description": "Name der Erweiterung"
+    },
+    "dev_efaz_remove_builder_font_bundleName": {
+        "message": "Builder Font Entferner",
+        "description": "Anzeigename des Bundles"
+    },
+    "dev_efaz_remove_builder_font_exDescription": {
+        "message": "Erinnerst du dich an die alte Gotham-Schriftart, die Roblox früher verwendet hat? Warum nicht zurückbringen!",
+        "description": "Beschreibung der Erweiterung"
+    },
+    "dev_efaz_remove_builder_font_enabled_mes": {
+        "message": "Erweiterung aktivieren",
+        "description": "Text zum Aktivieren der Erweiterung"
+    },
+    "dev_efaz_remove_builder_font_startTime_mes": {
+        "message": "Startschleifenzeit (ms)",
+        "description": "Einstellungstext für startTime"
+    },
+    "dev_efaz_remove_builder_font_remoteStyles_mes": {
+        "message": "Remote Stylesheets verwenden (gespeichert auf https://cdn.efaz.dev)",
+        "description": "Einstellungstext für remoteStyles"
+    },
+    "dev_efaz_remove_builder_font_overwriteCreateDashboard_mes": {
+        "message": "Schriftarten im Creator Dashboard ändern",
+        "description": "Einstellungstext für overwriteCreateDashboard"
+    },
+    "dev_efaz_remove_builder_font_overwriteDevForum_mes": {
+        "message": "Schriftarten im DevForum ändern",
+        "description": "Einstellungstext für overwriteDevForum"
+    },
+    "dev_efaz_remove_builder_font_overwriteOtherSubdomains_mes": {
+        "message": "Schriftarten auf anderen Subdomains ändern",
+        "description": "Einstellungstext für overwriteOtherSubdomains"
+    },
+    "dev_efaz_remove_builder_font_onlyUseOldFontOnMainWebsite_mes": {
+        "message": "Alte Schriftart nur auf Creator Dashboard / DevForum / Andere > Custom URL verwenden",
+        "description": "Einstellungstext für onlyUseOldFontOnMainWebsite"
+    },
+    "dev_efaz_remove_builder_font_resourcesUrl_mes": {
+        "message": "URL der Schriftressourcen (Bitte vertrauenswürdig!)",
+        "description": "Einstellungstext für resourcesUrl"
+    },
+    "dev_efaz_verified_badge_add_on_exName": {
+        "message": "Efaz's Roblox Verified Badge Add-on",
+        "description": "Name der Erweiterung"
+    },
+    "dev_efaz_verified_badge_add_on_bundleName": {
+        "message": "Verified Badge Add-on",
+        "description": "Anzeigename des Bundles"
+    },
+    "dev_efaz_verified_badge_add_on_exDescription": {
+        "message": "Eine Erweiterung, die den Roblox Verifizierungs-Haken neben deinem Namen oder deiner Gruppe auf der Website hinzufügt! [Visueller Effekt]",
+        "description": "Beschreibung der Erweiterung"
+    },
+    "dev_efaz_verified_badge_add_on_enabled_mes": {
+        "message": "Erweiterung aktivieren",
+        "description": "Text zum Aktivieren der Erweiterung"
+    },
+    "dev_efaz_verified_badge_add_on_allowAlertMessages_mes": {
+        "message": "Warnmeldungen durch Erweiterung erlauben",
+        "description": "Einstellungstext für allowAlertMessages"
+    },
+    "dev_efaz_verified_badge_add_on_startTime_mes": {
+        "message": "Startschleifenzeit (ms)",
+        "description": "Einstellungstext für startTime"
+    },
+    "dev_efaz_verified_badge_add_on_color_mes": {
+        "message": "Benutzerdefinierte Farbe des Häkchens (HEX)",
+        "description": "Einstellungstext für color"
+    },
+    "dev_efaz_verified_badge_add_on_groupsIncluded_mes": {
+        "message": "Von dir verwaltete Gruppen einbeziehen",
+        "description": "Einstellungstext für groupsIncluded"
+    },
+    "dev_efaz_verified_badge_add_on_verifiedPrompt_mes": {
+        "message": "Verifizierungsabfrage aktivieren",
+        "description": "Einstellungstext für verifiedPrompt"
+    },
+    "dev_efaz_verified_badge_add_on_verifiedBadgeBetweenAccounts_mes": {
+        "message": "Verifizierungsabzeichen zwischen Konten aktivieren",
+        "description": "Einstellungstext für verifiedBadgeBetweenAccounts"
+    },
+    "dev_efaz_verified_badge_add_on_allowEfazDevApprovedBadges_mes": {
+        "message": "Verifizierte Abzeichen für von EfazDev genehmigte Benutzer erlauben",
+        "description": "Einstellungstext für allowEfazDevApprovedBadges"
+    },
+    "dev_efaz_verified_badge_add_on_useCustomApprovedBadgesByUser_mes": {
+        "message": "Benutzerdefinierte Genehmigung aktivieren",
+        "description": "Einstellungstext für useCustomApprovedBadgesByUser"
+    },
+    "dev_efaz_verified_badge_add_on_resetCache1": {
+        "message": "Benutzer-Cache zurücksetzen!",
+        "description": "Cache zurücksetzen Text für Benutzer"
+    },
+    "dev_efaz_verified_badge_add_on_resetCache2": {
+        "message": "Gruppen-Cache zurücksetzen!",
+        "description": "Cache zurücksetzen Text für Gruppen"
+    },
+    "dev_efaz_verified_badge_add_on_setApproved": {
+        "message": "Genehmigte Benutzer JSON setzen! (nicht erforderlich)",
+        "description": "Genehmigtes JSON setzen Text"
+    },
+    "dev_efaz_foundation_color_accents_exName": {
+        "message": "Efaz's Roblox Foundation Farb-Akzente",
+        "description": "Name der Erweiterung"
+    },
+    "dev_efaz_foundation_color_accents_bundleName": {
+        "message": "Foundation Farb-Akzente",
+        "description": "Anzeigename des Bundles"
+    },
+    "dev_efaz_foundation_color_accents_exDescription": {
+        "message": "Erinnerst du dich, als Roblox grüne Buttons hatte, die jetzt blau sind? Du kannst die Farbe mit dieser Erweiterung ändern!",
+        "description": "Beschreibung der Erweiterung"
+    },
+    "dev_efaz_foundation_color_accents_enabled_mes": {
+        "message": "Erweiterung aktivieren",
+        "description": "Text zum Aktivieren der Erweiterung"
+    },
+    "dev_efaz_foundation_color_accents_loopSeconds_mes": {
+        "message": "Startschleifenzeit (ms)",
+        "description": "Einstellungstext für loopSeconds"
+    },
+    "dev_efaz_foundation_color_accents_color_mes": {
+        "message": "Wähle eine Akzentfarbe",
+        "description": "Einstellungstext für Farbe"
+    },
+    "dev_efaz_foundation_color_accents_enableImageBackground_mes": {
+        "message": "Bildhintergrund aktivieren",
+        "description": "Einstellungstext für enableImageBackground"
+    },
+    "dev_efaz_foundation_color_accents_projectedImage_mes": {
+        "message": "Bildhintergrund setzen",
+        "description": "Einstellungstext für projectedImage"
+    },
+    "dev_efaz_foundation_color_accents_overwriteCreateDashboard_mes": {
+        "message": "Farben im Creator Dashboard ändern",
+        "description": "Einstellungstext für overwriteCreateDashboard"
+    },
+    "dev_efaz_foundation_color_accents_includeGraphInDashboard_mes": {
+        "message": "Diagramme im Creator Dashboard einbeziehen",
+        "description": "Einstellungstext für includeGraphInDashboard"
+    },
+    "dev_efaz_foundation_color_accents_overwriteSuccessColor_mes": {
+        "message": "Erfolgfarbe überschreiben",
+        "description": "Einstellungstext für overwriteSuccessColor"
+    },
+    "dev_efaz_foundation_color_accents_applyToPrimaryBtn_mes": {
+        "message": "Auf Primärbuttons anwenden",
+        "description": "Einstellungstext für applyToPrimaryBtn"
+    },
+    "dev_efaz_foundation_color_accents_set_red_color": {
+        "message": "Rote Farbe setzen!",
+        "description": "Farb-Button für Rot"
+    },
+    "dev_efaz_foundation_color_accents_set_orange_color": {
+        "message": "Orange Farbe setzen!",
+        "description": "Farb-Button für Orange"
+    },
+    "dev_efaz_foundation_color_accents_set_yellow_color": {
+        "message": "Gelbe Farbe setzen!",
+        "description": "Farb-Button für Gelb"
+    },
+    "dev_efaz_foundation_color_accents_set_lime_color": {
+        "message": "Limettenfarbe setzen!",
+        "description": "Farb-Button für Limette"
+    },
+    "dev_efaz_foundation_color_accents_set_cyan_color": {
+        "message": "Cyanfarbe setzen!",
+        "description": "Farb-Button für Cyan"
+    },
+    "dev_efaz_foundation_color_accents_set_blue_color": {
+        "message": "Blaue Farbe setzen!",
+        "description": "Farb-Button für Blau"
+    },
+    "dev_efaz_foundation_color_accents_set_purple_color": {
+        "message": "Lila Farbe setzen!",
+        "description": "Farb-Button für Lila"
+    },
+    "dev_efaz_foundation_color_accents_set_pink_color": {
+        "message": "Pink Farbe setzen!",
+        "description": "Farb-Button für Pink"
+    },
+    "dev_efaz_foundation_color_accents_set_old_green_color": {
+        "message": "Alte grüne Farbe setzen!",
+        "description": "Farb-Button für altes Roblox-Grün"
+    },
+    "dev_efaz_verified_badge_add_on_badgeIdentification1": {
+        "message": "Dieses Abzeichen zeigt an, dass der Nutzer Efaz's Roblox Verified Badge Add-on verwendet! Bitte beachte, dass das verifizierte Abzeichen nicht echt ist und visuell hinzugefügt wird.",
+        "description": "Abzeichen-Identifikation 1"
+    },
+    "dev_efaz_verified_badge_add_on_badgeIdentification2": {
+        "message": "Dieses Abzeichen zeigt an, dass der Nutzer von Efaz für seine Echtheit verifiziert wurde! Bitte beachte, dass das verifizierte Abzeichen nicht von Roblox vergeben wurde, möglicherweise ohne deren Zustimmung, und visuell hinzugefügt wird.",
+        "description": "Abzeichen-Identifikation 2"
+    },
+    "dev_efaz_verified_badge_add_on_badgeIdentification3": {
+        "message": "Dieses Abzeichen zeigt an, dass dieser Nutzer gemäß der von dir ausgewählten Genehmigungs-JSON vertraut wird! Bitte beachte, dass das verifizierte Abzeichen nicht von Roblox vergeben wurde und visuell hinzugefügt wird.",
+        "description": "Abzeichen-Identifikation 3"
+    }
+}

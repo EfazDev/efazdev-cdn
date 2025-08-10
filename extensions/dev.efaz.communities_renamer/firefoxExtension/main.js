@@ -17,28 +17,28 @@ main.js:
             chrome.storage.local.get([name], async function (items) {
                 if (items[name]) {
                     if (items[name]["thanks"] == true) {
-                        console.log("The extension might have updated!")
-                        return
+                        console.log("The extension might have updated!");
+                        return;
                     } else {
-                        items[name]["thanks"] = true
+                        items[name]["thanks"] = true;
                         browser.tabs.create({
                             url: chrome.runtime.getURL("thank_you.html")
-                        })
+                        });
                         await chrome.storage.local.set(items);
                     }
                 } else {
-                    items[name] = { "thanks": true }
+                    items[name] = { "thanks": true };
                     browser.tabs.create({
                         url: chrome.runtime.getURL("thank_you.html")
-                    })
+                    });
                     await chrome.storage.local.set(items);
                 }
             });
-        })
+        });
     });
     chrome.action.onClicked.addListener(() => {
         browser.tabs.create({
             url: chrome.runtime.getURL("settings.html")
-        })
+        });
     });
-})()
+})();

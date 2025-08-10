@@ -1,0 +1,210 @@
+{
+    "enabled_mes": {
+        "message": "Erweiterung aktivieren",
+        "description": "Text zum Aktivieren der Erweiterung"
+    },
+    "thanksTitle": {
+        "message": "Danke für die Installation",
+        "description": "Text für Dankeschön nach Installation"
+    },
+    "thankYou": {
+        "message": "Vielen Dank!",
+        "description": "Dankestext"
+    },
+    "thanksSettings": {
+        "message": "Wenn du die Erweiterungseinstellungen ansehen möchtest,",
+        "description": "Teil des Texts zu Erweiterungseinstellungen"
+    },
+    "thanksWebsite": {
+        "message": "Wenn du meine Webseite besuchen möchtest,",
+        "description": "Teil des Texts zum Öffnen der Webseite"
+    },
+    "thanksClickHere": {
+        "message": "klicke hier",
+        "description": "Weiterer Teil des Dankestexts"
+    },
+    "thanksVersionNum": {
+        "message": "Versionsnummer:",
+        "description": "Versionsnummer"
+    },
+    "settings": {
+        "message": "Einstellungen",
+        "description": "Text für Einstellungen"
+    },
+    "settingsHello": {
+        "message": "Hallo!",
+        "description": "Begrüßung in Einstellungen"
+    },
+    "settingsLoading": {
+        "message": "Lädt..",
+        "description": "Ladetext"
+    },
+    "settingsDetails": {
+        "message": "Systemdetails",
+        "description": "Text für Systemdetails"
+    },
+    "settingsExName": {
+        "message": "Erweiterungsname:",
+        "description": "Text für Erweiterungsname"
+    },
+    "settingsExEnable": {
+        "message": "Erweiterung aktivieren:",
+        "description": "Text für Erweiterung aktivieren"
+    },
+    "settingsUpdateAvailable": {
+        "message": "Update verfügbar für",
+        "description": "Text für verfügbares Update"
+    },
+    "settingsUnpacked": {
+        "message": "Entpackt",
+        "description": "Text für entpackt"
+    },
+    "settingsBeta": {
+        "message": "Beta",
+        "description": "Text für Beta-Version"
+    },
+    "settingsMadeBy": {
+        "message": "Erweiterung ist von @EfazDev gemacht. Diese Erweiterung ist nicht von Roblox.",
+        "description": "Credits Text"
+    },
+    "settingsMadeBy2": {
+        "message": "Diese Erweiterungen sind von @EfazDev gemacht. Diese Erweiterung ist weder mit Roblox verbunden noch von Roblox gemacht. DAS PROJEKT IST OPEN-SOURCE, BITTE NICHT BEZAHLEN.",
+        "description": "Credits 2 Text"
+    },
+    "settingsPrivacyPolicy": {
+        "message": "Datenschutzrichtlinie ansehen",
+        "description": "Text zum Anzeigen der Datenschutzrichtlinie"
+    },
+    "settingsBundleSettings": {
+        "message": "Bundle-Einstellungen",
+        "description": "Text zum Anzeigen der Bundle-Einstellungen"
+    },
+    "settingsNetworkOffline": {
+        "message": "Netzwerk offline",
+        "description": "Text bei fehlender Internetverbindung"
+    },
+    "settingsReset": {
+        "message": "Zurücksetzen!",
+        "description": "Text für Zurücksetzen"
+    },
+    "settingsExtensions": {
+        "message": "Erweiterungen",
+        "description": "Text für Erweiterungen"
+    },
+    "settingsNoFileSelected": {
+        "message": "Keine Datei ausgewählt",
+        "description": "Text wenn keine Datei ausgewählt wurde"
+    },
+    "settingsExtensionSettingsTitle": {
+        "message": "Erweiterungseinstellungen",
+        "description": "Titel der Erweiterungseinstellungen"
+    },
+    "settingsOpenSettings": {
+        "message": "Einstellungen öffnen!",
+        "description": "Einstellungen der gebündelten Erweiterung öffnen"
+    },
+    "settingsReviewDetails": {
+        "message": "Details überprüfen!",
+        "description": "Text zum Überprüfen der Details"
+    },
+    "settingsSaveBtn": {
+        "message": "Einstellungen speichern!",
+        "description": "Text zum Speichern der Einstellungen"
+    },
+    "settingsGoBackBtn": {
+        "message": "Zurück zur Erweiterungsseite!",
+        "description": "Text zum Zurückkehren ohne Speichern"
+    },
+    "settingsGoBackConfirmation": {
+        "message": "Bist du sicher, dass du ohne Speichern zurückgehen möchtest?",
+        "description": "Bestätigung vor Verlassen ohne Speichern"
+    },
+    "settingsSavedData": {
+        "message": "Daten gespeichert!",
+        "description": "Text für gespeicherte Daten"
+    },
+    "settingsJustExtension": {
+        "message": "nur eine Erweiterungseinstellungsseite",
+        "description": "Beschreibung nur Erweiterung"
+    },
+    "myWebsite": {
+        "message": "Meine Webseite",
+        "description": "Titel des Webseiten-Links"
+    },
+    "chromeWebstore": {
+        "message": "Chrome Webstore",
+        "description": "Titel des Webstore-Links"
+    },
+    "firefoxAddons": {
+        "message": "Firefox Add-ons",
+        "description": "Titel des zweiten Webstore-Links"
+    },
+    "twitter": {
+        "message": "Twitter",
+        "description": "Titel des Twitter-Links"
+    },
+    "discord": {
+        "message": "Discord",
+        "description": "Titel des Discord-Links"
+    },
+    "youtube": {
+        "message": "YouTube",
+        "description": "Titel des YouTube-Links"
+    },
+    "foundation_color_accents_exName": {
+        "message": "Efaz's Roblox Foundation Farb-Akzente",
+        "description": "Name der Erweiterung"
+    },
+    "dev_efaz_roblox_logo_changer_exName": {
+        "message": "Efaz's Roblox Logo-Wechsler",
+        "description": "Name der Erweiterung"
+    },
+    "dev_efaz_roblox_logo_changer_bundleName": {
+        "message": "Roblox Logo-Wechsler",
+        "description": "Anzeigename des Bundles"
+    },
+    "dev_efaz_roblox_logo_changer_exDescription": {
+        "message": "Müde vom aktuellen Roblox-Logo? Du kannst es mit dieser Erweiterung ändern!",
+        "description": "Beschreibung der Erweiterung"
+    },
+    "dev_efaz_roblox_logo_changer_enabled_mes": {
+        "message": "Erweiterung aktivieren",
+        "description": "Text zum Aktivieren der Erweiterung"
+    },
+    "dev_efaz_roblox_logo_changer_loopSeconds_mes": {
+        "message": "Startschleifenzeit (ms)",
+        "description": "Einstellungstext für Schleifenzeit"
+    },
+    "dev_efaz_roblox_logo_changer_rbxIcon_mes": {
+        "message": "Setze Roblox Spieler-Icon",
+        "description": "Einstellungstext für Spieler-Icon"
+    },
+    "dev_efaz_roblox_logo_changer_rbxStudioIcon_mes": {
+        "message": "Setze Roblox Studio-Icon",
+        "description": "Einstellungstext für Studio-Icon"
+    },
+    "dev_efaz_roblox_logo_changer_topLeftLogo_mes": {
+        "message": "Setze Roblox Icon (Hauptseite)",
+        "description": "Einstellungstext für Hauptseiten-Icon"
+    },
+    "dev_efaz_roblox_logo_changer_topLeftName_mes": {
+        "message": "Setze Roblox Namen (Hauptseite)",
+        "description": "Einstellungstext für Hauptseitennamen"
+    },
+    "dev_efaz_roblox_logo_changer_projectedImage_mes": {
+        "message": "Setze Roblox Website Tab-Icon",
+        "description": "Einstellungstext für Website Tab-Icon"
+    },
+    "dev_efaz_roblox_logo_changer_projectedImage2_mes": {
+        "message": "Setze Creator Dashboard Icon",
+        "description": "Einstellungstext für Creator Dashboard Icon"
+    },
+    "dev_efaz_roblox_logo_changer_projectedImage3_mes": {
+        "message": "Setze DevForum Tab Icon",
+        "description": "Einstellungstext für DevForum Tab Icon"
+    },
+    "dev_efaz_roblox_logo_changer_projectedImage4_mes": {
+        "message": "Setze Anderes Website Tab Icon",
+        "description": "Einstellungstext für anderes Website Tab Icon"
+    }
+}

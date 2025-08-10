@@ -215,42 +215,6 @@
         "message": "Couleurs de la Fondation Roblox d'Efaz",
         "description": "Nom de l'extension"
     },
-    "dev_efaz_verified_badge_add_on_set_red_color": {
-        "message": "Définir la couleur rouge!",
-        "description": "Bouton de couleur rouge"
-    },
-    "dev_efaz_verified_badge_add_on_set_orange_color": {
-        "message": "Définir la couleur orange!",
-        "description": "Bouton de couleur orange"
-    },
-    "dev_efaz_verified_badge_add_on_set_yellow_color": {
-        "message": "Définir la couleur jaune!",
-        "description": "Bouton de couleur jaune"
-    },
-    "dev_efaz_verified_badge_add_on_set_lime_color": {
-        "message": "Définir la couleur citron vert !",
-        "description": "Bouton de couleur pour le citron vert"
-    },
-    "dev_efaz_verified_badge_add_on_set_cyan_color": {
-        "message": "Définir la couleur cyan !",
-        "description": "Bouton de couleur pour le cyan"
-    },
-    "dev_efaz_verified_badge_add_on_set_blue_color": {
-        "message": "Définir la couleur bleue !",
-        "description": "Bouton de couleur pour le bleu"
-    },
-    "dev_efaz_verified_badge_add_on_set_purple_color": {
-        "message": "Définir la couleur violette !",
-        "description": "Bouton de couleur pour le violet"
-    },
-    "dev_efaz_verified_badge_add_on_set_pink_color": {
-        "message": "Définir la couleur rose !",
-        "description": "Bouton de couleur pour le rose"
-    },
-    "dev_efaz_verified_badge_add_on_set_old_green_color": {
-        "message": "Définir l'ancienne couleur verte!",
-        "description": "Bouton de couleur pour l'ancien vert Roblox"
-    },
     "dev_efaz_verified_badge_add_on_badgeIdentification1": {
         "message": "Ce badge indique que l'utilisateur utilise l'extension Roblox Verified Badge d'Efaz! Veuillez noter que le badge vérifié n'est pas réel et qu'il est ajouté visuellement.",
         "description": "Identification du badge 1"

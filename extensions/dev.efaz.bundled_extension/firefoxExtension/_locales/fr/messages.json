@@ -31,6 +31,14 @@
         "message": "Groupes",
         "description": "Définition de la valeur par défaut pour newName"
     },
+    "dev_efaz_communities_renamer_newNameWithoutEndingS_mes": {
+        "message": "Remplacer la communauté par",
+        "description": "Définition du texte pour newNameWithoutEndingS"
+    },
+    "dev_efaz_communities_renamer_newNameWithoutEndingS_default": {
+        "message": "Groupe",
+        "description": "Définition de la valeur par défaut pour newNameWithoutEndingS"
+    },
     "dev_efaz_communities_renamer_startTime_mes": {
         "message": "Durée de début de boucle (ms)",
         "description": "Définition du texte pour startTime"
@@ -307,6 +315,14 @@
         "message": "Jeux",
         "description": "Définition de la valeur par défaut pour newName"
     },
+    "dev_efaz_experiences_renamer_newNameWithoutEndingS_mes": {
+        "message": "Remplacer l'expérience par",
+        "description": "Définition du texte pour newNameWithoutEndingS"
+    },
+    "dev_efaz_experiences_renamer_newNameWithoutEndingS_default": {
+        "message": "Jeu",
+        "description": "Définition de la valeur par défaut pour newNameWithoutEndingS"
+    },
     "dev_efaz_experiences_renamer_startTime_mes": {
         "message": "Durée de début de boucle (ms)",
         "description": "Définition du texte pour startTime"
@@ -378,6 +394,14 @@
     "dev_efaz_connections_renamer_newName_default": {
         "message": "Amis",
         "description": "Définition de la valeur par défaut pour newName"
+    },
+    "dev_efaz_connections_renamer_newNameWithoutEndingS_mes": {
+        "message": "Remplacer la connexion par",
+        "description": "Définition du texte pour newNameWithoutEndingS"
+    },
+    "dev_efaz_connections_renamer_newNameWithoutEndingS_default": {
+        "message": "Ami",
+        "description": "Définition de la valeur par défaut pour newNameWithoutEndingS"
     },
     "dev_efaz_connections_renamer_startTime_mes": {
         "message": "Durée de début de boucle (ms)",
@@ -547,39 +571,39 @@
         "message": "Appliquer aux boutons principaux",
         "description": "Définition du texte pour applyToPrimaryBtn"
     },
-    "dev_efaz_verified_badge_add_on_set_red_color": {
+    "dev_efaz_foundation_color_accents_set_red_color": {
         "message": "Définir la couleur rouge!",
         "description": "Bouton de couleur rouge"
     },
-    "dev_efaz_verified_badge_add_on_set_orange_color": {
+    "dev_efaz_foundation_color_accents_set_orange_color": {
         "message": "Définir la couleur orange!",
         "description": "Bouton de couleur orange"
     },
-    "dev_efaz_verified_badge_add_on_set_yellow_color": {
+    "dev_efaz_foundation_color_accents_set_yellow_color": {
         "message": "Définir la couleur jaune!",
         "description": "Bouton de couleur jaune"
     },
-    "dev_efaz_verified_badge_add_on_set_lime_color": {
+    "dev_efaz_foundation_color_accents_set_lime_color": {
         "message": "Définir la couleur citron vert !",
         "description": "Bouton de couleur pour le citron vert"
     },
-    "dev_efaz_verified_badge_add_on_set_cyan_color": {
+    "dev_efaz_foundation_color_accents_set_cyan_color": {
         "message": "Définir la couleur cyan !",
         "description": "Bouton de couleur pour le cyan"
     },
-    "dev_efaz_verified_badge_add_on_set_blue_color": {
+    "dev_efaz_foundation_color_accents_set_blue_color": {
         "message": "Définir la couleur bleue !",
         "description": "Bouton de couleur pour le bleu"
     },
-    "dev_efaz_verified_badge_add_on_set_purple_color": {
+    "dev_efaz_foundation_color_accents_set_purple_color": {
         "message": "Définir la couleur violette !",
         "description": "Bouton de couleur pour le violet"
     },
-    "dev_efaz_verified_badge_add_on_set_pink_color": {
+    "dev_efaz_foundation_color_accents_set_pink_color": {
         "message": "Définir la couleur rose !",
         "description": "Bouton de couleur pour le rose"
     },
-    "dev_efaz_verified_badge_add_on_set_old_green_color": {
+    "dev_efaz_foundation_color_accents_set_old_green_color": {
         "message": "Définir l'ancienne couleur verte!",
         "description": "Bouton de couleur pour l'ancien vert Roblox"
     },

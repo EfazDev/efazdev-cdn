@@ -202,5 +202,41 @@
     "dev_efaz_foundation_color_accents_applyToPrimaryBtn_mes": {
         "message": "Aplicar a botones principales",
         "description": "Configurando texto para applyToPrimaryBtn"
+    },
+    "dev_efaz_foundation_color_accents_set_red_color": {
+        "message": "¡Configurar color rojo!",
+        "description": "Botón de color para rojo"
+    },
+    "dev_efaz_foundation_color_accents_set_orange_color": {
+        "message": "Configurar naranja\" ¡Color!",
+        "description": "Botón de color naranja"
+    },
+    "dev_efaz_foundation_color_accents_set_yellow_color": {
+        "message": "¡Establecer color amarillo!",
+        "description": "Botón de color amarillo"
+    },
+    "dev_efaz_foundation_color_accents_set_lime_color": {
+        "message": "¡Establecer color lima!",
+        "description": "Botón de color lima"
+    },
+    "dev_efaz_foundation_color_accents_set_cyan_color": {
+        "message": "¡Establecer color cian!",
+        "description": "Botón de color cian"
+    },
+    "dev_efaz_foundation_color_accents_set_blue_color": {
+        "message": "¡Establecer color azul!",
+        "description": "Botón de color para azul"
+    },
+    "dev_efaz_foundation_color_accents_set_purple_color": {
+        "message": "¡Establecer color morado!",
+        "description": "Botón de color para morado"
+    },
+    "dev_efaz_foundation_color_accents_set_pink_color": {
+        "message": "¡Establecer color rosa!",
+        "description": "Botón de color para rosa"
+    },
+    "dev_efaz_foundation_color_accents_set_old_green_color": {
+        "message": "¡Establecer color verde antiguo!",
+        "description": "Botón de color para verde antiguo de Roblox"
     }
 }

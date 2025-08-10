@@ -215,42 +215,6 @@
         "message": "Set Approved Users JSON! (not needed)",
         "description": "Set approved json text"
     },
-    "dev_efaz_verified_badge_add_on_set_red_color": {
-        "message": "Set Red Color!",
-        "description": "Color button for red"
-    },
-    "dev_efaz_verified_badge_add_on_set_orange_color": {
-        "message": "Set Orange Color!",
-        "description": "Color button for orange"
-    },
-    "dev_efaz_verified_badge_add_on_set_yellow_color": {
-        "message": "Set Yellow Color!",
-        "description": "Color button for yellow"
-    },
-    "dev_efaz_verified_badge_add_on_set_lime_color": {
-        "message": "Set Lime Color!",
-        "description": "Color button for lime"
-    },
-    "dev_efaz_verified_badge_add_on_set_cyan_color": {
-        "message": "Set Cyan Color!",
-        "description": "Color button for cyan"
-    },
-    "dev_efaz_verified_badge_add_on_set_blue_color": {
-        "message": "Set Blue Color!",
-        "description": "Color button for blue"
-    },
-    "dev_efaz_verified_badge_add_on_set_purple_color": {
-        "message": "Set Purple Color!",
-        "description": "Color button for purple"
-    },
-    "dev_efaz_verified_badge_add_on_set_pink_color": {
-        "message": "Set Pink Color!",
-        "description": "Color button for pink"
-    },
-    "dev_efaz_verified_badge_add_on_set_old_green_color": {
-        "message": "Set Old Green Color!",
-        "description": "Color button for old Roblox green"
-    },
     "dev_efaz_verified_badge_add_on_badgeIdentification1": {
         "message": "This badge identifies that the user is using Efaz's Roblox Verified Badge Add-on! Please know that that the verified badge is not real and is visually added.",
         "description": "Badge identification 1"

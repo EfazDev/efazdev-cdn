@@ -7,46 +7,6 @@
         "message": "Tired of installing all of Efaz's extensions? Well, you can install and use them all in this one extension!",
         "description": "Extension description"
     },
-    "dev_efaz_communities_renamer_exName": {
-        "message": "Efaz's Roblox Communities Renamer",
-        "description": "Extension name"
-    },
-    "dev_efaz_communities_renamer_bundleName": {
-        "message": "Communities Renamer",
-        "description": "Extension bundle display name"
-    },
-    "dev_efaz_communities_renamer_exDescription": {
-        "message": "Tired of Roblox renaming Groups to Communities? Well, you can change that using this extension!",
-        "description": "Extension description"
-    },
-    "dev_efaz_communities_renamer_enabled_mes": {
-        "message": "Enable Extension",
-        "description": "Enable Extension text"
-    },
-    "dev_efaz_communities_renamer_newName_mes": {
-        "message": "Replace Communities with",
-        "description": "Setting text for newName"
-    },
-    "dev_efaz_communities_renamer_newName_default": {
-        "message": "Groups",
-        "description": "Setting default value for newName"
-    },
-    "dev_efaz_communities_renamer_startTime_mes": {
-        "message": "Start Loop Time (ms)",
-        "description": "Setting text for startTime"
-    },
-    "dev_efaz_communities_renamer_replaceURLwithGroupsURL_mes": {
-        "message": "Replace /communities URL with /groups",
-        "description": "Setting text for replaceURLwithGroupsURL"
-    },
-    "dev_efaz_communities_renamer_massEdit_mes": {
-        "message": "Mass Edit HTML Contents with Community or Communities Text",
-        "description": "Setting text for massEdit"
-    },
-    "dev_efaz_communities_renamer_changeTitleHtml_mes": {
-        "message": "Replace Tab Name with New Name",
-        "description": "Setting text for changeTitleHtml"
-    },
     "enabled_mes": {
         "message": "Enable Extension",
         "description": "Enable Extension text"
@@ -203,6 +163,54 @@
         "message": "Efaz's Roblox Foundation Color Accents",
         "description": "Extension name"
     },
+    "dev_efaz_communities_renamer_exName": {
+        "message": "Efaz's Roblox Communities Renamer",
+        "description": "Extension name"
+    },
+    "dev_efaz_communities_renamer_bundleName": {
+        "message": "Communities Renamer",
+        "description": "Extension bundle display name"
+    },
+    "dev_efaz_communities_renamer_exDescription": {
+        "message": "Tired of Roblox renaming Groups to Communities? Well, you can change that using this extension!",
+        "description": "Extension description"
+    },
+    "dev_efaz_communities_renamer_enabled_mes": {
+        "message": "Enable Extension",
+        "description": "Enable Extension text"
+    },
+    "dev_efaz_communities_renamer_newName_mes": {
+        "message": "Replace Communities with",
+        "description": "Setting text for newName"
+    },
+    "dev_efaz_communities_renamer_newName_default": {
+        "message": "Groups",
+        "description": "Setting default value for newName"
+    },
+    "dev_efaz_communities_renamer_newNameWithoutEndingS_mes": {
+        "message": "Replace Community with",
+        "description": "Setting text for newNameWithoutEndingS"
+    },
+    "dev_efaz_communities_renamer_newNameWithoutEndingS_default": {
+        "message": "Group",
+        "description": "Setting default value for newNameWithoutEndingS"
+    },
+    "dev_efaz_communities_renamer_startTime_mes": {
+        "message": "Start Loop Time (ms)",
+        "description": "Setting text for startTime"
+    },
+    "dev_efaz_communities_renamer_replaceURLwithGroupsURL_mes": {
+        "message": "Replace /communities URL with /groups",
+        "description": "Setting text for replaceURLwithGroupsURL"
+    },
+    "dev_efaz_communities_renamer_massEdit_mes": {
+        "message": "Mass Edit HTML Contents with Community or Communities Text",
+        "description": "Setting text for massEdit"
+    },
+    "dev_efaz_communities_renamer_changeTitleHtml_mes": {
+        "message": "Replace Tab Name with New Name",
+        "description": "Setting text for changeTitleHtml"
+    },
     "dev_efaz_roblox_logo_changer_exName": {
         "message": "Efaz's Roblox Logo Changer",
         "description": "Extension name"
@@ -311,6 +319,14 @@
         "message": "Games",
         "description": "Setting default value for newName"
     },
+    "dev_efaz_experiences_renamer_newNameWithoutEndingS_mes": {
+        "message": "Replace Experience with",
+        "description": "Setting text for newNameWithoutEndingS"
+    },
+    "dev_efaz_experiences_renamer_newNameWithoutEndingS_default": {
+        "message": "Game",
+        "description": "Setting default value for newNameWithoutEndingS"
+    },
     "dev_efaz_experiences_renamer_startTime_mes": {
         "message": "Start Loop Time (ms)",
         "description": "Setting text for startTime"
@@ -318,6 +334,10 @@
     "dev_efaz_experiences_renamer_massEdit_mes": {
         "message": "Mass Edit HTML Contents with Experience or Experiences Text",
         "description": "Setting text for massEdit"
+    },
+    "dev_efaz_experiences_renamer_includeCreatorDashboard_mes": {
+        "message": "Include Creator Dashboard",
+        "description": "Setting text for includeCreatorDashboard"
     },
     "dev_efaz_charts_renamer_exName": {
         "message": "Efaz's Roblox Charts Renamer",
@@ -378,6 +398,14 @@
     "dev_efaz_connections_renamer_newName_default": {
         "message": "Friends",
         "description": "Setting default value for newName"
+    },
+    "dev_efaz_connections_renamer_newNameWithoutEndingS_mes": {
+        "message": "Replace Connection with",
+        "description": "Setting text for newNameWithoutEndingS"
+    },
+    "dev_efaz_connections_renamer_newNameWithoutEndingS_default": {
+        "message": "Friend",
+        "description": "Setting default value for newNameWithoutEndingS"
     },
     "dev_efaz_connections_renamer_startTime_mes": {
         "message": "Start Loop Time (ms)",
@@ -543,39 +571,39 @@
         "message": "Apply to Primary Buttons",
         "description": "Setting text for applyToPrimaryBtn"
     },
-    "dev_efaz_verified_badge_add_on_set_red_color": {
+    "dev_efaz_foundation_color_accents_set_red_color": {
         "message": "Set Red Color!",
         "description": "Color button for red"
     },
-    "dev_efaz_verified_badge_add_on_set_orange_color": {
+    "dev_efaz_foundation_color_accents_set_orange_color": {
         "message": "Set Orange Color!",
         "description": "Color button for orange"
     },
-    "dev_efaz_verified_badge_add_on_set_yellow_color": {
+    "dev_efaz_foundation_color_accents_set_yellow_color": {
         "message": "Set Yellow Color!",
         "description": "Color button for yellow"
     },
-    "dev_efaz_verified_badge_add_on_set_lime_color": {
+    "dev_efaz_foundation_color_accents_set_lime_color": {
         "message": "Set Lime Color!",
         "description": "Color button for lime"
     },
-    "dev_efaz_verified_badge_add_on_set_cyan_color": {
+    "dev_efaz_foundation_color_accents_set_cyan_color": {
         "message": "Set Cyan Color!",
         "description": "Color button for cyan"
     },
-    "dev_efaz_verified_badge_add_on_set_blue_color": {
+    "dev_efaz_foundation_color_accents_set_blue_color": {
         "message": "Set Blue Color!",
         "description": "Color button for blue"
     },
-    "dev_efaz_verified_badge_add_on_set_purple_color": {
+    "dev_efaz_foundation_color_accents_set_purple_color": {
         "message": "Set Purple Color!",
         "description": "Color button for purple"
     },
-    "dev_efaz_verified_badge_add_on_set_pink_color": {
+    "dev_efaz_foundation_color_accents_set_pink_color": {
         "message": "Set Pink Color!",
         "description": "Color button for pink"
     },
-    "dev_efaz_verified_badge_add_on_set_old_green_color": {
+    "dev_efaz_foundation_color_accents_set_old_green_color": {
         "message": "Set Old Green Color!",
         "description": "Color button for old Roblox green"
     },

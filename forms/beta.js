@@ -30,7 +30,7 @@ var specific_settings = system_json["specific_settings"];
 function on_success_form(args) { };
 function on_form_loaded(form_json) { };
 async function get_xcsrf(args) {
-    return null
+    return null;
 };
 
 // All Captchas
@@ -55,8 +55,8 @@ const task = (function () {
             return e == this.#key;
         }
     }
-    return new Token()
-})()
+    return new Token();
+})();
 const task_key = task.get_key();
 
 // Google Captcha
@@ -76,13 +76,13 @@ async function getImageFromInput(input) {
             var fileReader = new FileReader();
             fileReader.readAsDataURL(files);
             fileReader.onload = function (frEvent) {
-                resolve(frEvent.target.result)
-            }
-        })
+                resolve(frEvent.target.result);
+            };
+        });
     } else {
         return new Promise((resolve, reject) => {
             resolve(null);
-        })
+        });
     }
 }
 
@@ -95,7 +95,7 @@ async function get_values() {
             if (new_obj.type == "file") {
                 await getImageFromInput(new_obj).then(res => {
                     new_table[valueInfo["jsonName"]] = res;
-                })
+                });
             } else {
                 new_table[valueInfo["jsonName"]] = new_obj.value;
             }
@@ -169,7 +169,7 @@ function view_success_menu(mode, message) {
         } else {
             obj4.innerHTML = "Thanks for submitting your form!";
         }
-    })
+    });
 }
 
 function view_error_menu(text) {
@@ -282,10 +282,10 @@ async function get_captcha(callback_a, token) {
                 },
             });
         } else {
-            return callback_a(["None", ""])
+            return callback_a(["None", ""]);
         }
     } else {
-        return callback_a(["None", ""])
+        return callback_a(["None", ""]);
     }
 }
 
@@ -381,11 +381,11 @@ function send_response(verification_key) {
                                     let converted_json_string = JSON.stringify(new_formated_values);
                                     try {
                                         if (!(mode_response["type_of_api"] == "POST" || mode_response["type_of_api"] == "PUT" || mode_response["type_of_api"] == "PATCH")) {
-                                            mode_response["type_of_api"] = "POST"
+                                            mode_response["type_of_api"] = "POST";
                                         };
                                         let include_credentials = "omit";
                                         if (specific_settings["include_cookies"] == true) {
-                                            include_credentials = "include"
+                                            include_credentials = "include";
                                         };
                                         fetch(new_api_url, {
                                             "headers": {
@@ -420,13 +420,13 @@ function send_response(verification_key) {
                                                         view_success_menu(selected_mode, json["message"]);
                                                         on_success_form(values);
                                                     }
-                                                })
+                                                });
                                             } else {
                                                 res.json().then(json => {
                                                     view_error_menu(json["message"]);
-                                                })
+                                                });
                                             };
-                                        })
+                                        });
                                     } catch (err) {
                                         view_error_menu(err.message);
                                     }
@@ -453,26 +453,26 @@ function start_system() {
         title = system_json["title"];
         icon_url = system_json["icon_url"];
     }
-    document.body.innerHTML = 
-    '<div id="main_menu">\n' +
+    document.body.innerHTML =
+        '<div id="main_menu">\n' +
         '    <h1 id="title1">' + title + '</h1>\n' +
-    '</div>\n' +
-    '<div id="failed" style="display: none;">\n' +
+        '</div>\n' +
+        '<div id="failed" style="display: none;">\n' +
         '    <h1 id="title2">Oops!</h1>\n' +
         '    <p id="message1">{error}</p>\n' +
         '    <br>\n' +
         '    <button type="button" id="returnButton" class="center" onclick="view_main_menu()">Try again!</button>\n' +
-    '</div>\n' +
-    '<div id="awaiting" style="display: none;">\n' +
+        '</div>\n' +
+        '<div id="awaiting" style="display: none;">\n' +
         '    <h1 id="title2">Hold on!</h1>\n' +
         '    <p id="message1">We are processing your request! Be right back!</p>\n' +
-    '</div>\n' +
-    '<div id="success" style="display: none;">\n' +
+        '</div>\n' +
+        '<div id="success" style="display: none;">\n' +
         '    <h1 id="title3">Success!</h1>\n' +
         '    <p id="message2">Thanks for submitting your form!</p>\n' +
         '    <br>\n' +
         '    <button type="button" id="reloadButton" class="center" onclick="returnFromMessageAndClear()">Do another!</button>\n' +
-    '</div>'; /* Clear all objects inside the body and resets to default usable HTML. */
+        '</div>'; /* Clear all objects inside the body and resets to default usable HTML. */
 
     if (disabled_system == false) {
         try {
@@ -492,9 +492,9 @@ function start_system() {
             for (let a = 0; a < questions.length; a++) {
                 let newQuestion = questions[a];
                 if (newQuestion["type"] == "Short Response" || newQuestion["type"] == "SR") {
-                    let new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + 
-                                '" type="text" class="' + newQuestion["custom_class"] + 
-                                '" id="' + newQuestion["jsonName"] + '_input"';
+                    let new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] +
+                        '" type="text" class="' + newQuestion["custom_class"] +
+                        '" id="' + newQuestion["jsonName"] + '_input"';
                     if (newQuestion["required"] == true) {
                         new_html = new_html + ' required></input>';
                         if (specific_settings["showRequiredText"] == true) {
@@ -595,7 +595,7 @@ function start_system() {
 
                         for (let d_k = 0; d_k < newQuestion["placeholder"].length; d_k++) {
                             let sel = newQuestion["placeholder"][d_k];
-                            new_html = new_html + '<option value="' + sel["value"]+ '">' + sel["name"] + '</option>';
+                            new_html = new_html + '<option value="' + sel["value"] + '">' + sel["name"] + '</option>';
                         };
 
                         new_html = new_html + '</select>';
@@ -607,7 +607,7 @@ function start_system() {
                         new_html = new_html + '>';
                         for (let d_k = 0; d_k < newQuestion["placeholder"].length; d_k++) {
                             let sel = newQuestion["placeholder"][d_k];
-                            new_html = new_html + '<option value="' + sel["value"]+ '">' + sel["name"] + '</option>';
+                            new_html = new_html + '<option value="' + sel["value"] + '">' + sel["name"] + '</option>';
                         };
                         new_html = new_html + '</select>';
                     };
@@ -774,13 +774,13 @@ function loadFormJSONfromURL(url) {
                     google_captcha = system_json["googleCaptcha"];
                     cloudflare_captcha = system_json["cloudflareCaptcha"];
                     start_system();
-                })
+                });
             } else {
                 res.json().then(json => {
                     console.error('Request failed, json resulted with: ' + JSON.stringify(json));
-                })
+                });
             }
-        })
+        });
     } catch (err) {
         console.log('Error while loading from url: ' + err.message);
         loadLastLoadedJSON();
@@ -826,7 +826,7 @@ async function loadFormJSONfromURLByAsync(url) {
                     return [true, "success"];
                 }).catch(err => {
                     return [false, err.message];
-                })
+                });
             } else {
                 return res.json().then(json => {
                     console.error('Request failed, json resulted with: ' + JSON.stringify(json));
@@ -834,13 +834,13 @@ async function loadFormJSONfromURLByAsync(url) {
                 }).catch(err => {
                     console.error('Request failed, json resulted with: ' + err.message);
                     return [false, err.message];
-                })
+                });
             }
         }).catch(err => {
             console.log('Error while loading from url: ' + err.message);
             loadLastLoadedJSON();
             return [false, err.message];
-        })
+        });
     } catch (err) {
         console.log('Error while loading from url: ' + err.message);
         loadLastLoadedJSON();

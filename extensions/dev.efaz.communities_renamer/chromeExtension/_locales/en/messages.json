@@ -1,44 +1,4 @@
 {
-    "dev_efaz_communities_renamer_exName": {
-        "message": "Efaz's Roblox Communities Renamer",
-        "description": "Extension name"
-    },
-    "dev_efaz_communities_renamer_bundleName": {
-        "message": "Communities Renamer",
-        "description": "Extension bundle display name"
-    },
-    "dev_efaz_communities_renamer_exDescription": {
-        "message": "Tired of Roblox renaming Groups to Communities? Well, you can change that using this extension!",
-        "description": "Extension description"
-    },
-    "dev_efaz_communities_renamer_enabled_mes": {
-        "message": "Enable Extension",
-        "description": "Enable Extension text"
-    },
-    "dev_efaz_communities_renamer_newName_mes": {
-        "message": "Replace Communities with",
-        "description": "Setting text for newName"
-    },
-    "dev_efaz_communities_renamer_newName_default": {
-        "message": "Groups",
-        "description": "Setting default value for newName"
-    },
-    "dev_efaz_communities_renamer_startTime_mes": {
-        "message": "Start Loop Time (ms)",
-        "description": "Setting text for startTime"
-    },
-    "dev_efaz_communities_renamer_replaceURLwithGroupsURL_mes": {
-        "message": "Replace /communities URL with /groups",
-        "description": "Setting text for replaceURLwithGroupsURL"
-    },
-    "dev_efaz_communities_renamer_massEdit_mes": {
-        "message": "Mass Edit HTML Contents with Community or Communities Text",
-        "description": "Setting text for massEdit"
-    },
-    "dev_efaz_communities_renamer_changeTitleHtml_mes": {
-        "message": "Replace Tab Name with New Name",
-        "description": "Setting text for changeTitleHtml"
-    },
     "enabled_mes": {
         "message": "Enable Extension",
         "description": "Enable Extension text"
@@ -194,5 +154,53 @@
     "foundation_color_accents_exName": {
         "message": "Efaz's Roblox Foundation Color Accents",
         "description": "Extension name"
+    },
+    "dev_efaz_communities_renamer_exName": {
+        "message": "Efaz's Roblox Communities Renamer",
+        "description": "Extension name"
+    },
+    "dev_efaz_communities_renamer_bundleName": {
+        "message": "Communities Renamer",
+        "description": "Extension bundle display name"
+    },
+    "dev_efaz_communities_renamer_exDescription": {
+        "message": "Tired of Roblox renaming Groups to Communities? Well, you can change that using this extension!",
+        "description": "Extension description"
+    },
+    "dev_efaz_communities_renamer_enabled_mes": {
+        "message": "Enable Extension",
+        "description": "Enable Extension text"
+    },
+    "dev_efaz_communities_renamer_newName_mes": {
+        "message": "Replace Communities with",
+        "description": "Setting text for newName"
+    },
+    "dev_efaz_communities_renamer_newName_default": {
+        "message": "Groups",
+        "description": "Setting default value for newName"
+    },
+    "dev_efaz_communities_renamer_newNameWithoutEndingS_mes": {
+        "message": "Replace Community with",
+        "description": "Setting text for newNameWithoutEndingS"
+    },
+    "dev_efaz_communities_renamer_newNameWithoutEndingS_default": {
+        "message": "Group",
+        "description": "Setting default value for newNameWithoutEndingS"
+    },
+    "dev_efaz_communities_renamer_startTime_mes": {
+        "message": "Start Loop Time (ms)",
+        "description": "Setting text for startTime"
+    },
+    "dev_efaz_communities_renamer_replaceURLwithGroupsURL_mes": {
+        "message": "Replace /communities URL with /groups",
+        "description": "Setting text for replaceURLwithGroupsURL"
+    },
+    "dev_efaz_communities_renamer_massEdit_mes": {
+        "message": "Mass Edit HTML Contents with Community or Communities Text",
+        "description": "Setting text for massEdit"
+    },
+    "dev_efaz_communities_renamer_changeTitleHtml_mes": {
+        "message": "Replace Tab Name with New Name",
+        "description": "Setting text for changeTitleHtml"
     }
 }

@@ -175,6 +175,14 @@
         "message": "Amigos",
         "description": "Configurar valor predeterminado para newName"
     },
+    "dev_efaz_connections_renamer_newNameWithoutEndingS_mes": {
+        "message": "Reemplazar conexión con",
+        "description": "Configurando texto para newNameWithoutEndingS"
+    },
+    "dev_efaz_connections_renamer_newNameWithoutEndingS_default": {
+        "message": "Amigo",
+        "description": "Configurando valor predeterminado para newNameWithoutEndingS"
+    },
     "dev_efaz_connections_renamer_startTime_mes": {
         "message": "Tiempo de inicio del bucle (ms)",
         "description": "Configurar texto para startTime"

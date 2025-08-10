@@ -13,6 +13,13 @@
             "reset": true,
             "neededSettings": ["enabled"]
         },
+        "newNameWithoutEndingS": {
+            "text": "Replace Connection with",
+            "type": "text",
+            "default": "Friend",
+            "reset": true,
+            "neededSettings": ["enabled"]
+        },
         "startTime": {
             "text": "Start Loop Time (ms)",
             "type": "number",

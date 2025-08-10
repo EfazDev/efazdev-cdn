@@ -23,6 +23,14 @@
         "message": "Groups",
         "description": "Setting default value for newName"
     },
+    "dev_efaz_communities_renamer_newNameWithoutEndingS_mes": {
+        "message": "Replace Community with",
+        "description": "Setting text for newNameWithoutEndingS"
+    },
+    "dev_efaz_communities_renamer_newNameWithoutEndingS_default": {
+        "message": "Group",
+        "description": "Setting default value for newNameWithoutEndingS"
+    },
     "dev_efaz_communities_renamer_startTime_mes": {
         "message": "Start Loop Time (ms)",
         "description": "Setting text for startTime"

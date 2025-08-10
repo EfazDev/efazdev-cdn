@@ -1,0 +1,202 @@
+{
+    "enabled_mes": {
+        "message": "Abilita Estensione",
+        "description": "Enable Extension text"
+    },
+    "thanksTitle": {
+        "message": "Grazie per aver installato",
+        "description": "Thanks for installing text"
+    },
+    "thankYou": {
+        "message": "Grazie!",
+        "description": "Thanks text"
+    },
+    "thanksSettings": {
+        "message": "Se vuoi visualizzare le impostazioni dell'estensione,",
+        "description": "Part of extension settings text"
+    },
+    "thanksWebsite": {
+        "message": "Se vuoi visitare il mio sito web,",
+        "description": "Part of open website text"
+    },
+    "thanksClickHere": {
+        "message": "clicca qui",
+        "description": "Other part of thank text"
+    },
+    "thanksVersionNum": {
+        "message": "Numero Versione:",
+        "description": "Version number"
+    },
+    "settings": {
+        "message": "Impostazioni",
+        "description": "Settings text"
+    },
+    "settingsHello": {
+        "message": "Ciao!",
+        "description": "Settings hello."
+    },
+    "settingsLoading": {
+        "message": "Caricamento...",
+        "description": "Loading text"
+    },
+    "settingsDetails": {
+        "message": "Dettagli Sistema",
+        "description": "System detail text"
+    },
+    "settingsExName": {
+        "message": "Nome Estensione:",
+        "description": "Extension name text"
+    },
+    "settingsExEnable": {
+        "message": "Abilita Estensione:",
+        "description": "Enable Extension text"
+    },
+    "settingsUpdateAvailable": {
+        "message": "Aggiornamento Disponibile per",
+        "description": "Update available text"
+    },
+    "settingsUnpacked": {
+        "message": "Non impacchettato",
+        "description": "Unpacked text"
+    },
+    "settingsBeta": {
+        "message": "Beta",
+        "description": "Beta version text"
+    },
+    "settingsMadeBy": {
+        "message": "Estensione creata da @EfazDev. Questa estensione non è creata da Roblox.",
+        "description": "Credits text"
+    },
+    "settingsMadeBy2": {
+        "message": "Queste estensioni sono create da @EfazDev. Questa estensione non è affiliata né creata da Roblox. QUESTO PROGETTO È OPEN-SOURCE, NON PAGARE PER QUESTO.",
+        "description": "Credits 2 text"
+    },
+    "settingsPrivacyPolicy": {
+        "message": "Visualizza Informativa sulla Privacy",
+        "description": "View Privacy Policy text"
+    },
+    "settingsBundleSettings": {
+        "message": "Impostazioni Pacchetto",
+        "description": "View Bundle Settings text"
+    },
+    "settingsNetworkOffline": {
+        "message": "Rete Offline",
+        "description": "No internet text"
+    },
+    "settingsReset": {
+        "message": "Reimposta!",
+        "description": "Reset text"
+    },
+    "settingsExtensions": {
+        "message": "Estensioni",
+        "description": "Extensions text"
+    },
+    "settingsNoFileSelected": {
+        "message": "Nessun file selezionato",
+        "description": "No file text"
+    },
+    "settingsExtensionSettingsTitle": {
+        "message": "Impostazioni Estensione",
+        "description": "Extension settings title"
+    },
+    "settingsOpenSettings": {
+        "message": "Apri Impostazioni!",
+        "description": "Open settings for bundled extension"
+    },
+    "settingsReviewDetails": {
+        "message": "Rivedi Dettagli!",
+        "description": "Review details text"
+    },
+    "settingsSaveBtn": {
+        "message": "Salva Impostazioni!",
+        "description": "Save settings text"
+    },
+    "settingsGoBackBtn": {
+        "message": "Torna alla pagina Estensioni!",
+        "description": "Save settings text"
+    },
+    "settingsGoBackConfirmation": {
+        "message": "Sei sicuro di voler tornare indietro senza salvare?",
+        "description": "Confirm unsaving before exiting text"
+    },
+    "settingsSavedData": {
+        "message": "Dati salvati!",
+        "description": "Saved data message"
+    },
+    "settingsJustExtension": {
+        "message": "solo una pagina di impostazioni dell'estensione",
+        "description": "just extension description"
+    },
+    "myWebsite": {
+        "message": "Il Mio Sito Web",
+        "description": "Website Link Title"
+    },
+    "chromeWebstore": {
+        "message": "Chrome Webstore",
+        "description": "Webstore Link Title"
+    },
+    "firefoxAddons": {
+        "message": "Componenti Aggiuntivi Firefox",
+        "description": "Webstore 2 Link Title"
+    },
+    "twitter": {
+        "message": "Twitter",
+        "description": "Twitter Link Title"
+    },
+    "discord": {
+        "message": "Discord",
+        "description": "Discord Link Title"
+    },
+    "youtube": {
+        "message": "YouTube",
+        "description": "YouTube Link Title"
+    },
+    "foundation_color_accents_exName": {
+        "message": "Accentazioni di Colore Roblox di Efaz",
+        "description": "Extension name"
+    },
+    "dev_efaz_remove_builder_font_exName": {
+        "message": "Rimozione Font Builder di Efaz",
+        "description": "Extension name"
+    },
+    "dev_efaz_remove_builder_font_bundleName": {
+        "message": "Rimozione Font Builder",
+        "description": "Extension bundle display name"
+    },
+    "dev_efaz_remove_builder_font_exDescription": {
+        "message": "Ricordi il vecchio font Gotham che Roblox usava prima? Perché non riportarlo indietro!",
+        "description": "Extension description"
+    },
+    "dev_efaz_remove_builder_font_enabled_mes": {
+        "message": "Abilita Estensione",
+        "description": "Enable Extension text"
+    },
+    "dev_efaz_remove_builder_font_startTime_mes": {
+        "message": "Tempo di Avvio Loop (ms)",
+        "description": "Setting text for startTime"
+    },
+    "dev_efaz_remove_builder_font_remoteStyles_mes": {
+        "message": "Usa Fogli di Stile Remoti (Memorizzati su https://cdn.efaz.dev)",
+        "description": "Setting text for remoteStyles"
+    },
+    "dev_efaz_remove_builder_font_overwriteCreateDashboard_mes": {
+        "message": "Cambia Font sulla Creator Dashboard",
+        "description": "Setting text for overwriteCreateDashboard"
+    },
+    "dev_efaz_remove_builder_font_overwriteDevForum_mes": {
+        "message": "Cambia Font su DevForum",
+        "description": "Setting text for overwriteDevForum"
+    },
+    "dev_efaz_remove_builder_font_overwriteOtherSubdomains_mes": {
+        "message": "Cambia Font su altri Sottodomini",
+        "description": "Setting text for overwriteOtherSubdomains"
+    },
+    "dev_efaz_remove_builder_font_onlyUseOldFontOnMainWebsite_mes": {
+        "message": "Usa il vecchio font su Creator Dashboard / DevForum / Altri > URL personalizzati",
+        "description": "Setting text for onlyUseOldFontOnMainWebsite"
+    },
+    "dev_efaz_remove_builder_font_resourcesUrl_mes": {
+        "message": "URL Risorse Font (Assicurati che sia affidabile!)",
+        "description": "Setting text for resourcesUrl"
+    }
+}

@@ -13,6 +13,13 @@
             "reset": true,
             "neededSettings": ["enabled"]
         },
+        "newNameWithoutEndingS": {
+            "text": "Replace Community with",
+            "type": "text",
+            "default": "Group",
+            "reset": true,
+            "neededSettings": ["enabled"]
+        },
         "loopSeconds": {
             "text": "Start Loop Time (ms)",
             "type": "number",

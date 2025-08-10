@@ -179,6 +179,14 @@
         "message": "Friends",
         "description": "Setting default value for newName"
     },
+    "dev_efaz_connections_renamer_newNameWithoutEndingS_mes": {
+        "message": "Replace Connection with",
+        "description": "Setting text for newNameWithoutEndingS"
+    },
+    "dev_efaz_connections_renamer_newNameWithoutEndingS_default": {
+        "message": "Friend",
+        "description": "Setting default value for newNameWithoutEndingS"
+    },
     "dev_efaz_connections_renamer_startTime_mes": {
         "message": "Start Loop Time (ms)",
         "description": "Setting text for startTime"
