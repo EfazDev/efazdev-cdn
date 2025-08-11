@@ -311,7 +311,7 @@ inject.js:
                             ".web-blox-css-mui-1v9omcg-Typography-body1",
                             ".web-blox-css-mui-1rj7vct-Typography-caption",
                             ".web-blox-css-tss-5nnsl2-Typography-body1-Typography-colorSecondary-Typography-root-titleDescription",
-                            ".web-blox-css-tss-1optsd1-Typography-largeLabel2-Typography-largeLabel1-TreeItem-content-Typography-body2-treeItemContent"
+                            ".web-blox-css-tss-1optsd1-Typography-largeLabel2-Typography-largeLabel1-TreeItem-content-Typography-body2-treeItemContent > .MuiTreeItem-label"
                         ].join(", ");
 
                         /* Run rename loop */
