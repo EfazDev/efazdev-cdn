@@ -90,6 +90,36 @@
         "description": "An extension that replaces Connections on Roblox back to Friends!"
     },
     {
+        "name": "Efaz's Roblox Experiences Renamer",
+        "url": "https://www.efaz.dev/roblox-experiences-rename",
+        "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-experiences/bifmkgmhcilgfcmmnlejgahbjoclaogc",
+        "discontinued": false,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
+        "dateDiscontinued": "None",
+        "description": "An extension that replaces Experiences on Roblox back to Games!"
+    },
+    {
+        "name": "Efaz's Roblox Marketplace Renamer",
+        "url": "https://www.efaz.dev/roblox-marketplace-rename",
+        "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-marketplace/inldlclpnahnjoknaombbdbikdofkmla",
+        "discontinued": false,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
+        "dateDiscontinued": "None",
+        "description": "An extension that replaces Marketplace on Roblox back to Catalog!"
+    },
+    {
+        "name": "Efaz's Roblox Connections Renamer",
+        "url": "https://www.efaz.dev/roblox-connections-rename",
+        "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-connections-renamer/knlbpobhdckkodfgggidkcegiifhgljo",
+        "discontinued": false,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
+        "dateDiscontinued": "None",
+        "description": "An extension that replaces Connections on Roblox back to Friends!"
+    },
+    {
         "name": "Efaz's Roblox Foundation Color Accents",
         "url": "https://www.efaz.dev/roblox-foundation-color-accents",
         "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-foundation-color-accents/ofblldaagkkmhajigieajamomjcbohgf",
