@@ -1,6 +1,6 @@
 {
     "------------------ Latest ------------------": "",
-    "dev.efaz.bundled_extension": "1.6.4",
+    "dev.efaz.bundled_extension": "1.6.5",
     "dev.efaz.charts_renamer": "1.4.5",
     "dev.efaz.communities_renamer": "1.2.9",
     "dev.efaz.connections_renamer": "1.1.6",
@@ -8,8 +8,8 @@
     "dev.efaz.example_extension": "1.5.2",
     "dev.efaz.experiences_renamer": "1.0.4",
     "dev.efaz.foundation_color_accents": "1.5.0",
-    "dev.efaz.marketplace_renamer": "1.0.4",
-    "dev.efaz.remove_builder_font": "1.7.8",
+    "dev.efaz.marketplace_renamer": "1.0.3",
+    "dev.efaz.remove_builder_font": "1.7.9",
     "dev.efaz.roblox_logo_changer": "1.1.9",
     "dev.efaz.verified_badge_add_on": "1.8.4",
 
