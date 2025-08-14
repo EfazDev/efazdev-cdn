@@ -114,7 +114,7 @@ inject.js:
                             }
                             if (settings["rbxIcon"] && settings["rbxIcon"].startsWith("data")) {
                                 if (!(document.getElementById("rbx_icon"))) {
-                                    var d = document.createElement("style");
+                                    let d = document.createElement("style");
                                     d.setAttribute("id", "rbx_icon");
                                     d.setAttribute("rel", "stylesheet");
                                     d.textContent = rbx_icon_sector.replaceAll("rbx_icon", settings["rbxIcon"]);
@@ -123,7 +123,7 @@ inject.js:
                             }
                             if (settings["rbxStudioIcon"] && settings["rbxStudioIcon"].startsWith("data")) {
                                 if (!(document.getElementById("rbx_studio_icon"))) {
-                                    var d = document.createElement("style");
+                                    let d = document.createElement("style");
                                     d.setAttribute("id", "rbx_studio_icon");
                                     d.setAttribute("rel", "stylesheet");
                                     d.textContent = rbx_studio_icon_sector.replaceAll("rbx_studio_icon", settings["rbxStudioIcon"]);
@@ -132,7 +132,7 @@ inject.js:
                             }
                             if (settings["topLeftLogo"] && settings["topLeftLogo"].startsWith("data")) {
                                 if (!(document.getElementById("top_left_icon"))) {
-                                    var d = document.createElement("style");
+                                    let d = document.createElement("style");
                                     d.setAttribute("id", "top_left_icon");
                                     d.setAttribute("rel", "stylesheet");
                                     d.textContent = rbx_top_left_icon_sector.replaceAll("top_left_icon", settings["topLeftLogo"]);
@@ -141,7 +141,7 @@ inject.js:
                             }
                             if (settings["topLeftName"] && settings["topLeftName"].startsWith("data")) {
                                 if (!(document.getElementById("top_left_name"))) {
-                                    var d = document.createElement("style");
+                                    let d = document.createElement("style");
                                     d.setAttribute("id", "top_left_name");
                                     d.setAttribute("rel", "stylesheet");
                                     d.textContent = rbx_top_left_name_sector.replaceAll("top_left_name", settings["topLeftName"]);
@@ -155,16 +155,16 @@ inject.js:
                         let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100;
                         async function injectCSS() {
                             if (settings["projectedImage2"] && settings["projectedImage2"].startsWith("data")) {
-                                var all_links = document.querySelectorAll("link");
+                                let all_links = document.querySelectorAll("link");
                                 await loopThroughArrayAsync(all_links, async (_, header) => {
                                     if (header.rel && header.rel == "icon" && header.href && !(header.href == settings["projectedImage2"])) {
                                         header.setAttribute("href", settings["projectedImage2"]);
                                     }
                                 });
                                 all_links = null;
-                                var creator_hub_icon = document.querySelectorAll(".web-blox-css-tss-nvpyzg-logo");
+                                let creator_hub_icon = document.querySelectorAll(".web-blox-css-tss-nvpyzg-logo");
                                 for (let i = 0; i < creator_hub_icon.length; i++) {
-                                    var header = creator_hub_icon[i];
+                                    let header = creator_hub_icon[i];
                                     if (header.tagName.toLowerCase() == "svg") {
                                         header.outerHTML = '<img class="' + header.classList.toString() + '" width="' + header.getAttribute("width") + '" height="' + header.getAttribute("height") + '" src="' + settings["projectedImage2"] + '">';
                                     }
@@ -172,7 +172,7 @@ inject.js:
                                 creator_hub_icon = null;
                             }
                             if (settings["rbxStudioIcon"] && settings["rbxStudioIcon"].startsWith("data")) {
-                                var all_icons = document.querySelectorAll(".web-blox-css-tss-1hgd7ws-studioIcon");
+                                let all_icons = document.querySelectorAll(".web-blox-css-tss-1hgd7ws-studioIcon");
                                 await loopThroughArrayAsync(all_icons, async (_, header) => {
                                     if (header.getAttribute("width") == "64") {
                                         header.setAttribute("src", settings["rbxStudioIcon"]);
@@ -187,7 +187,7 @@ inject.js:
                         let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100;
                         async function injectCSS() {
                             if (settings["projectedImage3"] && settings["projectedImage3"].startsWith("data")) {
-                                var all_links = document.querySelectorAll("link");
+                                let all_links = document.querySelectorAll("link");
                                 await loopThroughArrayAsync(all_links, async (_, header) => {
                                     if (header.rel && header.rel == "icon" && header.href && !(header.href == settings["projectedImage3"])) {
                                         header.setAttribute("href", settings["projectedImage3"]);
@@ -196,9 +196,9 @@ inject.js:
                                 all_links = null;
                             }
                             if (settings["projectedImage2"] && settings["projectedImage2"].startsWith("data")) {
-                                var creator_hub_icon = document.querySelectorAll(".css-nvpyzg-logo");
+                                let creator_hub_icon = document.querySelectorAll(".css-nvpyzg-logo");
                                 for (let i = 0; i < creator_hub_icon.length; i++) {
-                                    var header = creator_hub_icon[i];
+                                    let header = creator_hub_icon[i];
                                     if (header.tagName.toLowerCase() == "svg") {
                                         header.outerHTML = '<img class="' + header.classList.toString() + '" width="' + header.getAttribute("width") + '" height="' + header.getAttribute("height") + '" src="' + settings["projectedImage2"] + '">';
                                     }
@@ -212,7 +212,7 @@ inject.js:
                         let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100;
                         async function injectCSS() {
                             if (settings["projectedImage4"] && settings["projectedImage4"].startsWith("data")) {
-                                var all_links = document.querySelectorAll("link");
+                                let all_links = document.querySelectorAll("link");
                                 await loopThroughArrayAsync(all_links, async (_, header) => {
                                     if (header.rel && header.rel == "icon" && header.href && !(header.href == settings["projectedImage4"])) {
                                         header.setAttribute("href", settings["projectedImage4"]);
@@ -221,17 +221,17 @@ inject.js:
                                 all_links = null;
                             }
                             if (settings["projectedImage2"] && settings["projectedImage2"].startsWith("data")) {
-                                var creator_hub_icon = document.querySelectorAll(".css-nvpyzg-logo");
+                                let creator_hub_icon = document.querySelectorAll(".css-nvpyzg-logo");
                                 for (let i = 0; i < creator_hub_icon.length; i++) {
-                                    var header = creator_hub_icon[i];
+                                    let header = creator_hub_icon[i];
                                     if (header.tagName.toLowerCase() == "svg") {
                                         header.outerHTML = '<img class="' + header.className + '" width="' + header.getAttribute("width") + '" height="' + header.getAttribute("height") + '" src="' + settings["projectedImage2"] + '">';
                                     }
                                 }
                                 creator_hub_icon = null;
-                                var creator_hub_icon2 = document.querySelectorAll(".web-blox-css-mui-v3z1wi img");
+                                let creator_hub_icon2 = document.querySelectorAll(".web-blox-css-mui-v3z1wi img");
                                 for (let i = 0; i < creator_hub_icon2.length; i++) {
-                                    var header = creator_hub_icon2[i];
+                                    let header = creator_hub_icon2[i];
                                     if (header.tagName.toLowerCase() == "img" && header.src.includes("roblox_icon")) {
                                         header.src = settings["projectedImage2"];
                                     }

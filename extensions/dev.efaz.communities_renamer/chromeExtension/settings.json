@@ -20,13 +20,6 @@
             "reset": true,
             "neededSettings": ["enabled"]
         },
-        "loopSeconds": {
-            "text": "Start Loop Time (ms)",
-            "type": "number",
-            "default": 500,
-            "reset": true,
-            "neededSettings": ["enabled"]
-        },
         "replaceURLwithGroupsURL": {
             "text": "Replace /communities URL with /groups",
             "type": "checkbox",

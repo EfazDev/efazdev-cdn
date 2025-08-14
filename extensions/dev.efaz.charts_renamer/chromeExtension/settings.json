@@ -13,13 +13,6 @@
             "reset": true,
             "neededSettings": ["enabled"]
         },
-        "startTime": {
-            "text": "Start Loop Time (ms)",
-            "type": "number",
-            "default": 500,
-            "reset": true,
-            "neededSettings": ["enabled"]
-        },
         "replaceURLwithDiscoverURL": {
             "text": "Replace /charts URL with /discover or /games",
             "type": "checkbox",

@@ -97,7 +97,6 @@ inject.js:
                     if (tab.hostname == "www.roblox.com") {
                         /* Set Names */
                         let newName = settings["newName"];
-                        let amountOfSecondsBeforeLoop = (typeof (settings["startTime"]) == "string" && Number(settings["startTime"])) ? Number(settings["startTime"]) : 75;
 
                         /* Clean New Name to prevent crashes */
                         let filter_name = document.createElement("div");
@@ -112,11 +111,20 @@ inject.js:
                             ".text-description",
                             "h3",
                             ".navbar-list-option-suffix"
-                        ].join(", ");
+                        ];
+                        let custom_renames = [
+                            ".font-header-2.nav-menu-title.text-header",
+                            ".btn-secondary-xs.see-all-link-icon.btn-more",
+                            ".games-list-header",
+                            "title"
+                        ];
+                        query_names = query_names.join(", ");
+                        custom_renames = custom_renames.join(", ");
 
                         /* Run rename loop */
                         let localeSet = null;
-                        let renameLoopId = null;
+                        let observer = null;
+                        let clear_local_set = false;
                         function blacklisted(header, attribute) {
                             const ngBind = header.getAttribute("ng-bind");
                             const ngBindHtml = header.getAttribute("ng-bind-html");
@@ -150,8 +158,8 @@ inject.js:
                                 m("title");
                             }
                         }
-                        function injectRename() {
-                            let clear_local_set = false;
+                        function setLanguage() {
+                            clear_local_set = false;
                             if (!(localeSet)) {
                                 let meta_tag = document.querySelector('meta[name="locale-data"]');
                                 if (meta_tag) { localeSet = localeSets[meta_tag.getAttribute("data-language-name")]; }
@@ -161,67 +169,77 @@ inject.js:
                                 }
                                 meta_tag = null;
                             }
-
-                            let topbar_headers = document.querySelectorAll(".font-header-2.nav-menu-title.text-header");
-                            for (let i = 0; i < topbar_headers.length; i++) {
-                                let header = topbar_headers[i];
-                                if (header.href && header.textContent.includes(localeSet[0])) {
+                            return clear_local_set;
+                        }
+                        function handleCustomRename(header) {
+                            if (header.matches(".font-header-2.nav-menu-title.text-header")) {
+                                let val = header.textContent;
+                                if (header.href && val.includes(localeSet[0])) {
                                     addRename(header);
                                 }
-                            }
-                            topbar_headers = null;
-
-                            let chart_links = document.querySelectorAll(".btn-secondary-xs.see-all-link-icon.btn-more");
-                            for (let i = 0; i < chart_links.length; i++) {
-                                let header = chart_links[i];
+                            } else if (header.matches(".btn-secondary-xs.see-all-link-icon.btn-more")) {
                                 if (header.href) {
                                     addRename(header);
                                 }
-                            }
-                            chart_links = null;
-
-                            let query_selectors = document.querySelectorAll(query_names);
-                            for (let i = 0; i < query_selectors.length; i++) {
-                                let header = query_selectors[i];
-                                addRename(header);
-                            }
-                            query_selectors = null;
-
-                            if (window.location.pathname.includes("/catalog")) {
-                                let page_headers = document.querySelectorAll(".games-list-header");
-                                for (let i = 0; i < page_headers.length; i++) {
-                                    let header = page_headers[i];
+                            } else if (window.location.pathname.includes("/catalog")) {
+                                if (header.matches(".games-list-header")) {
                                     if (!(header.innerHTML.includes(newName))) {
                                         for (let e = 0; e < header.children.length; e++) {
                                             let child = header.children[e];
                                             addRename(child);
                                         }
                                     }
-                                }
-                                page_headers = null;
-
-                                if (settings["changeTitleHtml"] == true) {
-                                    let titles = document.querySelectorAll("title");
-                                    for (let i = 0; i < titles.length; i++) {
-                                        let header = titles[i];
-                                        addRename(header);
-                                    }
-                                    titles = null;
+                                } else if (header.matches("title") && settings["changeTitleHtml"] == true) {
+                                    addRename(header);
                                 }
                             }
+                        }
+                        function init() {
+                            clear_local_set = setLanguage();
+                            observer = new MutationObserver((mutations) => {
+                                mutations.forEach(m => {
+                                    m.addedNodes.forEach(node => {
+                                        if (node.nodeType === Node.ELEMENT_NODE) {
+                                            if (node.matches(query_names)) { addRename(node); }
+                                            if (node.matches(custom_renames)) { handleCustomRename(node); }
+                                            node.querySelectorAll(query_names).forEach(desc => { addRename(desc); });
+                                            node.querySelectorAll(custom_renames).forEach(desc => { handleCustomRename(desc); });
+                                        }
+                                    });
+                                    if (m.target instanceof Element) {
+                                        if (m.target.matches(query_names)) {
+                                            addRename(m.target);
+                                        };
+                                        if (m.target.matches(custom_renames)) {
+                                            handleCustomRename(m.target);
+                                        };
+                                    }
+                                });
+                            });
+                            observer.observe(document.documentElement, {
+                                childList: true,
+                                subtree: true,
+                                characterData: true
+                            });
+                            let query_selectors = document.querySelectorAll(query_names);
+                            for (let i = 0; i < query_selectors.length; i++) {
+                                let header = query_selectors[i];
+                                addRename(header);
+                            }
+                            let custom_renaming = document.querySelectorAll(custom_renames);
+                            for (let i = 0; i < custom_renaming.length; i++) {
+                                let header = custom_renaming[i];
+                                handleCustomRename(header);
+                            }
+                            query_selectors = null;
+                            custom_renaming = null;
                             if (clear_local_set == true) { localeSet = null; }
                         }
-                        function startRenameLoop() {
-                            if (renameLoopId) { clearTimeout(renameLoopId); };
-                            renameLoopId = setTimeout(() => {
-                                injectRename();
-                                startRenameLoop();
-                            }, amountOfSecondsBeforeLoop);
-                        }
-                        window.addEventListener("beforeunload", () => {
-                            if (renameLoopId) { clearTimeout(renameLoopId); renameLoopId = null; }
-                        });
-                        startRenameLoop();
+                        if (document.readyState === "loading") {
+                            document.addEventListener("DOMContentLoaded", () => {
+                                init();
+                            });
+                        } else { init(); }
                     }
                 }
             }

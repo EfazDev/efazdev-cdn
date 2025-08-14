@@ -51,7 +51,7 @@ function applyChangesToHTML(json, user_checkmark_color) {
     /* All of these HTML variables are extracted from the Roblox Website and modified to be functioned like the actual badge. */
 
     /* Apply color changes to HTML above */
-    var hex_color = user_checkmark_color;
+    let hex_color = user_checkmark_color;
     if (user_checkmark_color == "%230066ff" || user_checkmark_color == "%230066FF") {  // User's selected color
         user_checkmark_color = "%230066FF";
     } else if (appr_efazdev_user[json["id"]] && appr_efazdev_user[json["id"]]["hexColor"]) { // If the main user has selected the default, has EfazDev Approved Users enabled, and there's a color attached to the approved user.

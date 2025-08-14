@@ -24,15 +24,6 @@
                 "enabled"
             ]
         },
-        "startTime": {
-            "text": "Start Loop Time (ms)",
-            "type": "number",
-            "default": 500,
-            "reset": true,
-            "neededSettings": [
-                "enabled"
-            ]
-        },
         "includeCreatorDashboard": {
             "text": "Include Creator Dashboard",
             "type": "checkbox",

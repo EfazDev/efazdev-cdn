@@ -274,93 +274,120 @@ inject.js:
                                 document.head.append(style);
                             }
                         }
-                        if (stored_css) {
-                            overwriteResourcesUrl(stored_css, trusted_source, 1, oldFontOnOtherSub).then(a => {
-                                injectCSS(a);
-                            });
-                        } else {
-                            if (remoteStyles == true) {
-                                fetch("https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/chromeExtension/change_font.css").then(res => { return res.text(); }).then(fetched => {
-                                    stored_css = fetched;
-                                    overwriteResourcesUrl(fetched, trusted_source, 1, oldFontOnOtherSub).then(a => {
-                                        injectCSS(a);
-                                    });
-                                });
-                            } else {
-                                fetch(getChromeURL("change_font.css")).then(res => { return res.text(); }).then(fetched => {
-                                    stored_css = fetched;
-                                    overwriteResourcesUrl(fetched, trusted_source, 1, oldFontOnOtherSub).then(a => {
-                                        injectCSS(a);
-                                    });
-                                });
-                            }
-                        }
 
                         // This is for new WebBlox objects that were added in 2025.
-                        async function injectCSS2(css) {
-                            if (css) {
-                                let selectors = document.querySelectorAll("style");
-                                await loopThroughArrayAsync(selectors, async (_, selector) => {
-                                    let selector_val = selector.textContent;
-                                    if (!(selector_val.includes("Efaz's Builder Font Remover")) && (selector.getAttribute("data-emotion") == "web-blox-css-mui-global" || selector.getAttribute("data-emotion") == "web-blox-css-mui")) {
-                                        let sheet_text = sheetToString(selector.sheet);
-                                        if (sheet_text.includes("@font-face")) {
-                                            if (selector_val == "") {
-                                                selector.textContent = `${sheet_text.replaceAll("Builder Sans", "BuilderRemove").replaceAll("Builder Mono", "BuilderMono")} \n\n${css}`;
-                                            } else if (selector_val.includes("/fonts/builder-sans/")) {
-                                                selector.textContent = `${sheet_text.replaceAll("Builder Sans", "BuilderRemove").replaceAll("Builder Mono", "BuilderMono")} \n\n${css}`;
-                                            }
-                                        }
-                                    } else if (selector.getAttribute("data-emotion") == "web-blox-css-tss" || selector.getAttribute("data-emotion") == "web-blox-css-mui") {
-                                        if (!(selector.getAttribute("scanned-builder-font-remove") == "true")) {
-                                            let sheet_text = sheetToString(selector.sheet);
-                                            if (sheet_text != "") { selector.textContent = selector_val + sheet_text; selector_val = selector.textContent; }
-                                            selector.setAttribute("scanned-builder-font-remove", "true");
-                                        }
-                                        if (!(selector_val.includes("Efaz's Builder Font Remover")) && selector_val.includes("Builder Sans")) {
-                                            selector.textContent = `${selector_val.replaceAll("Builder Sans", "BuilderRemove").replaceAll("Builder Mono", "BuilderMono")} \n\n${css}`;
+                        async function applyCSS(selector, css) {
+                            if (selector.nodeName.toLowerCase() == "style") {
+                                let selector_val = selector.textContent;
+                                if (!(selector_val.includes("Efaz's Builder Font Remover")) && (selector.getAttribute("data-emotion") == "web-blox-css-mui-global" || selector.getAttribute("data-emotion") == "web-blox-css-mui")) {
+                                    let sheet_text = sheetToString(selector.sheet);
+                                    if (sheet_text.includes("@font-face")) {
+                                        if (selector_val == "") {
+                                            selector.textContent = `${sheet_text.replaceAll("Builder Sans", "BuilderRemove").replaceAll("Builder Mono", "BuilderMono")} \n\n${css}`;
+                                        } else if (selector_val.includes("/fonts/builder-sans/")) {
+                                            selector.textContent = `${sheet_text.replaceAll("Builder Sans", "BuilderRemove").replaceAll("Builder Mono", "BuilderMono")} \n\n${css}`;
                                         }
                                     }
-                                });
-                                selectors = null;
-                                if (css && !(document.getElementById("remove-builder-font-2"))) {
+                                } else if (selector.getAttribute("data-emotion") == "web-blox-css-tss" || selector.getAttribute("data-emotion") == "web-blox-css-mui") {
+                                    if (!(selector.getAttribute("scanned-builder-font-remove") == "true")) {
+                                        let sheet_text = sheetToString(selector.sheet);
+                                        if (sheet_text != "") { selector.textContent = selector_val + sheet_text; selector_val = selector.textContent; }
+                                        selector.setAttribute("scanned-builder-font-remove", "true");
+                                    }
+                                    if (!(selector_val.includes("Efaz's Builder Font Remover")) && selector_val.includes("Builder Sans")) {
+                                        selector.textContent = `${selector_val.replaceAll("Builder Sans", "BuilderRemove").replaceAll("Builder Mono", "BuilderMono")} \n\n${css}`;
+                                    }
+                                }
+                            } else if (selector.nodeName.toLowerCase() == "link" && selector.rel && selector.rel == "stylesheet" && selector.getAttribute("data-bundlename") == "Builder" && selector.href) {
+                                selector.remove();
+                            }
+                        }
+                        async function injectCSS2(css) {
+                            if (css) {
+                                if (!(document.getElementById("remove-builder-font-2"))) {
                                     const style = document.createElement("style");
                                     style.id = "remove-builder-font-2";
                                     style.media = "all";
                                     style.textContent = css;
                                     document.head.append(style);
                                 }
-                                let all_links = document.querySelectorAll("link");
-                                await loopThroughArrayAsync(all_links, async (_, header) => {
-                                    if (header.rel && header.rel == "stylesheet" && header.getAttribute("data-bundlename") == "Builder" && header.href) {
-                                        header.remove();
-                                    }
+
+                                let query_names = "style, link"
+                                let observer = new MutationObserver((mutations) => {
+                                    mutations.forEach(m => {
+                                        m.addedNodes.forEach(node => {
+                                            if (node.nodeType === Node.ELEMENT_NODE) {
+                                                if (node.matches(query_names)) { applyCSS(node, css); }
+                                                node.querySelectorAll(query_names).forEach(desc => applyCSS(desc, css));
+                                            }
+                                        });
+                                        if (m.target instanceof Element && m.target.matches(query_names)) {
+                                            applyCSS(m.target, css);
+                                        }
+                                    })
                                 });
-                                all_links = null;
-                                timeout(() => { injectCSS2(css); }, settings["startTime"]);
+                                observer.observe(document.documentElement, {
+                                    childList: true,
+                                    subtree: true,
+                                    characterData: true
+                                });
+
+                                let all_styles = document.querySelectorAll("style, link");
+                                await loopThroughArrayAsync(all_styles, async (_, header) => {
+                                    applyCSS(header, css)
+                                });
+                                all_styles = null;
                             }
                         }
-                        if (stored_css2) {
-                            overwriteResourcesUrl(stored_css2, trusted_source, 1, oldFontOnOtherSub).then(a => {
-                                injectCSS2(a);
-                            });
-                        } else {
-                            if (remoteStyles == true) {
-                                fetch("https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/chromeExtension/change_font2.css").then(res => { return res.text(); }).then(fetched => {
-                                    stored_css2 = fetched;
-                                    overwriteResourcesUrl(fetched, trusted_source, 1, oldFontOnOtherSub).then(a => {
-                                        injectCSS2(a);
-                                    });
+                        function init() {
+                            if (stored_css) {
+                                overwriteResourcesUrl(stored_css, trusted_source, 1, oldFontOnOtherSub).then(a => {
+                                    injectCSS(a);
                                 });
                             } else {
-                                fetch(getChromeURL("change_font2.css")).then(res => { return res.text(); }).then(fetched => {
-                                    stored_css2 = fetched;
-                                    overwriteResourcesUrl(fetched, trusted_source, 1, oldFontOnOtherSub).then(a => {
-                                        injectCSS2(a,);
+                                if (remoteStyles == true) {
+                                    fetch("https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/chromeExtension/change_font.css").then(res => { return res.text(); }).then(fetched => {
+                                        stored_css = fetched;
+                                        overwriteResourcesUrl(fetched, trusted_source, 1, oldFontOnOtherSub).then(a => {
+                                            injectCSS(a);
+                                        });
                                     });
+                                } else {
+                                    fetch(getChromeURL("change_font.css")).then(res => { return res.text(); }).then(fetched => {
+                                        stored_css = fetched;
+                                        overwriteResourcesUrl(fetched, trusted_source, 1, oldFontOnOtherSub).then(a => {
+                                            injectCSS(a);
+                                        });
+                                    });
+                                }
+                            }
+                            if (stored_css2) {
+                                overwriteResourcesUrl(stored_css2, trusted_source, 1, oldFontOnOtherSub).then(a => {
+                                    injectCSS2(a);
                                 });
+                            } else {
+                                if (remoteStyles == true) {
+                                    fetch("https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/chromeExtension/change_font2.css").then(res => { return res.text(); }).then(fetched => {
+                                        stored_css2 = fetched;
+                                        overwriteResourcesUrl(fetched, trusted_source, 1, oldFontOnOtherSub).then(a => {
+                                            injectCSS2(a);
+                                        });
+                                    });
+                                } else {
+                                    fetch(getChromeURL("change_font2.css")).then(res => { return res.text(); }).then(fetched => {
+                                        stored_css2 = fetched;
+                                        overwriteResourcesUrl(fetched, trusted_source, 1, oldFontOnOtherSub).then(a => {
+                                            injectCSS2(a);
+                                        });
+                                    });
+                                }
                             }
                         }
+                        if (document.readyState === "loading") {
+                            document.addEventListener("DOMContentLoaded", () => {
+                                init();
+                            });
+                        } else { init() }
                     } else if (tab.hostname == "devforum.roblox.com") {
                         if (devForum == true) {
                             async function injectCSS(css, tries) {
@@ -398,119 +425,177 @@ inject.js:
                                     roblox_provided_stylesheets = null;
                                 }
                             }
-                            if (stored_devforum_css) {
-                                overwriteResourcesUrl(stored_devforum_css, trusted_source, 2, oldFontOnOtherSub).then(a => {
-                                    injectCSS(a, 0);
-                                });
-                            } else {
-                                if (remoteStyles == true) {
-                                    fetch("https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/chromeExtension/devforum_font.css").then(res => { return res.text(); }).then(fetched => {
-                                        stored_devforum_css = fetched;
-                                        overwriteResourcesUrl(fetched, trusted_source, 2, oldFontOnOtherSub).then(a => {
-                                            injectCSS(a, 0);
-                                        });
+                            function init() {
+                                if (stored_devforum_css) {
+                                    overwriteResourcesUrl(stored_devforum_css, trusted_source, 2, oldFontOnOtherSub).then(a => {
+                                        injectCSS(a, 0);
                                     });
                                 } else {
-                                    fetch(getChromeURL("devforum_font.css")).then(res => { return res.text(); }).then(fetched => {
-                                        stored_devforum_css = fetched;
-                                        overwriteResourcesUrl(fetched, trusted_source, 2, oldFontOnOtherSub).then(a => {
-                                            injectCSS(a, 0);
+                                    if (remoteStyles == true) {
+                                        fetch("https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/chromeExtension/devforum_font.css").then(res => { return res.text(); }).then(fetched => {
+                                            stored_devforum_css = fetched;
+                                            overwriteResourcesUrl(fetched, trusted_source, 2, oldFontOnOtherSub).then(a => {
+                                                injectCSS(a, 0);
+                                            });
                                         });
-                                    });
+                                    } else {
+                                        fetch(getChromeURL("devforum_font.css")).then(res => { return res.text(); }).then(fetched => {
+                                            stored_devforum_css = fetched;
+                                            overwriteResourcesUrl(fetched, trusted_source, 2, oldFontOnOtherSub).then(a => {
+                                                injectCSS(a, 0);
+                                            });
+                                        });
+                                    }
                                 }
                             }
+                            if (document.readyState === "loading") {
+                                document.addEventListener("DOMContentLoaded", () => {
+                                    init();
+                                });
+                            } else { init() }
                         }
                     } else if (tab.hostname == "create.roblox.com") {
                         if (overwriteCreateDashboard == true) {
-                            async function injectCSS(css, tries) {
-                                if (css) {
-                                    let new_tries = 0;
-                                    if (tries) { new_tries = tries; }
-                                    let selectors = document.head.querySelectorAll("style");
-                                    for (q = 0; q < selectors.length; q++) {
-                                        let selector = selectors[q];
-                                        let sheet_text = sheetToString(selector.sheet);
-                                        if (selector.getAttribute("data-emotion") == "web-blox-css-mui-global" && sheet_text.includes("@font-face")) {
-                                            let selector_val = selector.textContent;
-                                            if (!(selector_val.includes("Efaz's Builder Font Remover"))) {
-                                                if (selector_val == "") {
-                                                    selector.textContent = `${sheet_text} \n\n${css}`;
-                                                } else if (selector_val.includes("/fonts/builder-sans/")) {
-                                                    selector.textContent = `${sheet_text} \n\n${css}`;
-                                                }
-                                            }
+                            async function applyCSS(selector, css) {
+                                let sheet_text = sheetToString(selector.sheet);
+                                if (selector.getAttribute("data-emotion") == "web-blox-css-mui-global" && sheet_text.includes("@font-face")) {
+                                    let selector_val = selector.textContent;
+                                    if (!(selector_val.includes("Efaz's Builder Font Remover"))) {
+                                        if (selector_val == "") {
+                                            selector.textContent = `${sheet_text} \n\n${css}`;
+                                        } else if (selector_val.includes("/fonts/builder-sans/")) {
+                                            selector.textContent = `${sheet_text} \n\n${css}`;
                                         }
                                     }
-                                    timeout(() => { injectCSS(css, new_tries + 1); }, settings["startTime"]);
                                 }
                             }
-                            if (stored_creator_dashboard_css) {
-                                overwriteResourcesUrl(stored_creator_dashboard_css, trusted_source, 3, oldFontOnOtherSub).then(a => {
-                                    injectCSS(a, 0);
-                                });
-                            } else {
-                                if (remoteStyles == true) {
-                                    fetch("https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/chromeExtension/creator_dashboard.css").then(res => { return res.text(); }).then(fetched => {
-                                        stored_creator_dashboard_css = fetched;
-                                        overwriteResourcesUrl(fetched, trusted_source, 3, oldFontOnOtherSub).then(a => {
-                                            injectCSS(a, 0);
-                                        });
+                            async function injectCSS(css) {
+                                if (css) {
+                                    let query_names = "style"
+                                    let observer = new MutationObserver((mutations) => {
+                                        mutations.forEach(m => {
+                                            m.addedNodes.forEach(node => {
+                                                if (node.nodeType === Node.ELEMENT_NODE) {
+                                                    if (node.matches(query_names)) { applyCSS(node, css); }
+                                                    node.querySelectorAll(query_names).forEach(desc => applyCSS(desc, css));
+                                                }
+                                            });
+                                            if (m.target instanceof Element && m.target.matches(query_names)) {
+                                                applyCSS(m.target, css);
+                                            }
+                                        })
+                                    });
+                                    observer.observe(document.documentElement, {
+                                        childList: true,
+                                        subtree: true,
+                                        characterData: true
+                                    });
+                                    
+                                    let selectors = document.querySelectorAll("style");
+                                    await loopThroughArrayAsync(selectors, async (_, header) => {
+                                        applyCSS(header);
+                                    });
+                                    selectors = null;
+                                }
+                            }
+                            function init() {
+                                if (stored_creator_dashboard_css) {
+                                    overwriteResourcesUrl(stored_creator_dashboard_css, trusted_source, 3, oldFontOnOtherSub).then(a => {
+                                        injectCSS(a);
                                     });
                                 } else {
-                                    fetch(getChromeURL("creator_dashboard.css")).then(res => { return res.text(); }).then(fetched => {
-                                        stored_creator_dashboard_css = fetched;
-                                        overwriteResourcesUrl(fetched, trusted_source, 3, oldFontOnOtherSub).then(a => {
-                                            injectCSS(a, 0);
+                                    if (remoteStyles == true) {
+                                        fetch("https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/chromeExtension/creator_dashboard.css").then(res => { return res.text(); }).then(fetched => {
+                                            stored_creator_dashboard_css = fetched;
+                                            overwriteResourcesUrl(fetched, trusted_source, 3, oldFontOnOtherSub).then(a => {
+                                                injectCSS(a);
+                                            });
                                         });
-                                    });
+                                    } else {
+                                        fetch(getChromeURL("creator_dashboard.css")).then(res => { return res.text(); }).then(fetched => {
+                                            stored_creator_dashboard_css = fetched;
+                                            overwriteResourcesUrl(fetched, trusted_source, 3, oldFontOnOtherSub).then(a => {
+                                                injectCSS(a);
+                                            });
+                                        });
+                                    }
                                 }
                             }
+                            if (document.readyState === "loading") {
+                                document.addEventListener("DOMContentLoaded", () => {
+                                    init();
+                                });
+                            } else { init() }
                         }
                     } else if (tab.hostname.endsWith(".roblox.com")) {
                         if (otherSub == true) {
-                            async function injectCSS(css, tries) {
-                                if (css) {
-                                    let new_tries = 0;
-                                    if (tries) { new_tries = tries; }
-                                    let selectors = document.head.querySelectorAll("style");
-                                    let found = false;
-                                    for (q = 0; q < selectors.length; q++) {
-                                        let selector = selectors[q];
-                                        if ((selector.getAttribute("data-emotion") == "web-blox-css-mui-global" || selector.getAttribute("data-emotion") == "css-global") && sheetToString(selector.sheet).includes("@font-face")) {
-                                            let selector_val = selector.textContent;
-                                            if (selector_val == "") {
-                                                selector.textContent = css;
-                                                found = true;
-                                            } else if (selector_val.includes("@font-face") && selector_val.includes("BuilderSans")) {
-                                                selector.textContent = `${selector_val} \n\n${css}`;
-                                                found = true;
-                                            }
-                                        }
+                            async function applyCSS(selector, css) {
+                                if ((selector.getAttribute("data-emotion") == "web-blox-css-mui-global" || selector.getAttribute("data-emotion") == "css-global") && sheetToString(selector.sheet).includes("@font-face")) {
+                                    let selector_val = selector.textContent;
+                                    if (selector_val == "") {
+                                        selector.textContent = css;
+                                    } else if (selector_val.includes("@font-face") && selector_val.includes("BuilderSans")) {
+                                        selector.textContent = `${selector_val} \n\n${css}`;
                                     }
-                                    timeout(() => { injectCSS(css, new_tries + 1); }, settings["startTime"]);
                                 }
                             }
-                            if (stored_creator_dashboard_css) {
-                                overwriteResourcesUrl(stored_creator_dashboard_css, trusted_source, 4, oldFontOnOtherSub).then(a => {
-                                    injectCSS(a, 0);
-                                });
-                            } else {
-                                if (remoteStyles == true) {
-                                    fetch("https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/chromeExtension/global_font.css").then(res => { return res.text(); }).then(fetched => {
-                                        stored_creator_dashboard_css = fetched;
-                                        overwriteResourcesUrl(fetched, trusted_source, 4, oldFontOnOtherSub).then(a => {
-                                            injectCSS(a, 0);
-                                        });
+                            async function injectCSS(css) {
+                                if (css) {
+                                    let query_names = "style"
+                                    let observer = new MutationObserver((mutations) => {
+                                        mutations.forEach(m => {
+                                            m.addedNodes.forEach(node => {
+                                                if (node.nodeType === Node.ELEMENT_NODE) {
+                                                    if (node.matches(query_names)) { applyCSS(node, css); }
+                                                    node.querySelectorAll(query_names).forEach(desc => applyCSS(desc, css));
+                                                }
+                                            });
+                                            if (m.target instanceof Element && m.target.matches(query_names)) {
+                                                applyCSS(m.target, css);
+                                            }
+                                        })
+                                    });
+                                    observer.observe(document.documentElement, {
+                                        childList: true,
+                                        subtree: true,
+                                        characterData: true
+                                    });
+
+                                    let selectors = document.querySelectorAll("style");
+                                    await loopThroughArrayAsync(selectors, async (_, header) => {
+                                        applyCSS(header);
+                                    });
+                                    selectors = null;
+                                }
+                            }
+                            function init() {
+                                if (stored_creator_dashboard_css) {
+                                    overwriteResourcesUrl(stored_creator_dashboard_css, trusted_source, 4, oldFontOnOtherSub).then(a => {
+                                        injectCSS(a);
                                     });
                                 } else {
-                                    fetch(getChromeURL("global_font.css")).then(res => { return res.text(); }).then(fetched => {
-                                        stored_creator_dashboard_css = fetched;
-                                        overwriteResourcesUrl(fetched, trusted_source, 4, oldFontOnOtherSub).then(a => {
-                                            injectCSS(a, 0);
+                                    if (remoteStyles == true) {
+                                        fetch("https://cdn.efaz.dev/extensions/dev.efaz.remove_builder_font/chromeExtension/global_font.css").then(res => { return res.text(); }).then(fetched => {
+                                            stored_creator_dashboard_css = fetched;
+                                            overwriteResourcesUrl(fetched, trusted_source, 4, oldFontOnOtherSub).then(a => {
+                                                injectCSS(a);
+                                            });
                                         });
-                                    });
+                                    } else {
+                                        fetch(getChromeURL("global_font.css")).then(res => { return res.text(); }).then(fetched => {
+                                            stored_creator_dashboard_css = fetched;
+                                            overwriteResourcesUrl(fetched, trusted_source, 4, oldFontOnOtherSub).then(a => {
+                                                injectCSS(a);
+                                            });
+                                        });
+                                    }
                                 }
                             }
+                            if (document.readyState === "loading") {
+                                document.addEventListener("DOMContentLoaded", () => {
+                                    init();
+                                });
+                            } else { init() }
                         }
                     }
                 }

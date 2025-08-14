@@ -160,17 +160,27 @@ inject.js:
                             '.text-content',
                             'div.popover-content > div > li > button',
                             ".friends-title",
-                            '.friends-subtitle',
                             ".roseal-tooltip",
                             ".server-list-header",
                             "#friendsTooltip",
-                            ".people-list-header",
+                            ".people-list-header > h2",
                             ".profile-header-social-count-label"
-                        ].join(", ");
+                        ];
+                        let custom_renames = [
+                            ".web-blox-css-tss-1283320-Button-textContainer",
+                            ".friends-subtitle",
+                            ".friends-carousel-tile-labels",
+                            "a",
+                            "title"
+                        ];
+                        if (settings["massEdit"] == true) { query_names.push(".ng-binding"); query_names.push("label"); };
+                        query_names = query_names.join(", ");
+                        custom_renames = custom_renames.join(", ");
 
                         /* Run rename loop */
                         let localeSet = null;
-                        let renameLoopId = null;
+                        let observer = null;
+                        let clear_local_set = false;
                         function blacklisted(header, attribute) {
                             const ngBind = header.getAttribute("ng-bind");
                             const ngBindHtml = header.getAttribute("ng-bind-html");
@@ -225,8 +235,8 @@ inject.js:
                                 m("title");
                             }
                         }
-                        function injectRename() {
-                            let clear_local_set = false;
+                        function setLanguage() {
+                            clear_local_set = false;
                             if (!(localeSet)) {
                                 let meta_tag = document.querySelector('meta[name="locale-data"]');
                                 if (meta_tag) { localeSet = localeSets[meta_tag.getAttribute("data-language-name")]; }
@@ -236,11 +246,11 @@ inject.js:
                                 }
                                 meta_tag = null;
                             }
-
-                            let buttons_text = document.querySelectorAll(".web-blox-css-tss-1283320-Button-textContainer");
-                            for (let i = 0; i < buttons_text.length; i++) {
-                                let header = buttons_text[i];
-                                if (blacklisted(header)) { continue; }
+                            return clear_local_set;
+                        }
+                        function handleCustomRename(header) {
+                            if (header.matches(".web-blox-css-tss-1283320-Button-textContainer")) {
+                                if (blacklisted(header)) { return; }
                                 let innerHTML = header.innerHTML;
                                 if (innerHTML.includes(localeSet[6] + localeSet[3]) && !(innerHTML.includes(newNameWithoutEndingS))) {
                                     header.innerHTML = innerHTML.replace(localeSet[6] + localeSet[3], localeSet[5] + newNameWithoutEndingS.toLowerCase());
@@ -251,44 +261,20 @@ inject.js:
                                 } else if (innerHTML.includes(localeSet[3]) && !(innerHTML.includes(newNameWithoutEndingS.toLowerCase()))) {
                                     header.innerHTML = innerHTML.replace(localeSet[3], newNameWithoutEndingS.toLowerCase());
                                 }
-                            }
-                            buttons_text = null;
-
-                            let most_text_frames = document.querySelectorAll(".ng-binding");
-                            for (let i = 0; i < most_text_frames.length; i++) {
-                                let header = most_text_frames[i];
-                                if (settings["massEdit"] == true) {
-                                    addRename(header);
-                                }
-                            }
-                            most_text_frames = null;
-
-                            let friends_subtitle = document.querySelectorAll(".friends-subtitle");
-                            for (let i = 0; i < friends_subtitle.length; i++) {
-                                let header = friends_subtitle[i];
+                            } else if (header.matches(".friends-subtitle")) {
                                 if (header.childNodes && header.childNodes[0] && header.childNodes[0].textContent.includes(localeSet[0]) && !(header.childNodes[0].textContent.includes(newName))) {
                                     header.childNodes[0].textContent = header.childNodes[0].textContent.replace(localeSet[0], newName);
                                 }
-                            }
-                            friends_subtitle = null;
-
-                            let friend_list_titles = document.querySelectorAll(".friends-carousel-tile-labels");
-                            for (let i = 0; i < friend_list_titles.length; i++) {
-                                let header = friend_list_titles[i];
+                            } else if (header.matches(".friends-carousel-tile-labels")) {
                                 let innerHTML = header.innerHTML;
                                 if (header.nodeName == "DIV" && innerHTML.includes(localeSet[2])) {
-                                    if (blacklisted(header)) { continue; }
+                                    if (blacklisted(header)) { return; }
                                     if (!(innerHTML.includes(localeSet[4] + newName))) {
                                         header.innerHTML = innerHTML.replaceAll(localeSet[2], localeSet[4] + newName);
                                     }
                                     addRename(header);
                                 }
-                            }
-                            friend_list_titles = null;
-
-                            let all_links = document.querySelectorAll("a");
-                            for (let i = 0; i < all_links.length; i++) {
-                                let header = all_links[i];
+                            } else if (header.matches("a")) {
                                 if (settings["massEdit"] == true) {
                                     if (!(header.className == "profile-header-social-count")) {
                                         if (header.childNodes.length > 0) {
@@ -302,51 +288,61 @@ inject.js:
                                         addRename(header, "title");
                                     }
                                 }
-                            }
-                            all_links = null;
-
-                            let all_labels = document.querySelectorAll("label");
-                            for (let i = 0; i < all_labels.length; i++) {
-                                let header = all_labels[i];
-                                if (settings["massEdit"] == true) {
-                                    addRename(header);
+                            } else if (window.location.pathname.includes("/connections") || window.location.pathname.includes("/friends")) {
+                                if (header.matches("title") && settings["changeTitleHtml"] == true) {
+                                    let val = header.textContent;
+                                    if (val.includes(localeSet[0])) {
+                                        header.textContent = val.replaceAll(localeSet[0], newName);
+                                    }
                                 }
                             }
-                            all_labels = null;
-
+                        }
+                        function init() {
+                            clear_local_set = setLanguage();
+                            observer = new MutationObserver((mutations) => {
+                                mutations.forEach(m => {
+                                    m.addedNodes.forEach(node => {
+                                        if (node.nodeType === Node.ELEMENT_NODE) {
+                                            if (node.matches(query_names)) { addRename(node); }
+                                            if (node.matches(custom_renames)) { handleCustomRename(node); }
+                                            node.querySelectorAll(query_names).forEach(desc => { addRename(desc); });
+                                            node.querySelectorAll(custom_renames).forEach(desc => { handleCustomRename(desc); });
+                                        }
+                                    });
+                                    if (m.target instanceof Element) {
+                                        if (m.target.matches(query_names)) {
+                                            addRename(m.target);
+                                        };
+                                        if (m.target.matches(custom_renames)) {
+                                            handleCustomRename(m.target);
+                                        };
+                                    }
+                                });
+                            });
+                            observer.observe(document.documentElement, {
+                                childList: true,
+                                subtree: true,
+                                characterData: true
+                            });
                             let query_selectors = document.querySelectorAll(query_names);
                             for (let i = 0; i < query_selectors.length; i++) {
                                 let header = query_selectors[i];
                                 addRename(header);
                             }
-                            query_selectors = null;
-
-                            if (window.location.pathname.includes("/connections") || window.location.pathname.includes("/friends")) {
-                                if (settings["changeTitleHtml"] == true) {
-                                    let titles = document.querySelectorAll("title");
-                                    for (let i = 0; i < titles.length; i++) {
-                                        let header = titles[i];
-                                        let val = header.textContent;
-                                        if (val.includes(localeSet[0])) {
-                                            header.textContent = val.replaceAll(localeSet[0], newName);
-                                        }
-                                    }
-                                    titles = null;
-                                }
+                            let custom_renaming = document.querySelectorAll(custom_renames);
+                            for (let i = 0; i < custom_renaming.length; i++) {
+                                let header = custom_renaming[i];
+                                handleCustomRename(header);
                             }
+                            query_selectors = null;
+                            custom_renaming = null;
                             if (clear_local_set == true) { localeSet = null; }
                         }
-                        function startRenameLoop() {
-                            if (renameLoopId) { clearTimeout(renameLoopId); };
-                            renameLoopId = setTimeout(() => {
-                                injectRename();
-                                startRenameLoop();
-                            }, amountOfSecondsBeforeLoop);
-                        }
-                        window.addEventListener("beforeunload", () => {
-                            if (renameLoopId) { clearTimeout(renameLoopId); renameLoopId = null; }
-                        });
-                        startRenameLoop();
+                        if (document.readyState === "loading") {
+                            document.addEventListener("DOMContentLoaded", () => {
+                                init();
+                            });
+                        } else { init(); }
                     }
                 }
             }

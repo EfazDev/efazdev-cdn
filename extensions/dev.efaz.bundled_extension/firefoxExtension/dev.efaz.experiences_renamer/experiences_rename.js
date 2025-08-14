@@ -109,7 +109,6 @@ inject.js:
                         /* Set Names */
                         let newName = settings["newName"];
                         let newNameWithoutEndingS = settings["newNameWithoutEndingS"];
-                        let amountOfSecondsBeforeLoop = (typeof (settings["startTime"]) == "string" && Number(settings["startTime"])) ? Number(settings["startTime"]) : 75;
 
                         /* Clean New Name to prevent crashes */
                         let filter_name = document.createElement("div");
@@ -174,11 +173,18 @@ inject.js:
                             '.text-emphasis',
                             '.keyword-block-list-section-header > div',
                             '.text-content'
-                        ].join(", ");
+                        ];
+                        let custom_renames = [
+                            ".rbx-selection-label"
+                        ];
+                        if (settings["massEdit"] == true) { query_names.push(".ng-binding"); query_names.push("label"); };
+                        query_names = query_names.join(", ");
+                        custom_renames = custom_renames.join(", ");
 
                         /* Run Rename Loop */
                         let localeSet = null;
-                        let renameLoopId = null;
+                        let observer = null;
+                        let clear_local_set = false;
                         function blacklisted(header, attribute) {
                             const ngBind = header.getAttribute("ng-bind");
                             const ngBindHtml = header.getAttribute("ng-bind-html");
@@ -221,8 +227,8 @@ inject.js:
                                 m("title");
                             }
                         }
-                        function injectRename() {
-                            let clear_local_set = false;
+                        function setLanguage() {
+                            clear_local_set = false;
                             if (!(localeSet)) {
                                 let meta_tag = document.querySelector('meta[name="locale-data"]');
                                 if (meta_tag) { localeSet = localeSets[meta_tag.getAttribute("data-language-name")]; }
@@ -232,57 +238,64 @@ inject.js:
                                 }
                                 meta_tag = null;
                             }
-
+                            return clear_local_set;
+                        }
+                        function handleCustomRename(header) {
+                            if (header.matches(".rbx-selection-label")) {
+                                if (header.getAttribute("ng-bind") == "role.name" || header.getAttribute("ng-bind") == "$ctrl.data.currentRoleName") { return; };
+                                addRename(header);
+                            }
+                        }
+                        function init() {
+                            clear_local_set = setLanguage();
+                            observer = new MutationObserver((mutations) => {
+                                mutations.forEach(m => {
+                                    m.addedNodes.forEach(node => {
+                                        if (node.nodeType === Node.ELEMENT_NODE) {
+                                            if (node.matches(query_names)) { addRename(node); }
+                                            if (node.matches(custom_renames)) { handleCustomRename(node); }
+                                            node.querySelectorAll(query_names).forEach(desc => { addRename(desc); });
+                                            node.querySelectorAll(custom_renames).forEach(desc => { handleCustomRename(desc); });
+                                        }
+                                    });
+                                    if (m.target instanceof Element) {
+                                        if (m.target.matches(query_names)) {
+                                            addRename(m.target);
+                                        };
+                                        if (m.target.matches(custom_renames)) {
+                                            handleCustomRename(m.target);
+                                        };
+                                    }
+                                });
+                            });
+                            observer.observe(document.documentElement, {
+                                childList: true,
+                                subtree: true,
+                                characterData: true
+                            });
                             let query_selectors = document.querySelectorAll(query_names);
                             for (let i = 0; i < query_selectors.length; i++) {
                                 let header = query_selectors[i];
                                 addRename(header);
                             }
+                            let custom_renaming = document.querySelectorAll(custom_renames);
+                            for (let i = 0; i < custom_renaming.length; i++) {
+                                let header = custom_renaming[i];
+                                handleCustomRename(header);
+                            }
                             query_selectors = null;
-
-                            let most_text_frames = document.querySelectorAll(".ng-binding");
-                            for (let i = 0; i < most_text_frames.length; i++) {
-                                let header = most_text_frames[i];
-                                if (settings["massEdit"] == true) {
-                                    addRename(header);
-                                }
-                            }
-                            most_text_frames = null;
-
-                            let selected_labels = document.querySelectorAll(".rbx-selection-label");
-                            for (let i = 0; i < selected_labels.length; i++) {
-                                let header = selected_labels[i];
-                                if (header.getAttribute("ng-bind") == "role.name" || header.getAttribute("ng-bind") == "$ctrl.data.currentRoleName") { continue; };
-                                addRename(header);
-                            }
-                            selected_labels = null;
-
-                            let all_labels = document.querySelectorAll("label");
-                            for (let i = 0; i < all_labels.length; i++) {
-                                let header = all_labels[i];
-                                if (settings["massEdit"] == true) {
-                                    addRename(header);
-                                }
-                            }
-                            all_labels = null;
+                            custom_renaming = null;
                             if (clear_local_set == true) { localeSet = null; }
                         }
-                        function startRenameLoop() {
-                            if (renameLoopId) { clearTimeout(renameLoopId); };
-                            renameLoopId = setTimeout(() => {
-                                injectRename();
-                                startRenameLoop();
-                            }, amountOfSecondsBeforeLoop);
-                        }
-                        window.addEventListener("beforeunload", () => {
-                            if (renameLoopId) { clearTimeout(renameLoopId); renameLoopId = null; }
-                        });
-                        startRenameLoop();
+                        if (document.readyState === "loading") {
+                            document.addEventListener("DOMContentLoaded", () => {
+                                init();
+                            });
+                        } else { init(); }
                     } else if (tab.hostname == "create.roblox.com") {
                         /* Set Names */
                         let newName = settings["newName"];
                         let newNameWithoutEndingS = settings["newName"].replace(/ies$/, "y").replace(/s$/, "");
-                        let amountOfSecondsBeforeLoop = (typeof (settings["startTime"]) == "string" && Number(settings["startTime"])) ? Number(settings["startTime"]) : 75;
 
                         /* Clean New Name to prevent crashes */
                         let filter_name = document.createElement("div");
@@ -299,24 +312,31 @@ inject.js:
                         let query_names = [
                             ".web-blox-css-tss-1283320-Button-textContainer",
                             ".MuiChip-labelMedium",
-                            ".web-blox-css-mui-dsncs0-Typography-button",
                             ".web-blox-css-mui-clml2g",
                             ".web-blox-css-mui-1yigbjg",
                             ".web-blox-css-mui-1xqo902",
                             ".web-blox-css-mui-lbf0y3",
                             ".web-blox-css-mui-e8q1iy",
                             ".web-blox-css-mui-1kqj7ax",
+                            ".web-blox-css-mui-1de74pe",
                             ".web-blox-css-mui-gea1as-Typography-body1",
                             ".web-blox-css-mui-15wphe8-Typography-body1",
                             ".web-blox-css-mui-1v9omcg-Typography-body1",
                             ".web-blox-css-mui-1rj7vct-Typography-caption",
                             ".web-blox-css-tss-5nnsl2-Typography-body1-Typography-colorSecondary-Typography-root-titleDescription",
-                            ".web-blox-css-tss-1optsd1-Typography-largeLabel2-Typography-largeLabel1-TreeItem-content-Typography-body2-treeItemContent > .MuiTreeItem-label"
-                        ].join(", ");
+                            ".web-blox-css-tss-1optsd1-Typography-largeLabel2-Typography-largeLabel1-TreeItem-content-Typography-body2-treeItemContent > .MuiTreeItem-label",
+                            "title"
+                        ];
+                        let custom_renames = [
+                            ".web-blox-css-mui-dsncs0-Typography-button"
+                        ];
+                        query_names = query_names.join(", ");
+                        custom_renames = custom_renames.join(", ");
 
                         /* Run rename loop */
                         let localeSet = null;
-                        let renameLoopId = null;
+                        let observer = null;
+                        let clear_local_set = false;
                         function blacklisted(header, attribute) {
                             if (header.getAttribute("ng-renamed4") == "true") { return true; }
                             if (header.children && header.children.length > 0 && header.children[0].nodeName.toLowerCase() == "a" && header.children[0].textContent == header.textContent) { return true; }
@@ -354,8 +374,31 @@ inject.js:
                                 m("title");
                             }
                         }
-                        function injectRename() {
-                            let clear_local_set = false;
+                        function handleCustomRename(header) {
+                            if (header.matches(".web-blox-css-mui-dsncs0-Typography-button")) {
+                                if (header.matches("button[aria-selected='false']")) {
+                                    addRename(header, "textContent");
+                                } else if (header.href && header.href.includes("/docs")) {
+                                    let check = setInterval(() => {
+                                        let btn = document.querySelector(".web-blox-css-mui-1ydy1fg");
+                                        if (btn) {
+                                            clearInterval(check);
+                                            addRename(header, "textContent");
+                                        }
+                                    }, 50);
+                                } else {
+                                    let check = setInterval(() => {
+                                        let btn = document.querySelector("button[data-testid='create-experiences-button']");
+                                        if (btn) {
+                                            clearInterval(check);
+                                            addRename(header, "textContent");
+                                        }
+                                    }, 50);
+                                }
+                            }
+                        }
+                        function setLanguage() {
+                            clear_local_set = false;
                             if (!(localeSet)) {
                                 let meta_tag = document.querySelector("a > div > .web-blox-css-mui-9iedg7.MuiChip-label");
                                 if (meta_tag) { localeSet = localeSets[meta_tag.textContent]; }
@@ -365,32 +408,54 @@ inject.js:
                                 }
                                 meta_tag = null;
                             }
-                            let query_selectors = document.querySelectorAll(query_names);
-                            for (let i = 0; i < query_selectors.length; i++) {
-                                let header = query_selectors[i];
-                                addRename(header);
-                            }
-                            query_selectors = null;
-                            let titles = document.querySelectorAll("title");
-                            for (let i = 0; i < titles.length; i++) {
-                                let header = titles[i];
-                                addRename(header);
-                            }
-                            titles = null;
-                            if (clear_local_set == true) { localeSet = null; }
-                        }
-                        function startRenameLoop() {
-                            if (renameLoopId) { clearTimeout(renameLoopId); };
-                            renameLoopId = setTimeout(() => {
-                                injectRename();
-                                startRenameLoop();
-                            }, amountOfSecondsBeforeLoop);
+                            return clear_local_set;
                         }
                         if (settings["includeCreatorDashboard"] == true) {
-                            window.addEventListener("beforeunload", () => {
-                                if (renameLoopId) { clearTimeout(renameLoopId); renameLoopId = null; }
-                            });
-                            startRenameLoop();
+                            function init() {
+                                clear_local_set = setLanguage();
+                                observer = new MutationObserver((mutations) => {
+                                    mutations.forEach(m => {
+                                        m.addedNodes.forEach(node => {
+                                            if (node.nodeType === Node.ELEMENT_NODE) {
+                                                if (node.matches(query_names)) { addRename(node); }
+                                                if (node.matches(custom_renames)) { handleCustomRename(node); }
+                                                node.querySelectorAll(query_names).forEach(desc => { addRename(desc); });
+                                                node.querySelectorAll(custom_renames).forEach(desc => { handleCustomRename(desc); });
+                                            }
+                                        });
+                                        if (m.target instanceof Element) {
+                                            if (m.target.matches(query_names)) {
+                                                addRename(m.target);
+                                            };
+                                            if (m.target.matches(custom_renames)) {
+                                                handleCustomRename(m.target);
+                                            };
+                                        }
+                                    });
+                                });
+                                observer.observe(document.documentElement, {
+                                    childList: true,
+                                    subtree: true,
+                                    characterData: true
+                                });
+                                let query_selectors = document.querySelectorAll(query_names);
+                                for (let i = 0; i < query_selectors.length; i++) {
+                                    let header = query_selectors[i];
+                                    addRename(header);
+                                }
+                                let custom_renaming = document.querySelectorAll(custom_renames);
+                                for (let i = 0; i < custom_renaming.length; i++) {
+                                    let header = custom_renaming[i];
+                                    handleCustomRename(header);
+                                }
+                                query_selectors = null;
+                                custom_renaming = null;
+                            }
+                            if (document.readyState === "loading") {
+                                document.addEventListener("DOMContentLoaded", () => {
+                                    init();
+                                });
+                            } else { init(); }
                         }
                     }
                 }
