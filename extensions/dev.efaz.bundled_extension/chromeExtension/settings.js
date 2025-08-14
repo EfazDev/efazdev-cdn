@@ -271,7 +271,7 @@ async function loadChanges2() {
                             console.log("This user is currently at the latest version!");
                         } else if (compared == -1) {
                             /* User has an update available */
-                            document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | <button id="openChromeExtensionSettings">${getTran("settingsUpdateAvailable")} v${j["version"]}!</button>`;
+                            document.getElementById("extens_vers").innerHTML = `${document.getElementById("extens_vers").innerHTML} | <button id="openChromeExtensionSettings">${getTran("settingsUpdateAvailable")} v${j["version"]}!</button>`;
                             document.getElementById("openChromeExtensionSettings").addEventListener("click", () => {
                                 if (system_settings["browserMode"] == "chrome") {
                                     if (system_settings["chromeWebstoreLinkEnabled"] == true && !(chrome.runtime.id == system_settings["uploadedChromeExtensionID"])) {
