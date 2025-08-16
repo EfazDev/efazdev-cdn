@@ -265,6 +265,12 @@ inject.js:
                                         if (m.target.matches(custom_renames)) {
                                             handleCustomRename(m.target);
                                         };
+                                    } else if (m.target.nodeType === Node.TEXT_NODE) {
+                                        let parent = m.target.parentElement;
+                                        if (parent) {
+                                            if (parent.matches(query_names)) { addRename(parent); }
+                                            if (parent.matches(custom_renames)) { handleCustomRename(parent); }
+                                        }
                                     }
                                 });
                             });
@@ -430,6 +436,12 @@ inject.js:
                                             if (m.target.matches(custom_renames)) {
                                                 handleCustomRename(m.target);
                                             };
+                                        } else if (m.target.nodeType === Node.TEXT_NODE) {
+                                            let parent = m.target.parentElement;
+                                            if (parent) {
+                                                if (parent.matches(query_names)) { addRename(parent); }
+                                                if (parent.matches(custom_renames)) { handleCustomRename(parent); }
+                                            }
                                         }
                                     });
                                 });

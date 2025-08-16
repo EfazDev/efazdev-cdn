@@ -229,6 +229,11 @@ inject.js:
                                     });
                                     if (m.target instanceof Element && m.target.matches(query_names)) {
                                         applyCSS(m.target);
+                                    } else if (m.target.nodeType === Node.TEXT_NODE) {
+                                        let parent = m.target.parentElement;
+                                        if (parent) {
+                                            applyCSS(parent);
+                                        }
                                     }
                                 })
                             });

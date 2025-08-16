@@ -109,7 +109,6 @@ inject.js:
                         /* Set Names */
                         let newName = settings["newName"];
                         let newNameWithoutEndingS = settings["newNameWithoutEndingS"];
-                        let amountOfSecondsBeforeLoop = (typeof (settings["startTime"]) == "string" && Number(settings["startTime"])) ? Number(settings["startTime"]) : 75;
 
                         /* Clean New Name to prevent crashes */
                         let filter_name = document.createElement("div");
@@ -147,6 +146,7 @@ inject.js:
                             '.text-caption-small',
                             '.text-body-small',
                             '.text-heading-small',
+                            '.mutual-friends-tooltip-label',
                             '.text-label',
                             '.section-content > .small',
                             'h3',
@@ -157,19 +157,21 @@ inject.js:
                             '.friends-in-server-label',
                             '.rbx-selection-label',
                             '.text-emphasis',
+                            '.create-friend-link-btn > button',
                             '.text-content',
                             'div.popover-content > div > li > button',
                             ".friends-title",
                             ".roseal-tooltip",
                             ".server-list-header",
                             "#friendsTooltip",
+                            ".avatar-status-container > div.avatar-card-label",
                             ".people-list-header > h2",
                             ".profile-header-social-count-label"
                         ];
                         let custom_renames = [
                             ".web-blox-css-tss-1283320-Button-textContainer",
-                            ".friends-subtitle",
                             ".friends-carousel-tile-labels",
+                            ".friends-subtitle",
                             "a",
                             "title"
                         ];
@@ -213,12 +215,20 @@ inject.js:
                                     val = val.replaceAll(localeSet[1].toLowerCase(), newNameWithoutEndingS.toLowerCase());
                                     changed = true;
                                 }
-                                if (val.includes(localeSet[2])) {
+                                if (val == localeSet[2]) {
                                     val = val.replaceAll(localeSet[2], newName);
                                     changed = true;
                                 }
-                                if (val.includes(localeSet[2].toLowerCase())) {
-                                    val = val.replaceAll(localeSet[2].toLowerCase(), newName.toLowerCase());
+                                if (val == localeSet[2].toLowerCase()) {
+                                    val = val.replaceAll(localeSet[2], newName.toLowerCase());
+                                    changed = true;
+                                }
+                                if (val.includes(localeSet[2] + "ed")) {
+                                    val = val.replaceAll(localeSet[2] + "ed", newNameWithoutEndingS + "ed");
+                                    changed = true;
+                                }
+                                if (val.includes((localeSet[2] + "ed").toLowerCase())) {
+                                    val = val.replaceAll((localeSet[2] + "ed").toLowerCase(), newName.toLowerCase() + "ed");
                                     changed = true;
                                 }
                                 if (val.includes(localeSet[3])) {
@@ -262,8 +272,21 @@ inject.js:
                                     header.innerHTML = innerHTML.replace(localeSet[3], newNameWithoutEndingS.toLowerCase());
                                 }
                             } else if (header.matches(".friends-subtitle")) {
-                                if (header.childNodes && header.childNodes[0] && header.childNodes[0].textContent.includes(localeSet[0]) && !(header.childNodes[0].textContent.includes(newName))) {
-                                    header.childNodes[0].textContent = header.childNodes[0].textContent.replace(localeSet[0], newName);
+                                if (header.childNodes && header.childNodes[0]) {
+                                    let child_node = header.childNodes[0];
+                                    let txt_content = child_node.textContent;
+                                    if (txt_content.includes(localeSet[0])) {
+                                        child_node.textContent = child_node.textContent.replaceAll(localeSet[0], newName);
+                                    } else if (txt_content.includes(localeSet[1])) {
+                                        child_node.textContent = child_node.textContent.replaceAll(localeSet[1], newNameWithoutEndingS);
+                                    }
+                                } else {
+                                    let txt_content = header.textContent;
+                                    if (txt_content.includes(localeSet[0])) {
+                                        header.textContent = txt_content.replaceAll(localeSet[0], newName);
+                                    } else if (txt_content.includes(localeSet[1])) {
+                                        header.textContent = txt_content.replaceAll(localeSet[1], newNameWithoutEndingS);
+                                    }
                                 }
                             } else if (header.matches(".friends-carousel-tile-labels")) {
                                 let innerHTML = header.innerHTML;
@@ -316,6 +339,12 @@ inject.js:
                                         if (m.target.matches(custom_renames)) {
                                             handleCustomRename(m.target);
                                         };
+                                    } else if (m.target.nodeType === Node.TEXT_NODE) {
+                                        let parent = m.target.parentElement;
+                                        if (parent) {
+                                            if (parent.matches(query_names)) { addRename(parent); }
+                                            if (parent.matches(custom_renames)) { handleCustomRename(parent); }
+                                        }
                                     }
                                 });
                             });

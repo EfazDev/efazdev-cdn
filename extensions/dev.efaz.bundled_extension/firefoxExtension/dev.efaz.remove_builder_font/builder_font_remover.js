@@ -323,6 +323,11 @@ inject.js:
                                         });
                                         if (m.target instanceof Element && m.target.matches(query_names)) {
                                             applyCSS(m.target, css);
+                                        } else if (m.target.nodeType === Node.TEXT_NODE) {
+                                            let parent = m.target.parentElement;
+                                            if (parent && parent.matches(query_names)) {
+                                                applyCSS(parent, css);
+                                            }
                                         }
                                     })
                                 });
@@ -482,6 +487,11 @@ inject.js:
                                             });
                                             if (m.target instanceof Element && m.target.matches(query_names)) {
                                                 applyCSS(m.target, css);
+                                            } else if (m.target.nodeType === Node.TEXT_NODE) {
+                                                let parent = m.target.parentElement;
+                                                if (parent && parent.matches(query_names)) {
+                                                    applyCSS(parent, css);
+                                                }
                                             }
                                         })
                                     });
@@ -490,7 +500,7 @@ inject.js:
                                         subtree: true,
                                         characterData: true
                                     });
-                                    
+
                                     let selectors = document.querySelectorAll("style");
                                     await loopThroughArrayAsync(selectors, async (_, header) => {
                                         applyCSS(header);
@@ -552,6 +562,11 @@ inject.js:
                                             });
                                             if (m.target instanceof Element && m.target.matches(query_names)) {
                                                 applyCSS(m.target, css);
+                                            } else if (m.target.nodeType === Node.TEXT_NODE) {
+                                                let parent = m.target.parentElement;
+                                                if (parent && parent.matches(query_names)) {
+                                                    applyCSS(parent, css);
+                                                }
                                             }
                                         })
                                     });
