@@ -169,6 +169,7 @@ inject.js:
                             '.text-pastname.ng-binding',
                             '#private-server-tooltip',
                             '.back-link',
+                            '.roseal-events-nav > h5',
                             '.font-body',
                             '.text-emphasis',
                             '.keyword-block-list-section-header > div',

@@ -1,6 +1,6 @@
 {
-    "enabled_mes": {
-        "message": "Erweiterung aktivieren",
+    "dev_efaz_verified_badge_add_on_settingsExEnable": {
+        "message": "Häkchen aktivieren",
         "description": "Text zum Aktivieren der Erweiterung"
     },
     "thanksTitle": {
@@ -226,5 +226,9 @@
     "dev_efaz_verified_badge_add_on_badgeIdentification3": {
         "message": "Dieses Abzeichen zeigt an, dass dieser Nutzer gemäß der von dir ausgewählten Genehmigungs-JSON vertraut wird! Bitte beachte, dass das verifizierte Abzeichen nicht von Roblox vergeben wurde und visuell hinzugefügt wird.",
         "description": "Abzeichen-Identifikation 3"
+    },
+    "enabled_mes": {
+        "message": "Erweiterung aktivieren",
+        "description": "Text zum Aktivieren der Erweiterung"
     }
 }

@@ -237,12 +237,6 @@ inject.js:
                         }
                         function handleCustomRename(header) {
                             if (header.matches("a")) {
-                                let innerHTML = header.innerHTML;
-                                if (header.href && header.href.includes("/communities") && !(innerHTML.includes(newName))) {
-                                    if (settings["replaceURLwithGroupsURL"] == true) {
-                                        header.href = header.href.replace("/communities", "/groups");
-                                    }
-                                }
                                 if (header.getAttribute("ng-click") == "$ctrl.updateRole(role)" || header.getAttribute("ng-click") == "$ctrl.updateRoleFilter(role)") { return; }
                                 if (settings["massEdit"] == true) {
                                     if (header.childNodes.length > 0) {
@@ -261,21 +255,6 @@ inject.js:
                                     }
                                 }
                             }
-                        }
-                        function injectRename() {
-                            let clear_local_set = setLanguage();
-                            if (settings["replaceURLwithGroupsURL"] == true) {
-                                if (window.location.pathname.includes("/communities") && !(window.location.href.includes("/configure"))) {
-                                    window.history.pushState({ id: "100" }, newName, window.location.href.replace("/communities", "/groups"));
-                                }
-                            }
-                            if (clear_local_set == true) { localeSet = null; }
-                        }
-                        function startRenameLoop() {
-                            renameLoopId = setTimeout(() => {
-                                injectRename();
-                                startRenameLoop();
-                            }, 3000);
                         }
                         function init() {
                             clear_local_set = setLanguage();
@@ -323,7 +302,6 @@ inject.js:
                             query_selectors = null;
                             custom_renaming = null;
                             if (clear_local_set == true) { localeSet = null; }
-                            startRenameLoop();
                         }
                         if (document.readyState === "loading") {
                             document.addEventListener("DOMContentLoaded", () => {

@@ -1,7 +1,7 @@
 {
-    "enabled_mes": {
-        "message": "Activer l'extension",
-        "description": "Activer le texte de l'extension"
+    "dev_efaz_verified_badge_add_on_settingsExEnable": {
+        "message": "Activer l'Checkmark",
+        "description": "Activer le texte de l'Extension"
     },
     "thanksTitle": {
         "message": "Merci pour l'installation",
@@ -226,5 +226,9 @@
     "dev_efaz_verified_badge_add_on_badgeIdentification3": {
         "message": "Ce badge indique que cet utilisateur est approuvé selon le JSON d'approbation que vous avez sélectionné! Veuillez noter que le badge vérifié n'a pas été attribué par Roblox et qu'il est ajouté visuellement.",
         "description": "Identification du badge 3"
+    },
+    "enabled_mes": {
+        "message": "Activer l'extension",
+        "description": "Activer le texte de l'extension"
     }
 }

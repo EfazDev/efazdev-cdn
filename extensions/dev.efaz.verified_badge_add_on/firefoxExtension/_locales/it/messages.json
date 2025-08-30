@@ -1,6 +1,6 @@
 {
-    "enabled_mes": {
-        "message": "Abilita Estensione",
+    "dev_efaz_verified_badge_add_on_settingsExEnable": {
+        "message": "Abilita Checkmark",
         "description": "Enable Extension text"
     },
     "thanksTitle": {
@@ -226,5 +226,9 @@
     "dev_efaz_verified_badge_add_on_badgeIdentification3": {
         "message": "Questo badge identifica che l'utente è stato approvato secondo il JSON di approvazione selezionato da te! Si prega di sapere che il badge verificato non è stato dato da Roblox ed è aggiunto visivamente.",
         "description": "Badge identification 3"
+    },
+    "enabled_mes": {
+        "message": "Abilita Estensione",
+        "description": "Enable Extension text"
     }
 }

@@ -20,12 +20,6 @@
             "reset": true,
             "neededSettings": ["enabled"]
         },
-        "replaceURLwithGroupsURL": {
-            "text": "Replace /communities URL with /groups",
-            "type": "checkbox",
-            "default": true,
-            "neededSettings": ["enabled"]
-        },
         "massEdit": {
             "text": "Mass Edit HTML Contents with Community or Communities Text",
             "type": "checkbox",

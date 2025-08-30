@@ -1,7 +1,7 @@
 {
-    "enabled_mes": {
-        "message": "Habilitar extensión",
-        "description": "Habilitar el texto de la extensión"
+    "dev_efaz_verified_badge_add_on_settingsExEnable": {
+        "message": "Habilitar Checkmark",
+        "description": "Habilitar el texto de la Extension"
     },
     "thanksTitle": {
         "message": "Gracias por Instalando",
@@ -226,5 +226,9 @@
     "dev_efaz_verified_badge_add_on_badgeIdentification3": {
         "message": "¡Esta insignia identifica que este usuario fue confiable según el JSON de aprobación seleccionado por usted! Tenga en cuenta que la insignia verificada La insignia no fue otorgada por Roblox y se agregó visualmente.",
         "description": "Identificación de la insignia 3"
+    },
+    "enabled_mes": {
+        "message": "Habilitar extensión",
+        "description": "Habilitar el texto de la extensión"
     }
 }
