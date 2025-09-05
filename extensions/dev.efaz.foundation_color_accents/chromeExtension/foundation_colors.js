@@ -248,6 +248,14 @@ inject.js:
                                 applyCSS(header);
                             });
                             all_styles = null;
+
+                            if (!(document.getElementById("themeSet"))) {
+                                let d = document.createElement("style");
+                                d.setAttribute("id", "themeSet");
+                                d.setAttribute("rel", "stylesheet");
+                                d.textContent = ".dark-theme { --theme-buttons-confirm-background: {themeColor} !important;} .light-theme { --theme-buttons-confirm-background: {themeColor} !important;} .system-theme { --theme-buttons-confirm-background: {themeColor} !important;}".replaceAll("{themeColor}", settings["color"]);
+                                document.head.append(d);
+                            }
                         }
                         if (document.readyState === "loading") {
                             document.addEventListener("DOMContentLoaded", () => {
@@ -345,7 +353,7 @@ inject.js:
                                         let base_color_res = applyBaseColoring(target_sheet);
                                         let change_made = base_color_res[0];
                                         let converted_sheet = base_color_res[1];
-                                        if (header.className && header.className.animVal && header.className.animVal.includes("highcharts-point highcharts-color-0")) {
+                                        if (header.getAttribute("class") && header.getAttribute("class").includes("highcharts-point highcharts-color-0")) {
                                             converted_sheet = settings["color"];
                                             change_made = true;
                                         }
@@ -374,7 +382,7 @@ inject.js:
                                         let base_color_res = applyBaseColoring(target_sheet);
                                         let change_made = base_color_res[0];
                                         let converted_sheet = base_color_res[1];
-                                        if (header.className && header.className.animVal && header.className.animVal.includes("highcharts-point highcharts-color-0")) {
+                                        if (header.getAttribute("class") && header.getAttribute("class").includes("highcharts-point highcharts-color-0")) {
                                             converted_sheet = settings["color"];
                                             change_made = true;
                                         }

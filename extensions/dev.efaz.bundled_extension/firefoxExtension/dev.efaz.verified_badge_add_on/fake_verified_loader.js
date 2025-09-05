@@ -401,17 +401,17 @@ function start() {
                                         let main_headers = document.querySelectorAll(".profile-name.text-overflow");
                                         if (main_headers.length > 0) {
                                             main_headers.forEach((main_header) => {
-                                                if (main_header.offsetParent && main_header.offsetParent.className == "header-title") {
+                                                if (main_header.offsetParent && main_header.offsetParent.getAttribute("class") == "header-title") {
                                                     if (vIconPlaced(main_header.offsetParent.innerHTML)) { return; }
                                                     if (main_header.offsetParent.innerHTML.includes(displayName)) {
                                                         main_header.offsetParent.appendChild(generateDOMElement(profile_html));
                                                     }
-                                                } else if (main_header.parentElement && main_header.parentElement.className == "header-title") {
+                                                } else if (main_header.parentElement && main_header.parentElement.getAttribute("class") == "header-title") {
                                                     if (vIconPlaced(main_header.parentElement.innerHTML)) { return; }
                                                     if (main_header.parentElement.innerHTML.includes(displayName)) {
                                                         main_header.parentElement.appendChild(generateDOMElement(profile_html));
                                                     }
-                                                } else if (main_header.parentElement && main_header.parentElement.parentElement && main_header.parentElement.parentElement.className == "header-title") {
+                                                } else if (main_header.parentElement && main_header.parentElement.parentElement && main_header.parentElement.parentElement.getAttribute("class") == "header-title") {
                                                     if (vIconPlaced(main_header.parentElement.parentElement.innerHTML)) { return; }
                                                     if (main_header.parentElement.parentElement.innerHTML.includes(displayName)) {
                                                         main_header.parentElement.parentElement.appendChild(generateDOMElement(profile_html));
@@ -432,10 +432,23 @@ function start() {
                                         }
                                         main_headers2 = null;
 
-                                        let premium_logos = document.querySelectorAll(".premium-badge-right-aligned");
+                                        let main_headers3 = document.querySelectorAll(".profile-content > .info > .names > h1");
+                                        if (main_headers3.length > 0) {
+                                            main_headers3.forEach((main_header) => {
+                                                if (vIconPlaced(main_header.innerHTML)) { return; }
+                                                if (main_header.innerHTML.includes(displayName)) {
+                                                    let s = generateDOMElement(profile2_html.replace("28", "18").replace("28", "18"))
+                                                    s.children[0].style = "height: 18px; width: 18px; margin-left: 4px;"
+                                                    main_header.appendChild(s);
+                                                }
+                                            });
+                                        }
+                                        main_headers3 = null;
+
+                                        let premium_logos = document.querySelectorAll(".premium-badge-right-aligned, .profile-content > .info > .names > h1 > .premium-badge-icon");
                                         if (premium_logos.length > 0) {
                                             premium_logos.forEach((premium) => {
-                                                if (premium && premium.className == "premium-badge-right-aligned") {
+                                                if (premium && (premium.getAttribute("class") == "premium-badge-right-aligned" || premium.getAttribute("class") == "premium-badge-icon")) {
                                                     premium.remove();
                                                 }
                                             });
@@ -453,10 +466,33 @@ function start() {
                                         premium_logos2 = null;
                                     }
 
+                                    let main_headers3 = document.querySelectorAll(".header-caption > .header-names > h1.profile-name");
+                                    if (main_headers3.length > 0) {
+                                        main_headers3.forEach((main_header) => {
+                                            if (vIconPlaced(main_header.innerHTML)) { return; }
+                                            if (main_header.innerHTML.includes(displayName)) {
+                                                let s = generateDOMElement(profile2_html.replace("28", "18").replace("28", "18"))
+                                                s.children[0].style = "height: 18px; width: 18px; margin-left: 4px;"
+                                                main_header.appendChild(s);
+                                            }
+                                        });
+                                    }
+                                    main_headers3 = null;
+
+                                    let premium_logos = document.querySelectorAll(".header-caption > .header-names > h1.profile-name > .premium-badge-icon");
+                                    if (premium_logos.length > 0) {
+                                        premium_logos.forEach((premium) => {
+                                            if (premium && (premium.getAttribute("class") == "premium-badge-right-aligned" || premium.getAttribute("class") == "premium-badge-icon")) {
+                                                premium.remove();
+                                            }
+                                        });
+                                    }
+                                    premium_logos = null;
+
                                     let name_on_side = document.querySelectorAll(".font-header-2.dynamic-ellipsis-item");
                                     if (name_on_side.length > 0) {
                                         name_on_side.forEach((main_name_on_side) => {
-                                            if (main_name_on_side.outerHTML.includes(displayName) && main_name_on_side.parentElement && main_name_on_side.parentElement.href) {
+                                            if ((main_name_on_side.outerHTML.includes(displayName) || main_name_on_side.outerHTML.includes(username)) && main_name_on_side.parentElement && main_name_on_side.parentElement.href) {
                                                 if (getIfLinkIsUserProfile(main_name_on_side.parentElement.href) && getIfLinkIsUser(main_name_on_side.parentElement.href, userId.toString())) {
                                                     if (vIconPlaced(main_name_on_side.outerHTML)) { return; }
                                                     main_name_on_side.innerHTML = `${main_name_on_side.innerHTML} ${name_side_real_html}`;
@@ -471,7 +507,7 @@ function start() {
                                         username_containers.forEach((usr_con) => {
                                             if (usr_con.innerHTML.includes(displayName)) {
                                                 if (vIconPlaced(usr_con.innerHTML)) { return; }
-                                                if (usr_con.className == "dynamic-ellipsis-item user-name-container text-link") {
+                                                if (usr_con.getAttribute("class") == "dynamic-ellipsis-item user-name-container text-link") {
                                                     usr_con.innerHTML = `${usr_con.innerHTML} ${name_html.replace("width='28'", "width='14'").replace("height='28'", "height='14'")}`;
                                                 } else {
                                                     usr_con.innerHTML = `${usr_con.innerHTML} ${name_html}`;
@@ -487,7 +523,7 @@ function start() {
                                                 let group_guilded_posts = document.querySelectorAll(".text-name.name");
                                                 if (group_guilded_posts.length > 0) {
                                                     group_guilded_posts.forEach((shout) => {
-                                                        if (shout.className == "text-name name" && shout.innerHTML.includes(displayName) && getIfLinkIsUserProfile(shout.href) && getIfLinkIsUser(shout.href, userId.toString())) {
+                                                        if (shout.getAttribute("class") == "text-name name" && shout.innerHTML.includes(displayName) && getIfLinkIsUserProfile(shout.href) && getIfLinkIsUser(shout.href, userId.toString())) {
                                                             if (vIconPlaced(shout.parentElement.outerHTML)) { return; }
                                                             shout.outerHTML = `${shout.outerHTML} ${genVIcon(name_side_html, 2, 12, 12, 6, 16, 16)}`;
                                                         }
@@ -511,7 +547,7 @@ function start() {
                                                 let group_wall = document.querySelectorAll(".text-label-medium.content-emphasis.ng-binding.ng-scope");
                                                 if (group_wall.length > 0) {
                                                     group_wall.forEach((main_name_on_group) => {
-                                                        if (main_name_on_group.outerHTML.includes(displayName) && main_name_on_group.className == "text-label-medium content-emphasis ng-binding ng-scope" && getIfLinkIsUserProfile(main_name_on_group.href) && getIfLinkIsUser(main_name_on_group.href, userId.toString())) {
+                                                        if (main_name_on_group.outerHTML.includes(displayName) && main_name_on_group.getAttribute("class") == "text-label-medium content-emphasis ng-binding ng-scope" && getIfLinkIsUserProfile(main_name_on_group.href) && getIfLinkIsUser(main_name_on_group.href, userId.toString())) {
                                                             if (vIconPlaced(main_name_on_group.innerHTML)) { return; }
                                                             main_name_on_group.innerHTML = `${main_name_on_group.innerHTML} ${genVIcon(name_side_html, 2, 12, 12, 0, 16, 16)}`;
                                                         }
@@ -600,7 +636,7 @@ function start() {
                                         let unamec_2 = document.querySelectorAll(".creator-name.text-link");
                                         if (unamec_2.length > 0) {
                                             unamec_2.forEach((usr_con) => {
-                                                if (usr_con.outerHTML.includes(username_at) && usr_con.className == "creator-name text-link") {
+                                                if (usr_con.outerHTML.includes(username_at) && usr_con.getAttribute("class") == "creator-name text-link") {
                                                     if (!(usr_con.parentElement)) { return; }
                                                     if (vIconPlaced(usr_con.parentElement.outerHTML)) { return; }
                                                     usr_con.outerHTML = `${usr_con.outerHTML} ${genVIcon(name_side_html, 2, null, null, -1)}`;
@@ -608,12 +644,12 @@ function start() {
                                             });
                                             unamec_2.forEach((usr_con) => {
                                                 if (include_groups == true) {
-                                                    if (usr_con.className == "creator-name text-link") {
+                                                    if (usr_con.getAttribute("class") == "creator-name text-link") {
                                                         if (usr_con.href && getIfLinkIsGroup(usr_con.href)) {
                                                             let group_id = usr_con.href.match(/[0-9]+/)[0];
                                                             approvedGroup(group_id).then((info) => {
                                                                 if (info["accepted"] == true) {
-                                                                    if (usr_con.className == "creator-name text-link") {
+                                                                    if (usr_con.getAttribute("class") == "creator-name text-link") {
                                                                         if (usr_con.outerHTML.includes(info["name"])) {
                                                                             if (!(usr_con.parentElement)) { return; }
                                                                             if (vIconPlaced(usr_con.parentElement.outerHTML)) { return; }
@@ -632,7 +668,7 @@ function start() {
                                         let unamec_7 = document.querySelectorAll(".avatar-name.text-overflow.ng-binding");
                                         if (unamec_7.length > 0) {
                                             unamec_7.forEach((usr_con) => {
-                                                if (usr_con.outerHTML.includes(displayName) && usr_con.className == "avatar-name text-overflow ng-binding") {
+                                                if (usr_con.outerHTML.includes(displayName) && usr_con.getAttribute("class") == "avatar-name text-overflow ng-binding") {
                                                     if (usr_con.parentElement.parentElement.children[1].outerHTML.includes(username_at)) {
                                                         if (!(usr_con.parentElement)) { return; }
                                                         if (!(usr_con.parentElement.parentElement)) { return; }
@@ -648,7 +684,7 @@ function start() {
                                         let unamec_8 = document.querySelectorAll(".text-overflow.avatar-name.ng-binding.ng-scope");
                                         if (unamec_8.length > 0) {
                                             unamec_8.forEach((usr_con) => {
-                                                if (usr_con.outerHTML.includes(displayName) && usr_con.className == "text-overflow avatar-name ng-binding ng-scope") {
+                                                if (usr_con.outerHTML.includes(displayName) && usr_con.getAttribute("class") == "text-overflow avatar-name ng-binding ng-scope") {
                                                     let unamec_9 = document.querySelectorAll(".text-overflow.avatar-card-label.ng-binding.ng-scope");
                                                     if (unamec_9.length > 0) {
                                                         unamec_9.forEach((usr_con_2) => {
@@ -672,7 +708,7 @@ function start() {
                                         let unamec_7 = document.querySelectorAll(".avatar-name.text-overflow.ng-binding");
                                         if (unamec_7.length > 0) {
                                             unamec_7.forEach((usr_con) => {
-                                                if (usr_con.outerHTML.includes(displayName) && usr_con.className == "avatar-name text-overflow ng-binding") {
+                                                if (usr_con.outerHTML.includes(displayName) && usr_con.getAttribute("class") == "avatar-name text-overflow ng-binding") {
                                                     if (usr_con.parentElement.parentElement.children[1].outerHTML.includes(username_at)) {
                                                         if (!(usr_con.parentElement)) { return; }
                                                         if (!(usr_con.parentElement.parentElement)) { return; }
@@ -691,7 +727,7 @@ function start() {
                                         let unamec_10 = document.querySelectorAll(".text-name.username.ng-binding");
                                         if (unamec_10.length > 0) {
                                             unamec_10.forEach((usr_con) => {
-                                                if (usr_con.outerHTML.includes(username) && usr_con.className == "text-name username ng-binding") {
+                                                if (usr_con.outerHTML.includes(username) && usr_con.getAttribute("class") == "text-name username ng-binding") {
                                                     if (!(usr_con.parentElement)) { return; }
                                                     if (vIconPlaced(usr_con.parentElement.outerHTML)) { return; }
                                                     usr_con.outerHTML = `${usr_con.outerHTML} ${reseller_html}`;
@@ -704,7 +740,7 @@ function start() {
                                         let unamec_11 = document.querySelectorAll(".text-overflow.avatar-name");
                                         if (unamec_11.length > 0) {
                                             unamec_11.forEach((usr_con) => {
-                                                if (usr_con && usr_con.outerHTML.includes(displayName) && getIfLinkIsUserProfile(usr_con.href) && getIfLinkIsUser(usr_con.href, userId.toString()) && usr_con.className == "text-overflow avatar-name") {
+                                                if (usr_con && usr_con.outerHTML.includes(displayName) && getIfLinkIsUserProfile(usr_con.href) && getIfLinkIsUser(usr_con.href, userId.toString()) && usr_con.getAttribute("class") == "text-overflow avatar-name") {
                                                     if (!(usr_con.parentElement)) { return; }
                                                     if (vIconPlaced(usr_con.parentElement.outerHTML)) { return; }
                                                     usr_con.outerHTML = `${usr_con.outerHTML} ${game_html}`;
@@ -718,12 +754,12 @@ function start() {
                                         if (unamec_12.length > 0) {
                                             unamec_12.forEach((usr_con) => {
                                                 if (include_groups == true) {
-                                                    if (usr_con.className == "text-overflow game-card-name ng-binding") {
+                                                    if (usr_con.getAttribute("class") == "text-overflow game-card-name ng-binding") {
                                                         if (usr_con.parentElement.parentElement.href && getIfLinkIsGroup(usr_con.parentElement.parentElement.href)) {
                                                             let group_id = usr_con.parentElement.parentElement.href.match(/[0-9]+/)[0];
                                                             approvedGroup(group_id, true).then((info) => {
                                                                 if (info["accepted"] == true) {
-                                                                    if (usr_con.className == "text-overflow game-card-name ng-binding") {
+                                                                    if (usr_con.getAttribute("class") == "text-overflow game-card-name ng-binding") {
                                                                         if (usr_con.outerHTML.includes(info["name"])) {
                                                                             if (!(usr_con.parentElement)) { return; }
                                                                             if (vIconPlaced(usr_con.parentElement.outerHTML)) { return; }
@@ -743,12 +779,12 @@ function start() {
                                         if (unamec_13.length > 0) {
                                             unamec_13.forEach((usr_con) => {
                                                 if (include_groups == true) {
-                                                    if (usr_con.className == "ng-binding slide-item-name text-overflow groups font-title") {
+                                                    if (usr_con.getAttribute("class") == "ng-binding slide-item-name text-overflow groups font-title") {
                                                         if (usr_con.parentElement.href && getIfLinkIsGroup(usr_con.parentElement.href)) {
                                                             let group_id = usr_con.parentElement.href.match(/[0-9]+/)[0];
                                                             approvedGroup(group_id, true).then((info) => {
                                                                 if (info["accepted"] == true) {
-                                                                    if (usr_con.className == "ng-binding slide-item-name text-overflow groups font-title") {
+                                                                    if (usr_con.getAttribute("class") == "ng-binding slide-item-name text-overflow groups font-title") {
                                                                         if (usr_con.innerHTML.includes(info["name"])) {
                                                                             if (!(usr_con.parentElement)) { return; }
                                                                             if (vIconPlaced(usr_con.parentElement.outerHTML)) { return; }
@@ -768,7 +804,7 @@ function start() {
                                         let unamec_12 = document.querySelectorAll(".paired-name.message-summary-username.positionAboveLink.font-header-2.ng-scope");
                                         if (unamec_12.length > 0) {
                                             unamec_12.forEach((usr_con) => {
-                                                if (usr_con.children[0] && usr_con.className == "paired-name message-summary-username positionAboveLink font-header-2 ng-scope") {
+                                                if (usr_con.children[0] && usr_con.getAttribute("class") == "paired-name message-summary-username positionAboveLink font-header-2 ng-scope") {
                                                     if (vIconPlaced(usr_con.children[0].outerHTML)) { return; }
                                                     if (usr_con.innerHTML.includes(username_at)) {
                                                         usr_con.children[0].innerHTML = `${usr_con.children[0].innerHTML}${game_html}`;
@@ -781,7 +817,7 @@ function start() {
                                         let unamec_13 = document.querySelectorAll(".paired-name.text-name.username-container.font-header-2");
                                         if (unamec_13.length > 0) {
                                             unamec_13.forEach((usr_con) => {
-                                                if (usr_con.children[0] && usr_con.className == "paired-name text-name username-container font-header-2") {
+                                                if (usr_con.children[0] && usr_con.getAttribute("class") == "paired-name text-name username-container font-header-2") {
                                                     if (vIconPlaced(usr_con.children[0].outerHTML)) { return; }
                                                     if (usr_con.innerHTML.includes(username_at)) {
                                                         usr_con.children[0].innerHTML = `${usr_con.children[0].innerHTML}${game_html}`;
@@ -796,14 +832,14 @@ function start() {
                                         if (unamec_4.length > 0) {
                                             unamec_4.forEach((usr_con) => {
                                                 if (!(usr_con.parentElement)) { return; }
-                                                if (usr_con.parentElement.outerHTML.includes(username) && usr_con.parentElement.outerHTML.includes(userId) && usr_con.className == "text-name") {
+                                                if (usr_con.parentElement.outerHTML.includes(username) && usr_con.parentElement.outerHTML.includes(userId) && usr_con.getAttribute("class") == "text-name") {
                                                     if (vIconPlaced(usr_con.parentElement.parentElement.outerHTML)) { return; }
                                                     usr_con.parentElement.outerHTML = `${usr_con.parentElement.outerHTML}${genVIcon(game_html, 4, null, null, 2, null, null)}`;
                                                 } else if (include_groups == true) {
                                                     if (usr_con.href && getIfLinkIsGroup(usr_con.href)) {
                                                         let group_id = usr_con.href.match(/[0-9]+/)[0];
                                                         approvedGroup(group_id).then((info) => {
-                                                            if (info["accepted"] == true && usr_con.className == "text-name") {
+                                                            if (info["accepted"] == true && usr_con.getAttribute("class") == "text-name") {
                                                                 if (!(usr_con.parentElement)) { return; }
                                                                 if (!(usr_con.parentElement.parentElement)) { return; }
                                                                 if (usr_con.parentElement.outerHTML.includes(info["name"])) {
@@ -824,7 +860,7 @@ function start() {
                                                 if (!(usr_con.children && usr_con.children[1])) { return; }
                                                 if (!(usr_con.children[1].children[0])) { return; }
                                                 if (!(usr_con.children[1].children[0].children[1])) { return; }
-                                                if (usr_con.children[1].href && getIfLinkIsUserProfile(usr_con.children[1].href) && getIfLinkIsUser(usr_con.children[1].href, userId.toString()) && usr_con.className == "rbx-private-owner") {
+                                                if (usr_con.children[1].href && getIfLinkIsUserProfile(usr_con.children[1].href) && getIfLinkIsUser(usr_con.children[1].href, userId.toString()) && usr_con.getAttribute("class") == "rbx-private-owner") {
                                                     if (vIconPlaced(usr_con.children[1].children[0].children[1].innerHTML)) { return; }
                                                     usr_con.children[1].children[0].children[1].innerHTML = genVIcon(game_html, 4, null, null, 1, null, null);
                                                 }
@@ -836,16 +872,16 @@ function start() {
                                     let unamec_2 = document.querySelectorAll(".creator-name.text-link");
                                     if (unamec_2.length > 0) {
                                         unamec_2.forEach((usr_con) => {
-                                            if (usr_con.outerHTML.includes(username_at) && usr_con.className == "creator-name text-link") {
+                                            if (usr_con.outerHTML.includes(username_at) && usr_con.getAttribute("class") == "creator-name text-link") {
                                                 if (!(usr_con.parentElement)) { return; }
                                                 if (vIconPlaced(usr_con.parentElement.outerHTML)) { return; }
                                                 usr_con.outerHTML = `${usr_con.outerHTML} ${genVIcon(name_side_html, 2, null, null, -1)}`;
                                             }
                                             if (include_groups == true) {
-                                                if (usr_con.className == "creator-name text-link" && usr_con.href && getIfLinkIsGroup(usr_con.href)) {
+                                                if (usr_con.getAttribute("class") == "creator-name text-link" && usr_con.href && getIfLinkIsGroup(usr_con.href)) {
                                                     let group_id = usr_con.href.match(/[0-9]+/)[0];
                                                     approvedGroup(group_id).then((info) => {
-                                                        if (info["accepted"] == true && usr_con.className == "creator-name text-link" && usr_con.outerHTML.includes(info["name"])) {
+                                                        if (info["accepted"] == true && usr_con.getAttribute("class") == "creator-name text-link" && usr_con.outerHTML.includes(info["name"])) {
                                                             if (!(usr_con.parentElement)) { return; }
                                                             if (vIconPlaced(usr_con.parentElement.outerHTML)) { return; }
                                                             usr_con.outerHTML = `${usr_con.outerHTML} ${genVIcon(name_side_html, 2, null, null, -1)}`;
@@ -860,7 +896,7 @@ function start() {
                                     let unamec_3 = document.querySelectorAll(".text-name.text-overflow");
                                     if (unamec_3.length > 0) {
                                         unamec_3.forEach((usr_con) => {
-                                            if (usr_con.outerHTML.includes(username_at) && usr_con.className == "text-name text-overflow") {
+                                            if (usr_con.outerHTML.includes(username_at) && usr_con.getAttribute("class") == "text-name text-overflow") {
                                                 if (!(usr_con.parentElement)) { return; }
                                                 if (vIconPlaced(usr_con.parentElement.outerHTML)) { return; }
                                                 usr_con.outerHTML = `${usr_con.outerHTML}${game_html}`;
@@ -868,7 +904,7 @@ function start() {
                                                 if (usr_con.href && getIfLinkIsGroup(usr_con.href)) {
                                                     let group_id = usr_con.href.match(/[0-9]+/)[0];
                                                     approvedGroup(group_id).then((info) => {
-                                                        if (info["accepted"] == true && usr_con.className == "text-name text-overflow") {
+                                                        if (info["accepted"] == true && usr_con.getAttribute("class") == "text-name text-overflow") {
                                                             if (usr_con.outerHTML.includes(info["name"])) {
                                                                 if (!(usr_con.parentElement)) { return; }
                                                                 if (vIconPlaced(usr_con.parentElement.outerHTML)) { return; }
@@ -886,14 +922,14 @@ function start() {
                                     if (unamec_4.length > 0) {
                                         unamec_4.forEach((usr_con) => {
                                             if (!(usr_con.parentElement)) { return; }
-                                            if (usr_con.parentElement.outerHTML.includes(username) && usr_con.parentElement.outerHTML.includes(userId) && usr_con.className == "text-name") {
+                                            if (usr_con.parentElement.outerHTML.includes(username) && usr_con.parentElement.outerHTML.includes(userId) && usr_con.getAttribute("class") == "text-name") {
                                                 if (vIconPlaced(usr_con.parentElement.parentElement.outerHTML)) { return; }
                                                 usr_con.parentElement.outerHTML = `${usr_con.parentElement.outerHTML}${genVIcon(game_html, 4, null, null, 2, null, null)}`;
                                             } else if (include_groups == true) {
                                                 if (usr_con.href && getIfLinkIsGroup(usr_con.href)) {
                                                     let group_id = usr_con.href.match(/[0-9]+/)[0];
                                                     approvedGroup(group_id).then((info) => {
-                                                        if (info["accepted"] == true && usr_con.className == "text-name") {
+                                                        if (info["accepted"] == true && usr_con.getAttribute("class") == "text-name") {
                                                             if (!(usr_con.parentElement)) { return; }
                                                             if (!(usr_con.parentElement.parentElement)) { return; }
                                                             if (usr_con.parentElement.outerHTML.includes(info["name"])) {
@@ -911,7 +947,7 @@ function start() {
                                     let unamec_5 = document.querySelectorAll(".text-overflow.age-bracket-label-username.font-caption-header");
                                     if (unamec_5.length > 0) {
                                         unamec_5.forEach((usr_con) => {
-                                            if (usr_con.outerHTML.includes(displayName) && usr_con.className == "text-overflow age-bracket-label-username font-caption-header") {
+                                            if (usr_con.outerHTML.includes(displayName) && usr_con.getAttribute("class") == "text-overflow age-bracket-label-username font-caption-header") {
                                                 if (!(usr_con.parentElement)) { return; }
                                                 if (vIconPlaced(usr_con.parentElement.outerHTML)) { return; }
                                                 usr_con.outerHTML = `${usr_con.outerHTML} ${name_side_html.replace("margin-left: 2px;width: 12px;height: 12px; background: none !important;", "margin-right: 6px; margin-left: -2px; width: 14px; height: 14px; background: none !important;")}`;
@@ -923,7 +959,7 @@ function start() {
                                     let unamec_6 = document.querySelectorAll(".text-name.name.ng-binding");
                                     if (unamec_6.length > 0) {
                                         unamec_6.forEach((usr_con) => {
-                                            if (usr_con.outerHTML.includes(displayName) && usr_con.className == "text-name name ng-binding") {
+                                            if (usr_con.outerHTML.includes(displayName) && usr_con.getAttribute("class") == "text-name name ng-binding") {
                                                 if (!(usr_con.parentElement)) { return; }
                                                 if (vIconPlaced(usr_con.parentElement.outerHTML)) { return; }
                                                 usr_con.outerHTML = `${usr_con.outerHTML} ${genVIcon(name_side_html, 2, 12, 12, 4, 16, 16)}`;
@@ -935,7 +971,7 @@ function start() {
                                     let unamec_7 = document.querySelectorAll(".avatar-name.text-overflow.ng-binding");
                                     if (unamec_7.length > 0) {
                                         unamec_7.forEach((usr_con) => {
-                                            if (usr_con.outerHTML.includes(displayName) && usr_con.className == "avatar-name text-overflow ng-binding") {
+                                            if (usr_con.outerHTML.includes(displayName) && usr_con.getAttribute("class") == "avatar-name text-overflow ng-binding") {
                                                 if (usr_con.parentElement.parentElement.children[1].outerHTML.includes(username_at)) {
                                                     if (!(usr_con.parentElement)) { return; }
                                                     if (!(usr_con.parentElement.parentElement)) { return; }
@@ -951,7 +987,7 @@ function start() {
                                         let unamec_8 = document.querySelectorAll(".text-overflow.avatar-name.ng-binding.ng-scope");
                                         if (unamec_8.length > 0) {
                                             unamec_8.forEach((usr_con) => {
-                                                if (usr_con.outerHTML.includes(displayName) && usr_con.className == "text-overflow avatar-name ng-binding ng-scope") {
+                                                if (usr_con.outerHTML.includes(displayName) && usr_con.getAttribute("class") == "text-overflow avatar-name ng-binding ng-scope") {
                                                     let unamec_9 = document.querySelectorAll(".text-overflow.avatar-card-label.ng-binding.ng-scope");
                                                     if (unamec_9.length > 0) {
                                                         unamec_9.forEach((usr_con_2) => {
@@ -973,7 +1009,7 @@ function start() {
                                         let friends_username_containers = document.querySelectorAll(".text-link.friend-link.ng-isolate-scope");
                                         if (friends_username_containers.length > 0) {
                                             friends_username_containers.forEach((usr_con) => {
-                                                if (usr_con.href && usr_con.className == "text-link friend-link ng-isolate-scope") {
+                                                if (usr_con.href && usr_con.getAttribute("class") == "text-link friend-link ng-isolate-scope") {
                                                     let userIdd = usr_con.href.match(/[0-9]+/)[0];
                                                     if (userId == userIdd) {
                                                         if (usr_con.innerHTML.includes('class="hide"') && usr_con.innerHTML.includes(displayName)) {
@@ -1002,7 +1038,7 @@ function start() {
                                         let friends_scroll_containers = document.querySelectorAll(".friends-carousel-tile-labels");
                                         if (friends_scroll_containers.length > 0) {
                                             friends_scroll_containers.forEach((usr_con) => {
-                                                if (usr_con.href && usr_con.className == "friends-carousel-tile-labels") {
+                                                if (usr_con.href && usr_con.getAttribute("class") == "friends-carousel-tile-labels") {
                                                     let userIdd = usr_con.href.match(/[0-9]+/)[0];
                                                     if (userId == userIdd) {
                                                         if (usr_con.children[0] && usr_con.children[0].children[0]) {

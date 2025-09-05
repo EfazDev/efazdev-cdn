@@ -211,14 +211,17 @@ span.foundation-web-button-content.relative {
 
 .light-theme {
     --config-text-font: BuilderRemove !important;
+    --theme-typography-primary-fontFamily: BuilderRemove !important;
 }
 
 .dark-theme {
     --config-text-font: BuilderRemove !important;
+    --theme-typography-primary-fontFamily: BuilderRemove !important;
 }
 
 .system-theme {
     --config-text-font: BuilderRemove !important;
+    --theme-typography-primary-fontFamily: BuilderRemove !important;
 }
 
 .text-label-large, .text-caption-large, .text-body-large, .text-heading-large {

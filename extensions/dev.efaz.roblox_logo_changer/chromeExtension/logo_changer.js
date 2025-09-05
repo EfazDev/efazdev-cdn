@@ -225,7 +225,7 @@ inject.js:
                                 for (let i = 0; i < creator_hub_icon.length; i++) {
                                     let header = creator_hub_icon[i];
                                     if (header.tagName.toLowerCase() == "svg") {
-                                        header.outerHTML = '<img class="' + header.className + '" width="' + header.getAttribute("width") + '" height="' + header.getAttribute("height") + '" src="' + settings["projectedImage2"] + '">';
+                                        header.outerHTML = '<img class="' + header.getAttribute("class") + '" width="' + header.getAttribute("width") + '" height="' + header.getAttribute("height") + '" src="' + settings["projectedImage2"] + '">';
                                     }
                                 }
                                 creator_hub_icon = null;

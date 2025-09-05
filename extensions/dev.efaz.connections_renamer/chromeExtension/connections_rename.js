@@ -166,12 +166,15 @@ inject.js:
                             "#friendsTooltip",
                             ".avatar-status-container > div.avatar-card-label",
                             ".people-list-header > h2",
-                            ".profile-header-social-count-label"
+                            ".profile-header-social-count-label",
+                            "#friend-action"
                         ];
                         let custom_renames = [
                             ".web-blox-css-tss-1283320-Button-textContainer",
                             ".friends-carousel-tile-labels",
                             ".friends-subtitle",
+                            ".friends-header > div > h2",
+                            ".header-left > h2",
                             "a",
                             "title"
                         ];
@@ -271,7 +274,7 @@ inject.js:
                                 } else if (innerHTML.includes(localeSet[3]) && !(innerHTML.includes(newNameWithoutEndingS.toLowerCase()))) {
                                     header.innerHTML = innerHTML.replace(localeSet[3], newNameWithoutEndingS.toLowerCase());
                                 }
-                            } else if (header.matches(".friends-subtitle")) {
+                            } else if (header.matches(".friends-subtitle, .header-left > h2, .friends-header > div > h2")) {
                                 if (header.childNodes && header.childNodes[0]) {
                                     let child_node = header.childNodes[0];
                                     let txt_content = child_node.textContent;
@@ -299,7 +302,7 @@ inject.js:
                                 }
                             } else if (header.matches("a")) {
                                 if (settings["massEdit"] == true) {
-                                    if (!(header.className == "profile-header-social-count")) {
+                                    if (!(header.getAttribute("class") == "profile-header-social-count")) {
                                         if (header.childNodes.length > 0) {
                                             loopThroughArray(header.childNodes, (_, v) => {
                                                 addRename(v);

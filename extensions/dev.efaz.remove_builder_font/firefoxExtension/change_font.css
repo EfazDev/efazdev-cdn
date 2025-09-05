@@ -198,14 +198,21 @@ CSS is based on Roblox's servers and archive.org for old files.
 
 .light-theme {
     --config-text-font: BuilderRemove !important;
+    --theme-typography-primary-fontFamily: BuilderRemove !important;
 }
 
 .dark-theme {
     --config-text-font: BuilderRemove !important;
+    --theme-typography-primary-fontFamily: BuilderRemove !important;
 }
 
 .system-theme {
     --config-text-font: BuilderRemove !important;
+    --theme-typography-primary-fontFamily: BuilderRemove !important;
+}
+
+.rbx-navbar.hidden-xs li:nth-child(1), .rbx-navbar.hidden-xs li:nth-child(2), .rbx-navbar.hidden-xs li:nth-child(3), .rbx-navbar.hidden-xs li:nth-child(4), .rbx-navbar.hidden-xs li:nth-child(5), .rbx-navbar.hidden-xs li:nth-child(6) {
+    width: initial !important;
 }
 
 .text-label-large, .text-caption-large, .text-body-large, .text-heading-large {
