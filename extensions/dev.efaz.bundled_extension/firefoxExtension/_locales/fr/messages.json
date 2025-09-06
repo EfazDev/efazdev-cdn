@@ -559,6 +559,10 @@
         "message": "Modifier les couleurs sur le tableau de bord du créateur",
         "description": "Définir le texte pour overwriteCreateDashboard"
     },
+    "dev_efaz_foundation_color_accents_overwriteDevForum_mes": {
+        "message": "Modifier les couleurs sur le DevForum",
+        "description": "CDéfinir le texte pour overwriteDevForum"
+    },
     "dev_efaz_foundation_color_accents_includeGraphInDashboard_mes": {
         "message": "Inclure les graphiques sur le tableau de bord du créateur",
         "description": "Définir le texte pour includeGraphInDashboard"

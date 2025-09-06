@@ -191,6 +191,10 @@
         "message": "Cambiar colores en el Panel del Creador",
         "description": "Configurar texto para overwriteCreateDashboard"
     },
+    "dev_efaz_foundation_color_accents_overwriteDevForum_mes": {
+        "message": "Cambiar colores en el DevForum",
+        "description": "Configurar texto para overwriteDevForum"
+    },
     "dev_efaz_foundation_color_accents_includeGraphInDashboard_mes": {
         "message": "Incluir gráficos en el Panel del Creador",
         "description": "Configurando texto para includeGraphInDashboard"

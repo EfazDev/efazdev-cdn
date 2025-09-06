@@ -50,6 +50,12 @@
             "default": false,
             "neededSettings": ["enabled"]
         },
+        "overwriteDevForum": {
+            "text": "Change Colors on DevForum",
+            "type": "checkbox",
+            "default": false,
+            "neededSettings": ["enabled"]
+        },
         "overwriteSuccessColor": {
             "text": "Overwrite Success Color",
             "type": "checkbox",

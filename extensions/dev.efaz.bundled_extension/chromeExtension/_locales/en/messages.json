@@ -559,6 +559,10 @@
         "message": "Change Colors on Creator Dashboard",
         "description": "Setting text for overwriteCreateDashboard"
     },
+    "dev_efaz_foundation_color_accents_overwriteDevForum_mes": {
+        "message": "Change Colors on DevForum",
+        "description": "Setting text for overwriteDevForum"
+    },
     "dev_efaz_foundation_color_accents_includeGraphInDashboard_mes": {
         "message": "Include Graphs on Creator Dashboard",
         "description": "Setting text for includeGraphInDashboard"

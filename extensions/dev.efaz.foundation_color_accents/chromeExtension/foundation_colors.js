@@ -262,6 +262,89 @@ inject.js:
                                 injectCSS();
                             });
                         } else { injectCSS() }
+                    } else if (tab.hostname == "devforum.roblox.com") {
+                        if (settings["overwriteDevForum"] == true) {
+                            let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100;
+                            let converted_rgb = hexToRgb(settings["color"]);
+                            function applyBaseColoring(converted_sheet) {
+                                let change_made = false;
+                                if (
+                                    converted_sheet.includes("#2bb1ff") ||
+                                    converted_sheet.includes("rgb(85.4, 192.6, 255)") || 
+                                    converted_sheet.includes("rgb(0, 47.0896226415, 74.5)") || 
+                                    converted_sheet.includes("rgb(0, 52.7403773585, 83.44)") || 
+                                    converted_sheet.includes("rgb(0, 58.3911320755, 92.38)") || 
+                                    converted_sheet.includes("rgb(0, 65.9254716981, 104.3)") || 
+                                    converted_sheet.includes("rgb(0, 79.1105660377, 125.16)") || 
+                                    converted_sheet.includes("rgb(0, 90.4120754717, 143.04)") || 
+                                    converted_sheet.includes("rgb(0, 103.5971698113, 163.9)") || 
+                                    converted_sheet.includes("rgb(0, 116.7822641509, 184.76)") || 
+                                    converted_sheet.includes("rgb(0, 129.9673584906, 205.62)") || 
+                                    converted_sheet.includes("rgb(0, 141.2688679245, 223.5)") || 
+                                    converted_sheet.includes("rgb(0, 56.5075471698, 89.4)") || 
+                                    converted_sheet.includes("rgb(0, 37.6716981132, 59.6)") || 
+                                    converted_sheet.includes("rgb(0, 37.6716981132, 59.6)") || 
+                                    converted_sheet.includes("rgb(0, 84.7613207547, 134.1)") || 
+                                    converted_sheet.includes("rgb(13.2, 166.0358490566, 255)")
+                                ) {
+                                    converted_sheet = converted_sheet
+                                        .replaceAll("#2bb1ff", rgbToHex(formatRgbVal(converted_rgb["r"] + 20), formatRgbVal(converted_rgb["g"] + 20), formatRgbVal(converted_rgb["b"] + 20)))
+                                        .replaceAll("rgb(0, 141.2688679245, 223.5)", rgbToHex(formatRgbVal(converted_rgb["r"] - 20), formatRgbVal(converted_rgb["g"] - 20), formatRgbVal(converted_rgb["b"] - 20)))
+                                        .replaceAll("rgb(0, 47.0896226415, 74.5)", rgbToHex(formatRgbVal(converted_rgb["r"] - 100), formatRgbVal(converted_rgb["g"] - 100), formatRgbVal(converted_rgb["b"] - 100)))
+                                        .replaceAll("rgb(0, 65.9254716981, 104.3)", rgbToHex(formatRgbVal(converted_rgb["r"] - 80), formatRgbVal(converted_rgb["g"] - 80), formatRgbVal(converted_rgb["b"] - 80)))
+                                        .replaceAll("rgb(0, 103.5971698113, 163.9)", rgbToHex(formatRgbVal(converted_rgb["r"] - 40), formatRgbVal(converted_rgb["g"] - 40), formatRgbVal(converted_rgb["b"] - 40)))
+                                        .replaceAll("rgb(85.4, 192.6, 255)", rgbToHex(formatRgbVal(converted_rgb["r"] + 40), formatRgbVal(converted_rgb["g"] + 40), formatRgbVal(converted_rgb["b"] + 40)))
+                                        .replaceAll("rgb(0, 52.7403773585, 83.44)", rgbToHex(formatRgbVal(converted_rgb["r"] - 90), formatRgbVal(converted_rgb["g"] - 90), formatRgbVal(converted_rgb["b"] - 90)))
+                                        .replaceAll("rgb(0, 58.3911320755, 92.38)", rgbToHex(formatRgbVal(converted_rgb["r"] - 70), formatRgbVal(converted_rgb["g"] - 70), formatRgbVal(converted_rgb["b"] - 70)))
+                                        .replaceAll("rgb(0, 79.1105660377, 125.16)", rgbToHex(formatRgbVal(converted_rgb["r"] - 50), formatRgbVal(converted_rgb["g"] - 50), formatRgbVal(converted_rgb["b"] - 50)))
+                                        .replaceAll("rgb(0, 90.4120754717, 143.04)", rgbToHex(formatRgbVal(converted_rgb["r"] - 30), formatRgbVal(converted_rgb["g"] - 30), formatRgbVal(converted_rgb["b"] - 30)))
+                                        .replaceAll("rgb(0, 116.7822641509, 184.76)", rgbToHex(formatRgbVal(converted_rgb["r"] - 20), formatRgbVal(converted_rgb["g"] - 20), formatRgbVal(converted_rgb["b"] - 20)))
+                                        .replaceAll("rgb(0, 129.9673584906, 205.62)", rgbToHex(formatRgbVal(converted_rgb["r"] - 10), formatRgbVal(converted_rgb["g"] - 10), formatRgbVal(converted_rgb["b"] - 10)))
+                                        .replaceAll("rgb(0, 56.5075471698, 89.4)", rgbToHex(formatRgbVal(converted_rgb["r"] - 50), formatRgbVal(converted_rgb["g"] - 50), formatRgbVal(converted_rgb["b"] - 50)))
+                                        .replaceAll("rgb(0, 37.6716981132, 59.6)", rgbToHex(formatRgbVal(converted_rgb["r"] - 70), formatRgbVal(converted_rgb["g"] - 70), formatRgbVal(converted_rgb["b"] - 70)))
+                                        .replaceAll("rgb(0, 84.7613207547, 134.1)", rgbToHex(formatRgbVal(converted_rgb["r"] - 30), formatRgbVal(converted_rgb["g"] - 30), formatRgbVal(converted_rgb["b"] - 30)))
+                                        .replaceAll("rgb(13.2, 166.0358490566, 255)", rgbToHex(formatRgbVal(converted_rgb["r"] + 40), formatRgbVal(converted_rgb["g"] + 40), formatRgbVal(converted_rgb["b"] + 40)))
+                                    change_made = true;
+                                }
+                                return [change_made, converted_sheet];
+                            }
+                            async function applyCSS(header) {
+                                if (header.nodeName.toLowerCase() == "link") {
+                                    if (!(header.getAttribute("foundationColor") == "true") && header.rel && header.rel == "stylesheet" && header.href && header.href.includes("color_definitions")) {
+                                        let fetchLink = "https://corsproxy.io/?" + header.href;
+                                        let roblox_css = await fetch(fetchLink);
+                                        if (roblox_css.ok) {
+                                            try {
+                                                let roblox_css_res = await roblox_css.text();
+                                                let base_color_res = applyBaseColoring(roblox_css_res);
+                                                roblox_css_res = base_color_res[1];
+                                                let d = document.createElement("style");
+                                                d.setAttribute("rel", "stylesheet");
+                                                d.setAttribute("foundationColor", "true");
+                                                d.setAttribute("org_href", header.href);
+                                                d.textContent = roblox_css_res;
+                                                header.href = "";
+                                                header.append(d);
+                                                header.setAttribute("foundationColor", "true");
+                                            } catch (e) {
+                                                console.warn('There was an issue to load the requested CSS and inject accent color! Error Message: ' + e.message);
+                                            }
+                                        } else {
+                                            console.warn('There was an issue to load the requested CSS and inject accent color! Status Code: ' + res.status);
+                                        }
+                                    }
+                                }
+                            }
+                            async function injectCSS() {
+                                var all_links = document.querySelectorAll("link");
+                                await loopThroughArrayAsync(all_links, async (_, header) => {
+                                    applyCSS(header);
+                                });
+                                all_links = null;
+                                timeout(() => { injectCSS(); }, amountOfSecondsBeforeLoop);
+                            }
+                            injectCSS();
+                        }
                     } else if (tab.hostname == "create.roblox.com" || tab.hostname == "authorize.roblox.com" || tab.hostname == "advertise.roblox.com") {
                         if (settings["overwriteCreateDashboard"] == true) {
                             let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100;

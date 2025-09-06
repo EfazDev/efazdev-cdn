@@ -191,6 +191,10 @@
         "message": "Farben im Creator Dashboard ändern",
         "description": "Einstellungstext für overwriteCreateDashboard"
     },
+    "dev_efaz_foundation_color_accents_overwriteDevForum_mes": {
+        "message": "Farben im DevForum ändern",
+        "description": "Einstellungstext für overwriteDevForum"
+    },
     "dev_efaz_foundation_color_accents_includeGraphInDashboard_mes": {
         "message": "Diagramme im Creator Dashboard einbeziehen",
         "description": "Einstellungstext für includeGraphInDashboard"
