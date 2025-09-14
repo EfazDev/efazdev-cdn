@@ -1,7 +1,7 @@
 # 
 # Roblox Fast Flags Installer
 # Made by Efaz from efaz.dev
-# v2.3.7
+# v2.3.9
 # 
 # Fulfill your Roblox needs and configuration through Python!
 # 
@@ -29,7 +29,7 @@ main_os = platform.system()
 cur_path = os.path.dirname(os.path.abspath(__file__))
 user_folder = (os.path.expanduser("~") if main_os == "Darwin" else os.getenv('LOCALAPPDATA'))
 orangeblox_mode = False
-script_version = "2.3.7"
+script_version = "2.3.9"
 def getLocalAppData():
     import platform
     import os
@@ -106,6 +106,7 @@ if sys.version_info >= (3, 8, 0):
         "onGameTeleportFailed",
         "onGameJoinInfo",
         "onGameJoined",
+        "onJoiningTeam",
         "onGameLeaving",
         "onGameDisconnected",
         "onGameLog",
@@ -730,6 +731,7 @@ class pip:
         import os
         import tempfile
         import re
+        import json
         import platform
         import importlib
         import importlib.metadata
@@ -754,6 +756,7 @@ class pip:
         self._shutil = shutil
         self._urllib_parse = urllib.parse
         self._time = time
+        self._json = json
         self._mmap = mmap
 
         self._main_os = platform.system()
@@ -924,13 +927,21 @@ class pip:
             else:
                 self.printDebugMessage(f"Unable to download pip due to no internet access.")
                 return False
-    def github(self, packages: typing.List[str]):
+    def updates(self, packages: typing.List[str]=[]):
+        sub = self._subprocess.run([self.executable, "-m", "pip", "list", "--outdated", "--format=json"], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE)
+        json_str = sub.stdout.decode().replace("\r", "")
+        try:
+            tried = self._json.loads(json_str)
+            if packages and len(packages) > 0: return {"success": True, "packages": [i for i in tried if i["name"] in packages]}
+            return {"success": True, "packages": tried}
+        except: return {"success": False, "packages": []}
+    def info(self, packages: typing.List[str]):
         generated_list = []
         for i in packages:
             if type(i) is str: generated_list.append(i)
         if len(generated_list) > 0:
             try:
-                links = {}
+                information = {}
                 for i in generated_list:
                     urll = f"https://pypi.org/pypi/{i}/json"
                     if self.getIfConnectedToInternet() == False: return {"success": False}
@@ -938,11 +949,27 @@ class pip:
                     if response.ok:
                         data = response.json
                         info = data["info"]
-                        url = info.get("project_urls", {}).get("Source") or info.get("home_page")
-                        if url: links[i] = url
-                return {"success": True, "repositories": links}
-            except Exception as e:
-                return {"success": False}
+                        information[i] = info
+                return {"success": True, "data": information}
+            except Exception as e: return {"success": False}
+        return {"success": False}
+    def github(self, packages: typing.List[str]):
+        generated_list = []
+        for i in packages:
+            if type(i) is str: generated_list.append(i)
+        if len(generated_list) > 0:
+            try:
+                informed = self.info(generated_list)
+                if informed["success"] == True:
+                    informed = informed["data"]
+                    links = {}
+                    for i in generated_list:
+                        if informed.get(i):
+                            info = informed[i]
+                            url = info.get("project_urls", {}).get("Source") or info.get("home_page")
+                            if url: links[i] = url
+                    return {"success": True, "repositories": links}
+            except Exception as e: return {"success": False}
         return {"success": False}
     
     # Python Management
@@ -1515,6 +1542,7 @@ class Handler:
         "onOpeningGame",
         "onGameUDMUXLoaded",
         "onGameJoined",
+        "onJoiningTeam",
         "onHttpResponse",
         "onExpiredFlag",
         "onApplyingFeature",
@@ -1591,6 +1619,7 @@ class Handler:
         "onWatchdogReconnection": {"message": ts("Allow detecting when watchdog was reconnected"), "level": 0, "robloxEvent": True},
         
         # Roblox Studio Permissions
+        "onJoiningTeam": {"message": ts("Allow detecting when you join a team create server"), "level": 1, "robloxEvent": True},
         "onPlayTestStart": {"message": ts("Allow detecting when you started a playtest"), "level": 0, "robloxEvent": True},
         "onStudioLoginSuccess": {"message": ts("Allow detecting when you have logged into studio successfully"), "level": 1, "robloxEvent": True},
         "onOpeningGame": {"message": ts("Allow detecting when you loaded a place/document"), "level": 1, "robloxEvent": True},
@@ -1895,7 +1924,7 @@ class Handler:
                 if "[FLog::Output] LoadClientSettingsFromLocal" in line: self.submitEvent(eventName="onLoadedFFlags", data=line, isLine=True)
                 elif "[FLog::Output] ! Joining game" in line:
                     def generate_arg():
-                        pattern = r"'([a-f0-9-]+)' place (\d+) at (\d+\.\d+\.\d+\.\d+)"
+                        pattern = r"'([a-f0-9-]+)' place (\d+) at (\d+)"
                         match = re.search(pattern, line)
                         if match:
                             jobId = match.group(1)
@@ -1910,6 +1939,25 @@ class Handler:
                     
                     generated_data = generate_arg()
                     if generated_data: self.submitEvent(eventName="onPlayTestStart", data=generated_data, isLine=False)
+                elif "[FLog::TeamCreateJoinPayload] Joining game" in line:
+                    def generate_arg():
+                        pattern = r"([a-f0-9-]+) place (\d+) at [(\d+\.\d+\.\d+\.\d+)]:(\d+)"
+                        match = re.search(pattern, line)
+                        if match:
+                            jobId = match.group(1)
+                            placeId = match.group(2)
+                            ip_address = match.group(3)
+                            port = match.group(4)
+                            return {
+                                "jobId": jobId,
+                                "placeId": placeId,
+                                "ip": ip_address,
+                                "port": port
+                            }   
+                        return None
+                    
+                    generated_data = generate_arg()
+                    if generated_data: self.submitEvent(eventName="onJoiningTeam", data=generated_data, isLine=False)
                 elif "[FLog::Output] Saved channel" in line:
                     def generate_arg():
                         pattern = re.compile(r"(?P<timestamp>[^\s]+),(?P<unknown_value>[^\s]+),(?P<unknown_hex>[^\s]+),(?P<unknown_number>[^\s]+) \[FLog::Output\] Saved channel '(?P<channel>[^']*)' to '(?P<name>[^']*)' for baseUrl '(?P<baseUrl>[^']*)'")
@@ -1933,10 +1981,10 @@ class Handler:
                     generated_data = generate_arg()
                     if generated_data: self.submitEvent(eventName="onCloudPlugins", data=generated_data, isLine=False)
                 elif "[FLog::Output] UpdateUtils::requestInstallerUpdate - Launching Installer for update:" in line: self.submitEvent(eventName="onStudioInstallerLaunched", data=line, isLine=True)
-                elif "[FLog::Output] Connecting to UDMUX server " in line:
+                elif "[FLog::Output] Connecting to UDMUX server" in line:
                     def generate_arg():
                         pattern = re.compile(
-                            r'(?P<timestamp>[^\s]+),(?P<unknown_value>[^\s]+),(?P<unknown_hex>[^\s]+),(?P<unknown_number>[^\s]+) \[FLog::Output\] Connecting to UDMUX server (?P<udmux_address>[^\s]+):(?P<udmux_port>[^\s]+), and RCC server (?P<rcc_address>[^\s]+):(?P<rcc_port>[^\s]+)'
+                            r'(?P<timestamp>[^\s]+),(?P<unknown_value>[^\s]+),(?P<unknown_hex>[^\s]+),(?P<unknown_number>[^\s]+) \[FLog::Output\] Connecting to UDMUX server (?P<udmux_address>[^\s]+):(?P<udmux_port>[^\s]+), and RCC Server (?P<rcc_address>[^\s]+):(?P<rcc_port>[^\s]+)'
                         )
                         match = pattern.search(line)
                         if not match: return None
@@ -1956,6 +2004,28 @@ class Handler:
                             "ip": generated_data["connected_address"],
                             "port": generated_data["connected_port"]
                         }, isLine=False)
+                elif "[FLog::Output] Connecting to " in line:
+                    def generate_arg():
+                        pattern = re.compile(
+                            r'(?P<timestamp>[^\s]+),(?P<unknown_value>[^\s]+),(?P<unknown_hex>[^\s]+),(?P<unknown_number>[^\s]+) \[FLog::Output\] Connecting to (?P<udmux_address>[^\s]+):(?P<udmux_port>[^\s]+)'
+                        )
+                        match = pattern.search(line)
+                        if not match: return None
+                        data = match.groupdict()
+                        result = {
+                            "connected_address": data.get("udmux_address"),
+                            "connected_port": int(data.get("udmux_port"))
+                        }
+                        return result
+                    
+                    generated_data = generate_arg()
+                    if generated_data:
+                        if not (generated_data["connected_address"] == "127.0.0.1"):
+                            self.submitEvent(eventName="onGameUDMUXLoaded", data=generated_data, isLine=False)
+                            self.submitEvent(eventName="onGameJoined", data={
+                                "ip": generated_data["connected_address"],
+                                "port": generated_data["connected_port"]
+                            }, isLine=False)
                 elif "[FLog::Output] About to exit the application, doing cleanup." in line:
                     if self.roblox_starter_launched == False:
                         self.submitEvent(eventName="onRobloxExit", data=line)
@@ -2029,7 +2099,7 @@ class Handler:
                     generated_data = generate_arg()
                     if generated_data: self.submitEvent(eventName="onOpeningGame", data=generated_data, isLine=False)
                 elif "[FLog::RobloxIDEDoc] RobloxIDEDoc::doClose" in line: self.submitEvent(eventName="onClosingGame", data=line, isLine=True); self.connected_to_game = False
-                elif "[telemetryLog] TaskNames: OpenPlaceSuccess" in line: self.submitEvent(eventName="onGameLoaded", data=line, isLine=True); self.connected_to_game = True
+                elif "[telemetryLog] TaskNames: " in line and "OpenPlaceSuccess" in line: self.submitEvent(eventName="onGameLoaded", data=line, isLine=True); self.connected_to_game = True
                 elif "[FLog::TeamCreateManager] Disconnected due to Lost connection to the game server, please reconnect" in line: self.submitEvent(eventName="onLostConnection", data=line, isLine=True); self.connected_to_game = False
                 elif "[FLog::StudioKeyEvents] starting Qt main event loop" in line: self.submitEvent(eventName="onRobloxAppStart", data=line, isLine=True)
                 elif "[FLog::StudioKeyEvents] login [end][success]" in line: self.submitEvent(eventName="onStudioLoginSuccess", data=line, isLine=True)
