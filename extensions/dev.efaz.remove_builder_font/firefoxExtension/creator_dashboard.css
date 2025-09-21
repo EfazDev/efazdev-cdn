@@ -166,3 +166,10 @@ body {
 .web-blox-css-tss-1hqrmd0-Typography-tooltip-tooltipContainer {
     font-weight: 500 !important;
 }
+.web-blox-css-tss-hlfwzy-Typography-smallLabel2-Typography-root-label, .web-blox-css-tss-kfp5cu-Typography-largeLabel2-Typography-root-label-labelTransition {
+    font-weight: initial !important;
+}
+.web-blox-css-tss-14ceqbe-Typography-hero-Typography-root-label-headerLabel-arrowLabel {
+    font-family: "Builder Sans" !important;
+    padding-left: 10px !important;
+}

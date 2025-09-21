@@ -18,8 +18,8 @@ async function loopThroughArrayAsync(array, callback) {
             await callback(a, array[a]);
         }
     } else if (array && typeof array === "object") {
-        for (const a in array) {
-            if (Object.hasOwn(array, a)) { await callback(a, array[a]); }
+        for (const a of Object.keys(array)) {
+            await callback(a, array[a]);
         }
     }
 }
@@ -30,8 +30,8 @@ function loopThroughArray(array, callback) {
             callback(a, array[a]);
         }
     } else if (array && typeof array === "object") {
-        for (const a in array) {
-            if (Object.hasOwn(array, a)) { callback(a, array[a]); }
+        for (const a of Object.keys(array)) {
+            callback(a, array[a]);
         }
     }
 }
@@ -434,7 +434,7 @@ async function loadChanges() {
                                 console.log(`New version found! v${man_json["version"]} > v${j["version"]}`);
                             } else {
                                 /* User is running beta version of the extension */
-                                document.getElementById("extens_vers").innerText = `v${extension_version} Beta`;
+                                document.getElementById("extens_vers").innerText = `v${extension_version} ${getTran("settingsBeta")}`;
                                 console.log(`User is in beta version of the extension!`);
                             }
                         }

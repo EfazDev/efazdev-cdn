@@ -19,7 +19,8 @@
                 "memberCount": 6,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 5928300,
@@ -32,10 +33,11 @@
                     "displayName": "Blaze"
                 },
                 "shout": null,
-                "memberCount": 91,
+                "memberCount": 93,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 5728123,
@@ -51,7 +53,8 @@
                 "memberCount": 31,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 4619606,
@@ -67,7 +70,8 @@
                 "memberCount": 5,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 5507006,
@@ -83,7 +87,8 @@
                 "memberCount": 17,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 5301840,
@@ -99,7 +104,8 @@
                 "memberCount": 21,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 5230237,
@@ -115,7 +121,8 @@
                 "memberCount": 2,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 5192932,
@@ -131,7 +138,8 @@
                 "memberCount": 68,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 4997756,
@@ -147,7 +155,8 @@
                 "memberCount": 14,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 4684476,
@@ -163,11 +172,12 @@
                 "memberCount": 75,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227294,
-        "scan_duration": 2.27
+        "scan_timestamp": 1758466378,
+        "scan_duration": 0.49
     },
     "1072749554": {
         "name": "viswa99",
@@ -175,6 +185,23 @@
         "displayName": "vis",
         "hexColor": "#ff0000",
         "approve_groups": [
+            {
+                "id": 447873386,
+                "name": "8.5%",
+                "description": "",
+                "owner": {
+                    "hasVerifiedBadge": false,
+                    "userId": 1072749554,
+                    "username": "viswa99",
+                    "displayName": "vis"
+                },
+                "shout": null,
+                "memberCount": 4,
+                "isBuildersClubOnly": false,
+                "publicEntryAllowed": false,
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
+            },
             {
                 "id": 33499053,
                 "name": "Project HBD",
@@ -189,7 +216,8 @@
                 "memberCount": 9,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33101016,
@@ -205,11 +233,12 @@
                 "memberCount": 11,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227295,
-        "scan_duration": 0.58
+        "scan_timestamp": 1758466378,
+        "scan_duration": 0.4
     },
     "1078332491": {
         "name": "Efaazz",
@@ -228,10 +257,11 @@
                     "displayName": "Efaz"
                 },
                 "shout": null,
-                "memberCount": 14,
+                "memberCount": 24,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 34001770,
@@ -247,7 +277,8 @@
                 "memberCount": 1,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 32870766,
@@ -263,7 +294,8 @@
                 "memberCount": 3,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 11158193,
@@ -276,10 +308,11 @@
                     "displayName": "Efaz"
                 },
                 "shout": null,
-                "memberCount": 53,
+                "memberCount": 74,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 7112233,
@@ -292,10 +325,11 @@
                     "displayName": "Efaz"
                 },
                 "shout": null,
-                "memberCount": 94,
+                "memberCount": 113,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 5798895,
@@ -311,7 +345,8 @@
                 "memberCount": 19,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 5367038,
@@ -324,14 +359,15 @@
                     "displayName": "Efaz"
                 },
                 "shout": null,
-                "memberCount": 1638,
+                "memberCount": 1906,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227295,
-        "scan_duration": 0.44
+        "scan_timestamp": 1758466379,
+        "scan_duration": 0.36
     },
     "111369505": {
         "name": "James_5",
@@ -353,7 +389,8 @@
                 "memberCount": 6,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 1044005,
@@ -366,14 +403,15 @@
                     "displayName": "James"
                 },
                 "shout": null,
-                "memberCount": 224351,
+                "memberCount": 223901,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227295,
-        "scan_duration": 0.35
+        "scan_timestamp": 1758466379,
+        "scan_duration": 0.41
     },
     "1157619438": {
         "name": "SilverPlatinums",
@@ -381,38 +419,6 @@
         "displayName": "Silver",
         "hexColor": "#a1b0bf",
         "approve_groups": [
-            {
-                "id": 34653967,
-                "name": "WOOO AWARDS",
-                "description": "abc",
-                "owner": {
-                    "hasVerifiedBadge": false,
-                    "userId": 1157619438,
-                    "username": "SilverPlatinums",
-                    "displayName": "Silver"
-                },
-                "shout": null,
-                "memberCount": 5,
-                "isBuildersClubOnly": false,
-                "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
-            },
-            {
-                "id": 33488533,
-                "name": "Sniter Syndicate",
-                "description": "hi guys welcome to the sniter syndicate we have 3 factions\r\n\r\ntoilet club\r\nand normal club\r\nand epic club\r\n\r\nmaybe more in the future\r\n\r\nlick and sub to sniter and follow him NOW",
-                "owner": {
-                    "hasVerifiedBadge": false,
-                    "userId": 1157619438,
-                    "username": "SilverPlatinums",
-                    "displayName": "Silver"
-                },
-                "shout": null,
-                "memberCount": 223,
-                "isBuildersClubOnly": false,
-                "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
-            },
             {
                 "id": 6609454,
                 "name": "Platinum people",
@@ -427,11 +433,12 @@
                 "memberCount": 93,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227296,
-        "scan_duration": 0.45
+        "scan_timestamp": 1758466379,
+        "scan_duration": 0.44
     },
     "125775822": {
         "name": "NightFoxx",
@@ -450,14 +457,15 @@
                     "displayName": "NightFoxx"
                 },
                 "shout": null,
-                "memberCount": 211950,
+                "memberCount": 211224,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227296,
-        "scan_duration": 0.36
+        "scan_timestamp": 1758466380,
+        "scan_duration": 0.39
     },
     "1306669766": {
         "name": "Yellowdrink_yum",
@@ -476,10 +484,11 @@
                     "displayName": "PurpleCorporation"
                 },
                 "shout": null,
-                "memberCount": 15,
+                "memberCount": 16,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33084437,
@@ -495,7 +504,8 @@
                 "memberCount": 2,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 32797476,
@@ -511,7 +521,8 @@
                 "memberCount": 1,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 17261024,
@@ -524,10 +535,11 @@
                     "displayName": "PurpleCorporation"
                 },
                 "shout": null,
-                "memberCount": 170,
+                "memberCount": 169,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 11923821,
@@ -540,10 +552,11 @@
                     "displayName": "PurpleCorporation"
                 },
                 "shout": null,
-                "memberCount": 50485,
+                "memberCount": 52534,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 7050479,
@@ -559,11 +572,12 @@
                 "memberCount": 74,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227297,
-        "scan_duration": 0.4
+        "scan_timestamp": 1758466380,
+        "scan_duration": 0.38
     },
     "14903074": {
         "name": "DrDarkMatter",
@@ -582,10 +596,11 @@
                     "displayName": "Nahid"
                 },
                 "shout": null,
-                "memberCount": 2,
+                "memberCount": 27,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 35967230,
@@ -598,10 +613,11 @@
                     "displayName": "Nahid"
                 },
                 "shout": null,
-                "memberCount": 18819,
+                "memberCount": 18654,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 35562351,
@@ -617,7 +633,8 @@
                 "memberCount": 19,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 9393621,
@@ -630,26 +647,11 @@
                     "displayName": "Nahid"
                 },
                 "shout": null,
-                "memberCount": 18,
+                "memberCount": 19,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
-            },
-            {
-                "id": 35439361,
-                "name": "Reimagining Games",
-                "description": "Reimagining Games",
-                "owner": {
-                    "hasVerifiedBadge": true,
-                    "userId": 14903074,
-                    "username": "DrDarkMatter",
-                    "displayName": "Nahid"
-                },
-                "shout": null,
-                "memberCount": 2,
-                "isBuildersClubOnly": false,
-                "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 35304386,
@@ -662,26 +664,11 @@
                     "displayName": "Nahid"
                 },
                 "shout": null,
-                "memberCount": 7,
+                "memberCount": 6,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
-            },
-            {
-                "id": 35057480,
-                "name": "Pop The Balloon",
-                "description": "Pop The Balloon",
-                "owner": {
-                    "hasVerifiedBadge": true,
-                    "userId": 14903074,
-                    "username": "DrDarkMatter",
-                    "displayName": "Nahid"
-                },
-                "shout": null,
-                "memberCount": 34,
-                "isBuildersClubOnly": false,
-                "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 35050571,
@@ -694,15 +681,16 @@
                     "displayName": "Nahid"
                 },
                 "shout": null,
-                "memberCount": 9,
+                "memberCount": 8,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
-                "id": 34996150,
-                "name": "Cognito Games",
-                "description": "Cognito Games",
+                "id": 35001383,
+                "name": "Skibidi Experinces",
+                "description": ".",
                 "owner": {
                     "hasVerifiedBadge": true,
                     "userId": 14903074,
@@ -710,10 +698,11 @@
                     "displayName": "Nahid"
                 },
                 "shout": null,
-                "memberCount": 122,
+                "memberCount": 75,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 34291941,
@@ -726,10 +715,11 @@
                     "displayName": "Nahid"
                 },
                 "shout": null,
-                "memberCount": 488,
+                "memberCount": 472,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 34061499,
@@ -745,7 +735,8 @@
                 "memberCount": 4,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 34036181,
@@ -761,23 +752,8 @@
                 "memberCount": 5,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
-            },
-            {
-                "id": 33939497,
-                "name": "Battlegr\u043eunds",
-                "description": "battlegrounds",
-                "owner": {
-                    "hasVerifiedBadge": true,
-                    "userId": 14903074,
-                    "username": "DrDarkMatter",
-                    "displayName": "Nahid"
-                },
-                "shout": null,
-                "memberCount": 4,
-                "isBuildersClubOnly": false,
-                "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33826518,
@@ -790,26 +766,11 @@
                     "displayName": "Nahid"
                 },
                 "shout": null,
-                "memberCount": 73,
+                "memberCount": 71,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
-            },
-            {
-                "id": 16536177,
-                "name": "Flatline Games",
-                "description": "Home of our new horror games, can we make you flatline?\nNext project: ?",
-                "owner": {
-                    "hasVerifiedBadge": true,
-                    "userId": 14903074,
-                    "username": "DrDarkMatter",
-                    "displayName": "Nahid"
-                },
-                "shout": null,
-                "memberCount": 46,
-                "isBuildersClubOnly": false,
-                "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 10301049,
@@ -825,7 +786,8 @@
                 "memberCount": 187,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 9139887,
@@ -838,10 +800,11 @@
                     "displayName": "Nahid"
                 },
                 "shout": null,
-                "memberCount": 2974,
+                "memberCount": 2913,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 9140137,
@@ -854,26 +817,11 @@
                     "displayName": "Nahid"
                 },
                 "shout": null,
-                "memberCount": 3167,
+                "memberCount": 3160,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
-            },
-            {
-                "id": 7413133,
-                "name": "Blob Rush",
-                "description": "",
-                "owner": {
-                    "hasVerifiedBadge": true,
-                    "userId": 14903074,
-                    "username": "DrDarkMatter",
-                    "displayName": "Nahid"
-                },
-                "shout": null,
-                "memberCount": 368,
-                "isBuildersClubOnly": false,
-                "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 5875034,
@@ -886,10 +834,11 @@
                     "displayName": "Nahid"
                 },
                 "shout": null,
-                "memberCount": 1200,
+                "memberCount": 1192,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 5463090,
@@ -902,10 +851,11 @@
                     "displayName": "Nahid"
                 },
                 "shout": null,
-                "memberCount": 350163,
+                "memberCount": 349556,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": true
+                "hasVerifiedBadge": true,
+                "hasSocialModules": true
             },
             {
                 "id": 5462562,
@@ -918,10 +868,11 @@
                     "displayName": "Nahid"
                 },
                 "shout": null,
-                "memberCount": 51559,
+                "memberCount": 51496,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 2868980,
@@ -934,14 +885,15 @@
                     "displayName": "Nahid"
                 },
                 "shout": null,
-                "memberCount": 41051,
+                "memberCount": 40969,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227297,
-        "scan_duration": 0.37
+        "scan_timestamp": 1758466381,
+        "scan_duration": 0.38
     },
     "151848836": {
         "name": "haz3mn",
@@ -949,22 +901,6 @@
         "displayName": "hazem",
         "hexColor": "#583bff",
         "approve_groups": [
-            {
-                "id": 35952098,
-                "name": "p_s",
-                "description": "",
-                "owner": {
-                    "hasVerifiedBadge": true,
-                    "userId": 151848836,
-                    "username": "haz3mn",
-                    "displayName": "hazem"
-                },
-                "shout": null,
-                "memberCount": 2,
-                "isBuildersClubOnly": false,
-                "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
-            },
             {
                 "id": 34643702,
                 "name": "Quataun Testers",
@@ -979,7 +915,8 @@
                 "memberCount": 22,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 14097003,
@@ -992,26 +929,11 @@
                     "displayName": "hazem"
                 },
                 "shout": null,
-                "memberCount": 537732,
+                "memberCount": 561311,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
-            },
-            {
-                "id": 17185175,
-                "name": "[ Content Deleted 17185175 ]",
-                "description": "no cap",
-                "owner": {
-                    "hasVerifiedBadge": true,
-                    "userId": 151848836,
-                    "username": "haz3mn",
-                    "displayName": "hazem"
-                },
-                "shout": null,
-                "memberCount": 176929,
-                "isBuildersClubOnly": false,
-                "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 16791797,
@@ -1024,10 +946,11 @@
                     "displayName": "hazem"
                 },
                 "shout": null,
-                "memberCount": 28,
+                "memberCount": 30,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 16791712,
@@ -1040,10 +963,11 @@
                     "displayName": "hazem"
                 },
                 "shout": null,
-                "memberCount": 194332,
+                "memberCount": 198734,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 12121240,
@@ -1056,14 +980,15 @@
                     "displayName": "hazem"
                 },
                 "shout": null,
-                "memberCount": 7254167,
+                "memberCount": 7749432,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": true
+                "hasVerifiedBadge": true,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227297,
-        "scan_duration": 0.34
+        "scan_timestamp": 1758466381,
+        "scan_duration": 0.38
     },
     "1538705535": {
         "name": "RobloxianBankGroup",
@@ -1085,11 +1010,12 @@
                 "memberCount": 3,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227298,
-        "scan_duration": 0.33
+        "scan_timestamp": 1758466381,
+        "scan_duration": 0.37
     },
     "1621474556": {
         "name": "p1xeljamjam",
@@ -1108,10 +1034,11 @@
                     "displayName": "JamJam"
                 },
                 "shout": null,
-                "memberCount": 28,
+                "memberCount": 29,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 34363640,
@@ -1124,10 +1051,11 @@
                     "displayName": "JamJam"
                 },
                 "shout": null,
-                "memberCount": 162,
+                "memberCount": 156,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33249941,
@@ -1140,10 +1068,11 @@
                     "displayName": "JamJam"
                 },
                 "shout": null,
-                "memberCount": 1719,
+                "memberCount": 1893,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 14993779,
@@ -1156,14 +1085,15 @@
                     "displayName": "JamJam"
                 },
                 "shout": null,
-                "memberCount": 7220,
+                "memberCount": 7133,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227298,
-        "scan_duration": 0.43
+        "scan_timestamp": 1758466382,
+        "scan_duration": 0.45
     },
     "1658363733": {
         "name": "OfficialMJPlayzGames",
@@ -1182,10 +1112,11 @@
                     "displayName": "OfficialMJPlayzGames"
                 },
                 "shout": null,
-                "memberCount": 177,
+                "memberCount": 189,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 8043888,
@@ -1198,13 +1129,14 @@
                     "displayName": "OfficialMJPlayzGames"
                 },
                 "shout": null,
-                "memberCount": 313,
+                "memberCount": 316,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227298,
+        "scan_timestamp": 1758466382,
         "scan_duration": 0.37
     },
     "1773305624": {
@@ -1224,10 +1156,11 @@
                     "displayName": "Heydan"
                 },
                 "shout": null,
-                "memberCount": 230,
+                "memberCount": 251,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 32931711,
@@ -1243,11 +1176,12 @@
                 "memberCount": 14,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227299,
-        "scan_duration": 0.35
+        "scan_timestamp": 1758466382,
+        "scan_duration": 0.39
     },
     "1816195844": {
         "name": "kamdyn121234",
@@ -1269,7 +1203,8 @@
                 "memberCount": 5,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 11028998,
@@ -1285,11 +1220,12 @@
                 "memberCount": 114,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227299,
-        "scan_duration": 0.46
+        "scan_timestamp": 1758466383,
+        "scan_duration": 0.4
     },
     "197715955": {
         "name": "5DiamondzZzZ",
@@ -1308,10 +1244,11 @@
                     "displayName": "5DiamondzZ"
                 },
                 "shout": null,
-                "memberCount": 38,
+                "memberCount": 37,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 35212374,
@@ -1327,7 +1264,8 @@
                 "memberCount": 4,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 35212372,
@@ -1340,10 +1278,11 @@
                     "displayName": "5DiamondzZ"
                 },
                 "shout": null,
-                "memberCount": 16,
+                "memberCount": 18,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 34284619,
@@ -1359,7 +1298,8 @@
                 "memberCount": 57,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 34008229,
@@ -1372,10 +1312,11 @@
                     "displayName": "5DiamondzZ"
                 },
                 "shout": null,
-                "memberCount": 4,
+                "memberCount": 5,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 34008223,
@@ -1391,7 +1332,8 @@
                 "memberCount": 1,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 34003828,
@@ -1404,10 +1346,11 @@
                     "displayName": "5DiamondzZ"
                 },
                 "shout": null,
-                "memberCount": 427,
+                "memberCount": 453,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33947627,
@@ -1423,7 +1366,8 @@
                 "memberCount": 187,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33429232,
@@ -1439,7 +1383,8 @@
                 "memberCount": 8,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33429175,
@@ -1452,10 +1397,11 @@
                     "displayName": "5DiamondzZ"
                 },
                 "shout": null,
-                "memberCount": 23,
+                "memberCount": 24,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33429164,
@@ -1471,7 +1417,8 @@
                 "memberCount": 15,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33429126,
@@ -1487,7 +1434,8 @@
                 "memberCount": 16,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33429088,
@@ -1500,10 +1448,11 @@
                     "displayName": "5DiamondzZ"
                 },
                 "shout": null,
-                "memberCount": 28,
+                "memberCount": 30,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33429080,
@@ -1516,10 +1465,11 @@
                     "displayName": "5DiamondzZ"
                 },
                 "shout": null,
-                "memberCount": 173,
+                "memberCount": 174,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33429058,
@@ -1532,10 +1482,11 @@
                     "displayName": "5DiamondzZ"
                 },
                 "shout": null,
-                "memberCount": 12,
+                "memberCount": 13,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33429036,
@@ -1548,10 +1499,11 @@
                     "displayName": "5DiamondzZ"
                 },
                 "shout": null,
-                "memberCount": 30,
+                "memberCount": 32,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33292868,
@@ -1564,10 +1516,11 @@
                     "displayName": "5DiamondzZ"
                 },
                 "shout": null,
-                "memberCount": 363,
+                "memberCount": 358,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33217015,
@@ -1580,10 +1533,11 @@
                     "displayName": "5DiamondzZ"
                 },
                 "shout": null,
-                "memberCount": 728,
+                "memberCount": 708,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 32967700,
@@ -1596,10 +1550,11 @@
                     "displayName": "5DiamondzZ"
                 },
                 "shout": null,
-                "memberCount": 21606,
+                "memberCount": 21673,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 32739899,
@@ -1615,7 +1570,8 @@
                 "memberCount": 2,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 32608596,
@@ -1628,10 +1584,11 @@
                     "displayName": "5DiamondzZ"
                 },
                 "shout": null,
-                "memberCount": 7550,
+                "memberCount": 7570,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 17305237,
@@ -1644,10 +1601,11 @@
                     "displayName": "5DiamondzZ"
                 },
                 "shout": null,
-                "memberCount": 618,
+                "memberCount": 641,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 9556817,
@@ -1660,14 +1618,15 @@
                     "displayName": "5DiamondzZ"
                 },
                 "shout": null,
-                "memberCount": 2706,
+                "memberCount": 2661,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227300,
-        "scan_duration": 0.43
+        "scan_timestamp": 1758466383,
+        "scan_duration": 0.39
     },
     "2265072978": {
         "name": "ftCalm",
@@ -1689,7 +1648,8 @@
                 "memberCount": 14,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 35072512,
@@ -1705,7 +1665,8 @@
                 "memberCount": 8,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33172808,
@@ -1721,11 +1682,12 @@
                 "memberCount": 4,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227300,
-        "scan_duration": 0.37
+        "scan_timestamp": 1758466384,
+        "scan_duration": 0.35
     },
     "23952489": {
         "name": "Alexrocks911",
@@ -1733,6 +1695,23 @@
         "displayName": "Alexrocks911",
         "hexColor": "#0066ff",
         "approve_groups": [
+            {
+                "id": 987941164,
+                "name": "Check a User's Last Online Info Game Community",
+                "description": "[Unfortunately still down for now - please see the Group Wall] Play here! https://www.roblox.com/games/2120256007/Check-a-Users-Last-Known-Online-Info-More\n\nMore information & updates to this group coming soon!",
+                "owner": {
+                    "hasVerifiedBadge": false,
+                    "userId": 23952489,
+                    "username": "Alexrocks911",
+                    "displayName": "Alexrocks911"
+                },
+                "shout": null,
+                "memberCount": 75,
+                "isBuildersClubOnly": false,
+                "publicEntryAllowed": true,
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
+            },
             {
                 "id": 1069957,
                 "name": "[ Content Deleted 1069957 ]",
@@ -1744,10 +1723,11 @@
                     "displayName": "Alexrocks911"
                 },
                 "shout": null,
-                "memberCount": 256,
+                "memberCount": 254,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 821521,
@@ -1760,10 +1740,11 @@
                     "displayName": "Alexrocks911"
                 },
                 "shout": null,
-                "memberCount": 8397,
+                "memberCount": 8446,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 9675544,
@@ -1779,7 +1760,8 @@
                 "memberCount": 2,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 9675533,
@@ -1795,7 +1777,8 @@
                 "memberCount": 2,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 6975307,
@@ -1811,11 +1794,12 @@
                 "memberCount": 36,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227300,
-        "scan_duration": 0.32
+        "scan_timestamp": 1758466384,
+        "scan_duration": 0.36
     },
     "253887243": {
         "name": "Reditionist",
@@ -1834,10 +1818,11 @@
                     "displayName": "Red"
                 },
                 "shout": null,
-                "memberCount": 15,
+                "memberCount": 19,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 35261553,
@@ -1853,7 +1838,8 @@
                 "memberCount": 1,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 34154891,
@@ -1866,10 +1852,11 @@
                     "displayName": "Red"
                 },
                 "shout": null,
-                "memberCount": 249,
+                "memberCount": 348,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33026742,
@@ -1882,14 +1869,15 @@
                     "displayName": "Red"
                 },
                 "shout": null,
-                "memberCount": 7498,
+                "memberCount": 7526,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227301,
-        "scan_duration": 0.39
+        "scan_timestamp": 1758466384,
+        "scan_duration": 0.37
     },
     "2541443308": {
         "name": "UhhhhHalo",
@@ -1908,26 +1896,11 @@
                     "displayName": "UhhHalo"
                 },
                 "shout": null,
-                "memberCount": 4456,
+                "memberCount": 4315,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
-            },
-            {
-                "id": 33296535,
-                "name": "Slap's UGC",
-                "description": "Welcome to our group! We are a community of Roblox players who love to play games and have fun together. Our group is open to everyone who shares our passion for gaming. We organize regular events and competitions where you can win exciting prizes. We also have a dc server where you can chat with other members and get updates about our latest events. Join us today and become a part of our growing community!",
-                "owner": {
-                    "hasVerifiedBadge": false,
-                    "userId": 2541443308,
-                    "username": "UhhhhHalo",
-                    "displayName": "UhhHalo"
-                },
-                "shout": null,
-                "memberCount": 15419,
-                "isBuildersClubOnly": false,
-                "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 32567527,
@@ -1940,10 +1913,11 @@
                     "displayName": "UhhHalo"
                 },
                 "shout": null,
-                "memberCount": 91312,
+                "memberCount": 91291,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 17042175,
@@ -1956,10 +1930,11 @@
                     "displayName": "UhhHalo"
                 },
                 "shout": null,
-                "memberCount": 253,
+                "memberCount": 255,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 16205878,
@@ -1972,19 +1947,20 @@
                     "displayName": "UhhHalo"
                 },
                 "shout": null,
-                "memberCount": 32,
+                "memberCount": 34,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227301,
-        "scan_duration": 0.37
+        "scan_timestamp": 1758466385,
+        "scan_duration": 0.39
     },
     "2545942398": {
-        "name": "Bexxaai",
+        "name": "bexxaai",
         "id": 2545942398,
-        "displayName": "Bexxaai",
+        "displayName": "bexxaai",
         "hexColor": "#ff4714",
         "approve_groups": [
             {
@@ -1994,14 +1970,15 @@
                 "owner": {
                     "hasVerifiedBadge": false,
                     "userId": 2545942398,
-                    "username": "Bexxaai",
-                    "displayName": "Bexxaai"
+                    "username": "bexxaai",
+                    "displayName": "bexxaai"
                 },
                 "shout": null,
-                "memberCount": 5,
+                "memberCount": 8,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 36006406,
@@ -2010,14 +1987,15 @@
                 "owner": {
                     "hasVerifiedBadge": false,
                     "userId": 2545942398,
-                    "username": "Bexxaai",
-                    "displayName": "Bexxaai"
+                    "username": "bexxaai",
+                    "displayName": "bexxaai"
                 },
                 "shout": null,
                 "memberCount": 5,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 35995843,
@@ -2026,14 +2004,15 @@
                 "owner": {
                     "hasVerifiedBadge": false,
                     "userId": 2545942398,
-                    "username": "Bexxaai",
-                    "displayName": "Bexxaai"
+                    "username": "bexxaai",
+                    "displayName": "bexxaai"
                 },
                 "shout": null,
-                "memberCount": 47,
+                "memberCount": 43,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 35382908,
@@ -2042,14 +2021,15 @@
                 "owner": {
                     "hasVerifiedBadge": false,
                     "userId": 2545942398,
-                    "username": "Bexxaai",
-                    "displayName": "Bexxaai"
+                    "username": "bexxaai",
+                    "displayName": "bexxaai"
                 },
                 "shout": null,
                 "memberCount": 8,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 35038808,
@@ -2058,14 +2038,15 @@
                 "owner": {
                     "hasVerifiedBadge": false,
                     "userId": 2545942398,
-                    "username": "Bexxaai",
-                    "displayName": "Bexxaai"
+                    "username": "bexxaai",
+                    "displayName": "bexxaai"
                 },
                 "shout": null,
                 "memberCount": 7,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 34981757,
@@ -2074,14 +2055,15 @@
                 "owner": {
                     "hasVerifiedBadge": false,
                     "userId": 2545942398,
-                    "username": "Bexxaai",
-                    "displayName": "Bexxaai"
+                    "username": "bexxaai",
+                    "displayName": "bexxaai"
                 },
                 "shout": null,
                 "memberCount": 6,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 34972928,
@@ -2090,14 +2072,15 @@
                 "owner": {
                     "hasVerifiedBadge": false,
                     "userId": 2545942398,
-                    "username": "Bexxaai",
-                    "displayName": "Bexxaai"
+                    "username": "bexxaai",
+                    "displayName": "bexxaai"
                 },
                 "shout": null,
-                "memberCount": 51,
+                "memberCount": 47,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 34823582,
@@ -2106,30 +2089,32 @@
                 "owner": {
                     "hasVerifiedBadge": false,
                     "userId": 2545942398,
-                    "username": "Bexxaai",
-                    "displayName": "Bexxaai"
+                    "username": "bexxaai",
+                    "displayName": "bexxaai"
                 },
                 "shout": null,
-                "memberCount": 15,
+                "memberCount": 14,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 34728293,
                 "name": "random stuff i make cuz idk",
-                "description": "cool stuff, i know right?",
+                "description": "[INSUFFICIENT FUNDS]\nyikes.",
                 "owner": {
                     "hasVerifiedBadge": false,
                     "userId": 2545942398,
-                    "username": "Bexxaai",
-                    "displayName": "Bexxaai"
+                    "username": "bexxaai",
+                    "displayName": "bexxaai"
                 },
                 "shout": null,
-                "memberCount": 9,
+                "memberCount": 8,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 34682265,
@@ -2138,14 +2123,15 @@
                 "owner": {
                     "hasVerifiedBadge": false,
                     "userId": 2545942398,
-                    "username": "Bexxaai",
-                    "displayName": "Bexxaai"
+                    "username": "bexxaai",
+                    "displayName": "bexxaai"
                 },
                 "shout": null,
                 "memberCount": 8,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 34575276,
@@ -2154,14 +2140,15 @@
                 "owner": {
                     "hasVerifiedBadge": false,
                     "userId": 2545942398,
-                    "username": "Bexxaai",
-                    "displayName": "Bexxaai"
+                    "username": "bexxaai",
+                    "displayName": "bexxaai"
                 },
                 "shout": null,
                 "memberCount": 3,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 34500677,
@@ -2170,14 +2157,15 @@
                 "owner": {
                     "hasVerifiedBadge": false,
                     "userId": 2545942398,
-                    "username": "Bexxaai",
-                    "displayName": "Bexxaai"
+                    "username": "bexxaai",
+                    "displayName": "bexxaai"
                 },
                 "shout": null,
-                "memberCount": 29,
+                "memberCount": 28,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33795647,
@@ -2186,14 +2174,15 @@
                 "owner": {
                     "hasVerifiedBadge": false,
                     "userId": 2545942398,
-                    "username": "Bexxaai",
-                    "displayName": "Bexxaai"
+                    "username": "bexxaai",
+                    "displayName": "bexxaai"
                 },
                 "shout": null,
-                "memberCount": 57,
+                "memberCount": 55,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33672448,
@@ -2202,14 +2191,15 @@
                 "owner": {
                     "hasVerifiedBadge": false,
                     "userId": 2545942398,
-                    "username": "Bexxaai",
-                    "displayName": "Bexxaai"
+                    "username": "bexxaai",
+                    "displayName": "bexxaai"
                 },
                 "shout": null,
-                "memberCount": 77,
+                "memberCount": 74,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33481912,
@@ -2218,14 +2208,15 @@
                 "owner": {
                     "hasVerifiedBadge": false,
                     "userId": 2545942398,
-                    "username": "Bexxaai",
-                    "displayName": "Bexxaai"
+                    "username": "bexxaai",
+                    "displayName": "bexxaai"
                 },
                 "shout": null,
                 "memberCount": 10,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33361639,
@@ -2234,14 +2225,15 @@
                 "owner": {
                     "hasVerifiedBadge": false,
                     "userId": 2545942398,
-                    "username": "Bexxaai",
-                    "displayName": "Bexxaai"
+                    "username": "bexxaai",
+                    "displayName": "bexxaai"
                 },
                 "shout": null,
                 "memberCount": 27,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33341777,
@@ -2250,14 +2242,15 @@
                 "owner": {
                     "hasVerifiedBadge": false,
                     "userId": 2545942398,
-                    "username": "Bexxaai",
-                    "displayName": "Bexxaai"
+                    "username": "bexxaai",
+                    "displayName": "bexxaai"
                 },
                 "shout": null,
                 "memberCount": 124,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 32990227,
@@ -2266,14 +2259,15 @@
                 "owner": {
                     "hasVerifiedBadge": false,
                     "userId": 2545942398,
-                    "username": "Bexxaai",
-                    "displayName": "Bexxaai"
+                    "username": "bexxaai",
+                    "displayName": "bexxaai"
                 },
                 "shout": null,
-                "memberCount": 3112,
+                "memberCount": 3061,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 32444709,
@@ -2282,18 +2276,19 @@
                 "owner": {
                     "hasVerifiedBadge": false,
                     "userId": 2545942398,
-                    "username": "Bexxaai",
-                    "displayName": "Bexxaai"
+                    "username": "bexxaai",
+                    "displayName": "bexxaai"
                 },
                 "shout": null,
                 "memberCount": 26,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227302,
-        "scan_duration": 0.66
+        "scan_timestamp": 1758466385,
+        "scan_duration": 0.39
     },
     "2672900117": {
         "name": "WaffleTrades",
@@ -2301,6 +2296,23 @@
         "displayName": "WaffleTrades",
         "hexColor": "#0066ff",
         "approve_groups": [
+            {
+                "id": 409805973,
+                "name": "FREE UGC SUIIIII EMOTE",
+                "description": "SUIIIIIII",
+                "owner": {
+                    "hasVerifiedBadge": true,
+                    "userId": 2672900117,
+                    "username": "WaffleTrades",
+                    "displayName": "WaffleTrades"
+                },
+                "shout": null,
+                "memberCount": 737,
+                "isBuildersClubOnly": false,
+                "publicEntryAllowed": false,
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
+            },
             {
                 "id": 35941050,
                 "name": "kiwi bird enthusiasts",
@@ -2312,10 +2324,11 @@
                     "displayName": "WaffleTrades"
                 },
                 "shout": null,
-                "memberCount": 246,
+                "memberCount": 219,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 34684164,
@@ -2328,10 +2341,11 @@
                     "displayName": "WaffleTrades"
                 },
                 "shout": null,
-                "memberCount": 3691,
+                "memberCount": 3841,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 14511880,
@@ -2344,14 +2358,15 @@
                     "displayName": "WaffleTrades"
                 },
                 "shout": null,
-                "memberCount": 258820,
+                "memberCount": 276201,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227302,
-        "scan_duration": 0.37
+        "scan_timestamp": 1758466386,
+        "scan_duration": 0.39
     },
     "3045913364": {
         "name": "vinish4r",
@@ -2373,7 +2388,8 @@
                 "memberCount": 1,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 34964477,
@@ -2389,7 +2405,8 @@
                 "memberCount": 7,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 32914610,
@@ -2405,7 +2422,8 @@
                 "memberCount": 53,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 32622517,
@@ -2421,11 +2439,12 @@
                 "memberCount": 79,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227303,
-        "scan_duration": 0.37
+        "scan_timestamp": 1758466386,
+        "scan_duration": 0.4
     },
     "3072234": {
         "name": "neil99",
@@ -2433,8 +2452,8 @@
         "displayName": "neil99",
         "hexColor": "#0066ff",
         "approve_groups": [],
-        "scan_timestamp": 1753227303,
-        "scan_duration": 0.33
+        "scan_timestamp": 1758466386,
+        "scan_duration": 0.37
     },
     "312115318": {
         "name": "ltsCheeks",
@@ -2453,10 +2472,11 @@
                     "displayName": "Cheeks"
                 },
                 "shout": null,
-                "memberCount": 17,
+                "memberCount": 20,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 6506463,
@@ -2469,10 +2489,11 @@
                     "displayName": "Cheeks"
                 },
                 "shout": null,
-                "memberCount": 484,
+                "memberCount": 460,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 5706612,
@@ -2488,7 +2509,8 @@
                 "memberCount": 7,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 4664108,
@@ -2504,11 +2526,12 @@
                 "memberCount": 14,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227303,
-        "scan_duration": 0.36
+        "scan_timestamp": 1758466387,
+        "scan_duration": 0.41
     },
     "3277476379": {
         "name": "Always_SadFxrever",
@@ -2527,10 +2550,11 @@
                     "displayName": "YoussefGM"
                 },
                 "shout": null,
-                "memberCount": 94,
+                "memberCount": 87,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 17008603,
@@ -2546,7 +2570,8 @@
                 "memberCount": 5,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 4086395,
@@ -2562,7 +2587,8 @@
                 "memberCount": 2,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 16465457,
@@ -2578,7 +2604,8 @@
                 "memberCount": 3,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33021562,
@@ -2591,10 +2618,11 @@
                     "displayName": "YoussefGM"
                 },
                 "shout": null,
-                "memberCount": 36,
+                "memberCount": 35,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 8315797,
@@ -2610,7 +2638,8 @@
                 "memberCount": 38,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 9214433,
@@ -2623,14 +2652,15 @@
                     "displayName": "YoussefGM"
                 },
                 "shout": null,
-                "memberCount": 785,
+                "memberCount": 773,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227304,
-        "scan_duration": 0.38
+        "scan_timestamp": 1758466387,
+        "scan_duration": 0.41
     },
     "345723507": {
         "name": "gogithyy",
@@ -2638,6 +2668,23 @@
         "displayName": "Gogithy",
         "hexColor": "#0066ff",
         "approve_groups": [
+            {
+                "id": 642476230,
+                "name": "Star Strikers inc",
+                "description": "Holding",
+                "owner": {
+                    "hasVerifiedBadge": true,
+                    "userId": 345723507,
+                    "username": "gogithyy",
+                    "displayName": "Gogithy"
+                },
+                "shout": null,
+                "memberCount": 28,
+                "isBuildersClubOnly": false,
+                "publicEntryAllowed": true,
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
+            },
             {
                 "id": 35569596,
                 "name": "Gogithyy",
@@ -2652,7 +2699,8 @@
                 "memberCount": 1,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 34439523,
@@ -2665,10 +2713,11 @@
                     "displayName": "Gogithy"
                 },
                 "shout": null,
-                "memberCount": 1340,
+                "memberCount": 1378,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33704772,
@@ -2681,10 +2730,11 @@
                     "displayName": "Gogithy"
                 },
                 "shout": null,
-                "memberCount": 334,
+                "memberCount": 458,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 32826952,
@@ -2697,14 +2747,15 @@
                     "displayName": "Gogithy"
                 },
                 "shout": null,
-                "memberCount": 71255,
+                "memberCount": 76159,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": true
+                "hasVerifiedBadge": true,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227304,
-        "scan_duration": 0.33
+        "scan_timestamp": 1758466387,
+        "scan_duration": 0.39
     },
     "3659917987": {
         "name": "RbxGrinder12",
@@ -2726,7 +2777,8 @@
                 "memberCount": 8,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 14450806,
@@ -2742,7 +2794,8 @@
                 "memberCount": 2,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 17345778,
@@ -2758,7 +2811,8 @@
                 "memberCount": 4,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 32413866,
@@ -2774,7 +2828,8 @@
                 "memberCount": 12,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 32330115,
@@ -2790,7 +2845,8 @@
                 "memberCount": 7,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 11078419,
@@ -2806,7 +2862,8 @@
                 "memberCount": 2,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 17101496,
@@ -2819,10 +2876,11 @@
                     "displayName": "Evxn"
                 },
                 "shout": null,
-                "memberCount": 12,
+                "memberCount": 17,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 17082191,
@@ -2835,10 +2893,11 @@
                     "displayName": "Evxn"
                 },
                 "shout": null,
-                "memberCount": 304,
+                "memberCount": 302,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 17033261,
@@ -2854,7 +2913,8 @@
                 "memberCount": 13,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 16910202,
@@ -2867,10 +2927,11 @@
                     "displayName": "Evxn"
                 },
                 "shout": null,
-                "memberCount": 640,
+                "memberCount": 638,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 16820893,
@@ -2883,10 +2944,11 @@
                     "displayName": "Evxn"
                 },
                 "shout": null,
-                "memberCount": 31676,
+                "memberCount": 31475,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 7847116,
@@ -2902,7 +2964,8 @@
                 "memberCount": 6,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 3895285,
@@ -2915,10 +2978,11 @@
                     "displayName": "Evxn"
                 },
                 "shout": null,
-                "memberCount": 57,
+                "memberCount": 58,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 7167510,
@@ -2934,7 +2998,8 @@
                 "memberCount": 2,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 13577474,
@@ -2950,7 +3015,8 @@
                 "memberCount": 11,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 6595760,
@@ -2966,7 +3032,8 @@
                 "memberCount": 43,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 10422510,
@@ -2982,7 +3049,8 @@
                 "memberCount": 6,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 8872838,
@@ -2998,7 +3066,8 @@
                 "memberCount": 3,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 9828094,
@@ -3011,10 +3080,11 @@
                     "displayName": "Evxn"
                 },
                 "shout": null,
-                "memberCount": 1759,
+                "memberCount": 1748,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 7486501,
@@ -3030,7 +3100,8 @@
                 "memberCount": 10,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 9412028,
@@ -3043,10 +3114,11 @@
                     "displayName": "Evxn"
                 },
                 "shout": null,
-                "memberCount": 26,
+                "memberCount": 25,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 12310962,
@@ -3062,7 +3134,8 @@
                 "memberCount": 8,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 7305684,
@@ -3078,7 +3151,8 @@
                 "memberCount": 40,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 10894702,
@@ -3094,7 +3168,8 @@
                 "memberCount": 31,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 9872361,
@@ -3110,7 +3185,8 @@
                 "memberCount": 34,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 8125312,
@@ -3126,7 +3202,8 @@
                 "memberCount": 13,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 15736448,
@@ -3142,7 +3219,8 @@
                 "memberCount": 5,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 5901665,
@@ -3158,7 +3236,8 @@
                 "memberCount": 2,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 3983201,
@@ -3174,7 +3253,8 @@
                 "memberCount": 60,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 6847679,
@@ -3187,10 +3267,11 @@
                     "displayName": "Evxn"
                 },
                 "shout": null,
-                "memberCount": 163,
+                "memberCount": 162,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 6440371,
@@ -3206,7 +3287,8 @@
                 "memberCount": 24,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 794589,
@@ -3219,10 +3301,11 @@
                     "displayName": "Evxn"
                 },
                 "shout": null,
-                "memberCount": 888,
+                "memberCount": 879,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 5605683,
@@ -3235,10 +3318,11 @@
                     "displayName": "Evxn"
                 },
                 "shout": null,
-                "memberCount": 288,
+                "memberCount": 286,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 3288682,
@@ -3254,11 +3338,12 @@
                 "memberCount": 985,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227304,
-        "scan_duration": 0.37
+        "scan_timestamp": 1758466388,
+        "scan_duration": 0.4
     },
     "369804208": {
         "name": "outflowedd",
@@ -3277,10 +3362,11 @@
                     "displayName": "outflowed"
                 },
                 "shout": null,
-                "memberCount": 69,
+                "memberCount": 72,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33359681,
@@ -3296,7 +3382,8 @@
                 "memberCount": 4,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 15236225,
@@ -3309,19 +3396,20 @@
                     "displayName": "outflowed"
                 },
                 "shout": null,
-                "memberCount": 41107,
+                "memberCount": 43355,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227305,
+        "scan_timestamp": 1758466388,
         "scan_duration": 0.4
     },
     "387168785": {
         "name": "deegwastaken",
         "id": 387168785,
-        "displayName": "D33G",
+        "displayName": "deegwastaken",
         "hexColor": "#ffbb1c",
         "approve_groups": [
             {
@@ -3332,13 +3420,14 @@
                     "hasVerifiedBadge": false,
                     "userId": 387168785,
                     "username": "deegwastaken",
-                    "displayName": "D33G"
+                    "displayName": "deegwastaken"
                 },
                 "shout": null,
                 "memberCount": 2,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 35329839,
@@ -3348,13 +3437,14 @@
                     "hasVerifiedBadge": false,
                     "userId": 387168785,
                     "username": "deegwastaken",
-                    "displayName": "D33G"
+                    "displayName": "deegwastaken"
                 },
                 "shout": null,
                 "memberCount": 1,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 35329825,
@@ -3364,13 +3454,14 @@
                     "hasVerifiedBadge": false,
                     "userId": 387168785,
                     "username": "deegwastaken",
-                    "displayName": "D33G"
+                    "displayName": "deegwastaken"
                 },
                 "shout": null,
                 "memberCount": 1,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 35329821,
@@ -3380,13 +3471,14 @@
                     "hasVerifiedBadge": false,
                     "userId": 387168785,
                     "username": "deegwastaken",
-                    "displayName": "D33G"
+                    "displayName": "deegwastaken"
                 },
                 "shout": null,
                 "memberCount": 1,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 35322880,
@@ -3396,13 +3488,14 @@
                     "hasVerifiedBadge": false,
                     "userId": 387168785,
                     "username": "deegwastaken",
-                    "displayName": "D33G"
+                    "displayName": "deegwastaken"
                 },
                 "shout": null,
                 "memberCount": 2,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 35230301,
@@ -3412,13 +3505,14 @@
                     "hasVerifiedBadge": false,
                     "userId": 387168785,
                     "username": "deegwastaken",
-                    "displayName": "D33G"
+                    "displayName": "deegwastaken"
                 },
                 "shout": null,
                 "memberCount": 1,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 34667799,
@@ -3428,13 +3522,14 @@
                     "hasVerifiedBadge": false,
                     "userId": 387168785,
                     "username": "deegwastaken",
-                    "displayName": "D33G"
+                    "displayName": "deegwastaken"
                 },
                 "shout": null,
                 "memberCount": 2,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 34331743,
@@ -3444,13 +3539,14 @@
                     "hasVerifiedBadge": false,
                     "userId": 387168785,
                     "username": "deegwastaken",
-                    "displayName": "D33G"
+                    "displayName": "deegwastaken"
                 },
                 "shout": null,
-                "memberCount": 10,
+                "memberCount": 9,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 34252756,
@@ -3460,13 +3556,14 @@
                     "hasVerifiedBadge": false,
                     "userId": 387168785,
                     "username": "deegwastaken",
-                    "displayName": "D33G"
+                    "displayName": "deegwastaken"
                 },
                 "shout": null,
                 "memberCount": 7,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 34192481,
@@ -3476,13 +3573,14 @@
                     "hasVerifiedBadge": false,
                     "userId": 387168785,
                     "username": "deegwastaken",
-                    "displayName": "D33G"
+                    "displayName": "deegwastaken"
                 },
                 "shout": null,
                 "memberCount": 1,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 34167810,
@@ -3492,13 +3590,14 @@
                     "hasVerifiedBadge": false,
                     "userId": 387168785,
                     "username": "deegwastaken",
-                    "displayName": "D33G"
+                    "displayName": "deegwastaken"
                 },
                 "shout": null,
                 "memberCount": 29,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33738779,
@@ -3508,13 +3607,14 @@
                     "hasVerifiedBadge": false,
                     "userId": 387168785,
                     "username": "deegwastaken",
-                    "displayName": "D33G"
+                    "displayName": "deegwastaken"
                 },
                 "shout": null,
-                "memberCount": 1171,
+                "memberCount": 1137,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33571041,
@@ -3524,13 +3624,14 @@
                     "hasVerifiedBadge": false,
                     "userId": 387168785,
                     "username": "deegwastaken",
-                    "displayName": "D33G"
+                    "displayName": "deegwastaken"
                 },
                 "shout": null,
                 "memberCount": 3,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33319495,
@@ -3540,13 +3641,14 @@
                     "hasVerifiedBadge": false,
                     "userId": 387168785,
                     "username": "deegwastaken",
-                    "displayName": "D33G"
+                    "displayName": "deegwastaken"
                 },
                 "shout": null,
-                "memberCount": 2397,
+                "memberCount": 2357,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 5932731,
@@ -3556,17 +3658,18 @@
                     "hasVerifiedBadge": false,
                     "userId": 387168785,
                     "username": "deegwastaken",
-                    "displayName": "D33G"
+                    "displayName": "deegwastaken"
                 },
                 "shout": null,
                 "memberCount": 479,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227305,
-        "scan_duration": 0.34
+        "scan_timestamp": 1758466389,
+        "scan_duration": 0.39
     },
     "40355735": {
         "name": "Creator_Edguita",
@@ -3585,14 +3688,15 @@
                     "displayName": "NoticiasUGC"
                 },
                 "shout": null,
-                "memberCount": 4232,
+                "memberCount": 4326,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227305,
-        "scan_duration": 0.36
+        "scan_timestamp": 1758466389,
+        "scan_duration": 0.42
     },
     "409384302": {
         "name": "Piam100",
@@ -3611,14 +3715,15 @@
                     "displayName": "Piam"
                 },
                 "shout": null,
-                "memberCount": 387,
+                "memberCount": 386,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227306,
-        "scan_duration": 0.42
+        "scan_timestamp": 1758466390,
+        "scan_duration": 0.44
     },
     "420596281": {
         "name": "Minideliciouspant3",
@@ -3637,10 +3742,11 @@
                     "displayName": "mini"
                 },
                 "shout": null,
-                "memberCount": 12,
+                "memberCount": 14,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 5742338,
@@ -3653,14 +3759,15 @@
                     "displayName": "mini"
                 },
                 "shout": null,
-                "memberCount": 3103,
+                "memberCount": 3205,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227306,
-        "scan_duration": 0.34
+        "scan_timestamp": 1758466390,
+        "scan_duration": 0.41
     },
     "4244289167": {
         "name": "BuilderNoobDraws",
@@ -3679,10 +3786,11 @@
                     "displayName": "BuilderNoob"
                 },
                 "shout": null,
-                "memberCount": 828,
+                "memberCount": 923,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 34041619,
@@ -3695,10 +3803,11 @@
                     "displayName": "BuilderNoob"
                 },
                 "shout": null,
-                "memberCount": 27,
+                "memberCount": 21,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33721934,
@@ -3711,10 +3820,11 @@
                     "displayName": "BuilderNoob"
                 },
                 "shout": null,
-                "memberCount": 1273,
+                "memberCount": 1253,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 4865047,
@@ -3727,14 +3837,15 @@
                     "displayName": "BuilderNoob"
                 },
                 "shout": null,
-                "memberCount": 10649,
+                "memberCount": 10620,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227306,
-        "scan_duration": 0.34
+        "scan_timestamp": 1758466390,
+        "scan_duration": 0.37
     },
     "431900130": {
         "name": "WeirdBlox",
@@ -3753,10 +3864,11 @@
                     "displayName": "WeirdBlox"
                 },
                 "shout": null,
-                "memberCount": 205,
+                "memberCount": 278,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 5598876,
@@ -3769,14 +3881,15 @@
                     "displayName": "WeirdBlox"
                 },
                 "shout": null,
-                "memberCount": 2786,
+                "memberCount": 3564,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227307,
-        "scan_duration": 0.37
+        "scan_timestamp": 1758466391,
+        "scan_duration": 0.39
     },
     "444234610": {
         "name": "hectorsavger2",
@@ -3784,6 +3897,23 @@
         "displayName": "Bestbuy6_9",
         "hexColor": "#0066ff",
         "approve_groups": [
+            {
+                "id": 255310872,
+                "name": "Unsuccessful Market",
+                "description": "I Make Random UGCS.\n\nGo Buy Them",
+                "owner": {
+                    "hasVerifiedBadge": false,
+                    "userId": 444234610,
+                    "username": "hectorsavger2",
+                    "displayName": "Bestbuy6_9"
+                },
+                "shout": null,
+                "memberCount": 15,
+                "isBuildersClubOnly": false,
+                "publicEntryAllowed": true,
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
+            },
             {
                 "id": 33423885,
                 "name": "Three Rascals UGC",
@@ -3795,10 +3925,11 @@
                     "displayName": "Bestbuy6_9"
                 },
                 "shout": null,
-                "memberCount": 1672,
+                "memberCount": 1646,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 4100776,
@@ -3811,14 +3942,15 @@
                     "displayName": "Bestbuy6_9"
                 },
                 "shout": null,
-                "memberCount": 417,
+                "memberCount": 407,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227307,
-        "scan_duration": 0.34
+        "scan_timestamp": 1758466391,
+        "scan_duration": 0.39
     },
     "4498865751": {
         "name": "EfazDev_a",
@@ -3840,11 +3972,12 @@
                 "memberCount": 3,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227308,
-        "scan_duration": 0.32
+        "scan_timestamp": 1758466391,
+        "scan_duration": 0.39
     },
     "4678143805": {
         "name": "Der3_GroupHolder",
@@ -3863,14 +3996,15 @@
                     "displayName": "Der3_GroupHolder"
                 },
                 "shout": null,
-                "memberCount": 1058,
+                "memberCount": 1041,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227308,
-        "scan_duration": 0.33
+        "scan_timestamp": 1758466392,
+        "scan_duration": 0.36
     },
     "4848720257": {
         "name": "Efaz_W",
@@ -3889,14 +4023,15 @@
                     "displayName": "Efaz_W"
                 },
                 "shout": null,
-                "memberCount": 159,
+                "memberCount": 156,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227308,
-        "scan_duration": 0.32
+        "scan_timestamp": 1758466392,
+        "scan_duration": 0.35
     },
     "50434605": {
         "name": "LukasThePickle",
@@ -3904,6 +4039,23 @@
         "displayName": "Lukas",
         "hexColor": "#00c41d",
         "approve_groups": [
+            {
+                "id": 35231165,
+                "name": "Lastinker",
+                "description": "\ud83d\udce2 If you have any suggestions leave them in the group wall! :D\n\n\ud83d\udd17 Full Catalog Here: \nhttps://www.roblox.com/catalog?Category=1&CreatorName=Lastinker&salesTypeFilter=1&SortType=3",
+                "owner": {
+                    "hasVerifiedBadge": false,
+                    "userId": 50434605,
+                    "username": "LukasThePickle",
+                    "displayName": "Lukas"
+                },
+                "shout": null,
+                "memberCount": 11418,
+                "isBuildersClubOnly": false,
+                "publicEntryAllowed": true,
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
+            },
             {
                 "id": 34184519,
                 "name": "S1S",
@@ -3915,10 +4067,11 @@
                     "displayName": "Lukas"
                 },
                 "shout": null,
-                "memberCount": 1240,
+                "memberCount": 1445,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33957833,
@@ -3931,10 +4084,28 @@
                     "displayName": "Lukas"
                 },
                 "shout": null,
-                "memberCount": 2399,
+                "memberCount": 3402,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
+            },
+            {
+                "id": 33429423,
+                "name": "\u2223",
+                "description": "\ud83d\ude42",
+                "owner": {
+                    "hasVerifiedBadge": false,
+                    "userId": 50434605,
+                    "username": "LukasThePickle",
+                    "displayName": "Lukas"
+                },
+                "shout": null,
+                "memberCount": 27,
+                "isBuildersClubOnly": false,
+                "publicEntryAllowed": false,
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 32941166,
@@ -3947,10 +4118,11 @@
                     "displayName": "Lukas"
                 },
                 "shout": null,
-                "memberCount": 5740,
+                "memberCount": 5677,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 17408165,
@@ -3963,10 +4135,11 @@
                     "displayName": "Lukas"
                 },
                 "shout": null,
-                "memberCount": 3707,
+                "memberCount": 3654,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 5241324,
@@ -3979,14 +4152,15 @@
                     "displayName": "Lukas"
                 },
                 "shout": null,
-                "memberCount": 54412,
+                "memberCount": 55706,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227308,
-        "scan_duration": 0.33
+        "scan_timestamp": 1758466393,
+        "scan_duration": 0.37
     },
     "50474312": {
         "name": "CitrusGamerUltra",
@@ -3994,8 +4168,8 @@
         "displayName": "Citrus",
         "hexColor": "#ff4b00",
         "approve_groups": [],
-        "scan_timestamp": 1753227309,
-        "scan_duration": 0.34
+        "scan_timestamp": 1758466393,
+        "scan_duration": 0.38
     },
     "5247520932": {
         "name": "SirValiantStar",
@@ -4017,14 +4191,15 @@
                 "memberCount": 204,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227309,
-        "scan_duration": 0.33
+        "scan_timestamp": 1758466393,
+        "scan_duration": 0.36
     },
     "556692115": {
-        "name": "FabulousTrophies",
+        "name": "madebytrophies",
         "id": 556692115,
         "displayName": "trophies",
         "hexColor": "#0066ff",
@@ -4036,30 +4211,15 @@
                 "owner": {
                     "hasVerifiedBadge": false,
                     "userId": 556692115,
-                    "username": "FabulousTrophies",
+                    "username": "madebytrophies",
                     "displayName": "trophies"
                 },
                 "shout": null,
                 "memberCount": 94,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
-            },
-            {
-                "id": 33257805,
-                "name": "Trophies & 5DiamondzZ Collaborations",
-                "description": "trophies and diamond ugc collabs yep yep so cool",
-                "owner": {
-                    "hasVerifiedBadge": false,
-                    "userId": 556692115,
-                    "username": "FabulousTrophies",
-                    "displayName": "trophies"
-                },
-                "shout": null,
-                "memberCount": 481,
-                "isBuildersClubOnly": false,
-                "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 5075831,
@@ -4068,18 +4228,19 @@
                 "owner": {
                     "hasVerifiedBadge": false,
                     "userId": 556692115,
-                    "username": "FabulousTrophies",
+                    "username": "madebytrophies",
                     "displayName": "trophies"
                 },
                 "shout": null,
-                "memberCount": 1487,
+                "memberCount": 1479,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227310,
-        "scan_duration": 0.39
+        "scan_timestamp": 1758466394,
+        "scan_duration": 0.36
     },
     "591886122": {
         "name": "Cellis617",
@@ -4098,10 +4259,11 @@
                     "displayName": "CeIlisPlays"
                 },
                 "shout": null,
-                "memberCount": 13278,
+                "memberCount": 13115,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 32802555,
@@ -4114,14 +4276,15 @@
                     "displayName": "CeIlisPlays"
                 },
                 "shout": null,
-                "memberCount": 39,
+                "memberCount": 38,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227310,
-        "scan_duration": 0.43
+        "scan_timestamp": 1758466394,
+        "scan_duration": 0.37
     },
     "618958028": {
         "name": "MintyMVP",
@@ -4140,14 +4303,15 @@
                     "displayName": "Minty"
                 },
                 "shout": null,
-                "memberCount": 67,
+                "memberCount": 73,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227310,
-        "scan_duration": 0.39
+        "scan_timestamp": 1758466394,
+        "scan_duration": 0.45
     },
     "685455457": {
         "name": "nerific",
@@ -4166,10 +4330,11 @@
                     "displayName": "ner"
                 },
                 "shout": null,
-                "memberCount": 242,
+                "memberCount": 241,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33215916,
@@ -4182,10 +4347,11 @@
                     "displayName": "ner"
                 },
                 "shout": null,
-                "memberCount": 316,
+                "memberCount": 310,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33052153,
@@ -4198,10 +4364,11 @@
                     "displayName": "ner"
                 },
                 "shout": null,
-                "memberCount": 2152,
+                "memberCount": 2123,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 7056450,
@@ -4217,11 +4384,12 @@
                 "memberCount": 34,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227311,
-        "scan_duration": 0.37
+        "scan_timestamp": 1758466395,
+        "scan_duration": 0.4
     },
     "73608952": {
         "name": "JustNafjan",
@@ -4243,7 +4411,8 @@
                 "memberCount": 38,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33056454,
@@ -4256,10 +4425,11 @@
                     "displayName": "Nafjan"
                 },
                 "shout": null,
-                "memberCount": 1279,
+                "memberCount": 1261,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 12487668,
@@ -4272,13 +4442,14 @@
                     "displayName": "Nafjan"
                 },
                 "shout": null,
-                "memberCount": 919,
+                "memberCount": 910,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227311,
+        "scan_timestamp": 1758466395,
         "scan_duration": 0.38
     },
     "837731385": {
@@ -4298,10 +4469,11 @@
                     "displayName": "cabled"
                 },
                 "shout": null,
-                "memberCount": 23,
+                "memberCount": 22,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": false,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 34994207,
@@ -4314,10 +4486,11 @@
                     "displayName": "cabled"
                 },
                 "shout": null,
-                "memberCount": 59,
+                "memberCount": 78,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 34330575,
@@ -4330,10 +4503,11 @@
                     "displayName": "cabled"
                 },
                 "shout": null,
-                "memberCount": 149,
+                "memberCount": 151,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 33244556,
@@ -4346,10 +4520,11 @@
                     "displayName": "cabled"
                 },
                 "shout": null,
-                "memberCount": 10486,
+                "memberCount": 10287,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 32771153,
@@ -4365,7 +4540,8 @@
                 "memberCount": 17,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 14150412,
@@ -4378,14 +4554,15 @@
                     "displayName": "cabled"
                 },
                 "shout": null,
-                "memberCount": 585,
+                "memberCount": 580,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227311,
-        "scan_duration": 0.36
+        "scan_timestamp": 1758466396,
+        "scan_duration": 0.42
     },
     "953932652": {
         "name": "CrimoraDev",
@@ -4404,10 +4581,11 @@
                     "displayName": "Crimora"
                 },
                 "shout": null,
-                "memberCount": 1432,
+                "memberCount": 1408,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 34376475,
@@ -4423,7 +4601,8 @@
                 "memberCount": 9,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 12808931,
@@ -4436,10 +4615,11 @@
                     "displayName": "Crimora"
                 },
                 "shout": null,
-                "memberCount": 47,
+                "memberCount": 49,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             },
             {
                 "id": 9223842,
@@ -4452,22 +4632,41 @@
                     "displayName": "Crimora"
                 },
                 "shout": null,
-                "memberCount": 4159,
+                "memberCount": 5089,
                 "isBuildersClubOnly": false,
                 "publicEntryAllowed": true,
-                "hasVerifiedBadge": false
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
             }
         ],
-        "scan_timestamp": 1753227312,
-        "scan_duration": 0.41
+        "scan_timestamp": 1758466396,
+        "scan_duration": 0.44
     },
     "970879254": {
         "name": "Der3_Al3arab1",
         "id": 970879254,
         "displayName": "Der3_IDontPlayFair",
         "hexColor": "#229c00",
-        "approve_groups": [],
-        "scan_timestamp": 1753227312,
-        "scan_duration": 0.35
+        "approve_groups": [
+            {
+                "id": 870379253,
+                "name": "Insert Studio Name Here",
+                "description": "[insert studio name here]",
+                "owner": {
+                    "hasVerifiedBadge": false,
+                    "userId": 970879254,
+                    "username": "Der3_Al3arab1",
+                    "displayName": "Der3_IDontPlayFair"
+                },
+                "shout": null,
+                "memberCount": 1,
+                "isBuildersClubOnly": false,
+                "publicEntryAllowed": true,
+                "hasVerifiedBadge": false,
+                "hasSocialModules": true
+            }
+        ],
+        "scan_timestamp": 1758466397,
+        "scan_duration": 0.44
     }
 }

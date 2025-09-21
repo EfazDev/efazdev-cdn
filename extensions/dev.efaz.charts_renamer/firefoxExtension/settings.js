@@ -18,8 +18,8 @@ async function loopThroughArrayAsync(array, callback) {
             await callback(a, array[a]);
         }
     } else if (array && typeof array === "object") {
-        for (const a in array) {
-            if (Object.hasOwn(array, a)) { await callback(a, array[a]); }
+        for (const a of Object.keys(array)) {
+            await callback(a, array[a]);
         }
     }
 }
@@ -30,8 +30,8 @@ function loopThroughArray(array, callback) {
             callback(a, array[a]);
         }
     } else if (array && typeof array === "object") {
-        for (const a in array) {
-            if (Object.hasOwn(array, a)) { callback(a, array[a]); }
+        for (const a of Object.keys(array)) {
+            callback(a, array[a]);
         }
     }
 }

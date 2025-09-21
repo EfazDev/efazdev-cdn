@@ -32,19 +32,8 @@ inject.js:
                 await callback(a, array[a]);
             }
         } else if (array && typeof array === "object") {
-            for (const a in array) {
-                if (Object.hasOwn(array, a)) { await callback(a, array[a]); }
-            }
-        }
-    }
-    function loopThroughArray(array, callback) {
-        if (Array.isArray(array)) {
-            for (let a = 0; a < array.length; a++) {
-                callback(a, array[a]);
-            }
-        } else if (array && typeof array === "object") {
-            for (const a in array) {
-                if (Object.hasOwn(array, a)) { callback(a, array[a]); }
+            for (const a of Object.keys(array)) {
+                await callback(a, array[a]);
             }
         }
     }
@@ -155,13 +144,11 @@ inject.js:
                         let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100;
                         async function injectCSS() {
                             if (settings["projectedImage2"] && settings["projectedImage2"].startsWith("data")) {
-                                let all_links = document.querySelectorAll("link");
-                                await loopThroughArrayAsync(all_links, async (_, header) => {
-                                    if (header.rel && header.rel == "icon" && header.href && !(header.href == settings["projectedImage2"])) {
-                                        header.setAttribute("href", settings["projectedImage2"]);
-                                    }
+                                let all_svgs = document.querySelectorAll(".web-blox-css-tss-du027b-headerContainer-arrowHeaderContainer > a[href='/'] > span.web-blox-css-tss-1dtmiv5-Button-startIcon-startIcon > svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.web-blox-css-mui-12kqpzp, .web-blox-css-tss-yhph52-headerContainer > a[href='https://create.roblox.com/'] > .MuiButton-iconSizeMedium.web-blox-css-mui-6xugel > svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.web-blox-css-mui-12kqpzp, .web-blox-css-tss-du027b-headerContainer-arrowHeaderContainer > a[href='https://create.roblox.com/'] > .web-blox-css-mui-6xugel > svg.MuiSvgIcon-root");
+                                await loopThroughArrayAsync(all_svgs, async (_, header) => {
+                                    header.outerHTML = '<img class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium" width="30" height="30" src="' + settings["projectedImage2"] + '">';
                                 });
-                                all_links = null;
+                                all_svgs = null;
                                 let creator_hub_icon = document.querySelectorAll(".web-blox-css-tss-nvpyzg-logo");
                                 for (let i = 0; i < creator_hub_icon.length; i++) {
                                     let header = creator_hub_icon[i];
@@ -170,6 +157,13 @@ inject.js:
                                     }
                                 }
                                 creator_hub_icon = null;
+                                let all_links = document.querySelectorAll("link");
+                                await loopThroughArrayAsync(all_links, async (_, header) => {
+                                    if (header.rel && header.rel == "icon" && header.href && !(header.href == settings["projectedImage2"])) {
+                                        header.setAttribute("href", settings["projectedImage2"]);
+                                    }
+                                });
+                                all_links = null;
                             }
                             if (settings["rbxStudioIcon"] && settings["rbxStudioIcon"].startsWith("data")) {
                                 let all_icons = document.querySelectorAll(".web-blox-css-tss-1hgd7ws-studioIcon");

@@ -10,37 +10,25 @@ settings.js:
 var innerBody, innerHead;
 
 async function loopThroughArrayAsync(array, callback) {
-    if (typeof (array) == "object") {
-        if (Array.isArray(array)) {
-            for (let a = 0; a < array.length; a++) {
-                var value = array[a];
-                await callback(a, value);
-            }
-        } else {
-            var generated_keys = Object.keys(array);
-            for (let a = 0; a < generated_keys.length; a++) {
-                var key = generated_keys[a];
-                var value = array[key];
-                await callback(key, value);
-            }
+    if (Array.isArray(array)) {
+        for (let a = 0; a < array.length; a++) {
+            await callback(a, array[a]);
+        }
+    } else if (array && typeof array === "object") {
+        for (const a in array) {
+            if (Object.hasOwn(array, a)) { await callback(a, array[a]); }
         }
     }
 }
 
 function loopThroughArray(array, callback) {
-    if (typeof (array) == "object") {
-        if (Array.isArray(array)) {
-            for (let a = 0; a < array.length; a++) {
-                var value = array[a];
-                callback(a, value);
-            }
-        } else {
-            var generated_keys = Object.keys(array);
-            for (let a = 0; a < generated_keys.length; a++) {
-                var key = generated_keys[a];
-                var value = array[key];
-                callback(key, value);
-            }
+    if (Array.isArray(array)) {
+        for (let a = 0; a < array.length; a++) {
+            callback(a, array[a]);
+        }
+    } else if (array && typeof array === "object") {
+        for (const a of Object.keys(array)) {
+            callback(a, array[a]);
         }
     }
 }

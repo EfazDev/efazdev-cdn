@@ -41,19 +41,8 @@ inject.js:
                     await callback(a, array[a]);
                 }
             } else if (array && typeof array === "object") {
-                for (const a in array) {
-                    if (Object.hasOwn(array, a)) { await callback(a, array[a]); }
-                }
-            }
-        }
-        function loopThroughArray(array, callback) {
-            if (Array.isArray(array)) {
-                for (let a = 0; a < array.length; a++) {
-                    callback(a, array[a]);
-                }
-            } else if (array && typeof array === "object") {
-                for (const a in array) {
-                    if (Object.hasOwn(array, a)) { callback(a, array[a]); }
+                for (const a of Object.keys(array)) {
+                    await callback(a, array[a]);
                 }
             }
         }
@@ -160,7 +149,7 @@ inject.js:
                             '.text-heading-small',
                             '.web-blox-css-tss-jc8j2r-message > span',
                             '.container-list.games-detail > h2',
-                            '.container-header',
+                            '.container-header > h2',
                             '.radio-buttons-group > h5',
                             '.radio-buttons-group > .radio-button-description',
                             '.section-content > .small',

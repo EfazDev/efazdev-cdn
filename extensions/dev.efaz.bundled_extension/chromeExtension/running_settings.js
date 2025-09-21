@@ -14,31 +14,25 @@ var system_settings = {};
 var changes_made = {};
 
 async function loopThroughArrayAsync(array, callback) {
-    if (typeof (array) == "object") {
-        if (Array.isArray(array)) {
-            for (let a = 0; a < array.length; a++) {
-                await callback(a, array[a]);
-            }
-        } else {
-            let generated_keys = Object.keys(array);
-            for (let a = 0; a < generated_keys.length; a++) {
-                await callback(generated_keys[a], array[generated_keys[a]]);
-            }
+    if (Array.isArray(array)) {
+        for (let a = 0; a < array.length; a++) {
+            await callback(a, array[a]);
+        }
+    } else if (array && typeof array === "object") {
+        for (const a in array) {
+            if (Object.hasOwn(array, a)) { await callback(a, array[a]); }
         }
     }
 }
 
 function loopThroughArray(array, callback) {
-    if (typeof (array) == "object") {
-        if (Array.isArray(array)) {
-            for (let a = 0; a < array.length; a++) {
-                callback(a, array[a]);
-            }
-        } else {
-            let generated_keys = Object.keys(array);
-            for (let a = 0; a < generated_keys.length; a++) {
-                callback(generated_keys[a], array[key]);
-            }
+    if (Array.isArray(array)) {
+        for (let a = 0; a < array.length; a++) {
+            callback(a, array[a]);
+        }
+    } else if (array && typeof array === "object") {
+        for (const a of Object.keys(array)) {
+            callback(a, array[a]);
         }
     }
 }
