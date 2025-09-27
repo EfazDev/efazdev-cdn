@@ -142,11 +142,12 @@ inject.js:
                         injectCSS();
                     } else if (tab.hostname == "create.roblox.com") {
                         let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100;
+                        let path_str = "path[d='M3.38116 0L0 12.6188L12.6188 16L16 3.38116L3.38116 0ZM9.291 10.2363L5.76484 9.291L6.71013 5.76484L10.2377 6.71013L9.291 10.2363Z']"
                         async function injectCSS() {
                             if (settings["projectedImage2"] && settings["projectedImage2"].startsWith("data")) {
-                                let all_svgs = document.querySelectorAll(".web-blox-css-tss-du027b-headerContainer-arrowHeaderContainer > a[href='/'] > span.web-blox-css-tss-1dtmiv5-Button-startIcon-startIcon > svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.web-blox-css-mui-12kqpzp, .web-blox-css-tss-yhph52-headerContainer > a[href='https://create.roblox.com/'] > .MuiButton-iconSizeMedium.web-blox-css-mui-6xugel > svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.web-blox-css-mui-12kqpzp, .web-blox-css-tss-du027b-headerContainer-arrowHeaderContainer > a[href='https://create.roblox.com/'] > .web-blox-css-mui-6xugel > svg.MuiSvgIcon-root");
+                                let all_svgs = document.querySelectorAll("a[href='/'] > span > svg > " + path_str + ", a[href='https://create.roblox.com/'] > span > svg > " + path_str);
                                 await loopThroughArrayAsync(all_svgs, async (_, header) => {
-                                    header.outerHTML = '<img class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium" width="30" height="30" src="' + settings["projectedImage2"] + '">';
+                                    header.parentElement.outerHTML = '<img class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium" width="30" height="30" src="' + settings["projectedImage2"] + '">';
                                 });
                                 all_svgs = null;
                                 let creator_hub_icon = document.querySelectorAll(".web-blox-css-tss-nvpyzg-logo");
