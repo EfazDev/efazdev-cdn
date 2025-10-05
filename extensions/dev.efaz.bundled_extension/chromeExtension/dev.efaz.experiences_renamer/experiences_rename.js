@@ -335,7 +335,12 @@ inject.js:
                         let clear_local_set = false;
                         function blacklisted(header, attribute) {
                             if (header.getAttribute("ng-renamed4") == "true") { return true; }
-                            if (header.children && header.children.length > 0 && header.children[0].nodeName.toLowerCase() == "a" && header.children[0].textContent == header.textContent) { return true; }
+                            if (header.children && header.children.length > 0 && (header.children[0].nodeName.toLowerCase() == "a") && header.children[0].textContent == header.textContent) { return true; }
+                            if (header.children && header.children.length > 0) { 
+                                if (header.querySelectorAll("ul, form").length > 0) {
+                                    return true;
+                                }
+                            }
                             return false;
                         }
                         function addRename(header, k) {

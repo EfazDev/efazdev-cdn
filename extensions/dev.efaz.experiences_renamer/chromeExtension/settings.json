@@ -23,7 +23,7 @@
         "includeCreatorDashboard": {
             "text": "Include Creator Dashboard",
             "type": "checkbox",
-            "default": true,
+            "default": false,
             "neededSettings": ["enabled"]
         },
         "massEdit": {
