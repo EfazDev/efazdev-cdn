@@ -148,6 +148,10 @@ header .header-dropdown-toggle {
     box-sizing: content-box
 }
 
+.discourse-root {
+    background-color: var(--secondary) !important;
+}
+
 .reply-area .d-icon-share {
     padding: 2px !important;
     margin: 4px !important

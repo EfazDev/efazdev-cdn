@@ -7,6 +7,14 @@
         "message": "Marre d'installer toutes les extensions d'Efaz? Eh bien, vous pouvez toutes les installer et les utiliser dans cette seule extension!",
         "description": "Description de l'extension"
     },
+    "dev_efaz_bundled_extension_loadSettings": {
+        "message": "Charger les paramètres",
+        "description": "Charger le texte des paramètres"
+    },
+    "dev_efaz_bundled_extension_saveSettings": {
+        "message": "Enregistrer les paramètres",
+        "description": "Enregistrer le texte des paramètres"
+    },
     "dev_efaz_communities_renamer_exName": {
         "message": "Renommeur de communautés Roblox d'Efaz",
         "description": "Nom de l'extension"

@@ -4,8 +4,16 @@
         "description": "Extension name"
     },
     "dev_efaz_bundled_extension_exDescription": {
-        "message": "Stufo di installare tutte le estensioni di Efaz? Bene, puoi installarle e usarle tutte in una sola estensione!",
+        "message": "Une extension qui contient toutes les extensions Roblox d'Efaz en une seule, maximisant la capacité de personnalisation!",
         "description": "Extension description"
+    },
+    "dev_efaz_bundled_extension_loadSettings": {
+        "message": "Carica impostazioni",
+        "description": "Carica testo impostazioni"
+    },
+    "dev_efaz_bundled_extension_saveSettings": {
+        "message": "Salva impostazioni",
+        "description": "Salva testo impostazioni"
     },
     "enabled_mes": {
         "message": "Abilita Estensione",

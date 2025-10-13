@@ -4,8 +4,16 @@
         "description": "Name der Erweiterung"
     },
     "dev_efaz_bundled_extension_exDescription": {
-        "message": "Müde, alle Erweiterungen von Efaz einzeln zu installieren? Nun, du kannst sie alle in dieser einen Erweiterung installieren und nutzen!",
+        "message": "Eine Erweiterung, die alle Roblox-Erweiterungen von Efaz in einer enthält und so die Anpassungsmöglichkeiten maximiert!",
         "description": "Beschreibung der Erweiterung"
+    },
+    "dev_efaz_bundled_extension_loadSettings": {
+        "message": "Einstellungen laden",
+        "description": "Einstellungstext laden"
+    },
+    "dev_efaz_bundled_extension_saveSettings": {
+        "message": "Einstellungen speichern",
+        "description": "Einstellungstext speichern"
     },
     "enabled_mes": {
         "message": "Erweiterung aktivieren",

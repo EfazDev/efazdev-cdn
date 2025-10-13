@@ -4,8 +4,16 @@
         "description": "Extension name"
     },
     "dev_efaz_bundled_extension_exDescription": {
-        "message": "Tired of installing all of Efaz's extensions? Well, you can install and use them all in this one extension!",
+        "message": "An extension that contains all of Efaz's Roblox Extensions into one, maximizing ability to customize!",
         "description": "Extension description"
+    },
+    "dev_efaz_bundled_extension_loadSettings": {
+        "message": "Load Settings",
+        "description": "Load settings text"
+    },
+    "dev_efaz_bundled_extension_saveSettings": {
+        "message": "Save Settings",
+        "description": "Save settings text"
     },
     "enabled_mes": {
         "message": "Enable Extension",

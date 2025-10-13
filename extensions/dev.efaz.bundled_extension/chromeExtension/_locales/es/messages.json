@@ -4,8 +4,16 @@
         "description": "Nombre de la extensión"
     },
     "dev_efaz_bundled_extension_exDescription": {
-        "message": "¿Cansado de instalar todas las extensiones de Efaz? ¡Pues puedes instalarlas y usarlas todas en esta misma extensión!",
+        "message": "¡Una extensión que contiene todas las extensiones de Roblox de Efaz en una, maximizando la capacidad de personalización!",
         "description": "Descripción de la extensión"
+    },
+    "dev_efaz_bundled_extension_loadSettings": {
+        "message": "Cargar configuración",
+        "description": "Cargar texto de configuración"
+    },
+    "dev_efaz_bundled_extension_saveSettings": {
+        "message": "Guardar configuración",
+        "description": "Guardar texto de configuración"
     },
     "dev_efaz_communities_renamer_exName": {
         "message": "Renombrador de comunidades Roblox de Efaz",
