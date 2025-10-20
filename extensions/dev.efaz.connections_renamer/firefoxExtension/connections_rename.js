@@ -167,6 +167,7 @@ inject.js:
                             ".avatar-status-container > div.avatar-card-label",
                             ".people-list-header > h2",
                             ".profile-header-social-count-label",
+                            "button.content-action-utility > .text-truncate-end",
                             "#friend-action"
                         ];
                         let custom_renames = [

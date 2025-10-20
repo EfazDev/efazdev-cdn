@@ -172,6 +172,7 @@ async function start() {
                 }).catch(err => {
                     if (err.toString().includes("Extension context")) {
                         broken_context = true;
+                        warn("Extension context is suspected to be broken. Error: " + err.toString());
                         return null;
                     } else {
                         warn(`Error with getting approved users: ${err}`);
@@ -365,6 +366,7 @@ async function start() {
                                 } catch (err) {
                                     if (err.toString().includes("Extension context")) {
                                         broken_context = true;
+                                        warn("Extension context is suspected to be broken. Error: " + err.toString());
                                         return { "accepted": false };
                                     } else {
                                         warn(`Error with getting approved group: ${err}`);
@@ -444,6 +446,8 @@ async function start() {
                                 ".ng-binding.slide-item-name.text-overflow.groups.font-title",
                                 ".paired-name.message-summary-username.positionAboveLink.font-header-2.ng-scope",
                                 ".paired-name.text-name.username-container.font-header-2",
+                                ".gap-xxsmall.flex > .icon-filled-premium",
+                                "#profile-header-title-container-name",
                                 ".rbx-private-owner"
                             ].join(", ");
                             async function handle_container(usr_con) {
@@ -471,10 +475,12 @@ async function start() {
                                                     main_header.parentElement.parentElement.appendChild(generateDOMElement(profile_html));
                                                 }
                                             }
-                                        } else if (usr_con.matches(".profile-header-title-container")) {
+                                        } else if (usr_con.matches(".profile-header-title-container") || usr_con.matches("#profile-header-title-container-name")) {
                                             if (vIconPlaced(main_header.innerHTML)) { return; }
                                             if (main_header.innerHTML.includes(displayName)) {
-                                                main_header.appendChild(generateDOMElement(profile2_html));
+                                                let s = generateDOMElement(profile2_html);
+                                                s.children[0].style = "margin-left: 6px;";
+                                                main_header.appendChild(s);
                                             }
                                         } else if (usr_con.matches(".profile-content > .info > .names > h1")) {
                                             if (vIconPlaced(main_header.innerHTML)) { return; }
@@ -487,7 +493,7 @@ async function start() {
                                             if (main_header && (main_header.getAttribute("class") == "premium-badge-right-aligned" || main_header.getAttribute("class") == "premium-badge-icon")) {
                                                 main_header.remove();
                                             }
-                                        } else if (usr_con.matches(".profile-header-premium-badge")) {
+                                        } else if (usr_con.matches(".profile-header-premium-badge") || usr_con.matches(".gap-xxsmall.flex > .icon-filled-premium")) {
                                             if (main_header) {
                                                 main_header.remove();
                                             }
@@ -937,7 +943,7 @@ async function start() {
                             }
 
                             /* Load Groups */
-                            approvedGroup(1)
+                            approvedGroup(1, true)
 
                             /* Start observers */
                             observer = new MutationObserver((mutations) => {
@@ -975,7 +981,7 @@ async function start() {
                     }).catch(err => {
                         if (err.toString().includes("Extension context")) {
                             broken_context = true;
-                            return { "accepted": false };
+                            warn("Extension context is suspected to be broken. Error: " + err.toString());
                         } else {
                             warn(err);
                             if (allow_messages == true) {
@@ -989,7 +995,9 @@ async function start() {
             }
         }
         await getUserData("*", true).then(json => {
-            if (json && json["id"]) { scanUser(json["id"], true); }
+            if (json && json["id"]) {
+                scanUser(json["id"], true);
+            }
         }).catch(err => {
             warn(err);
             if (allow_messages == true) alert("We couldn't apply the verified badge due to an error! Sorry!");
@@ -1138,7 +1146,7 @@ async function loader() { // Script Loader
                     appr_user_users = {};
                 }
             }
-            if (document.readyState === "complete") { start(); } else { window.addEventListener("DOMContentLoaded", start); }
+            if (document.readyState === "complete") { start(); } else { window.addEventListener("load", start); }
             console.log("Starting Verified Badge Loader: Settings Configuration v3");
         }
     });
