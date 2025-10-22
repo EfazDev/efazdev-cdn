@@ -354,6 +354,7 @@ function start_system() {
     try {
         /* Handle Missing Functions */
         if (failed_to_load_async == true) {
+            view_awaiting_menu();
             document.getElementById("title4").innerText= "Uh oh!"
             document.getElementById("message3").innerText= "Something went wrong loading this form! Please update your browser or check your browser settings!"
             return;
@@ -798,9 +799,14 @@ function start_system() {
         /* Done! */
         lastLoadedJSON = system_json;
         console.log("Successfully created form!");
-        on_form_loaded(system_json);
+        try {
+            on_form_loaded(system_json);
+        } catch (err) {
+            console.warn("Unable to run on_form_loaded event due to an error: " + err.message)
+        }
     } catch (err) {
         document.body.innerHTML = html_set;
+        view_awaiting_menu();
         document.getElementById("title4").innerText= "Uh oh!"
         document.getElementById("message3").innerText= "Something went wrong loading this form! Please try again later!"
         console.warn("System was disabled due to an error, please check if the json is valid: " + err.message);
