@@ -324,6 +324,12 @@ function start_system() {
     refreshVariables();
     let title = "System Form";
     let icon_url = "https://cdn.efaz.dev/png/logo.png";
+
+    /* Set Basics */
+    if (system_json["title"] != null) {
+        title = system_json["title"];
+        icon_url = system_json["icon_url"];
+    }
     let html_set = '<div id="main_menu">\n' +
         '    <h1 id="title1">' + title + '</h1>\n' +
         '</div>\n' +
@@ -343,12 +349,6 @@ function start_system() {
         '    <br>\n' +
         '    <button type="button" id="reloadButton" class="center">Do another!</button>\n' +
         '</div>'
-
-    /* Set Basics */
-    if (system_json["title"] != null) {
-        title = system_json["title"];
-        icon_url = system_json["icon_url"];
-    }
     document.body.innerHTML = html_set;
     
     try {
