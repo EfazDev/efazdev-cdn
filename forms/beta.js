@@ -572,9 +572,12 @@ function start_system() {
                 new_html = new_html + '<button type="button" id="modeButton_' + new_mode["name"] + '">' + new_mode["name"] + '</button> ';
             };
             main_menu.innerHTML = main_menu.innerHTML + new_html;
-            document.getElementById('modeButton_' + new_mode["name"]).addEventListener("click", () => {
-                set_mode(new_mode["name"]);
-            });
+            for (let b = 0; b < modes.length; b++) {
+                let new_mode = modes[b];
+                document.getElementById('modeButton_' + new_mode["name"]).addEventListener("click", () => {
+                    set_mode(new_mode["name"]);
+                });
+            }
         };
         if (system_json["showCurrentMode"] == true) {
             let new_html = '<p id="current_mode">Current Mode: ' + selected_mode + '</p>';
