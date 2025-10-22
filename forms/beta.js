@@ -320,15 +320,11 @@ function getIfResponseIsEmpty(t) {
 }
 
 function start_system() {
+    /* Information Variables */
     refreshVariables();
     let title = "System Form";
     let icon_url = "https://cdn.efaz.dev/png/logo.png";
-    if (system_json["title"] != null) {
-        title = system_json["title"];
-        icon_url = system_json["icon_url"];
-    }
-    document.body.innerHTML =
-        '<div id="main_menu">\n' +
+    let html_set = '<div id="main_menu">\n' +
         '    <h1 id="title1">' + title + '</h1>\n' +
         '</div>\n' +
         '<div id="failed" style="display: none;">\n' +
@@ -346,7 +342,14 @@ function start_system() {
         '    <p id="message2">Thanks for submitting your form!</p>\n' +
         '    <br>\n' +
         '    <button type="button" id="reloadButton" class="center">Do another!</button>\n' +
-        '</div>'; /* Clear all objects inside the body and resets to default usable HTML. */
+        '</div>'
+
+    /* Set Basics */
+    if (system_json["title"] != null) {
+        title = system_json["title"];
+        icon_url = system_json["icon_url"];
+    }
+    document.body.innerHTML = html_set;
     
     try {
         /* Handle Missing Functions */
@@ -797,6 +800,9 @@ function start_system() {
         console.log("Successfully created form!");
         on_form_loaded(system_json);
     } catch (err) {
+        document.body.innerHTML = html_set;
+        document.getElementById("title4").innerText= "Uh oh!"
+        document.getElementById("message3").innerText= "Something went wrong loading this form! Please try again later!"
         console.warn("System was disabled due to an error, please check if the json is valid: " + err.message);
     }
 };
