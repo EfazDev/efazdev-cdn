@@ -5,6 +5,9 @@ import datetime
 import typing
 
 class request:
+    """
+    A class that allows you to make HTTP requests using the curl command line tool.
+    """
     class Response:
         text: str = ""
         json: typing.Union[typing.Dict, typing.List, None] = None
@@ -27,6 +30,7 @@ class request:
         scheme: str = ""
         redirected: bool = False
         ok: bool = False
+        __raw_stderr__: str = ""
     class FileDownload(Response):
         returncode = 0
         path = ""
@@ -76,6 +80,8 @@ class request:
         self._urlparse = urlparse
         self._platform = platform
         self._main_os = platform.system()
+    def __bool__(self): return self.get_if_connected()
+    def __str__(self): return self.get_curl()
     def get(self, url: str, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
         try:
             if not self.get_if_connected():
@@ -83,10 +89,11 @@ class request:
             curl_res = self._subprocess.run([self.get_curl(), "-v", "--compressed"] + self.format_headers(headers) + self.format_auth(auth) + self.format_cookies(cookies) + [url], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, timeout=timeout)
             if type(curl_res) is self._subprocess.CompletedProcess:
                 new_response = self.Response()
-                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8").replace("\r", ""))
+                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8").strip())
                 for i, v in processed_stderr.items(): setattr(new_response, i, v)
                 new_response.url = url
-                new_response.text = curl_res.stdout.decode("utf-8").replace("\r", "")
+                new_response.text = curl_res.stdout.decode("utf-8").strip()
+                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8").strip()
                 new_response.method = "GET"
                 new_response.scheme = self.get_url_scheme(url)
                 new_response.path = self.get_url_path(url)
@@ -115,10 +122,11 @@ class request:
             curl_res = self._subprocess.run([self.get_curl(), "-v", "-X", "POST", "--compressed"] + self.format_headers(headers) + self.format_auth(auth) + self.format_cookies(cookies) + self.format_data(data) + [url], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, timeout=timeout)
             if type(curl_res) is self._subprocess.CompletedProcess:
                 new_response = self.Response()
-                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8").replace("\r", ""))
+                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8").strip())
                 for i, v in processed_stderr.items(): setattr(new_response, i, v)
                 new_response.url = url
-                new_response.text = curl_res.stdout.decode("utf-8").replace("\r", "")
+                new_response.text = curl_res.stdout.decode("utf-8").strip()
+                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8").strip()
                 new_response.method = "POST"
                 new_response.scheme = self.get_url_scheme(url)
                 new_response.path = self.get_url_path(url)
@@ -147,10 +155,11 @@ class request:
             curl_res = self._subprocess.run([self.get_curl(), "-v", "-X", "PATCH", "--compressed"] + self.format_headers(headers) + self.format_auth(auth) + self.format_cookies(cookies) + self.format_data(data) + [url], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, timeout=timeout)
             if type(curl_res) is self._subprocess.CompletedProcess:
                 new_response = self.Response()
-                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8").replace("\r", ""))
+                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8").strip())
                 for i, v in processed_stderr.items(): setattr(new_response, i, v)
                 new_response.url = url
-                new_response.text = curl_res.stdout.decode("utf-8").replace("\r", "")
+                new_response.text = curl_res.stdout.decode("utf-8").strip()
+                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8").strip()
                 new_response.method = "PATCH"
                 new_response.scheme = self.get_url_scheme(url)
                 new_response.path = self.get_url_path(url)
@@ -179,10 +188,11 @@ class request:
             curl_res = self._subprocess.run([self.get_curl(), "-v", "-X", "PUT", "--compressed"] + self.format_headers(headers) + self.format_auth(auth) + self.format_cookies(cookies) + self.format_data(data) + [url], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, timeout=timeout)
             if type(curl_res) is self._subprocess.CompletedProcess:
                 new_response = self.Response()
-                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8").replace("\r", ""))
+                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8").strip())
                 for i, v in processed_stderr.items(): setattr(new_response, i, v)
                 new_response.url = url
-                new_response.text = curl_res.stdout.decode("utf-8").replace("\r", "")
+                new_response.text = curl_res.stdout.decode("utf-8").strip()
+                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8").strip()
                 new_response.method = "PUT"
                 new_response.scheme = self.get_url_scheme(url)
                 new_response.path = self.get_url_path(url)
@@ -211,10 +221,11 @@ class request:
             curl_res = self._subprocess.run([self.get_curl(), "-v", "-X", "DELETE", "--compressed"] + self.format_headers(headers) + self.format_auth(auth) + self.format_cookies(cookies) + [url], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, timeout=timeout)
             if type(curl_res) is self._subprocess.CompletedProcess:
                 new_response = self.Response()
-                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8").replace("\r", ""))
+                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8").strip())
                 for i, v in processed_stderr.items(): setattr(new_response, i, v)
                 new_response.url = url
-                new_response.text = curl_res.stdout.decode("utf-8").replace("\r", "")
+                new_response.text = curl_res.stdout.decode("utf-8").strip()
+                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8").strip()
                 new_response.method = "DELETE"
                 new_response.scheme = self.get_url_scheme(url)
                 new_response.path = self.get_url_path(url)
@@ -243,10 +254,11 @@ class request:
             curl_res = self._subprocess.run([self.get_curl(), "-v", "-X", "HEAD", "--compressed"] + self.format_headers(headers) + self.format_auth(auth) + self.format_cookies(cookies) + [url], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, timeout=timeout)
             if type(curl_res) is self._subprocess.CompletedProcess:
                 new_response = self.Response()
-                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8").replace("\r", ""))
+                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8").strip())
                 for i, v in processed_stderr.items(): setattr(new_response, i, v)
                 new_response.url = url
-                new_response.text = curl_res.stdout.decode("utf-8").replace("\r", "")
+                new_response.text = curl_res.stdout.decode("utf-8").strip()
+                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8").strip()
                 new_response.method = "HEAD"
                 new_response.scheme = self.get_url_scheme(url)
                 new_response.path = self.get_url_path(url)
@@ -275,10 +287,11 @@ class request:
             curl_res = self._subprocess.run([self.get_curl(), "-v", "-X", method, "--compressed"] + self.format_headers(headers) + self.format_auth(auth) + self.format_cookies(cookies) + self.format_data(data) + [url], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, timeout=timeout)
             if type(curl_res) is self._subprocess.CompletedProcess:
                 new_response = self.Response()
-                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8").replace("\r", ""))
+                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8").strip())
                 for i, v in processed_stderr.items(): setattr(new_response, i, v)
                 new_response.url = url
-                new_response.text = curl_res.stdout.decode("utf-8").replace("\r", "")
+                new_response.text = curl_res.stdout.decode("utf-8").strip()
+                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8").strip()
                 new_response.method = method.upper()
                 new_response.scheme = self.get_url_scheme(url)
                 new_response.path = self.get_url_path(url)
@@ -358,7 +371,8 @@ class request:
             s.method = "GET"
             s.scheme = self.get_url_scheme(path)
             s.path = self.get_url_path(path)
-            processed_stderr = self.process_stderr("".join(stderr_lines))
+            s.__raw_stderr__ = "".join(stderr_lines)
+            processed_stderr = self.process_stderr(s.__raw_stderr__)
             for i, v in processed_stderr.items(): setattr(s, i, v)
             return s
         else: 
@@ -371,7 +385,8 @@ class request:
                 s.method = "GET"
                 s.scheme = self.get_url_scheme(path)
                 s.path = self.get_url_path(path)
-                processed_stderr = self.process_stderr("".join(stderr_lines))
+                s.__raw_stderr__ = "".join(stderr_lines)
+                processed_stderr = self.process_stderr(s.__raw_stderr__)
                 for i, v in processed_stderr.items(): setattr(s, i, v)
                 return s
     def get_curl(self):
@@ -470,6 +485,7 @@ class request:
             "ok": False
         }
         for i in lines:
+            i = i.rstrip("\r")
             if self._main_os == "Windows": # Schannel based cUrl
                 status_line_match = self._re.search(r"< HTTP/([\d.]+) (\d+)", i)
                 if status_line_match:
@@ -478,7 +494,7 @@ class request:
                     data["ok"] = self.get_if_ok(data["status_code"])
                 elif i.startswith("< "):
                     sl = i.replace("< ", "", 1).split(": ")
-                    if len(sl) > 1: data["headers"][sl[0]] = sl[1]
+                    if len(sl) > 1: data["headers"][sl[0]] = sl[1].strip()
                 elif i == "* schannel: SSL/TLS connection renegotiated":
                     data["ssl_verified"] = True
                     data["ssl_issuer"] = "CN=Schannel Placeholder Certificate"
@@ -509,7 +525,7 @@ class request:
                     data["ok"] = self.get_if_ok(data["status_code"])
                 elif i.startswith("< "):
                     sl = i.replace("< ", "", 1).split(": ")
-                    if len(sl) > 1: data["headers"][sl[0]] = sl[1]
+                    if len(sl) > 1: data["headers"][sl[0]] = sl[1].strip()
                 elif i.startswith("* IPv4: "):
                     sl = i.split("* IPv4: ")
                     if len(sl) > 1: 
@@ -564,24 +580,28 @@ class request:
             return self.DownloadStatus(speed=speed, downloaded=downloaded, downloaded_bytes=downloaded_bytes, percent=percent, total_size=total_size)
         return None
 class pip:
+    """
+    A class that allows you to configure pip and Python installations.
+    """
     executable = None
     debug = False
     ignore_same = False
     requests: request = None
     
-    # Pip Functionalities
+    # Pip / PyPi Functionalities
     def __init__(self, command: list=[], executable: str=None, debug: bool=False, find: bool=False, arch: str=None):
         import sys
         import os
         import tempfile
         import re
+        import json
         import platform
         import importlib
+        import importlib.metadata
         import subprocess
         import glob
         import stat
         import shutil
-        import hashlib
         import urllib.parse
         import time
         import mmap
@@ -592,13 +612,14 @@ class pip:
         self._re = re
         self._platform = platform
         self._importlib = importlib
+        self._importlib_metadata = importlib.metadata
         self._subprocess = subprocess
         self._glob = glob
         self._stat = stat
         self._shutil = shutil
-        self._hashlib = hashlib
         self._urllib_parse = urllib.parse
         self._time = time
+        self._json = json
         self._mmap = mmap
 
         self._main_os = platform.system()
@@ -607,43 +628,36 @@ class pip:
             else: self.executable = self.findPython(arch=arch, path=True) if find == True else sys.executable
         elif type(arch) is str: self.executable = self.findPython(arch=arch, path=True)
         else: self.executable = self.findPython(arch=arch, path=True) if find == True else sys.executable
-        if self._main_os == "Windows":
-            try:
-                try:
-                    import win32gui # type: ignore
-                    import win32process # type: ignore
-                    self._win32gui = win32gui
-                    self._win32process = win32process
-                except Exception:
-                    self.install(["pywin32"])
-                    self._win32gui = self.importModule("win32gui")
-                    self._win32process = self.importModule("win32process")
-            except: pass
-        elif self._main_os == "Darwin":
-            try:
-                try:
-                    from Quartz import CGWindowListCopyWindowInfo, kCGWindowListOptionOnScreenOnly # type: ignore
-                except Exception as e:
-                    self.install(["pyobjc-framework-Quartz"])
-                    Quartz = self.importModule("Quartz")
-                    CGWindowListCopyWindowInfo, kCGWindowListOptionOnScreenOnly = Quartz.CGWindowListCopyWindowInfo, Quartz.kCGWindowListOptionOnScreenOnly
-                self._CGWindowListCopyWindowInfo = CGWindowListCopyWindowInfo
-                self._kCGWindowListOptionOnScreenOnly = kCGWindowListOptionOnScreenOnly
-            except: pass
         self.debug = debug==True
         self.requests = request()
         if type(command) is list and len(command) > 0: self.ensure(); subprocess.check_call([self.executable, "-m", "pip"] + command)
+    def __str__(self): return self.executable
+    def __bool__(self): return self.pythonInstalled()
+    def __iter__(self): return self
+    def __next__(self):
+        if not hasattr(self, "iter_index") or not self.iter_index:
+            self.iter_index = 0
+            self.iter_data = self.findPythons()
+        if self.iter_index < len(self.iter_data):
+            item = self.iter_data[self.iter_index]
+            self.iter_index += 1
+            return item
+        else:
+            self.iter_data = None
+            self.iter_index = 0
+            raise StopIteration
     def install(self, packages: typing.List[str], upgrade: bool=False, user: bool=True):
         self.ensure()
         res = {}
         generated_list = []
+        if self.getIfVirtualEnvironment(): user = False
         for i in packages:
             if type(i) is str: generated_list.append(i)
         if len(generated_list) > 0:
             try:
                 a = self._subprocess.call([self.executable, "-m", "pip", "install"] + (["--upgrade"] if upgrade == True else []) + (["--user"] if user == True else []) + generated_list, stdout=(not self.debug) and self._subprocess.DEVNULL or None, stderr=(not self.debug) and self._subprocess.DEVNULL or None)
                 if a == 0: return {"success": True, "message": "Successfully installed modules!"}
-                else: return {"success": False, "message": f"Command has failed!"}
+                else: return {"success": False, "message": f"Command has failed! Code: {a}"}
             except Exception as e: return {"success": False, "message": str(e)}
         return res
     def uninstall(self, packages: typing.List[str]):
@@ -662,8 +676,8 @@ class pip:
         self.ensure()
         if self.isSameRunningPythonExecutable() and not len(packages) == 0:
             def che(a):
-                try: self._importlib.metadata.version(a); return True
-                except self._importlib.metadata.PackageNotFoundError: return False
+                try: self._importlib_metadata.version(a); return True
+                except self._importlib_metadata.PackageNotFoundError: return False
             if len(packages) == 1: return che(packages[0].lower())
             else:
                 installed_checked = {}
@@ -682,7 +696,7 @@ class pip:
                 return installed_checked
         else:
             sub = self._subprocess.run([self.executable, "-m", "pip", "list"], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE)
-            line_splits = sub.stdout.decode().replace("\r", "").splitlines()[2:]
+            line_splits = sub.stdout.decode().strip().splitlines()[2:]
             installed_packages = [package.split()[0].lower() for package in line_splits if package.strip()]
             installed_checked = {}
             all_installed = True
@@ -768,15 +782,21 @@ class pip:
             else:
                 self.printDebugMessage(f"Unable to download pip due to no internet access.")
                 return False
-    
-    # Pypi Packages
-    def getGitHubRepository(self, packages: typing.List[str]):
+    def updates(self, packages: typing.List[str]=[]):
+        sub = self._subprocess.run([self.executable, "-m", "pip", "list", "--outdated", "--format=json"], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE)
+        json_str = sub.stdout.decode().strip()
+        try:
+            tried = self._json.loads(json_str)
+            if packages and len(packages) > 0: return {"success": True, "packages": [i for i in tried if i["name"] in packages]}
+            return {"success": True, "packages": tried}
+        except: return {"success": False, "packages": []}
+    def info(self, packages: typing.List[str]):
         generated_list = []
         for i in packages:
             if type(i) is str: generated_list.append(i)
         if len(generated_list) > 0:
             try:
-                links = {}
+                information = {}
                 for i in generated_list:
                     urll = f"https://pypi.org/pypi/{i}/json"
                     if self.getIfConnectedToInternet() == False: return {"success": False}
@@ -784,11 +804,27 @@ class pip:
                     if response.ok:
                         data = response.json
                         info = data["info"]
-                        url = info.get("project_urls", {}).get("Source") or info.get("home_page")
-                        if url: links[i] = url
-                return {"success": True, "repositories": links}
-            except Exception as e:
-                return {"success": False}
+                        information[i] = info
+                return {"success": True, "data": information}
+            except Exception as e: return {"success": False}
+        return {"success": False}
+    def github(self, packages: typing.List[str]):
+        generated_list = []
+        for i in packages:
+            if type(i) is str: generated_list.append(i)
+        if len(generated_list) > 0:
+            try:
+                informed = self.info(generated_list)
+                if informed["success"] == True:
+                    informed = informed["data"]
+                    links = {}
+                    for i in generated_list:
+                        if informed.get(i):
+                            info = informed[i]
+                            url = info.get("project_urls", {}).get("Source") or info.get("home_page")
+                            if url: links[i] = url
+                    return {"success": True, "repositories": links}
+            except Exception as e: return {"success": False}
         return {"success": False}
     
     # Python Management
@@ -807,13 +843,27 @@ class pip:
         else:
             self.printDebugMessage("Failed to find latest Python version.")
             return None
+    def getLatestPythonInstallManagerVersion(self, beta: bool=False):
+        url = "https://www.python.org/downloads/windows/"
+        response = self.requests.get(url)
+        if response.ok: html = response.text
+        else: html = ""
+        if beta == True: match = self._re.search(r"Python install manager (\d+\.\d+) beta (\d+)", html)
+        else: match = self._re.search(r"Python install manager (\d+\.\d+)", html)
+        if match:
+            if beta == True: version = f'{match.group(1)}b{match.group(2)}'
+            else: version = match.group(1)
+            return version
+        else:
+            self.printDebugMessage("Failed to find latest Python Installer Manager version.")
+            return None
     def getCurrentPythonVersion(self):
         if not self.executable: return None
         if self.isSameRunningPythonExecutable(): return self._platform.python_version()
         else:
             a = self._subprocess.run([self.executable, "-V"], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE)
             final = a.stdout.decode()
-            if a.returncode == 0: return final.replace("Python ", "").replace("\n", "").replace("\r", "")
+            if a.returncode == 0: return final.replace("Python ", "").strip()
             else: return None
     def getIfPythonVersionIsBeta(self, version=""):
         if version == "": cur_vers = self.getCurrentPythonVersion()
@@ -848,11 +898,14 @@ class pip:
     def pythonSupported(self, major: int=3, minor: int=13, patch: int=2):
         cur_version = self.getCurrentPythonVersion()
         if not cur_version: return False
-        match = self._re.match(r"(\d+)\.(\d+)\.(\w+)", cur_version)
+        return self.pythonSupportedStatic(cur_version, major, minor, patch)
+    def pythonSupportedStatic(self, version: str, major: int=3, minor: int=13, patch: int=2):
+        if not version: return False
+        match = self._re.match(r"(\d+)\.(\d+)\.(\w+)", version)
         if match:
-            cur_version = match.groups() 
+            version = match.groups() 
             def to_int(val): return int(self._re.sub(r'\D', '', val))
-            return tuple(map(to_int, cur_version)) >= (major, minor, patch)
+            return tuple(map(to_int, version)) >= (major, minor, patch)
         else: return False
     def osSupported(self, windows_build: int=0, macos_version: tuple=(0,0,0)):
         if self._main_os == "Windows":
@@ -867,10 +920,17 @@ class pip:
             while len(macos_version) < 3: min_version += (0,)
             return version_tuple >= macos_version
         else: return False
-    def pythonInstall(self, version: str="", beta: bool=False):
+    def pythonInstall(self, version: str="", beta: bool=False, silent: bool=False, manual: bool=False, arch: str=None):
         ma_os = self._main_os
         ma_arch = self._platform.architecture()
         ma_processor = self._platform.machine()
+        macos_version_numbers = {
+            "3.10.0a3": "11.0",
+            "3.9.1rc1": "11.0"
+        }
+        if not self.pythonSupportedStatic(version, 3, 9, 2):
+            if not self.pythonSupportedStatic(version, 3, 9, 2) and self.pythonSupportedStatic(version, 3, 7, 0): macos_version_numbers[version] = "x10.9"
+            elif self.pythonSupportedStatic(version, 3, 7, 0): macos_version_numbers[version] = "x10.6"
         if self.getIfConnectedToInternet() == False:
             self.printDebugMessage("Failed to download Python installer.")
             return
@@ -881,27 +941,112 @@ class pip:
         version_url_folder = version
         if beta == True: version_url_folder = self._re.match(r'^\d+\.\d+\.\d+', version).group()
         if ma_os == "Darwin":
-            url = f"https://www.python.org/ftp/python/{version_url_folder}/python-{version}-macos11.pkg"
+            url = f"https://www.python.org/ftp/python/{version_url_folder}/python-{version}-macos{macos_version_numbers.get(version, '11')}.pkg"
             with self._tempfile.NamedTemporaryFile(suffix=".pkg", delete=False) as temp_file: pkg_file_path = temp_file.name
             result = self.requests.download(url, pkg_file_path)            
             if result.ok:
-                self._subprocess.run(["open", pkg_file_path], stdout=self.debug == False and self._subprocess.DEVNULL, stderr=self.debug == False and self._subprocess.DEVNULL, check=True)
-                while self.getIfProcessIsOpened("/System/Library/CoreServices/Installer.app") == True: self._time.sleep(0.1)
-                self.printDebugMessage(f"Python installer has been executed: {pkg_file_path}")
+                if silent == True: 
+                    self.printDebugMessage(f"Silently installing Python packages.. Admin permissions may be requested.")
+                    self._subprocess.run(["osascript", "-e", f"do shell script \"installer -pkg '{pkg_file_path}' -target /\" with administrator privileges"], stdout=self.debug == False and self._subprocess.DEVNULL, stderr=self.debug == False and self._subprocess.DEVNULL, check=True)
+                    self.printDebugMessage(f"Successfully installed Python package: {pkg_file_path}")
+                else:
+                    self._subprocess.run(["open", pkg_file_path], stdout=self.debug == False and self._subprocess.DEVNULL, stderr=self.debug == False and self._subprocess.DEVNULL, check=True)
+                    while self.getIfProcessIsOpened("/System/Library/CoreServices/Installer.app") == True: self._time.sleep(0.1)
+                    self.printDebugMessage(f"Python installer has been executed: {pkg_file_path}")
             else:
                 self.printDebugMessage("Failed to download Python installer.")
         elif ma_os == "Windows":
-            if ma_arch[0] == "64bit":
-                if ma_processor.lower() == "arm64": url = f"https://www.python.org/ftp/python/{version_url_folder}/python-{version}-arm64.exe"
-                else: url = f"https://www.python.org/ftp/python/{version_url_folder}/python-{version}-amd64.exe"
-            else: url = f"https://www.python.org/ftp/python/{version_url_folder}/python-{version}.exe"
-            with self._tempfile.NamedTemporaryFile(suffix=".exe", delete=False) as temp_file: exe_file_path = temp_file.name
-            result = self.requests.download(url, exe_file_path)
-            if result.ok:
-                self._subprocess.run([exe_file_path], stdout=self.debug == False and self._subprocess.DEVNULL, stderr=self.debug == False and self._subprocess.DEVNULL, check=True)
-                self.printDebugMessage(f"Python installer has been executed: {exe_file_path}")
+            if version < "3.11.0": self.printDebugMessage("PyKits is not normally made for versions less than 3.11.0.")
+            if arch == "arm64":
+                ma_processor = "arm64"
+                ma_arch = ["64bit"]
+            elif arch == "x64":
+                ma_processor = "amd64"
+                ma_arch = ["64bit"]
+            elif arch == "x86":
+                ma_arch = ["32bit"]
+            if (manual == True and self.pythonSupportedStatic(version, 3, 5, 0)) or self.pythonSupportedStatic(version, 3, 15, 0):
+                self.printDebugMessage("Setting up python modules..")
+                if self._main_os == "Windows" and (not hasattr(self, "_win32api") or not hasattr(self, "_win32con")):
+                    try:
+                        try:
+                            import win32api # type: ignore
+                            import win32con # type: ignore
+                            self._win32con = win32con
+                            self._win32api = win32api
+                        except Exception:
+                            self.install(["pywin32"])
+                            self.win32con = self.importModule("win32con")
+                            self._win32api = self.importModule("win32api")
+                    except: pass
+                self.printDebugMessage("Downloading Python package..")
+                arch_fold_end = ""
+                if ma_arch[0] == "64bit":
+                    if ma_processor.lower() == "arm64": url = f"https://www.python.org/ftp/python/{version_url_folder}/python-{version}-arm64.zip"; arch_fold_end = "-arm64"
+                    else: url = f"https://www.python.org/ftp/python/{version_url_folder}/python-{version}-amd64.zip"
+                else: url = f"https://www.python.org/ftp/python/{version_url_folder}/python-{version}-win32.zip"; arch_fold_end = "-32"
+                with self._tempfile.NamedTemporaryFile(suffix=".zip", delete=False) as temp_file: zip_file_path = temp_file.name
+                result = self.requests.download(url, zip_file_path)
+                if result.ok:
+                    stripped_version = "".join(self.getMajorMinorVersion(version_url_folder).split("."))
+                    self.printDebugMessage(f"Unzipping Python {version_url_folder} package..")
+                    user_appdata_folder = self.getLocalAppData()
+                    target_python_path = self._os.path.join(user_appdata_folder, "Programs", "Python", f"Python{stripped_version}{arch_fold_end}")
+                    unzip_res = self.unzipFile(zip_file_path, target_python_path, ["python.exe"])
+                    if unzip_res.returncode == 0:
+                        self.printDebugMessage(f"Installing PIP..")
+                        pip_script_path = self._os.path.join(target_python_path, "get-pip.py")
+                        if self.requests.download("https://bootstrap.pypa.io/get-pip.py", pip_script_path).ok:
+                            python_exe = self._os.path.join(target_python_path, "python.exe")
+                            install_pip_res = self._subprocess.run([python_exe, pip_script_path], cwd=target_python_path)
+                            if install_pip_res.returncode == 0:
+                                self.printDebugMessage("Successfully installed PIP with Python!")
+                            else:
+                                self.printDebugMessage(f"Unable to install PIP with Python Package. Return Code: {install_pip_res.returncode}")
+                            self._os.remove(pip_script_path)
+                            if (not self._shutil.which("python")) or self.getArchitecture() == pip(executable=python_exe).getArchitecture():
+                                self.printDebugMessage("Adding to user path..")
+                                self.addToUserPath(target_python_path)
+                                self.addToUserPath(self._os.path.join(target_python_path, "Scripts"))
+                                self.printDebugMessage("Registering file extensions..")
+                                extensions = [(".py", "Python.File"), (".pyw", "Python.NoConFile")]
+                                for ext, prog_id in extensions:
+                                    ext_key = self._win32api.RegCreateKey(self._win32con.HKEY_CURRENT_USER, f"Software\\Classes\\{ext}")
+                                    self._win32api.RegSetValueEx(ext_key, "", 0, self._win32con.REG_SZ, prog_id)
+                                    self._win32api.RegCloseKey(ext_key)
+                                    cmd_key = win32api.RegCreateKey(self._win32con.HKEY_CURRENT_USER, f"Software\\Classes\\{prog_id}\\shell\\open\\command")
+                                    self._win32api.RegSetValueEx(cmd_key, "", 0, self._win32con.REG_SZ, f'"{python_exe}" "%1" %*')
+                                    self._win32api.RegCloseKey(cmd_key)
+                                self._win32gui.SendMessageTimeout(
+                                    self._win32con.HWND_BROADCAST,
+                                    self._win32con.WM_SETTINGCHANGE,
+                                    0,
+                                    "Environment",
+                                    self._win32con.SMTO_ABORTIFHUNG,
+                                    5000
+                                )
+                            self.printDebugMessage(f"Successfully installed Python {version} into path: {target_python_path}")
+                        else: self.printDebugMessage("Failed to bootstrap pip (download get-pip.py failed).")
+                    else: self.printDebugMessage("Failed to download Python installer.")
+                else: self.printDebugMessage("Failed to download Python installer.")
             else:
-                self.printDebugMessage("Failed to download Python installer.")
+                if ma_arch[0] == "64bit":
+                    if ma_processor.lower() == "arm64": url = f"https://www.python.org/ftp/python/{version_url_folder}/python-{version}-arm64.exe"
+                    else: url = f"https://www.python.org/ftp/python/{version_url_folder}/python-{version}-amd64.exe"
+                else: url = f"https://www.python.org/ftp/python/{version_url_folder}/python-{version}.exe"
+                with self._tempfile.NamedTemporaryFile(suffix=".exe", delete=False) as temp_file: exe_file_path = temp_file.name
+                result = self.requests.download(url, exe_file_path)
+                if result.ok:
+                    if silent == True:
+                        self.printDebugMessage(f"Silently installing Python packages..")
+                        self._subprocess.run([exe_file_path, "/quiet"], stdout=self.debug == False and self._subprocess.DEVNULL, stderr=self.debug == False and self._subprocess.DEVNULL, check=True)
+                        self.printDebugMessage(f"Successfully installed Python package: {exe_file_path}")
+                    else:
+                        self._subprocess.run([exe_file_path], stdout=self.debug == False and self._subprocess.DEVNULL, stderr=self.debug == False and self._subprocess.DEVNULL, check=True)
+                        self.printDebugMessage(f"Python installer has been executed: {exe_file_path}")
+                else: self.printDebugMessage("Failed to download Python installer.")
+    def findPythonInstallManager(self):
+        return self._shutil.which("python-install") or self._shutil.which("python-install-manager")
     def installLocalPythonCertificates(self):
         if self._main_os == "Darwin":
             with open("./install_local_python_certs.py", "w") as f: f.write("""import os; import os.path; import ssl; import stat; import subprocess; import sys; STAT_0o775 = ( stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP | stat.S_IWGRP | stat.S_IXGRP | stat.S_IROTH |  stat.S_IXOTH ); openssl_dir, openssl_cafile = os.path.split(ssl.get_default_verify_paths().openssl_cafile); print(" -- pip install --upgrade certifi"); subprocess.check_call([sys.executable, "-E", "-s", "-m", "pip", "install", "--upgrade", "certifi"]); import certifi; os.chdir(openssl_dir); relpath_to_certifi_cafile = os.path.relpath(certifi.where()); print(" -- removing any existing file or link"); os.remove(openssl_cafile); print(" -- creating symlink to certifi certificate bundle"); os.symlink(relpath_to_certifi_cafile, openssl_cafile); print(" -- setting permissions"); os.chmod(openssl_cafile, STAT_0o775); print(" -- update complete");""")
@@ -937,7 +1082,7 @@ class pip:
                 try:
                     s = self._subprocess.run([exe, "-c", "import platform; machine_var = platform.machine(); print('arm' if machine_var.lower() == 'arm64' else ('intel' if machine_var.lower() == 'x86_64' else 'x86'))"], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE)
                     final = s.stdout.decode()
-                    return final.replace("\n", "").replace("\r", "")
+                    return final.strip()
                 except: return ""
             elif self._main_os == "Windows":
                 with open(exe, "rb") as f:
@@ -948,6 +1093,9 @@ class pip:
                 arch_map = { 0x014c: "x86", 0x8664: "x64", 0xAA64: "arm", 0x01c0: "arm" }
                 return arch_map.get(machine, "")
             else: return machine_var
+    def getIfVirtualEnvironment(self):
+        alleged_path = self._os.path.dirname(self.executable)
+        return self._os.path.exists(self._os.path.join(alleged_path, "..", "pyvenv.cfg")) or (self._os.path.exists(self._os.path.join(alleged_path, "python.exe")) and self._os.path.exists(self._os.path.join(alleged_path, "pip.exe")))
     def findPython(self, arch=None, latest=True, optimize=True, path=False):
         ma_os = self._main_os
         if ma_os == "Darwin":
@@ -1042,6 +1190,7 @@ class pip:
         if not self.executable: return False
         if self._os.path.exists(self.executable) and self._os.path.exists(self._sys.executable): return self._os.path.samefile(self.executable, self._sys.executable)
         else: return False
+    def getMajorMinorVersion(self, version: str="3.14.0"): return ".".join(version.split(".")[:-1])
 
     # Python Functions
     def getLocalAppData(self):
@@ -1080,8 +1229,8 @@ class pip:
             if main_os == "Darwin": self._subprocess.run(f"kill -9 {pid}", shell=True, stdout=self._subprocess.DEVNULL)
             elif main_os == "Windows": self._subprocess.run(f"taskkill /PID {pid} /F", shell=True, stdout=self._subprocess.DEVNULL)
             else: self._subprocess.run(f"kill -9 {pid}", shell=True, stdout=self._subprocess.DEVNULL)
-    def importModule(self, module_name: str, install_module_if_not_found: bool=False):
-        self._importlib.invalidate_caches()
+    def importModule(self, module_name: str, install_module_if_not_found: bool=False, loop_until_import: bool=False):
+        self.uncacheLoadedModules()
         try: 
             s = self._importlib.import_module(module_name)
             if type(s) is None: raise ModuleNotFoundError("")
@@ -1089,12 +1238,24 @@ class pip:
         except ModuleNotFoundError:
             try:
                 if install_module_if_not_found == True and self.isSameRunningPythonExecutable(): self.install([module_name])
-                self._importlib.invalidate_caches()
+                self.uncacheLoadedModules()
                 s = self._importlib.import_module(module_name)
                 if type(s) is None: raise ModuleNotFoundError("")
                 else: return s
-            except Exception: raise ImportError(f'Unable to find module "{module_name}" in Python {self.getCurrentPythonVersion()} environment.')
+            except Exception: 
+                if loop_until_import == False: raise ImportError(f'Unable to find module "{module_name}" in Python {self.getCurrentPythonVersion()} environment.')
+                self._time.sleep(1)
+                return self.importModule(module_name=module_name, install_module_if_not_found=install_module_if_not_found, loop_until_import=loop_until_import)
         except Exception as e: raise ImportError(f'Unable to import module "{module_name}" in Python {self.getCurrentPythonVersion()} environment. Exception: {str(e)}')
+    def uncacheLoadedModules(self):
+        if getattr(self._sys, "frozen", False): pass
+        else:
+            import site
+            self._site = site
+            site_packages_paths = self._site.getsitepackages() + [self._site.getusersitepackages()]
+            for path in site_packages_paths:
+                if path not in self._sys.path and self._os.path.exists(path): self._sys.path.append(path)
+        self._importlib.invalidate_caches()
     def unzipFile(self, path: str, output: str, look_for: list=[], export_out: list=[], either: bool=False, check: bool=True, moving_file_func: typing.Callable=None):
         class result():
             returncode = 0
@@ -1102,7 +1263,7 @@ class pip:
         if not self._os.path.exists(output): self._os.makedirs(output, mode=511)
         previous_output = output
         if output.endswith("/"): output = output[:-1]
-        if len(look_for) > 0: output = output + f"_Full_{str(self._hashlib.sha256(self._os.urandom(6)).hexdigest()[:6])}"; self._os.makedirs(output, mode=511)
+        if len(look_for) > 0: output = output + f"_Full_{self._os.urandom(3).hex()}"; self._os.makedirs(output, mode=511)
         if self._main_os == "Windows": zip_extract = self._subprocess.run(["C:\\Windows\\System32\\tar.exe", "-xf", path] + export_out + ["-C", output], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, check=check)
         else: zip_extract = self._subprocess.run(["/usr/bin/ditto", "-xk", path, output], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, check=check)
         if len(look_for) > 0:
@@ -1192,7 +1353,30 @@ class pip:
             return len([pid for pid in process_ids if pid.isdigit()])
     def getIfConnectedToInternet(self): return self.requests.get_if_connected()
     def getProcessWindows(self, pid: int):
-        if (type(pid) is str and pid.isnumeric()) or type(pid) is int:
+        if self._main_os == "Windows" and (not hasattr(self, "_win32gui") or not hasattr(self, "_win32process")):
+            try:
+                try:
+                    import win32gui # type: ignore
+                    import win32process # type: ignore
+                    self._win32gui = win32gui
+                    self._win32process = win32process
+                except Exception:
+                    self.install(["pywin32"])
+                    self._win32gui = self.importModule("win32gui")
+                    self._win32process = self.importModule("win32process")
+            except: pass
+        elif self._main_os == "Darwin" and (not hasattr(self, "_CGWindowListCopyWindowInfo") or not hasattr(self, "_kCGWindowListOptionOnScreenOnly")):
+            try:
+                try:
+                    from Quartz import CGWindowListCopyWindowInfo, kCGWindowListOptionOnScreenOnly # type: ignore
+                except Exception as e:
+                    self.install(["pyobjc-framework-Quartz"])
+                    Quartz = self.importModule("Quartz")
+                    CGWindowListCopyWindowInfo, kCGWindowListOptionOnScreenOnly = Quartz.CGWindowListCopyWindowInfo, Quartz.kCGWindowListOptionOnScreenOnly
+                self._CGWindowListCopyWindowInfo = CGWindowListCopyWindowInfo
+                self._kCGWindowListOptionOnScreenOnly = kCGWindowListOptionOnScreenOnly
+            except: pass
+        if (type(pid) is str and pid.isdigit()) or type(pid) is int:
             if self._main_os == "Windows":
                 system_windows = []
                 def callback(hwnd, _):
@@ -1210,6 +1394,62 @@ class pip:
                 return new_set_of_system_windows
             else: return []
         else: return []
+    def addToUserPath(self, path_to_add: str):
+        if self._main_os == "Windows":
+            if not hasattr(self, "_win32api") or not hasattr(self, "_win32con") or not hasattr(self, "_win32gui"):
+                try:
+                    try:
+                        import win32api # type: ignore
+                        import win32con # type: ignore
+                        import win32gui # type: ignore
+                        self._win32con = win32con
+                        self._win32api = win32api
+                        self._win32gui = win32gui
+                    except Exception:
+                        self.install(["pywin32"])
+                        self._win32con = self.importModule("win32con")
+                        self._win32api = self.importModule("win32api")
+                        self._win32gui = self.importModule("win32gui")
+                except: pass
+            path_to_add = self._os.path.expandvars(path_to_add)
+            current_path = self._win32api.GetEnvironmentVariable("PATH")
+            paths = current_path.split(";") if current_path else []
+            if path_to_add in paths:
+                self.printDebugMessage(f"The path \"{path_to_add}\" was already on the PATH environment variable!")
+                return
+            paths.append(path_to_add)
+            self._win32api.RegSetValueEx(
+                self._win32api.RegOpenKeyEx(self._win32con.HKEY_CURRENT_USER, "Environment", 0, self._win32con.KEY_SET_VALUE),
+                "PATH",
+                0,
+                self._win32con.REG_EXPAND_SZ,
+                ";".join(paths)
+            )
+            self._win32gui.SendMessageTimeout(
+                self._win32con.HWND_BROADCAST,
+                self._win32con.WM_SETTINGCHANGE,
+                0,
+                "Environment",
+                self._win32con.SMTO_ABORTIFHUNG,
+                5000
+            )
+        elif self._main_os == "Darwin":
+            new_path = self._os.path.expandvars(self._os.path.expanduser(new_path))
+            shell = self._os.path.basename(self._os.environ.get("SHELL", "zsh"))
+            rc_file = self._os.path.expanduser(f"~/.{shell}rc")
+            export_line = f'export PATH="{new_path}:$PATH"'
+            if self._os.path.exists(rc_file):
+                with open(rc_file, "r") as f:
+                    if export_line in f.read():
+                        self.printDebugMessage(f"The path \"{rc_file}\" was already on the PATH environment variable!")
+                        pass
+                    else:
+                        with open(rc_file, "a") as f_append: f_append.write("\n" + export_line + "\n")
+            else:
+                with open(rc_file, "w") as f: f.write(export_line + "\n")
+            current_path = self._os.environ.get("PATH", "")
+            paths = current_path.split(":")
+            if new_path not in paths: self._os.environ["PATH"] = f"{new_path}:{current_path}"
     def printDebugMessage(self, message: str):
         if self.debug == True: print(f"\033[38;5;226m[PyKits] [DEBUG]: {message}\033[0m")
 def printMainMessage(mes): print(f"\033[38;5;255m{mes}\033[0m")

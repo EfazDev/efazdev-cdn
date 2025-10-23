@@ -1,7 +1,7 @@
 # 
 # Roblox Fast Flags Installer
 # Made by Efaz from efaz.dev
-# v2.4.6
+# v2.4.7
 # 
 # Fulfill your Roblox needs and configuration through Python!
 # 
@@ -30,7 +30,7 @@ main_os = platform.system()
 cur_path = os.path.dirname(os.path.abspath(__file__))
 user_folder = (os.path.expanduser("~") if main_os == "Darwin" else os.getenv('LOCALAPPDATA'))
 orangeblox_mode = False
-script_version = "2.4.6"
+script_version = "2.4.7"
 def getLocalAppData():
     import platform
     import os
@@ -163,6 +163,9 @@ def makedirs(a): os.makedirs(a,exist_ok=True)
 
 # PyKits Classes
 class request:
+    """
+    A class that allows you to make HTTP requests using the curl command line tool.
+    """
     class Response:
         text: str = ""
         json: typing.Union[typing.Dict, typing.List, None] = None
@@ -235,6 +238,8 @@ class request:
         self._urlparse = urlparse
         self._platform = platform
         self._main_os = platform.system()
+    def __bool__(self): return self.get_if_connected()
+    def __str__(self): return self.get_curl()
     def get(self, url: str, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
         try:
             if not self.get_if_connected():
@@ -733,6 +738,9 @@ class request:
             return self.DownloadStatus(speed=speed, downloaded=downloaded, downloaded_bytes=downloaded_bytes, percent=percent, total_size=total_size)
         return None
 class pip:
+    """
+    A class that allows you to configure pip and Python installations.
+    """
     executable = None
     debug = False
     ignore_same = False
@@ -781,6 +789,21 @@ class pip:
         self.debug = debug==True
         self.requests = request()
         if type(command) is list and len(command) > 0: self.ensure(); subprocess.check_call([self.executable, "-m", "pip"] + command)
+    def __str__(self): return self.executable
+    def __bool__(self): return self.pythonInstalled()
+    def __iter__(self): return self
+    def __next__(self):
+        if not hasattr(self, "iter_index") or not self.iter_index:
+            self.iter_index = 0
+            self.iter_data = self.findPythons()
+        if self.iter_index < len(self.iter_data):
+            item = self.iter_data[self.iter_index]
+            self.iter_index += 1
+            return item
+        else:
+            self.iter_data = None
+            self.iter_index = 0
+            raise StopIteration
     def install(self, packages: typing.List[str], upgrade: bool=False, user: bool=True):
         self.ensure()
         res = {}
@@ -1230,7 +1253,7 @@ class pip:
             else: return machine_var
     def getIfVirtualEnvironment(self):
         alleged_path = self._os.path.dirname(self.executable)
-        return self._os.path.exists(self._os.path.join(alleged_path, "activate")) or (self._os.path.exists(self._os.path.join(alleged_path, "python.exe")) and self._os.path.exists(self._os.path.join(alleged_path, "pip.exe"))) or self._os.path.exists(self._os.path.join(alleged_path, "activate.bat"))
+        return self._os.path.exists(self._os.path.join(alleged_path, "..", "pyvenv.cfg")) or (self._os.path.exists(self._os.path.join(alleged_path, "python.exe")) and self._os.path.exists(self._os.path.join(alleged_path, "pip.exe")))
     def findPython(self, arch=None, latest=True, optimize=True, path=False):
         ma_os = self._main_os
         if ma_os == "Darwin":
@@ -1588,6 +1611,9 @@ class pip:
     def printDebugMessage(self, message: str):
         if self.debug == True: print(f"\033[38;5;226m[PyKits] [DEBUG]: {message}\033[0m")
 class plist:
+    """
+    A class that allows you to save or load plist files.
+    """
     def __init__(self):
         import os
         import plistlib
@@ -1614,6 +1640,9 @@ class plist:
             return {"success": True, "message": "Success!", "data": data}
         except Exception as e: return {"success": False, "message": "Something went wrong.", "data": e}
 class Colors:
+    """
+    A class that allows you to work with console colors with different formats of text and ANSI.
+    """
     class Color:
         def __init__(self, r: int, g: int, b: int):
             self.__colors_obj__ = Colors()
@@ -1840,6 +1869,7 @@ try:
         import win32crypt # type: ignore
         import win32api # type: ignore
 except Exception as e:
+    pip_class.debug = True
     pip_class.install(["psutil"])
     if main_os == "Darwin": pip_class.install(["posix-ipc", "pyobjc-core", "pyobjc-framework-Quartz"])
     elif main_os == "Windows": pip_class.install(["pywin32"])
@@ -2249,27 +2279,27 @@ class Handler:
             if os.path.exists(os.path.join(logs_path, "RFFILogFiles.json")):
                 with open(os.path.join(logs_path, "RFFILogFiles.json"), "r", encoding="utf-8") as f: logs_attached = json.load(f)
             if self.await_log_creation == True:
-                if self.await_log_creation_attempts < 40:
+                if self.await_log_creation_attempts < 30:
                     if self.fileCreatedRecently(main_log):
                         if main_log in logs_attached:
                             time.sleep(0.5)
                             self.await_log_creation_attempts += 1
-                            if self.debug_mode == True: printDebugMessage(f"Log file is already used in an another Roblox Instance ({self.await_log_creation_attempts}/40)")
+                            if self.debug_mode == True: printDebugMessage(f"Log file is already used in an another Roblox Instance ({self.await_log_creation_attempts}/30)")
                             return self.getLatestLogFile()
                         else:
                             logs_attached.append(main_log)
                             with open(os.path.join(logs_path, "RFFILogFiles.json"), "w", encoding="utf-8") as f: json.dump(logs_attached, f, indent=4)
-                            if self.debug_mode == True: printDebugMessage(f"Successfully found log file ({self.await_log_creation_attempts}/40). Returning with: {main_log}")
+                            if self.debug_mode == True: printDebugMessage(f"Successfully found log file ({self.await_log_creation_attempts}/30). Returning with: {main_log}")
                             return main_log
                     else:
                         time.sleep(0.5)
                         self.await_log_creation_attempts += 1
-                        if self.debug_mode == True: printDebugMessage(f"Awaiting Log Creation ({self.await_log_creation_attempts}/40)")
+                        if self.debug_mode == True: printDebugMessage(f"Awaiting Log Creation ({self.await_log_creation_attempts}/30)")
                         return self.getLatestLogFile()
                 else:
                     logs_attached.append(main_log)
                     with open(os.path.join(logs_path, "RFFILogFiles.json"), "w", encoding="utf-8") as f: json.dump(logs_attached, f, indent=4)
-                    if self.debug_mode == True: printDebugMessage(f"Unable to find a new file within 20 seconds ({self.await_log_creation_attempts}/40). Returning with: {main_log}")
+                    if self.debug_mode == True: printDebugMessage(f"Unable to find a new file within 15 seconds ({self.await_log_creation_attempts}/30). Returning with: {main_log}")
                     return main_log
             else:
                 if self.debug_mode == True: printDebugMessage(f"Successfully found log file. Returning with: {main_log}")
