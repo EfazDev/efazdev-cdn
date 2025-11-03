@@ -1,7 +1,7 @@
 # 
 # Roblox Fast Flags Installer
 # Made by Efaz from efaz.dev
-# v2.4.7
+# v2.5.5
 # 
 # Fulfill your Roblox needs and configuration through Python!
 # 
@@ -11,7 +11,9 @@ import re
 import sys
 import json
 import time
+import stat
 import zlib
+import PyKits
 import base64
 import shutil
 import typing
@@ -26,11 +28,14 @@ import xml.dom.minidom
 import concurrent.futures
 import xml.etree.ElementTree as ET
 
+# Variables
 main_os = platform.system()
 cur_path = os.path.dirname(os.path.abspath(__file__))
 user_folder = (os.path.expanduser("~") if main_os == "Darwin" else os.getenv('LOCALAPPDATA'))
 orangeblox_mode = False
-script_version = "2.4.7"
+script_version = "2.5.5"
+
+# Base Functions 1
 def getLocalAppData():
     import platform
     import os
@@ -75,7 +80,6 @@ windows_versions_dir = os.path.join(windows_dir, "Versions") # This is the Roblo
 windows_player_folder_name = "" # This is the version folder name for Roblox Player
 windows_studio_folder_name = "" # This is the version folder name for Roblox Studio
 submit_status = None # This is a SubmitStatus handler class used for alerting status of functions.
-# Customizable Variables
 
 # Typing Literals
 if sys.version_info >= (3, 8, 0):
@@ -141,8 +145,8 @@ if sys.version_info >= (3, 8, 0):
         "onStudioInstallerLaunched"
     ]
 else: robloxInstanceTotalLiteralEventNames = typing.Union[str, bytes]
-# Typing Literals
 
+# Base Functions 2
 def ts(mes):
     mes = str(mes)
     if hasattr(sys.stdout, "translate"): mes = sys.stdout.translate(mes)
@@ -162,1731 +166,28 @@ def printLog(mes):
 def makedirs(a): os.makedirs(a,exist_ok=True)
 
 # PyKits Classes
-class request:
-    """
-    A class that allows you to make HTTP requests using the curl command line tool.
-    """
-    class Response:
-        text: str = ""
-        json: typing.Union[typing.Dict, typing.List, None] = None
-        ipv4: typing.List[str] = []
-        ipv6: typing.List[str] = []
-        redirected_urls: typing.List[str] = []
-        port: int = 0
-        host: str = ""
-        attempted_ip: str = ""
-        status_code: int = 0
-        ssl_verified: bool = False
-        ssl_issuer: str = ""
-        ssl_subject: str = ""
-        tls_version: str = ""
-        headers: typing.Dict[str, str] = {}
-        http_version: str = ""
-        path: str = ""
-        url: str = ""
-        method: str = ""
-        scheme: str = ""
-        redirected: bool = False
-        ok: bool = False
-        __raw_stderr__: str = ""
-    class FileDownload(Response):
-        returncode = 0
-        path = ""
-    class TimedOut(Exception):
-        def __init__(self, url: str, time: float): super().__init__(f"Connecting to URL ({url}) took too long to respond in {time}s!")
-    class ProcessError(Exception):
-        def __init__(self, url: str, exception: Exception): super().__init__(f"Something went wrong connecting to URL ({url})! This was a problem created by subprocess. Exception: {str(exception)}")
-    class UnknownResponse(Exception):
-        def __init__(self, url: str, exception: Exception): super().__init__(f"Something went wrong processing the response from URL ({url})! Exception: {str(exception)}")
-    class OpenContext:
-        val = None
-        def __init__(self, val): self.val = val
-        def __enter__(self): return self.val
-        def __exit__(self, exc_type, exc_val, exc_tb): pass
-    class DownloadStatus:
-        speed: str=""
-        downloaded: str=""
-        downloaded_bytes: int=0
-        total_size: str=""
-        percent: int=0
-        def __init__(self, percent: int=0, speed: str="", total_size: str="", downloaded: str="", downloaded_bytes: int=0): self.speed = speed; self.downloaded = downloaded; self.percent = percent; self.downloaded_bytes = downloaded_bytes; self.total_size = total_size
-    __DATA__ = typing.Union[typing.Dict, typing.List, str]
-    __AUTH__ = typing.List[str]
-    __HEADERS__ = typing.Dict[str, str]
-    __COOKIES__ = typing.Union[typing.Dict[str, str], str]
-    def __init__(self):
-        import subprocess
-        import json
-        import os
-        import re
-        import shutil
-        import time
-        import socket
-        import threading
-        import urllib.request
-        from urllib.parse import urlparse
-        import platform
-        self._subprocess = subprocess
-        self._json = json
-        self._os = os
-        self._re = re
-        self._shutil = shutil
-        self._socket = socket
-        self._time = time
-        self._threading = threading
-        self._urlreq = urllib.request
-        self._urlparse = urlparse
-        self._platform = platform
-        self._main_os = platform.system()
-    def __bool__(self): return self.get_if_connected()
-    def __str__(self): return self.get_curl()
-    def get(self, url: str, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
-        try:
-            if not self.get_if_connected():
-                while not self.get_if_connected(): self._time.sleep(0.5)
-            curl_res = self._subprocess.run([self.get_curl(), "-v", "--compressed"] + self.format_headers(headers) + self.format_auth(auth) + self.format_cookies(cookies) + [url], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, timeout=timeout)
-            if type(curl_res) is self._subprocess.CompletedProcess:
-                new_response = self.Response()
-                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8").strip())
-                for i, v in processed_stderr.items(): setattr(new_response, i, v)
-                new_response.url = url
-                new_response.text = curl_res.stdout.decode("utf-8").strip()
-                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8").strip()
-                new_response.method = "GET"
-                new_response.scheme = self.get_url_scheme(url)
-                new_response.path = self.get_url_path(url)
-                new_response.redirected_urls = [url]
-                try: new_response.json = self._json.loads(new_response.text)
-                except Exception as e: pass
-                if self.get_if_redirect(new_response.status_code) and follow_redirects == True and new_response.headers.get("location"): 
-                    req = self.get(new_response.headers.get("location"), headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=loop_count)
-                    req.redirected = True
-                    req.redirected_urls = [url] + req.redirected_urls
-                    return req
-                elif self.get_if_cooldown(new_response.status_code) and loop_429 == True and ((1 if loop_count == -1 else loop_count) >= 1):
-                    self._time.sleep(loop_timeout)
-                    return self.get(url, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=(loop_count-1 if not (loop_count == -1) else loop_count))
-                return new_response
-            elif type(curl_res) is self._subprocess.TimeoutExpired: raise self.TimedOut(url, timeout)
-            elif type(curl_res) is self._subprocess.SubprocessError: raise self.ProcessError(url, curl_res)
-            else: raise self.UnknownResponse(url, curl_res)
-        except self._subprocess.TimeoutExpired: raise self.TimedOut(url, timeout)
-        except self._subprocess.SubprocessError as curl_res: raise self.ProcessError(url, curl_res)
-        except Exception as e: raise self.UnknownResponse(url, e)
-    def post(self, url: str, data: __DATA__, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
-        try:
-            if not self.get_if_connected():
-                while not self.get_if_connected(): self._time.sleep(0.5)
-            curl_res = self._subprocess.run([self.get_curl(), "-v", "-X", "POST", "--compressed"] + self.format_headers(headers) + self.format_auth(auth) + self.format_cookies(cookies) + self.format_data(data) + [url], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, timeout=timeout)
-            if type(curl_res) is self._subprocess.CompletedProcess:
-                new_response = self.Response()
-                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8").strip())
-                for i, v in processed_stderr.items(): setattr(new_response, i, v)
-                new_response.url = url
-                new_response.text = curl_res.stdout.decode("utf-8").strip()
-                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8").strip()
-                new_response.method = "POST"
-                new_response.scheme = self.get_url_scheme(url)
-                new_response.path = self.get_url_path(url)
-                new_response.redirected_urls = [url]
-                try: new_response.json = self._json.loads(new_response.text)
-                except Exception as e: pass
-                if self.get_if_redirect(new_response.status_code) and follow_redirects == True and new_response.headers.get("location"): 
-                    req = self.post(new_response.headers.get("location"), data, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=loop_count)
-                    req.redirected = True
-                    req.redirected_urls = [url] + req.redirected_urls
-                    return req
-                elif self.get_if_cooldown(new_response.status_code) and loop_429 == True and ((1 if loop_count == -1 else loop_count) >= 1):
-                    self._time.sleep(loop_timeout)
-                    return self.post(url, data, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=(loop_count-1 if not (loop_count == -1) else loop_count))
-                return new_response
-            elif type(curl_res) is self._subprocess.TimeoutExpired: raise self.TimedOut(url, timeout)
-            elif type(curl_res) is self._subprocess.SubprocessError: raise self.ProcessError(url, curl_res)
-            else: raise self.UnknownResponse(url, curl_res)
-        except self._subprocess.TimeoutExpired: raise self.TimedOut(url, timeout)
-        except self._subprocess.SubprocessError as curl_res: raise self.ProcessError(url, curl_res)
-        except Exception as e: raise self.UnknownResponse(url, e)
-    def patch(self, url: str, data: __DATA__, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
-        try:
-            if not self.get_if_connected():
-                while not self.get_if_connected(): self._time.sleep(0.5)
-            curl_res = self._subprocess.run([self.get_curl(), "-v", "-X", "PATCH", "--compressed"] + self.format_headers(headers) + self.format_auth(auth) + self.format_cookies(cookies) + self.format_data(data) + [url], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, timeout=timeout)
-            if type(curl_res) is self._subprocess.CompletedProcess:
-                new_response = self.Response()
-                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8").strip())
-                for i, v in processed_stderr.items(): setattr(new_response, i, v)
-                new_response.url = url
-                new_response.text = curl_res.stdout.decode("utf-8").strip()
-                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8").strip()
-                new_response.method = "PATCH"
-                new_response.scheme = self.get_url_scheme(url)
-                new_response.path = self.get_url_path(url)
-                new_response.redirected_urls = [url]
-                try: new_response.json = self._json.loads(new_response.text)
-                except Exception as e: pass
-                if self.get_if_redirect(new_response.status_code) and follow_redirects == True and new_response.headers.get("location"): 
-                    req = self.patch(new_response.headers.get("location"), data, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=loop_count)
-                    req.redirected = True
-                    req.redirected_urls = [url] + req.redirected_urls
-                    return req
-                elif self.get_if_cooldown(new_response.status_code) and loop_429 == True and ((1 if loop_count == -1 else loop_count) >= 1):
-                    self._time.sleep(loop_timeout)
-                    return self.patch(url, data, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=(loop_count-1 if not (loop_count == -1) else loop_count))
-                return new_response
-            elif type(curl_res) is self._subprocess.TimeoutExpired: raise self.TimedOut(url, timeout)
-            elif type(curl_res) is self._subprocess.SubprocessError: raise self.ProcessError(url, curl_res)
-            else: raise self.UnknownResponse(url, curl_res)
-        except self._subprocess.TimeoutExpired: raise self.TimedOut(url, timeout)
-        except self._subprocess.SubprocessError as curl_res: raise self.ProcessError(url, curl_res)
-        except Exception as e: raise self.UnknownResponse(url, e)
-    def put(self, url: str, data: __DATA__, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
-        try:
-            if not self.get_if_connected():
-                while not self.get_if_connected(): self._time.sleep(0.5)
-            curl_res = self._subprocess.run([self.get_curl(), "-v", "-X", "PUT", "--compressed"] + self.format_headers(headers) + self.format_auth(auth) + self.format_cookies(cookies) + self.format_data(data) + [url], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, timeout=timeout)
-            if type(curl_res) is self._subprocess.CompletedProcess:
-                new_response = self.Response()
-                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8").strip())
-                for i, v in processed_stderr.items(): setattr(new_response, i, v)
-                new_response.url = url
-                new_response.text = curl_res.stdout.decode("utf-8").strip()
-                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8").strip()
-                new_response.method = "PUT"
-                new_response.scheme = self.get_url_scheme(url)
-                new_response.path = self.get_url_path(url)
-                new_response.redirected_urls = [url]
-                try: new_response.json = self._json.loads(new_response.text)
-                except Exception as e: pass
-                if self.get_if_redirect(new_response.status_code) and follow_redirects == True and new_response.headers.get("location"):
-                    req = self.put(new_response.headers.get("location"), data, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=loop_count)
-                    req.redirected = True
-                    req.redirected_urls = [url] + req.redirected_urls
-                    return req
-                elif self.get_if_cooldown(new_response.status_code) and loop_429 == True and ((1 if loop_count == -1 else loop_count) >= 1):
-                    self._time.sleep(loop_timeout)
-                    return self.put(url, data, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=(loop_count-1 if not (loop_count == -1) else loop_count))
-                return new_response
-            elif type(curl_res) is self._subprocess.TimeoutExpired: raise self.TimedOut(url, timeout)
-            elif type(curl_res) is self._subprocess.SubprocessError: raise self.ProcessError(url, curl_res)
-            else: raise self.UnknownResponse(url, curl_res)
-        except self._subprocess.TimeoutExpired: raise self.TimedOut(url, timeout)
-        except self._subprocess.SubprocessError as curl_res: raise self.ProcessError(url, curl_res)
-        except Exception as e: raise self.UnknownResponse(url, e)
-    def delete(self, url: str, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
-        try:
-            if not self.get_if_connected():
-                while not self.get_if_connected(): self._time.sleep(0.5)
-            curl_res = self._subprocess.run([self.get_curl(), "-v", "-X", "DELETE", "--compressed"] + self.format_headers(headers) + self.format_auth(auth) + self.format_cookies(cookies) + [url], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, timeout=timeout)
-            if type(curl_res) is self._subprocess.CompletedProcess:
-                new_response = self.Response()
-                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8").strip())
-                for i, v in processed_stderr.items(): setattr(new_response, i, v)
-                new_response.url = url
-                new_response.text = curl_res.stdout.decode("utf-8").strip()
-                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8").strip()
-                new_response.method = "DELETE"
-                new_response.scheme = self.get_url_scheme(url)
-                new_response.path = self.get_url_path(url)
-                new_response.redirected_urls = [url]
-                try: new_response.json = self._json.loads(new_response.text)
-                except Exception as e: pass
-                if self.get_if_redirect(new_response.status_code) and follow_redirects == True and new_response.headers.get("location"): 
-                    req = self.delete(new_response.headers.get("location"), headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=loop_count)
-                    req.redirected = True
-                    req.redirected_urls = [url] + req.redirected_urls
-                    return req
-                elif self.get_if_cooldown(new_response.status_code) and loop_429 == True and ((1 if loop_count == -1 else loop_count) >= 1):
-                    self._time.sleep(loop_timeout)
-                    return self.delete(url, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=(loop_count-1 if not (loop_count == -1) else loop_count))
-                return new_response
-            elif type(curl_res) is self._subprocess.TimeoutExpired: raise self.TimedOut(url, timeout)
-            elif type(curl_res) is self._subprocess.SubprocessError: raise self.ProcessError(url, curl_res)
-            else: raise self.UnknownResponse(url, curl_res)
-        except self._subprocess.TimeoutExpired: raise self.TimedOut(url, timeout)
-        except self._subprocess.SubprocessError as curl_res: raise self.ProcessError(url, curl_res)
-        except Exception as e: raise self.UnknownResponse(url, e)
-    def head(self, url: str, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
-        try:
-            if not self.get_if_connected():
-                while not self.get_if_connected(): self._time.sleep(0.5)
-            curl_res = self._subprocess.run([self.get_curl(), "-v", "-X", "HEAD", "--compressed"] + self.format_headers(headers) + self.format_auth(auth) + self.format_cookies(cookies) + [url], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, timeout=timeout)
-            if type(curl_res) is self._subprocess.CompletedProcess:
-                new_response = self.Response()
-                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8").strip())
-                for i, v in processed_stderr.items(): setattr(new_response, i, v)
-                new_response.url = url
-                new_response.text = curl_res.stdout.decode("utf-8").strip()
-                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8").strip()
-                new_response.method = "HEAD"
-                new_response.scheme = self.get_url_scheme(url)
-                new_response.path = self.get_url_path(url)
-                new_response.redirected_urls = [url]
-                try: new_response.json = self._json.loads(new_response.text)
-                except Exception as e: pass
-                if self.get_if_redirect(new_response.status_code) and follow_redirects == True and new_response.headers.get("location"): 
-                    req = self.head(new_response.headers.get("location"), headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=loop_count)
-                    req.redirected = True
-                    req.redirected_urls = [url] + req.redirected_urls
-                    return req
-                elif self.get_if_cooldown(new_response.status_code) and loop_429 == True and ((1 if loop_count == -1 else loop_count) >= 1):
-                    self._time.sleep(loop_timeout)
-                    return self.head(url, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=(loop_count-1 if not (loop_count == -1) else loop_count))
-                return new_response
-            elif type(curl_res) is self._subprocess.TimeoutExpired: raise self.TimedOut(url, timeout)
-            elif type(curl_res) is self._subprocess.SubprocessError: raise self.ProcessError(url, curl_res)
-            else: raise self.UnknownResponse(url, curl_res)
-        except self._subprocess.TimeoutExpired: raise self.TimedOut(url, timeout)
-        except self._subprocess.SubprocessError as curl_res: raise self.ProcessError(url, curl_res)
-        except Exception as e: raise self.UnknownResponse(url, e)
-    def custom(self, url: str, method: str, data: __DATA__, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
-        try:
-            if not self.get_if_connected():
-                while not self.get_if_connected(): self._time.sleep(0.5)
-            curl_res = self._subprocess.run([self.get_curl(), "-v", "-X", method, "--compressed"] + self.format_headers(headers) + self.format_auth(auth) + self.format_cookies(cookies) + self.format_data(data) + [url], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, timeout=timeout)
-            if type(curl_res) is self._subprocess.CompletedProcess:
-                new_response = self.Response()
-                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8").strip())
-                for i, v in processed_stderr.items(): setattr(new_response, i, v)
-                new_response.url = url
-                new_response.text = curl_res.stdout.decode("utf-8").strip()
-                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8").strip()
-                new_response.method = method.upper()
-                new_response.scheme = self.get_url_scheme(url)
-                new_response.path = self.get_url_path(url)
-                new_response.redirected_urls = [url]
-                try: new_response.json = self._json.loads(new_response.text)
-                except Exception as e: pass
-                if self.get_if_redirect(new_response.status_code) and follow_redirects == True and new_response.headers.get("location"): 
-                    req = self.custom(new_response.headers.get("location"), method, data, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=loop_count)
-                    req.redirected = True
-                    req.redirected_urls = [url] + req.redirected_urls
-                    return req
-                elif self.get_if_cooldown(new_response.status_code) and loop_429 == True and ((1 if loop_count == -1 else loop_count) >= 1):
-                    self._time.sleep(loop_timeout)
-                    return self.custom(url, method, data, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=(loop_count-1 if not (loop_count == -1) else loop_count))
-                return new_response
-            elif type(curl_res) is self._subprocess.TimeoutExpired: raise self.TimedOut(url, timeout)
-            elif type(curl_res) is self._subprocess.SubprocessError: raise self.ProcessError(url, curl_res)
-            else: raise self.UnknownResponse(url, curl_res)
-        except self._subprocess.TimeoutExpired: raise self.TimedOut(url, timeout)
-        except self._subprocess.SubprocessError as curl_res: raise self.ProcessError(url, curl_res)
-        except Exception as e: raise self.UnknownResponse(url, e)
-    def open(self, *k, **s) -> OpenContext:
-        mai = self.get(*k, **s)
-        return self.OpenContext(mai)
-    def download(self, path: str, output: str, check: bool=False, delete_existing: bool=True, submit_status=None) -> FileDownload:
-        if not self.get_if_connected():
-            while not self.get_if_connected(): self._time.sleep(0.5)
-        if self._os.path.exists(output) and delete_existing == False: raise FileExistsError(f"This file already exists in {output}!")
-        elif self._os.path.exists(output) and self._os.path.isdir(output): self._shutil.rmtree(output, ignore_errors=True)
-        elif self._os.path.exists(output) and self._os.path.isfile(output): self._os.remove(output)
-        download_proc = self._subprocess.Popen([self.get_curl(), "-v", "--progress-meter", "-L", "-o", output, path], shell=False, bufsize=1, universal_newlines=True, stderr=self._subprocess.PIPE, stdout=self._subprocess.PIPE)
-        stderr_lines = []
-        before_bytes = 0
-        new_t = 0
-        while True:
-            line = download_proc.stderr.readline()
-            if not line: break
-            stderr_lines.append(line)
-            if submit_status:
-                stripped_line = line.lstrip()
-                if stripped_line and stripped_line[0].isdigit():
-                    progress = self.process_download_status(line)
-                    if progress:
-                        if progress.percent < 100:
-                            def pro(tar_prog, before_bytes, target_t):
-                                for i in range(100):
-                                    byte_target = int(before_bytes+((tar_prog.downloaded_bytes-before_bytes)*((i+1)/100)))
-                                    total_size_bytes = self.format_size_to_bytes(tar_prog.total_size)
-                                    perc_target = int((byte_target/total_size_bytes)*100) if not (byte_target == 0 and total_size_bytes == 0) else 0
-                                    if not (new_t == target_t): return
-                                    submit_status.submit(self.DownloadStatus(percent=perc_target, total_size=tar_prog.total_size, speed=tar_prog.speed, downloaded_bytes=byte_target, downloaded=self.format_bytes_to_size(byte_target)))
-                                    if not (new_t == target_t): return
-                                    self._time.sleep(0.01)
-                            new_t += 1
-                            self._threading.Thread(target=pro, args=[progress, before_bytes, new_t], daemon=True).start()
-                            before_bytes = progress.downloaded_bytes
-                        elif before_bytes < self.format_size_to_bytes(progress.total_size):
-                            new_t += 1
-                            next_tar = self.format_size_to_bytes(progress.total_size)
-                            for i in range(10):
-                                byte_target = int(before_bytes+((next_tar-before_bytes)*((i+1)/10)))
-                                total_size_bytes = self.format_size_to_bytes(progress.total_size)
-                                perc_target = int((byte_target/total_size_bytes)*100) if not (byte_target == 0 and total_size_bytes == 0) else 0
-                                submit_status.submit(self.DownloadStatus(percent=perc_target, total_size=progress.total_size, speed=progress.speed, downloaded_bytes=byte_target, downloaded=self.format_bytes_to_size(byte_target)))
-                                self._time.sleep(0.01)
-                            before_bytes = next_tar
-                        else:
-                            new_t += 1
-                            before_bytes = progress.downloaded_bytes
-                            submit_status.submit(progress)
-        download_proc.wait() 
-        if download_proc.returncode == 0: 
-            s = self.FileDownload()
-            s.returncode = 0
-            s.path = output
-            s.url = path
-            s.method = "GET"
-            s.scheme = self.get_url_scheme(path)
-            s.path = self.get_url_path(path)
-            s.__raw_stderr__ = "".join(stderr_lines)
-            processed_stderr = self.process_stderr(s.__raw_stderr__)
-            for i, v in processed_stderr.items(): setattr(s, i, v)
-            return s
-        else: 
-            if check == True: raise Exception(f"Unable to download file at {path} with return code {download_proc.returncode}!")
-            else: 
-                s = self.FileDownload()
-                s.returncode = download_proc.returncode
-                s.path = None
-                s.url = path
-                s.method = "GET"
-                s.scheme = self.get_url_scheme(path)
-                s.path = self.get_url_path(path)
-                s.__raw_stderr__ = "".join(stderr_lines)
-                processed_stderr = self.process_stderr(s.__raw_stderr__)
-                for i, v in processed_stderr.items(): setattr(s, i, v)
-                return s
-    def get_curl(self):
-        pos_which = self._shutil.which("curl")
-        if self._os.path.exists(pos_which): return pos_which
-        elif self._main_os == "Windows" and self._os.path.exists(self._os.path.join(cur_path, "curl")): return self._os.path.join(cur_path, "curl", "curl.exe")
-        elif self._os.path.exists(self._os.path.join(cur_path, "curl")): return self._os.path.join(cur_path, "curl", "curl")
-        else: 
-            cur_path = self._os.path.dirname(self._os.path.abspath(__file__))
-            if self._main_os == "Darwin": return None
-            elif self._main_os == "Windows":
-                pip_class = pip()
-                if self._platform.architecture()[0] == "32bit": self._urlreq.urlretrieve("https://curl.se/windows/latest.cgi?p=win32-mingw.zip", self._os.path.join(cur_path, "curl_download.zip"))
-                else: self._urlreq.urlretrieve("https://curl.se/windows/latest.cgi?p=win64-mingw.zip", self._os.path.join(cur_path, "curl_download.zip"))
-                if self._os.path.exists(self._os.path.join(cur_path, "curl_download.zip")):
-                    unzip_res = pip_class.unzipFile(self._os.path.join(cur_path, "curl_download.zip"), self._os.path.join(cur_path, "curl"), ["curl.exe"])
-                    if unzip_res.returncode == 0: return self._os.path.join(cur_path, "curl", "curl.exe")
-                    else: return None 
-                else: return None 
-            else: return None
-    def get_if_ok(self, code: int): return int(code) < 300 and int(code) >= 200
-    def get_if_redirect(self, code: int): return int(code) < 400 and int(code) >= 300
-    def get_if_cooldown(self, code: int): return int(code) == 429
-    def get_if_connected(self):
-        try: self._socket.create_connection(("8.8.8.8", 443), timeout=3).close(); return True # Connect to Google failed?
-        except Exception as e: return False
-    def get_url_scheme(self, url: str): 
-        obj = self._urlparse(url)
-        return obj.scheme
-    def get_url_path(self, url: str):
-        obj = self._urlparse(url)
-        if obj.query == "": return obj.path
-        else: return obj.path + "?" + obj.query
-    def format_headers(self, headers: typing.Dict[str, str]={}):
-        formatted = []
-        for i, v in headers.items(): formatted.append("-H"); formatted.append(f"{i}: {v}")
-        return formatted
-    def format_cookies(self, cookies: typing.Union[typing.Dict[str, str], str]={}):
-        if type(cookies) is str: return cookies
-        else:
-            formatted = []
-            for i, v in cookies.items(): formatted.append("-b"); formatted.append(f"{i}={v}")
-            return formatted
-    def format_auth(self, auth: typing.List[str]):
-        if len(auth) == 2: return ["-u", f"{auth[0]}:{auth[1]}"]
-        else: return []
-    def format_data(self, data: typing.Union[typing.Dict, typing.List, str]):
-        is_json = False
-        if type(data) is dict or type(data) is list: data = self._json.dumps(data); is_json = True
-        if data: 
-            if is_json == True: return ["-d", data, "-H", "Content-Type: application/json"]
-            return ["-d", data]
-        else: return []
-    def format_params(self, data: typing.Dict[str, str]={}):
-        mai_query = ""
-        if len(data.keys()) > 0:
-            mai_query = "?"
-            for i, v in data.items(): mai_query = mai_query + f"{i}={v}"
-        return mai_query
-    def format_size_to_bytes(self, size_str: str):
-        size_str = size_str.upper()
-        try:
-            if size_str.endswith("K") or size_str.endswith("k"): return int(float(size_str[:-1]) * 1024)
-            if size_str.endswith("M"): return int(float(size_str[:-1]) * 1024**2)
-            if size_str.endswith("G"): return int(float(size_str[:-1]) * 1024**3)
-            if size_str.endswith("T"): return int(float(size_str[:-1]) * 1024**4)
-            return int(size_str)
-        except Exception: return 0
-    def format_bytes_to_size(self, size_bytes: int):
-        thresholds = [
-            (1024**4, "T"),
-            (1024**3, "G"),
-            (1024**2, "M"),
-            (1024, "k"),
-        ]
-        for factor, suffix in thresholds:
-            if size_bytes >= factor:
-                size = size_bytes / factor
-                return f"{size:.1f}{suffix}"
-        return str(size_bytes)
-    def process_stderr(self, stderr: str):
-        lines = stderr.split("\n")
-        data = {
-            "ipv4": [],
-            "ipv6": [],
-            "port": 0,
-            "host": "",
-            "attempted_ip": "",
-            "status_code": 0,
-            "ssl_verified": False,
-            "ssl_issuer": "",
-            "ssl_subject": "",
-            "tls_version": "",
-            "headers": {},
-            "http_version": "",
-            "ok": False
-        }
-        for i in lines:
-            i = i.rstrip("\r")
-            if self._main_os == "Windows": # Schannel based cUrl
-                status_line_match = self._re.search(r"< HTTP/([\d.]+) (\d+)", i)
-                if status_line_match:
-                    data["http_version"] = status_line_match.group(1)
-                    data["status_code"] = int(status_line_match.group(2))
-                    data["ok"] = self.get_if_ok(data["status_code"])
-                elif i.startswith("< "):
-                    sl = i.replace("< ", "", 1).split(": ")
-                    if len(sl) > 1: data["headers"][sl[0]] = sl[1].strip()
-                elif i == "* schannel: SSL/TLS connection renegotiated":
-                    data["ssl_verified"] = True
-                    data["ssl_issuer"] = "CN=Schannel Placeholder Certificate"
-                    data["ssl_subject"] = f'CN={data["host"]}'
-                    data["tls_version"] = "1.2"
-                elif i.startswith("* IPv4: "):
-                    sl = i.split("* IPv4: ")
-                    if len(sl) > 1: 
-                        sl.pop(0); data["ipv4"] = sl[0].split(", ")
-                        if data["ipv4"][0] == "(none)": data["ipv4"] = []
-                elif i.startswith("* IPv6: "):
-                    sl = i.split("* IPv6: ")
-                    if len(sl) > 1: 
-                        sl.pop(0); data["ipv6"] = sl[0].split(", ")
-                        if data["ipv6"][0] == "(none)": data["ipv6"] = []
-                elif i.startswith("* Connected to ") and "port" in i:
-                    sl = i.split("port ")
-                    if len(sl) > 1: sl.pop(0); data["port"] = int(sl[0])
-                    sl = i.split("Connected to ")
-                    if len(sl) > 1: sl.pop(0); data["host"] = sl[0].split(" ")[0]
-                    sl = i.split("(")
-                    if len(sl) > 1: sl.pop(0); data["attempted_ip"] = sl[0].split(")")[0]
-            else: # OpenSSL based cUrl
-                status_line_match = self._re.search(r"< HTTP/([\d.]+) (\d+)", i)
-                if status_line_match:
-                    data["http_version"] = status_line_match.group(1)
-                    data["status_code"] = int(status_line_match.group(2))
-                    data["ok"] = self.get_if_ok(data["status_code"])
-                elif i.startswith("< "):
-                    sl = i.replace("< ", "", 1).split(": ")
-                    if len(sl) > 1: data["headers"][sl[0]] = sl[1].strip()
-                elif i.startswith("* IPv4: "):
-                    sl = i.split("* IPv4: ")
-                    if len(sl) > 1: 
-                        sl.pop(0); data["ipv4"] = sl[0].split(", ")
-                        if data["ipv4"][0] == "(none)": data["ipv4"] = []
-                elif i.startswith("* IPv6: "):
-                    sl = i.split("* IPv6: ")
-                    if len(sl) > 1: 
-                        sl.pop(0); data["ipv6"] = sl[0].split(", ")
-                        if data["ipv6"][0] == "(none)": data["ipv6"] = []
-                elif i.startswith("* Connected to ") and "port" in i:
-                    sl = i.split("port ")
-                    if len(sl) > 1: sl.pop(0); data["port"] = int(sl[0])
-                    sl = i.split("Connected to ")
-                    if len(sl) > 1: sl.pop(0); data["host"] = sl[0].split(" ")[0]
-                    sl = i.split("(")
-                    if len(sl) > 1: sl.pop(0); data["attempted_ip"] = sl[0].split(")")[0]
-                elif "SSL certificate verify ok." in i: data["ssl_verified"] = True
-                elif "* SSL connection using TLSv" in i:
-                    sl = i.split("* SSL connection using TLSv")
-                    if len(sl) > 1: sl.pop(0); data["tls_version"] = sl[0].split(" /")[0]
-                elif "*  issuer: " in i:
-                    sl = i.split("*  issuer: ")
-                    if len(sl) > 1: sl.pop(0); data["ssl_issuer"] = sl[0]
-                elif "*  subject: " in i:
-                    sl = i.split("*  subject: ")
-                    if len(sl) > 1: sl.pop(0); data["ssl_subject"] = sl[0]
-        return data
-    def process_bytes_to_str(self, bytes: bytes): return bytes.decode("utf-8")
-    def process_download_status(self, download_stat_line: str):
-        pattern = self._re.compile(
-            r"^\s*(\d{1,3})\s+"  # Percent
-            r"(\S+)\s+"          # Total size
-            r"\d{1,3}\s+"        # Percent downloaded
-            r"(\S+)\s+"          # Downloaded size
-            r"\S+\s+"            # Xferd percent
-            r"\S+\s+"            # Xferd size
-            r"\S+\s+"            # Avg Dload Speed
-            r"\S+\s+"            # Avg Upload Speed
-            r"\S+\s+"            # Total time
-            r"\S+\s+"            # Time spent
-            r"\S+\s+"            # Time left
-            r"(\S+)\s*$"         # Current speed
-        )
-        match = pattern.search(download_stat_line)
-        if match:
-            percent = int(match.group(1))
-            total_size = match.group(2)
-            downloaded = match.group(3)
-            speed = match.group(4)
-            downloaded_bytes = self.format_size_to_bytes(downloaded)
-            return self.DownloadStatus(speed=speed, downloaded=downloaded, downloaded_bytes=downloaded_bytes, percent=percent, total_size=total_size)
-        return None
-class pip:
-    """
-    A class that allows you to configure pip and Python installations.
-    """
-    executable = None
-    debug = False
-    ignore_same = False
-    requests: request = None
-    
-    # Pip / PyPi Functionalities
-    def __init__(self, command: list=[], executable: str=None, debug: bool=False, find: bool=False, arch: str=None):
-        import sys
-        import os
-        import tempfile
-        import re
-        import json
-        import platform
-        import importlib
-        import importlib.metadata
-        import subprocess
-        import glob
-        import stat
-        import shutil
-        import urllib.parse
-        import time
-        import mmap
-
-        self._sys = sys
-        self._os = os
-        self._tempfile = tempfile
-        self._re = re
-        self._platform = platform
-        self._importlib = importlib
-        self._importlib_metadata = importlib.metadata
-        self._subprocess = subprocess
-        self._glob = glob
-        self._stat = stat
-        self._shutil = shutil
-        self._urllib_parse = urllib.parse
-        self._time = time
-        self._json = json
-        self._mmap = mmap
-
-        self._main_os = platform.system()
-        if type(executable) is str:
-            if os.path.isfile(executable): self.executable = executable
-            else: self.executable = self.findPython(arch=arch, path=True) if find == True else sys.executable
-        elif type(arch) is str: self.executable = self.findPython(arch=arch, path=True)
-        else: self.executable = self.findPython(arch=arch, path=True) if find == True else sys.executable
-        self.debug = debug==True
-        self.requests = request()
-        if type(command) is list and len(command) > 0: self.ensure(); subprocess.check_call([self.executable, "-m", "pip"] + command)
-    def __str__(self): return self.executable
-    def __bool__(self): return self.pythonInstalled()
-    def __iter__(self): return self
-    def __next__(self):
-        if not hasattr(self, "iter_index") or not self.iter_index:
-            self.iter_index = 0
-            self.iter_data = self.findPythons()
-        if self.iter_index < len(self.iter_data):
-            item = self.iter_data[self.iter_index]
-            self.iter_index += 1
-            return item
-        else:
-            self.iter_data = None
-            self.iter_index = 0
-            raise StopIteration
-    def install(self, packages: typing.List[str], upgrade: bool=False, user: bool=True):
-        self.ensure()
-        res = {}
-        generated_list = []
-        if self.getIfVirtualEnvironment(): user = False
-        for i in packages:
-            if type(i) is str: generated_list.append(i)
-        if len(generated_list) > 0:
-            try:
-                a = self._subprocess.call([self.executable, "-m", "pip", "install"] + (["--upgrade"] if upgrade == True else []) + (["--user"] if user == True else []) + generated_list, stdout=(not self.debug) and self._subprocess.DEVNULL or None, stderr=(not self.debug) and self._subprocess.DEVNULL or None)
-                if a == 0: return {"success": True, "message": "Successfully installed modules!"}
-                else: return {"success": False, "message": f"Command has failed! Code: {a}"}
-            except Exception as e: return {"success": False, "message": str(e)}
-        return res
-    def uninstall(self, packages: typing.List[str]):
-        self.ensure()
-        res = {}
-        generated_list = []
-        for i in packages:
-            if type(i) is str: generated_list.append(i)
-        if len(generated_list) > 0:
-            try:
-                self._subprocess.call([self.executable, "-m", "pip", "uninstall", "-y"] + generated_list, stdout=self._subprocess.DEVNULL if self.debug == False else None, stderr=self._subprocess.DEVNULL if self.debug == False else None)
-                res[i] = {"success": True}
-            except Exception as e: res[i] = {"success": False}
-        return res
-    def installed(self, packages: typing.List[str]=[], boolonly: bool=False):
-        self.ensure()
-        if self.isSameRunningPythonExecutable() and not len(packages) == 0:
-            def che(a):
-                try: self._importlib_metadata.version(a); return True
-                except self._importlib_metadata.PackageNotFoundError: return False
-            if len(packages) == 1: return che(packages[0].lower())
-            else:
-                installed_checked = {}
-                all_installed = True
-                for i in packages:
-                    try:
-                        if che(i.lower()): installed_checked[i] = True
-                        else:
-                            installed_checked[i] = False
-                            all_installed = False
-                    except Exception as e:
-                        installed_checked[i] = False
-                        all_installed = False
-                installed_checked["all"] = all_installed
-                if boolonly == True: return installed_checked["all"]
-                return installed_checked
-        else:
-            sub = self._subprocess.run([self.executable, "-m", "pip", "list"], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE)
-            line_splits = sub.stdout.decode().strip().splitlines()[2:]
-            installed_packages = [package.split()[0].lower() for package in line_splits if package.strip()]
-            installed_checked = {}
-            all_installed = True
-            if len(packages) == 0: return installed_packages
-            elif len(packages) == 1: return packages[0].lower() in installed_packages
-            else:
-                for i in packages:
-                    try:
-                        if i.lower() in installed_packages: installed_checked[i] = True
-                        else:
-                            installed_checked[i] = False
-                            all_installed = False
-                    except Exception as e:
-                        installed_checked[i] = False
-                        all_installed = False
-                installed_checked["all"] = all_installed
-                if boolonly == True: return installed_checked["all"]
-                return installed_checked
-    def download(self, packages: typing.List[str], repository_mode: bool=False):
-        generated_list = []
-        for i in packages:
-            if type(i) is str: generated_list.append(i)
-        if len(generated_list) > 0:
-            try:
-                cur_path = self._os.path.dirname(self._os.path.abspath(__file__))
-                if repository_mode == True:
-                    url_paths = []
-                    url_paths_2 = []
-                    for i in generated_list: 
-                        if i.startswith("https://github.com") or i.startswith("https://www.github.com"):
-                            path_parts = self._urllib_parse.urlparse(i).path.strip('/').split('/')
-                            url_paths.append(path_parts[-1])
-                            url_paths_2.append(path_parts[-2])
-                    down_path = self._os.path.join(cur_path, '-'.join(url_paths) + "_download")
-                    if self._os.path.isdir(down_path): self._shutil.rmtree(down_path, ignore_errors=True)
-                    self._os.makedirs(down_path, mode=511)
-                    co = 0
-                    downed_paths = []
-                    for url_path_1 in url_paths:
-                        url_path_2 = url_paths_2[co]
-                        s = self.requests.download(f"https://github.com/{url_path_2}/{url_path_1}/archive/refs/heads/main.zip", self._os.path.join(down_path, f"{url_path_1}.zip"))
-                        if s.ok: downed_paths.append(self._os.path.join(down_path, f"{url_path_1}.zip"))
-                        co += 1
-                    return {"success": True, "path": down_path, "package_files": downed_paths}
-                else:
-                    down_path = self._os.path.join(cur_path, '-'.join(generated_list) + "_download")
-                    if self._os.path.isdir(down_path): self._shutil.rmtree(down_path, ignore_errors=True)
-                    self._os.makedirs(down_path, mode=511)
-                    self.ensure()
-                    self._subprocess.check_call([self.executable, "-m", "pip", "download", "--no-binary", ":all:"] + generated_list, stdout=self.debug == False and self._subprocess.DEVNULL, stderr=self.debug == False and self._subprocess.DEVNULL, cwd=down_path)
-                    a = []
-                    for e in self._os.listdir(down_path): a.append(self._os.path.join(down_path, e))
-                    return {"success": True, "path": down_path, "package_files": a}
-            except Exception as e:
-                print(e)
-                return {"success": False}
-        return {"success": False}
-    def update(self):
-        self.ensure()
-        try:
-            a = self._subprocess.call([self.executable, "-m", "pip", "install", "--upgrade", "pip"], stdout=self._subprocess.DEVNULL if (not self.debug) else None, stderr=self._subprocess.DEVNULL if (not self.debug) else None)
-            if a == 0: return {"success": True, "message": "Successfully installed latest version of pip!"}
-            else: return {"success": False, "message": f"Command has failed!"}
-        except Exception as e: return {"success": False, "message": str(e)}
-    def ensure(self):
-        if not self.executable: return False
-        check_for_pip_pro = self._subprocess.run([self.executable, "-m", "pip"], stdout=self._subprocess.DEVNULL, stderr=self._subprocess.DEVNULL)
-        if check_for_pip_pro.returncode == 0: return True
-        else:
-            if self.getIfConnectedToInternet() == True:
-                self.printDebugMessage(f"Downloading pip from pypi..")
-                with self._tempfile.NamedTemporaryFile(suffix=".py", delete=False) as temp_file: pypi_download_path = temp_file.name
-                if self.pythonSupported(3,9,0): download_res = self.requests.download("https://bootstrap.pypa.io/get-pip.py", pypi_download_path)      
-                else: current_python_version = self.getCurrentPythonVersion(); download_res = self.requests.download(f"https://bootstrap.pypa.io/pip/{current_python_version.split('.')[0]}.{current_python_version.split('.')[1]}/get-pip.py", pypi_download_path)
-                if download_res.ok:
-                    self.printDebugMessage(f"Successfully downloaded pip! Installing to Python..")
-                    install_to_py = self._subprocess.run([self.executable, pypi_download_path], stdout=self.debug == False and self._subprocess.DEVNULL, stderr=self.debug == False and self._subprocess.DEVNULL)
-                    if install_to_py.returncode == 0:
-                        self.printDebugMessage(f"Successfully installed pip to Python executable!")
-                        return True
-                    else: return False
-                else: return False
-            else:
-                self.printDebugMessage(f"Unable to download pip due to no internet access.")
-                return False
-    def updates(self, packages: typing.List[str]=[]):
-        sub = self._subprocess.run([self.executable, "-m", "pip", "list", "--outdated", "--format=json"], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE)
-        json_str = sub.stdout.decode().strip()
-        try:
-            tried = self._json.loads(json_str)
-            if packages and len(packages) > 0: return {"success": True, "packages": [i for i in tried if i["name"] in packages]}
-            return {"success": True, "packages": tried}
-        except: return {"success": False, "packages": []}
-    def info(self, packages: typing.List[str]):
-        generated_list = []
-        for i in packages:
-            if type(i) is str: generated_list.append(i)
-        if len(generated_list) > 0:
-            try:
-                information = {}
-                for i in generated_list:
-                    urll = f"https://pypi.org/pypi/{i}/json"
-                    if self.getIfConnectedToInternet() == False: return {"success": False}
-                    response = self.requests.get(urll)
-                    if response.ok:
-                        data = response.json
-                        info = data["info"]
-                        information[i] = info
-                return {"success": True, "data": information}
-            except Exception as e: return {"success": False}
-        return {"success": False}
-    def github(self, packages: typing.List[str]):
-        generated_list = []
-        for i in packages:
-            if type(i) is str: generated_list.append(i)
-        if len(generated_list) > 0:
-            try:
-                informed = self.info(generated_list)
-                if informed["success"] == True:
-                    informed = informed["data"]
-                    links = {}
-                    for i in generated_list:
-                        if informed.get(i):
-                            info = informed[i]
-                            url = info.get("project_urls", {}).get("Source") or info.get("home_page")
-                            if url: links[i] = url
-                    return {"success": True, "repositories": links}
-            except Exception as e: return {"success": False}
-        return {"success": False}
-    
-    # Python Management
-    def getLatestPythonVersion(self, beta: bool=False):
-        url = "https://www.python.org/downloads/"
-        if beta == True: url = "https://www.python.org/download/pre-releases/"
-        response = self.requests.get(url)
-        if response.ok: html = response.text
-        else: html = ""
-        if beta == True: match = self._re.search(r'Python (\d+\.\d+\.\d+)([a-zA-Z0-9]+)?', html)
-        else: match = self._re.search(r"Download Python (\d+\.\d+\.\d+)", html)
-        if match:
-            if beta == True: version = f'{match.group(1)}{match.group(2)}'
-            else: version = match.group(1)
-            return version
-        else:
-            self.printDebugMessage("Failed to find latest Python version.")
-            return None
-    def getLatestPythonInstallManagerVersion(self, beta: bool=False):
-        url = "https://www.python.org/downloads/windows/"
-        response = self.requests.get(url)
-        if response.ok: html = response.text
-        else: html = ""
-        if beta == True: match = self._re.search(r"Python install manager (\d+\.\d+) beta (\d+)", html)
-        else: match = self._re.search(r"Python install manager (\d+\.\d+)", html)
-        if match:
-            if beta == True: version = f'{match.group(1)}b{match.group(2)}'
-            else: version = match.group(1)
-            return version
-        else:
-            self.printDebugMessage("Failed to find latest Python Installer Manager version.")
-            return None
-    def getCurrentPythonVersion(self):
-        if not self.executable: return None
-        if self.isSameRunningPythonExecutable(): return self._platform.python_version()
-        else:
-            a = self._subprocess.run([self.executable, "-V"], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE)
-            final = a.stdout.decode()
-            if a.returncode == 0: return final.replace("Python ", "").strip()
-            else: return None
-    def getIfPythonVersionIsBeta(self, version=""):
-        if version == "": cur_vers = self.getCurrentPythonVersion()
-        else: cur_vers = version
-        match = self._re.search(r'(\d+\.\d+\.\d+)([a-z]+(\d+)?)?', cur_vers)
-        if match:
-            _, suf, _ = match.groups()
-            if suf: return True
-            return False
-        else: return False
-    def getIfPythonIsLatest(self):
-        cur_vers = self.getCurrentPythonVersion()
-        if self.getIfPythonVersionIsBeta(): latest_vers = self.getLatestPythonVersion(beta=True)
-        else: latest_vers = self.getLatestPythonVersion(beta=False)
-        return cur_vers == latest_vers
-    def pythonInstalled(self, computer=False):
-        if computer == True:
-            if self.findPython(): return True
-            else: return False
-        else:
-            if not self.executable: return False
-            if self._os.path.exists(self.executable): return True
-            else: return False
-    def extractPythonVersion(self, path):
-        name = self._os.path.basename(path)
-        match = self._re.search(r'python(?:w)?(?:-?|\s*)(\d+)(?:\.(\d+))?(?:\.(\d+))?', name)
-        if match: return tuple(int(g) if g is not None else 0 for g in match.groups())
-        version_part = self._os.path.basename(self._os.path.dirname(path))
-        match2 = self._re.match(r'(\d+)(?:\.(\d+))?(?:\.(\d+))?', version_part)
-        if match2: return tuple(int(g) if g is not None else 0 for g in match2.groups())
-        return (0, 0, 0)
-    def pythonSupported(self, major: int=3, minor: int=13, patch: int=2):
-        cur_version = self.getCurrentPythonVersion()
-        if not cur_version: return False
-        return self.pythonSupportedStatic(cur_version, major, minor, patch)
-    def pythonSupportedStatic(self, version: str, major: int=3, minor: int=13, patch: int=2):
-        if not version: return False
-        match = self._re.match(r"(\d+)\.(\d+)\.(\w+)", version)
-        if match:
-            version = match.groups() 
-            def to_int(val): return int(self._re.sub(r'\D', '', val))
-            return tuple(map(to_int, version)) >= (major, minor, patch)
-        else: return False
-    def osSupported(self, windows_build: int=0, macos_version: tuple=(0,0,0)):
-        if self._main_os == "Windows":
-            version = self._platform.version()
-            v = version.split(".")
-            if len(v) < 3: return False
-            return int(v[2]) >= windows_build
-        elif self._main_os == "Darwin":
-            version = self._platform.mac_ver()[0]
-            version_tuple = tuple(map(int, version.split('.')))
-            while len(version_tuple) < 3: version_tuple += (0,)
-            while len(macos_version) < 3: min_version += (0,)
-            return version_tuple >= macos_version
-        else: return False
-    def pythonInstall(self, version: str="", beta: bool=False, silent: bool=False, manual: bool=False, arch: str=None):
-        ma_os = self._main_os
-        ma_arch = self._platform.architecture()
-        ma_processor = self._platform.machine()
-        macos_version_numbers = {
-            "3.10.0a3": "11.0",
-            "3.9.1rc1": "11.0"
-        }
-        if not self.pythonSupportedStatic(version, 3, 9, 2):
-            if not self.pythonSupportedStatic(version, 3, 9, 2) and self.pythonSupportedStatic(version, 3, 7, 0): macos_version_numbers[version] = "x10.9"
-            elif self.pythonSupportedStatic(version, 3, 7, 0): macos_version_numbers[version] = "x10.6"
-        if self.getIfConnectedToInternet() == False:
-            self.printDebugMessage("Failed to download Python installer.")
-            return
-        if version == "": version = self.getLatestPythonVersion(beta=beta)
-        if not version:
-            self.printDebugMessage("Failed to download Python installer.")
-            return
-        version_url_folder = version
-        if beta == True: version_url_folder = self._re.match(r'^\d+\.\d+\.\d+', version).group()
-        if ma_os == "Darwin":
-            url = f"https://www.python.org/ftp/python/{version_url_folder}/python-{version}-macos{macos_version_numbers.get(version, '11')}.pkg"
-            with self._tempfile.NamedTemporaryFile(suffix=".pkg", delete=False) as temp_file: pkg_file_path = temp_file.name
-            result = self.requests.download(url, pkg_file_path)            
-            if result.ok:
-                if silent == True: 
-                    self.printDebugMessage(f"Silently installing Python packages.. Admin permissions may be requested.")
-                    self._subprocess.run(["osascript", "-e", f"do shell script \"installer -pkg '{pkg_file_path}' -target /\" with administrator privileges"], stdout=self.debug == False and self._subprocess.DEVNULL, stderr=self.debug == False and self._subprocess.DEVNULL, check=True)
-                    self.printDebugMessage(f"Successfully installed Python package: {pkg_file_path}")
-                else:
-                    self._subprocess.run(["open", pkg_file_path], stdout=self.debug == False and self._subprocess.DEVNULL, stderr=self.debug == False and self._subprocess.DEVNULL, check=True)
-                    while self.getIfProcessIsOpened("/System/Library/CoreServices/Installer.app") == True: self._time.sleep(0.1)
-                    self.printDebugMessage(f"Python installer has been executed: {pkg_file_path}")
-            else:
-                self.printDebugMessage("Failed to download Python installer.")
-        elif ma_os == "Windows":
-            if version < "3.11.0": self.printDebugMessage("PyKits is not normally made for versions less than 3.11.0.")
-            if arch == "arm64":
-                ma_processor = "arm64"
-                ma_arch = ["64bit"]
-            elif arch == "x64":
-                ma_processor = "amd64"
-                ma_arch = ["64bit"]
-            elif arch == "x86":
-                ma_arch = ["32bit"]
-            if (manual == True and self.pythonSupportedStatic(version, 3, 5, 0)) or self.pythonSupportedStatic(version, 3, 15, 0):
-                self.printDebugMessage("Setting up python modules..")
-                if self._main_os == "Windows" and (not hasattr(self, "_win32api") or not hasattr(self, "_win32con")):
-                    try:
-                        try:
-                            import win32api # type: ignore
-                            import win32con # type: ignore
-                            self._win32con = win32con
-                            self._win32api = win32api
-                        except Exception:
-                            self.install(["pywin32"])
-                            self.win32con = self.importModule("win32con")
-                            self._win32api = self.importModule("win32api")
-                    except: pass
-                self.printDebugMessage("Downloading Python package..")
-                arch_fold_end = ""
-                if ma_arch[0] == "64bit":
-                    if ma_processor.lower() == "arm64": url = f"https://www.python.org/ftp/python/{version_url_folder}/python-{version}-arm64.zip"; arch_fold_end = "-arm64"
-                    else: url = f"https://www.python.org/ftp/python/{version_url_folder}/python-{version}-amd64.zip"
-                else: url = f"https://www.python.org/ftp/python/{version_url_folder}/python-{version}-win32.zip"; arch_fold_end = "-32"
-                with self._tempfile.NamedTemporaryFile(suffix=".zip", delete=False) as temp_file: zip_file_path = temp_file.name
-                result = self.requests.download(url, zip_file_path)
-                if result.ok:
-                    stripped_version = "".join(self.getMajorMinorVersion(version_url_folder).split("."))
-                    self.printDebugMessage(f"Unzipping Python {version_url_folder} package..")
-                    user_appdata_folder = self.getLocalAppData()
-                    target_python_path = self._os.path.join(user_appdata_folder, "Programs", "Python", f"Python{stripped_version}{arch_fold_end}")
-                    unzip_res = self.unzipFile(zip_file_path, target_python_path, ["python.exe"])
-                    if unzip_res.returncode == 0:
-                        self.printDebugMessage(f"Installing PIP..")
-                        pip_script_path = self._os.path.join(target_python_path, "get-pip.py")
-                        if self.requests.download("https://bootstrap.pypa.io/get-pip.py", pip_script_path).ok:
-                            python_exe = self._os.path.join(target_python_path, "python.exe")
-                            install_pip_res = self._subprocess.run([python_exe, pip_script_path], cwd=target_python_path)
-                            if install_pip_res.returncode == 0:
-                                self.printDebugMessage("Successfully installed PIP with Python!")
-                            else:
-                                self.printDebugMessage(f"Unable to install PIP with Python Package. Return Code: {install_pip_res.returncode}")
-                            self._os.remove(pip_script_path)
-                            if (not self._shutil.which("python")) or self.getArchitecture() == pip(executable=python_exe).getArchitecture():
-                                self.printDebugMessage("Adding to user path..")
-                                self.addToUserPath(target_python_path)
-                                self.addToUserPath(self._os.path.join(target_python_path, "Scripts"))
-                                self.printDebugMessage("Registering file extensions..")
-                                extensions = [(".py", "Python.File"), (".pyw", "Python.NoConFile")]
-                                for ext, prog_id in extensions:
-                                    ext_key = self._win32api.RegCreateKey(self._win32con.HKEY_CURRENT_USER, f"Software\\Classes\\{ext}")
-                                    self._win32api.RegSetValueEx(ext_key, "", 0, self._win32con.REG_SZ, prog_id)
-                                    self._win32api.RegCloseKey(ext_key)
-                                    cmd_key = win32api.RegCreateKey(self._win32con.HKEY_CURRENT_USER, f"Software\\Classes\\{prog_id}\\shell\\open\\command")
-                                    self._win32api.RegSetValueEx(cmd_key, "", 0, self._win32con.REG_SZ, f'"{python_exe}" "%1" %*')
-                                    self._win32api.RegCloseKey(cmd_key)
-                                self._win32gui.SendMessageTimeout(
-                                    self._win32con.HWND_BROADCAST,
-                                    self._win32con.WM_SETTINGCHANGE,
-                                    0,
-                                    "Environment",
-                                    self._win32con.SMTO_ABORTIFHUNG,
-                                    5000
-                                )
-                            self.printDebugMessage(f"Successfully installed Python {version} into path: {target_python_path}")
-                        else: self.printDebugMessage("Failed to bootstrap pip (download get-pip.py failed).")
-                    else: self.printDebugMessage("Failed to download Python installer.")
-                else: self.printDebugMessage("Failed to download Python installer.")
-            else:
-                if ma_arch[0] == "64bit":
-                    if ma_processor.lower() == "arm64": url = f"https://www.python.org/ftp/python/{version_url_folder}/python-{version}-arm64.exe"
-                    else: url = f"https://www.python.org/ftp/python/{version_url_folder}/python-{version}-amd64.exe"
-                else: url = f"https://www.python.org/ftp/python/{version_url_folder}/python-{version}.exe"
-                with self._tempfile.NamedTemporaryFile(suffix=".exe", delete=False) as temp_file: exe_file_path = temp_file.name
-                result = self.requests.download(url, exe_file_path)
-                if result.ok:
-                    if silent == True:
-                        self.printDebugMessage(f"Silently installing Python packages..")
-                        self._subprocess.run([exe_file_path, "/quiet"], stdout=self.debug == False and self._subprocess.DEVNULL, stderr=self.debug == False and self._subprocess.DEVNULL, check=True)
-                        self.printDebugMessage(f"Successfully installed Python package: {exe_file_path}")
-                    else:
-                        self._subprocess.run([exe_file_path], stdout=self.debug == False and self._subprocess.DEVNULL, stderr=self.debug == False and self._subprocess.DEVNULL, check=True)
-                        self.printDebugMessage(f"Python installer has been executed: {exe_file_path}")
-                else: self.printDebugMessage("Failed to download Python installer.")
-    def findPythonInstallManager(self):
-        return self._shutil.which("python-install") or self._shutil.which("python-install-manager")
-    def installLocalPythonCertificates(self):
-        if self._main_os == "Darwin":
-            with open("./install_local_python_certs.py", "w") as f: f.write("""import os; import os.path; import ssl; import stat; import subprocess; import sys; STAT_0o775 = ( stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP | stat.S_IWGRP | stat.S_IXGRP | stat.S_IROTH |  stat.S_IXOTH ); openssl_dir, openssl_cafile = os.path.split(ssl.get_default_verify_paths().openssl_cafile); print(" -- pip install --upgrade certifi"); subprocess.check_call([sys.executable, "-E", "-s", "-m", "pip", "install", "--upgrade", "certifi"]); import certifi; os.chdir(openssl_dir); relpath_to_certifi_cafile = os.path.relpath(certifi.where()); print(" -- removing any existing file or link"); os.remove(openssl_cafile); print(" -- creating symlink to certifi certificate bundle"); os.symlink(relpath_to_certifi_cafile, openssl_cafile); print(" -- setting permissions"); os.chmod(openssl_cafile, STAT_0o775); print(" -- update complete");""")
-            s = self._subprocess.run(f'"{self.executable}" ./install_local_python_certs.py', shell=True, stdout=self._subprocess.DEVNULL, stderr=self._subprocess.DEVNULL)
-            self._os.remove("./install_local_python_certs.py")
-            if not (s.returncode == 0) and self.debug == True: print(f"Unable to install local python certificates!")
-    def getIf32BitWindows(self): return self._main_os == "Windows" and self.getArchitecture() == "x86"
-    def getIfArmWindows(self): return self._main_os == "Windows" and self.getArchitecture() == "arm"
-    def getIfRunningWindowsAdmin(self):
-        if self._main_os == "Windows":
-            try: import ctypes; return ctypes.windll.shell32.IsUserAnAdmin()
-            except: return False
-        else: return False
-    def getArchitecture(self):
-        if self.isSameRunningPythonExecutable():
-            machine_var = self._platform.machine()
-            if self._main_os == "Windows":
-                with open(self.executable if self.executable else self._sys.executable, "rb") as f:
-                    mm = self._mmap.mmap(f.fileno(), 0, access=self._mmap.ACCESS_READ)
-                    pe_offset = int.from_bytes(mm[0x3C:0x40], "little")
-                    machine = int.from_bytes(mm[pe_offset + 4:pe_offset + 6], "little")
-                    mm.close()
-                arch_map = { 0x014c: "x86", 0x8664: "x64", 0xAA64: "arm", 0x01c0: "arm" }
-                return arch_map.get(machine, "")
-            elif self._main_os == "Darwin":
-                if machine_var.lower() == "arm64": return "arm"
-                elif machine_var.lower() == "x86_64": return "intel"
-                else: return "x86"
-            else: return machine_var
-        else:
-            exe = self.executable if self.executable else self._sys.executable
-            if self._main_os == "Darwin":
-                try:
-                    s = self._subprocess.run([exe, "-c", "import platform; machine_var = platform.machine(); print('arm' if machine_var.lower() == 'arm64' else ('intel' if machine_var.lower() == 'x86_64' else 'x86'))"], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE)
-                    final = s.stdout.decode()
-                    return final.strip()
-                except: return ""
-            elif self._main_os == "Windows":
-                with open(exe, "rb") as f:
-                    mm = self._mmap.mmap(f.fileno(), 0, access=self._mmap.ACCESS_READ)
-                    pe_offset = int.from_bytes(mm[0x3C:0x40], "little")
-                    machine = int.from_bytes(mm[pe_offset + 4:pe_offset + 6], "little")
-                    mm.close()
-                arch_map = { 0x014c: "x86", 0x8664: "x64", 0xAA64: "arm", 0x01c0: "arm" }
-                return arch_map.get(machine, "")
-            else: return machine_var
-    def getIfVirtualEnvironment(self):
-        alleged_path = self._os.path.dirname(self.executable)
-        return self._os.path.exists(self._os.path.join(alleged_path, "..", "pyvenv.cfg")) or (self._os.path.exists(self._os.path.join(alleged_path, "python.exe")) and self._os.path.exists(self._os.path.join(alleged_path, "pip.exe")))
-    def findPython(self, arch=None, latest=True, optimize=True, path=False):
-        ma_os = self._main_os
-        if ma_os == "Darwin":
-            target_name = "python3-intel64" if arch == "intel" else "python3"
-            if optimize == True and self._os.path.exists(f"/usr/local/bin/{target_name}") and self._os.path.islink(f"/usr/local/bin/{target_name}"): return f"/usr/local/bin/{target_name}" if path == True else pip(executable=f"/usr/local/bin/{target_name}")
-            else:
-                paths = [
-                    "/usr/local/bin/python*",
-                    "/opt/homebrew/bin/python*",
-                    "/Library/Frameworks/Python.framework/Versions/*/bin/python*",
-                    self._os.path.expanduser("~/Library/Python/*/bin/python*"),
-                    self._os.path.expanduser("~/.pyenv/versions/*/bin/python*"),
-                    self._os.path.expanduser("~/opt/anaconda*/bin/python*")
-                ]
-                found_paths = []
-                for path_pattern in paths: found_paths.extend(self._glob.glob(path_pattern))
-                if latest == True: found_paths.sort(reverse=True, key=self.extractPythonVersion)
-                for pat in found_paths:
-                    if self._os.path.isfile(pat):
-                        if pat.endswith("t") or pat.endswith("config") or pat.endswith("m") or self._os.path.basename(pat).startswith("pythonw"): continue
-                        pip_class = pip(executable=pat)
-                        if arch:
-                            py_arch = pip_class.getArchitecture()
-                            if py_arch == "": continue
-                            if py_arch == arch: return pat if path == True else pip_class
-                        else: return pat if path == True else pip_class
-                return None
-        elif ma_os == "Windows":
-            paths = [
-                self._os.path.expandvars(r'%LOCALAPPDATA%\\Programs\\Python\\Python*'),
-                self._os.path.expandvars(r'%LOCALAPPDATA%\\Programs\\Python\\Python*\\python.exe'),
-                self._os.path.expandvars(r'%PROGRAMFILES%\\Python*\\python.exe'),
-                self._os.path.expandvars(r'%PROGRAMFILES(x86)%\\Python*\\python.exe')
-            ]
-            found_paths = []
-            for path_pattern in paths: found_paths.extend(self._glob.glob(path_pattern))
-            if latest == True: found_paths.sort(reverse=True, key=self.extractPythonVersion)
-            for pat in found_paths:
-                if self._os.path.isfile(pat):
-                    pip_class = pip(executable=pat)
-                    if arch:
-                        py_arch = pip_class.getArchitecture()
-                        if py_arch == "": continue
-                        if py_arch == arch: return pat if path == True else pip_class
-                    else: return pat if path == True else pip_class
-            return None
-    def findPythons(self, arch=None, latest=True, paths=False):
-        ma_os = self._main_os
-        founded_pythons = []
-        if ma_os == "Darwin":
-            path_table = [
-                "/usr/local/bin/python*",
-                "/opt/homebrew/bin/python*",
-                "/Library/Frameworks/Python.framework/Versions/*/bin/python*",
-                self._os.path.expanduser("~/Library/Python/*/bin/python*"),
-                self._os.path.expanduser("~/.pyenv/versions/*/bin/python*"),
-                self._os.path.expanduser("~/opt/anaconda*/bin/python*")
-            ]
-            found_paths = []
-            for path_pattern in path_table: found_paths.extend(self._glob.glob(path_pattern))
-            if latest == True: found_paths.sort(reverse=True, key=self.extractPythonVersion)
-            for path in found_paths:
-                if self._os.path.isfile(path):
-                    if path.endswith("t") or path.endswith("config") or path.endswith("m") or self._os.path.basename(path).startswith("pythonw"): continue
-                    pip_class = pip(executable=path)
-                    if arch:
-                        py_arch = pip_class.getArchitecture()
-                        if py_arch == "": continue
-                        if py_arch == arch: founded_pythons.append(path if paths == True else pip_class)
-                    else: founded_pythons.append(path if paths == True else pip_class)
-        elif ma_os == "Windows":
-            path_table = [
-                self._os.path.expandvars(r'%LOCALAPPDATA%\\Programs\\Python\\Python*'),
-                self._os.path.expandvars(r'%LOCALAPPDATA%\\Programs\\Python\\Python*\\python.exe'),
-                self._os.path.expandvars(r'%PROGRAMFILES%\\Python*\\python.exe'),
-                self._os.path.expandvars(r'%PROGRAMFILES(x86)%\\Python*\\python.exe')
-            ]
-            found_paths = []
-            for path_pattern in path_table: found_paths.extend(self._glob.glob(path_pattern))
-            if latest == True: found_paths.sort(reverse=True, key=self.extractPythonVersion)
-            for path in found_paths:
-                if self._os.path.isfile(path):
-                    pip_class = pip(executable=path)
-                    if arch:
-                        py_arch = pip_class.getArchitecture()
-                        if py_arch == "": continue
-                        if py_arch == arch: founded_pythons.append(path if paths == True else pip_class)
-                    else: founded_pythons.append(path if paths == True else pip_class)
-        return founded_pythons
-    def isSameRunningPythonExecutable(self):
-        if self.ignore_same == True: return False
-        if not self.executable: return False
-        if self._os.path.exists(self.executable) and self._os.path.exists(self._sys.executable): return self._os.path.samefile(self.executable, self._sys.executable)
-        else: return False
-    def getMajorMinorVersion(self, version: str="3.14.0"): return ".".join(version.split(".")[:-1])
-
-    # Python Functions
-    def getLocalAppData(self):
-        ma_os = self._main_os
-        if ma_os == "Windows": return self._os.path.expandvars(r'%LOCALAPPDATA%')
-        elif ma_os == "Darwin": return f'{self._os.path.expanduser("~")}/Library/'
-        else: return f'{self._os.path.expanduser("~")}/'
-    def getUserFolder(self): return self._os.path.expanduser("~")
-    def getIfLoggedInIsMacOSAdmin(self):
-        ma_os = self._main_os
-        if ma_os == "Darwin":
-            logged_in_folder = self.getUserFolder()
-            username = self._os.path.basename(logged_in_folder)
-            groups_res = self._subprocess.run(["/usr/bin/groups", username], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE)
-            if groups_res.returncode == 0: return "admin" in groups_res.stdout.decode("utf-8").split(" ")
-            else: return False
-        else: return False
-    def getInstallableApplicationsFolder(self):
-        ma_os = self._main_os
-        if ma_os == "Darwin":
-            if self.getIfLoggedInIsMacOSAdmin(): return self._os.path.join("/", "Applications")
-            else: return self._os.path.join(self.getUserFolder(), "Applications")
-        elif ma_os == "Windows":
-            return self.getLocalAppData()
-    def restartScript(self, scriptname: str, argv: list):
-        argv.pop(0)
-        res = self._subprocess.run([self.executable, self._os.path.join(self._os.path.dirname(self._os.path.abspath(__file__)), scriptname)] + argv)
-        self._sys.exit(res.returncode)
-    def endProcess(self, name="", pid=""):
-        main_os = self._main_os
-        if pid == "":
-            if main_os == "Darwin": self._subprocess.run(["/usr/bin/killall", "-9", name], stdout=self._subprocess.DEVNULL)
-            elif main_os == "Windows": self._subprocess.run(f"taskkill /IM {name} /F", shell=True, stdout=self._subprocess.DEVNULL)
-            else: self._subprocess.run(f"killall -9 {name}", shell=True, stdout=self._subprocess.DEVNULL)
-        else:
-            if main_os == "Darwin": self._subprocess.run(f"kill -9 {pid}", shell=True, stdout=self._subprocess.DEVNULL)
-            elif main_os == "Windows": self._subprocess.run(f"taskkill /PID {pid} /F", shell=True, stdout=self._subprocess.DEVNULL)
-            else: self._subprocess.run(f"kill -9 {pid}", shell=True, stdout=self._subprocess.DEVNULL)
-    def importModule(self, module_name: str, install_module_if_not_found: bool=False, loop_until_import: bool=False):
-        self.uncacheLoadedModules()
-        try: 
-            s = self._importlib.import_module(module_name)
-            if type(s) is None: raise ModuleNotFoundError("")
-            else: return s
-        except ModuleNotFoundError:
-            try:
-                if install_module_if_not_found == True and self.isSameRunningPythonExecutable(): self.install([module_name])
-                self.uncacheLoadedModules()
-                s = self._importlib.import_module(module_name)
-                if type(s) is None: raise ModuleNotFoundError("")
-                else: return s
-            except Exception: 
-                if loop_until_import == False: raise ImportError(f'Unable to find module "{module_name}" in Python {self.getCurrentPythonVersion()} environment.')
-                self._time.sleep(1)
-                return self.importModule(module_name=module_name, install_module_if_not_found=install_module_if_not_found, loop_until_import=loop_until_import)
-        except Exception as e: raise ImportError(f'Unable to import module "{module_name}" in Python {self.getCurrentPythonVersion()} environment. Exception: {str(e)}')
-    def uncacheLoadedModules(self):
-        if getattr(self._sys, "frozen", False): pass
-        else:
-            import site
-            self._site = site
-            site_packages_paths = self._site.getsitepackages() + [self._site.getusersitepackages()]
-            for path in site_packages_paths:
-                if path not in self._sys.path and self._os.path.exists(path): self._sys.path.append(path)
-        self._importlib.invalidate_caches()
-    def unzipFile(self, path: str, output: str, look_for: list=[], export_out: list=[], either: bool=False, check: bool=True, moving_file_func: typing.Callable=None):
-        class result():
-            returncode = 0
-            path = ""
-        if not self._os.path.exists(output): self._os.makedirs(output, mode=511)
-        previous_output = output
-        if output.endswith("/"): output = output[:-1]
-        if len(look_for) > 0: output = output + f"_Full_{self._os.urandom(3).hex()}"; self._os.makedirs(output, mode=511)
-        if self._main_os == "Windows": zip_extract = self._subprocess.run(["C:\\Windows\\System32\\tar.exe", "-xf", path] + export_out + ["-C", output], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, check=check)
-        else: zip_extract = self._subprocess.run(["/usr/bin/ditto", "-xk", path, output], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, check=check)
-        if len(look_for) > 0:
-            if zip_extract.returncode == 0:
-                for ro, dir, fi in self._os.walk(output):
-                    if either == True:
-                        found_all = False
-                        for a in look_for:
-                            if a in (fi + dir): found_all = True
-                    else:
-                        found_all = True
-                        for a in look_for:
-                            if not a in (fi + dir): found_all = False
-                    if found_all == True: 
-                        if moving_file_func: moving_file_func()
-                        if self._os.path.exists(previous_output): self._shutil.rmtree(previous_output, ignore_errors=True)
-                        self._shutil.move(ro, previous_output)
-                        self._shutil.rmtree(output, ignore_errors=True)
-                        s = result()
-                        s.path = previous_output
-                        s.returncode = 0
-                        return s
-            if self._os.path.exists(output): self._shutil.rmtree(output, ignore_errors=True)
-            if self._os.path.exists(previous_output): self._shutil.rmtree(previous_output, ignore_errors=True)
-            s = result()
-            s.path = None
-            s.returncode = 1
-            return s
-        else:
-            s = result()
-            s.path = previous_output
-            s.returncode = 0
-            return s
-    def copyTreeWithMetadata(self, src: str, dst: str, symlinks=False, ignore=None, dirs_exist_ok=False, ignore_if_not_exist=False):
-        if not self._os.path.exists(src) and ignore_if_not_exist == False: return
-        if not dirs_exist_ok and self._os.path.exists(dst): raise FileExistsError(f"Destination '{dst}' already exists.")
-        self._os.makedirs(dst, exist_ok=True, mode=511)
-        for root, dirs, files in self._os.walk(src):
-            rel_path = self._os.path.relpath(root, src)
-            dst_root = self._os.path.join(dst, rel_path)
-            ignored_names = ignore(root, self._os.listdir(root)) if ignore else set()
-            dirs[:] = [d for d in dirs if d not in ignored_names]
-            files = [f for f in files if f not in ignored_names]
-            self._os.makedirs(dst_root, exist_ok=True, mode=511)
-            for dir_name in dirs:
-                src_dir = self._os.path.join(root, dir_name)
-                dst_dir = self._os.path.join(dst_root, dir_name)
-
-                if self._os.path.islink(src_dir) and symlinks:
-                    link_target = self._os.readlink(src_dir)
-                    self._os.symlink(link_target, dst_dir)
-                else:
-                    self._os.makedirs(dst_dir, exist_ok=True, mode=511)
-                    self._shutil.copystat(src_dir, dst_dir, follow_symlinks=False)
-                    self._os.chmod(dst_dir, self._os.stat(dst_dir).st_mode | self._stat.S_IWGRP | self._stat.S_IROTH | self._stat.S_IWOTH)
-            for file_name in files:
-                src_file = self._os.path.join(root, file_name)
-                dst_file = self._os.path.join(dst_root, file_name)
-                if self._os.path.islink(src_file) and symlinks:
-                    link_target = self._os.readlink(src_file)
-                    self._os.symlink(link_target, dst_file)
-                else:
-                    self._shutil.copy2(src_file, dst_file)
-                    self._os.chmod(dst_file, self._os.stat(dst_file).st_mode | self._stat.S_IWGRP | self._stat.S_IROTH | self._stat.S_IWOTH)
-            self._shutil.copystat(root, dst_root, follow_symlinks=False)
-            self._os.chmod(dst_root, self._os.stat(dst_root).st_mode | self._stat.S_IWGRP | self._stat.S_IROTH | self._stat.S_IWOTH)
-        return dst
-    def getIfProcessIsOpened(self, process_name="", pid=""):
-        ma_os = self._main_os
-        if ma_os == "Windows":
-            process_list = self._subprocess.run(["tasklist"], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE).stdout.decode("utf-8")
-            if pid == "" or pid == None: return process_name in process_list
-            else: return f"{pid} Console" in process_list or f"{pid} Service" in process_list
-        else:
-            if pid == "" or pid == None: return self._subprocess.run(f"pgrep -f '{process_name}' > /dev/null 2>&1", shell=True).returncode == 0
-            else: return self._subprocess.run(f"ps -p {pid} > /dev/null 2>&1", shell=True).returncode == 0
-    def getAmountOfProcesses(self, process_name=""):
-        ma_os = self._main_os
-        if ma_os == "Windows":
-            process = self._subprocess.Popen(["tasklist"], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE)
-            output, _ = process.communicate()
-            process_list = output.decode("utf-8")
-            return process_list.lower().count(process_name.lower())
-        else:
-            result = self._subprocess.run(f"pgrep -f '{process_name}'", stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, shell=True)
-            process_ids = result.stdout.decode("utf-8").strip().split("\n")
-            return len([pid for pid in process_ids if pid.isdigit()])
-    def getIfConnectedToInternet(self): return self.requests.get_if_connected()
-    def getProcessWindows(self, pid: int):
-        if self._main_os == "Windows" and (not hasattr(self, "_win32gui") or not hasattr(self, "_win32process")):
-            try:
-                try:
-                    import win32gui # type: ignore
-                    import win32process # type: ignore
-                    self._win32gui = win32gui
-                    self._win32process = win32process
-                except Exception:
-                    self.install(["pywin32"])
-                    self._win32gui = self.importModule("win32gui")
-                    self._win32process = self.importModule("win32process")
-            except: pass
-        elif self._main_os == "Darwin" and (not hasattr(self, "_CGWindowListCopyWindowInfo") or not hasattr(self, "_kCGWindowListOptionOnScreenOnly")):
-            try:
-                try:
-                    from Quartz import CGWindowListCopyWindowInfo, kCGWindowListOptionOnScreenOnly # type: ignore
-                except Exception as e:
-                    self.install(["pyobjc-framework-Quartz"])
-                    Quartz = self.importModule("Quartz")
-                    CGWindowListCopyWindowInfo, kCGWindowListOptionOnScreenOnly = Quartz.CGWindowListCopyWindowInfo, Quartz.kCGWindowListOptionOnScreenOnly
-                self._CGWindowListCopyWindowInfo = CGWindowListCopyWindowInfo
-                self._kCGWindowListOptionOnScreenOnly = kCGWindowListOptionOnScreenOnly
-            except: pass
-        if (type(pid) is str and pid.isdigit()) or type(pid) is int:
-            if self._main_os == "Windows":
-                system_windows = []
-                def callback(hwnd, _):
-                    if self._win32gui.IsWindowVisible(hwnd):
-                        _, window_pid = self._win32process.GetWindowThreadProcessId(hwnd)
-                        if window_pid == int(pid): system_windows.append(hwnd)
-                self._win32gui.EnumWindows(callback, None)
-                return system_windows
-            elif self._main_os == "Darwin":
-                system_windows = self._CGWindowListCopyWindowInfo(self._kCGWindowListOptionOnScreenOnly, 0)
-                app_windows = [win for win in system_windows if win.get("kCGWindowOwnerPID") == int(pid)]
-                new_set_of_system_windows = []
-                for win in app_windows:
-                    if win and win.get("kCGWindowOwnerPID"): new_set_of_system_windows.append(win)
-                return new_set_of_system_windows
-            else: return []
-        else: return []
-    def addToUserPath(self, path_to_add: str):
-        if self._main_os == "Windows":
-            if not hasattr(self, "_win32api") or not hasattr(self, "_win32con") or not hasattr(self, "_win32gui"):
-                try:
-                    try:
-                        import win32api # type: ignore
-                        import win32con # type: ignore
-                        import win32gui # type: ignore
-                        self._win32con = win32con
-                        self._win32api = win32api
-                        self._win32gui = win32gui
-                    except Exception:
-                        self.install(["pywin32"])
-                        self._win32con = self.importModule("win32con")
-                        self._win32api = self.importModule("win32api")
-                        self._win32gui = self.importModule("win32gui")
-                except: pass
-            path_to_add = self._os.path.expandvars(path_to_add)
-            current_path = self._win32api.GetEnvironmentVariable("PATH")
-            paths = current_path.split(";") if current_path else []
-            if path_to_add in paths:
-                self.printDebugMessage(f"The path \"{path_to_add}\" was already on the PATH environment variable!")
-                return
-            paths.append(path_to_add)
-            self._win32api.RegSetValueEx(
-                self._win32api.RegOpenKeyEx(self._win32con.HKEY_CURRENT_USER, "Environment", 0, self._win32con.KEY_SET_VALUE),
-                "PATH",
-                0,
-                self._win32con.REG_EXPAND_SZ,
-                ";".join(paths)
-            )
-            self._win32gui.SendMessageTimeout(
-                self._win32con.HWND_BROADCAST,
-                self._win32con.WM_SETTINGCHANGE,
-                0,
-                "Environment",
-                self._win32con.SMTO_ABORTIFHUNG,
-                5000
-            )
-        elif self._main_os == "Darwin":
-            new_path = self._os.path.expandvars(self._os.path.expanduser(new_path))
-            shell = self._os.path.basename(self._os.environ.get("SHELL", "zsh"))
-            rc_file = self._os.path.expanduser(f"~/.{shell}rc")
-            export_line = f'export PATH="{new_path}:$PATH"'
-            if self._os.path.exists(rc_file):
-                with open(rc_file, "r") as f:
-                    if export_line in f.read():
-                        self.printDebugMessage(f"The path \"{rc_file}\" was already on the PATH environment variable!")
-                        pass
-                    else:
-                        with open(rc_file, "a") as f_append: f_append.write("\n" + export_line + "\n")
-            else:
-                with open(rc_file, "w") as f: f.write(export_line + "\n")
-            current_path = self._os.environ.get("PATH", "")
-            paths = current_path.split(":")
-            if new_path not in paths: self._os.environ["PATH"] = f"{new_path}:{current_path}"
-    def printDebugMessage(self, message: str):
-        if self.debug == True: print(f"\033[38;5;226m[PyKits] [DEBUG]: {message}\033[0m")
-class plist:
-    """
-    A class that allows you to save or load plist files.
-    """
-    def __init__(self):
-        import os
-        import plistlib
-        import subprocess
-        import platform
-        self._os = os
-        self._plistlib = plistlib
-        self._subprocess = subprocess
-        self._platform = platform
-        self._main_os = platform.system()
-    def readPListFile(self, path: str):
-        if self._os.path.exists(path):
-            with open(path, "rb") as f: plist_data = self._plistlib.load(f)
-            return plist_data
-        else: return {}
-    def writePListFile(self, path: str, data: typing.Union[dict, str, int, float], binary: bool=False, ns_mode: bool=False):
-        try:
-            if ns_mode == True and self._main_os == "Darwin":
-                domain = self._os.path.basename(path).replace(".plist", "", 1)
-                for i, v in data.items(): self._subprocess.run(["defaults", "write", domain, i, str(v)], check=True)
-            with open(path, "wb") as f:
-                if binary == True: self._plistlib.dump(data, f, fmt=self._plistlib.FMT_BINARY)
-                else: self._plistlib.dump(data, f)
-            return {"success": True, "message": "Success!", "data": data}
-        except Exception as e: return {"success": False, "message": "Something went wrong.", "data": e}
-class Colors:
-    """
-    A class that allows you to work with console colors with different formats of text and ANSI.
-    """
-    class Color:
-        def __init__(self, r: int, g: int, b: int):
-            self.__colors_obj__ = Colors()
-            r, g, b = self.__colors_obj__.limit_rgb_value(r), self.__colors_obj__.limit_rgb_value(g), self.__colors_obj__.limit_rgb_value(b)
-            self.rgb = (r, g, b)
-            self.hex = self.__colors_obj__.rgb_to_hex(r, g, b)
-            self.ansi = self.__colors_obj__.hex_to_ansi2(self.hex)
-            self.decimal = self.__colors_obj__.hex_to_decimal(self.hex)
-        def __int__(self): return self.ansi
-        def __str__(self): return f"Color[{', '.join([str(i) for i in self.rgb])}]"
-        def wrap(self, message): return self.__colors_obj__.wrap(message, self.ansi)
-        def grayscale(self): return self.__colors_obj__.apply_grayscale(*(self.rgb))
-    class Black(Color):
-        def __init__(self): 
-            super().__init__(0, 0, 0)
-            self.sgi = self.__colors_obj__.sgi_color_table["Black"]
-        def __str__(self): return "Black"
-    class Red(Color):
-        def __init__(self): 
-            super().__init__(255, 0, 0)
-            self.sgi = self.__colors_obj__.sgi_color_table["Red"]
-        def __str__(self): return "Red"
-    class Yellow(Color):
-        def __init__(self): 
-            super().__init__(255, 255, 0)
-            self.sgi = self.__colors_obj__.sgi_color_table["Yellow"]
-        def __str__(self): return "Yellow"
-    class Green(Color):
-        def __init__(self): 
-            super().__init__(0, 255, 0)
-            self.sgi = self.__colors_obj__.sgi_color_table["Green"]
-        def __str__(self): return "Green"
-    class Teal(Color):
-        def __init__(self): 
-            super().__init__(0, 255, 255)
-            self.sgi = self.__colors_obj__.sgi_color_table["Teal"]
-        def __str__(self): return "Teal"
-    class Blue(Color):
-        def __init__(self): 
-            super().__init__(0, 0, 255)
-            self.sgi = self.__colors_obj__.sgi_color_table["Blue"]
-        def __str__(self): return "Blue"
-    class Magneta(Color):
-        def __init__(self): 
-            super().__init__(255, 0, 255)
-            self.sgi = self.__colors_obj__.sgi_color_table["Magneta"]
-        def __str__(self): return "Magneta"
-    class White(Color):
-        def __init__(self): 
-            super().__init__(255, 255, 255)
-            self.sgi = self.__colors_obj__.sgi_color_table["White"]
-        def __str__(self): return "White"
-    ansi_to_hex_table = {
-        # 16 bit ANSI
-        0: "#000000",  1: "#800000",  2: "#008000",  3: "#808000",
-        4: "#000080",  5: "#800080",  6: "#008080",  7: "#c0c0c0",
-        8: "#808080",  9: "#ff0000", 10: "#00ff00", 11: "#ffff00",
-        12: "#0000ff", 13: "#ff00ff", 14: "#00ffff", 15: "#ffffff",
-
-        # 256 bit ANSI
-        16: "#000000", 17: "#00005f", 18: "#000087", 19: "#0000af", 20: "#0000d7", 21: "#0000ff",
-        22: "#005f00", 23: "#005f5f", 24: "#005f87", 25: "#005faf", 26: "#005fd7", 27: "#005fff",
-        28: "#008700", 29: "#00875f", 30: "#008787", 31: "#0087af", 32: "#0087d7", 33: "#0087ff",
-        34: "#00af00", 35: "#00af5f", 36: "#00af87", 37: "#00afaf", 38: "#00afd7", 39: "#00afff",
-        40: "#00d700", 41: "#00d75f", 42: "#00d787", 43: "#00d7af", 44: "#00d7d7", 45: "#00d7ff",
-        46: "#00ff00", 47: "#00ff5f", 48: "#00ff87", 49: "#00ffaf", 50: "#00ffd7", 51: "#00ffff",
-        52: "#5f0000", 53: "#5f005f", 54: "#5f0087", 55: "#5f00af", 56: "#5f00d7", 57: "#5f00ff",
-        58: "#5f5f00", 59: "#5f5f5f", 60: "#5f5f87", 61: "#5f5faf", 62: "#5f5fd7", 63: "#5f5fff",
-        64: "#5f8700", 65: "#5f875f", 66: "#5f8787", 67: "#5f87af", 68: "#5f87d7", 69: "#5f87ff",
-        70: "#5faf00", 71: "#5faf5f", 72: "#5faf87", 73: "#5fafaf", 74: "#5fafd7", 75: "#5fafff",
-        76: "#5fd700", 77: "#5fd75f", 78: "#5fd787", 79: "#5fd7af", 80: "#5fd7d7", 81: "#5fd7ff",
-        82: "#5fff00", 83: "#5fff5f", 84: "#5fff87", 85: "#5fffaf", 86: "#5fffd7", 87: "#5fffff",
-        88: "#870000", 89: "#87005f", 90: "#870087", 91: "#8700af", 92: "#8700d7", 93: "#8700ff",
-        94: "#875f00", 95: "#875f5f", 96: "#875f87", 97: "#875faf", 98: "#875fd7", 99: "#875fff",
-        100: "#878700", 101: "#87875f", 102: "#878787", 103: "#8787af", 104: "#8787d7", 105: "#8787ff",
-        106: "#87af00", 107: "#87af5f", 108: "#87af87", 109: "#87afaf", 110: "#87afd7", 111: "#87afff",
-        112: "#87d700", 113: "#87d75f", 114: "#87d787", 115: "#87d7af", 116: "#87d7d7", 117: "#87d7ff",
-        118: "#87ff00", 119: "#87ff5f", 120: "#87ff87", 121: "#87ffaf", 122: "#87ffd7", 123: "#87ffff",
-        124: "#af0000", 125: "#af005f", 126: "#af0087", 127: "#af00af", 128: "#af00d7", 129: "#af00ff",
-        130: "#af5f00", 131: "#af5f5f", 132: "#af5f87", 133: "#af5faf", 134: "#af5fd7", 135: "#af5fff",
-        136: "#af8700", 137: "#af875f", 138: "#af8787", 139: "#af87af", 140: "#af87d7", 141: "#af87ff",
-        142: "#afaf00", 143: "#afaf5f", 144: "#afaf87", 145: "#afafaf", 146: "#afafd7", 147: "#afafff",
-        148: "#afd700", 149: "#afd75f", 150: "#afd787", 151: "#afd7af", 152: "#afd7d7", 153: "#afd7ff",
-        154: "#afff00", 155: "#afff5f", 156: "#afff87", 157: "#afffaf", 158: "#afffd7", 159: "#afffff",
-        160: "#d70000", 161: "#d7005f", 162: "#d70087", 163: "#d700af", 164: "#d700d7", 165: "#d700ff",
-        166: "#d75f00", 167: "#d75f5f", 168: "#d75f87", 169: "#d75faf", 170: "#d75fd7", 171: "#d75fff",
-        172: "#d78700", 173: "#d7875f", 174: "#d78787", 175: "#d787af", 176: "#d787d7", 177: "#d787ff",
-        178: "#d7af00", 179: "#d7af5f", 180: "#d7af87", 181: "#d7afaf", 182: "#d7afd7", 183: "#d7afff",
-        184: "#d7d700", 185: "#d7d75f", 186: "#d7d787", 187: "#d7d7af", 188: "#d7d7d7", 189: "#d7d7ff",
-        190: "#d7ff00", 191: "#d7ff5f", 192: "#d7ff87", 193: "#d7ffaf", 194: "#d7ffd7", 195: "#d7ffff",
-        196: "#ff0000", 197: "#ff005f", 198: "#ff0087", 199: "#ff00af", 200: "#ff00d7", 201: "#ff00ff",
-        202: "#ff5f00", 203: "#ff5f5f", 204: "#ff5f87", 205: "#ff5faf", 206: "#ff5fd7", 207: "#ff5fff",
-        208: "#ff8700", 209: "#ff875f", 210: "#ff8787", 211: "#ff87af", 212: "#ff87d7", 213: "#ff87ff",
-        214: "#ffaf00", 215: "#ffaf5f", 216: "#ffaf87", 217: "#ffafaf", 218: "#ffafd7", 219: "#ffafff",
-        220: "#ffd700", 221: "#ffd75f", 222: "#ffd787", 223: "#ffd7af", 224: "#ffd7d7", 225: "#ffd7ff",
-        226: "#ffff00", 227: "#ffff5f", 228: "#ffff87", 229: "#ffffaf", 230: "#ffffd7", 231: "#ffffff",
-
-        # Grayscale
-        232: "#080808", 233: "#121212", 234: "#1c1c1c", 235: "#262626",
-        236: "#303030", 237: "#3a3a3a", 238: "#444444", 239: "#4e4e4e",
-        240: "#585858", 241: "#626262", 242: "#6c6c6c", 243: "#767676",
-        244: "#808080", 245: "#8a8a8a", 246: "#949494", 247: "#9e9e9e",
-        248: "#a8a8a8", 249: "#b2b2b2", 250: "#bcbcbc", 251: "#c6c6c6",
-        252: "#d0d0d0", 253: "#dadada", 254: "#e4e4e4", 255: "#eeeeee"
-    }
-    sgi_color_table = {
-        "Black": [30, 90, 40, 100], 
-        "Red": [31, 91, 41, 101], 
-        "Green": [32, 92, 42, 102], 
-        "Yellow": [33, 93, 43, 103], 
-        "Blue": [34, 94, 44, 104], 
-        "Magenta": [35, 95, 45, 105], 
-        "Teal": [36, 96, 46, 106], 
-        "White": [37, 97, 47, 107]
-    }
-    def __init__(self): import os, platform; self._os = os; self._platform = platform; self._main_os = platform.system()
-    def fix_windows_ansi(self):
-        def getIfRunningWindowsAdmin():
-            if self._main_os == "Windows":
-                try: import ctypes; return ctypes.windll.shell32.IsUserAnAdmin()
-                except: return False
-            else: return False
-        if getIfRunningWindowsAdmin():
-            if not hasattr(self, "_ctypes"): import ctypes; self._ctypes = ctypes
-            kernel32 = self._ctypes.windll.kernel32
-            handle = kernel32.GetStdHandle(-11)
-            mode = self._ctypes.c_uint()
-            kernel32.GetConsoleMode(handle, self._ctypes.byref(mode))
-            kernel32.SetConsoleMode(handle, mode.value | 0x0004)
-    def get_reset_color(self): return "\033[0m"
-    def get_ansi_start(self, ansi_num: int): 
-        if isinstance(ansi_num, self.Color): ansi_num = ansi_num.ansi
-        return f"\033[38;5;{ansi_num}m"
-    def get_sgr_start(self, sgr_num: int): return f"\033[{sgr_num}m"
-    def bold(self, message: str): return f"\033[1m{message}\033[0m"
-    def italic(self, message: str): return f"\033[3m{message}\033[0m"
-    def underline(self, message: str): return f"\033[4m{message}\033[0m"
-    def strikethrough(self, message: str): return f"\033[9m{message}\033[0m"
-    def clear_console(self): self._os.system("cls" if self._os.name == "nt" else 'echo "\033c\033[3J"; clear')
-    def set_console_title(self, title: str):
-        if self._platform.system() == "Windows": self._os.system(f"title {title}")
-        else: self._os.system(f'echo "\\033]0;{title}\\007"')
-    def foreground(self, message: str, color: str="White", bright: bool=False): 
-        if isinstance(color, self.Color): color = color.__str__()
-        return f"{self.get_sgr_start(self.sgi_color_table[color][1 if bright == True else 0])}{message}{self.get_reset_color()}"
-    def background(self, message: str, color: str="White", bright: bool=False): 
-        if isinstance(color, self.Color): color = color.__str__()
-        return f"{self.get_sgr_start(self.sgi_color_table[color][3 if bright == True else 2])}{message}{self.get_reset_color()}"
-    def wrap(self, message: str, ansi_num: int): return f"{self.get_ansi_start(ansi_num)}{message}{self.get_reset_color()}"
-    def print(self, message: str, ansi_num: int): print(self.wrap(message=message, ansi_num=ansi_num))
-    def print_gradient(self, message: str, color_stops: typing.List[str]): print(self.wrap_gradient(message=message, color_stops=color_stops))
-    def hex_to_rgb(self, hex_code: str): hex_code = hex_code.lstrip("#"); return tuple(int(hex_code[i:i+2], 16) for i in (0, 2, 4))
-    def rgb_to_hex(self, r: int, g: int, b: int): r, g, b = self.limit_rgb_value(r), self.limit_rgb_value(g), self.limit_rgb_value(b); return f"#{r:02x}{g:02x}{b:02x}"
-    def hex_to_gray(self, hex_code: str): return self.rgb_to_hex(*(self.apply_grayscale(*(self.hex_to_rgb(hex_code)))))
-    def ansi_to_hex(self, ansi_num: int): return self.ansi_to_hex_table.get(ansi_num, "#000000")
-    def decimal_to_rgb(self, value: int): return ((value >> 16) & 0xFF, (value >> 8) & 0xFF, value & 0xFF)
-    def rgb_to_decimal(self, r: int, g: int, b: int): return (self.limit_rgb_value(r) << 16) + (self.limit_rgb_value(g) << 8) + self.limit_rgb_value(b)
-    def decimal_to_hex(self, value: int): return self.rgb_to_hex(*self.decimal_to_rgb(value))
-    def hex_to_decimal(self, hex_code: str): return self.rgb_to_decimal(*self.hex_to_rgb(hex_code))
-    def hex_to_ansi(self, hex_code: str):
-        target_rgb = self.hex_to_rgb(hex_code)
-        closest_code = None
-        closest_dist = float("inf")
-        for c, hex in self.ansi_to_hex_table.items():
-            cr, cg, cb = self.hex_to_rgb(hex)
-            dist = ((cr - target_rgb[0]) ** 2 + (cg - target_rgb[1]) ** 2 + (cb - target_rgb[2]) ** 2)
-            if dist < closest_dist: closest_dist = dist; closest_code = c
-        return closest_code
-    def hex_to_ansi2(self, hex_code: str):
-        closest_code = None
-        closest_dist = float("inf")
-        r, g, b = self.hex_to_rgb(hex_code)
-        for c, hex in self.ansi_to_hex_table.items():
-            cr, cg, cb = self.hex_to_rgb(hex)
-            dist = (cr - r)**2 + (cg - g)**2 + (cb - b)**2
-            if dist < closest_dist: closest_code = c; closest_dist = dist
-        return closest_code
-    def limit_rgb_value(self, value: int): return 0 if value < 0 else (255 if value > 255 else value)
-    def gamma_correct(self, value: int): return (value / 255) ** 2.2
-    def inverse_gamma(self, value: int): return int((value ** (1/2.2)) * 255)
-    def apply_grayscale(self, r: int, g: int, b: int): res = int(0.299*r + 0.587*g + 0.114*b); return res, res, res
-    def wrap_gradient(self, message: str, color_stops: typing.List[str]): 
-        length = len(message)
-        if length == 0 or len(color_stops) < 1: return message
-        if len(color_stops) < 2: return self.wrap(message, self.hex_to_ansi(color_stops[0]))
-        stops_rgb = []
-        for hex_color in color_stops:
-            if isinstance(hex_color, self.Color): hex_color = hex_color.hex
-            r, g, b = self.hex_to_rgb(hex_color)
-            stops_rgb.append((
-                self.gamma_correct(r),
-                self.gamma_correct(g),
-                self.gamma_correct(b)
-            ))
-        result = ""
-        num_segments = len(color_stops) - 1
-        for i, char in enumerate(message):
-            seg_length = length / num_segments
-            seg_index = min(int(i / seg_length), num_segments - 1)
-            start_rgb = stops_rgb[seg_index]
-            end_rgb = stops_rgb[seg_index + 1]
-            t = (i - seg_index * seg_length) / seg_length
-            r = self.inverse_gamma(start_rgb[0] + (end_rgb[0] - start_rgb[0]) * t)
-            g = self.inverse_gamma(start_rgb[1] + (end_rgb[1] - start_rgb[1]) * t)
-            b = self.inverse_gamma(start_rgb[2] + (end_rgb[2] - start_rgb[2]) * t)
-            ansi_code = self.hex_to_ansi2(self.rgb_to_hex(r, g, b))
-            result += f"{self.get_ansi_start(ansi_code)}{char}"
-        return result + self.get_reset_color()
-pip_class = pip()
-requests = request()
-plist_class = plist()
-colors_class = Colors()
+pip_class = PyKits.pip()
+requests = PyKits.request()
+plist_class = PyKits.plist()
+colors_class = PyKits.Colors()
 
 # Install Python Packages
 try:
-    import psutil
-    if main_os == "Darwin":
-        from Quartz import CGWindowListCopyWindowInfo, kCGWindowListOptionOnScreenOnly
-        import posix_ipc
-    elif main_os == "Windows":
-        import win32gui # type: ignore
-        import win32process # type: ignore
-        import win32con # type: ignore
-        import win32crypt # type: ignore
-        import win32api # type: ignore
-except Exception as e:
-    pip_class.debug = True
-    pip_class.install(["psutil"])
-    if main_os == "Darwin": pip_class.install(["posix-ipc", "pyobjc-core", "pyobjc-framework-Quartz"])
-    elif main_os == "Windows": pip_class.install(["pywin32"])
     psutil = pip_class.importModule("psutil")
-    if main_os == "Darwin":
-        Quartz = pip_class.importModule("Quartz")
-        CGWindowListCopyWindowInfo = Quartz.CGWindowListCopyWindowInfo
-        kCGWindowListOptionOnScreenOnly = Quartz.kCGWindowListOptionOnScreenOnly
-        posix_ipc = pip_class.importModule("posix_ipc")
-    elif main_os == "Windows":
-        win32gui = pip_class.importModule("win32gui")
-        win32process = pip_class.importModule("win32process")
-        win32con = pip_class.importModule("win32con")
-        win32crypt = pip_class.importModule("win32crypt")
-        win32api = pip_class.importModule("win32api")
-# Install Python Packages
+    if main_os == "Darwin": Quartz, posix_ipc = pip_class.importModules(["Quartz", "posix_ipc"]); CGWindowListCopyWindowInfo = Quartz.CGWindowListCopyWindowInfo; kCGWindowListOptionOnScreenOnly = Quartz.kCGWindowListOptionOnScreenOnly
+    elif main_os == "Windows": win32gui, win32process, win32con, win32crypt, win32api = pip_class.importModules(["win32gui", "win32process", "win32con", "win32crypt", "win32api"])
+except Exception as e:
+    printWarnMessage("--- Installing Python Modules ---")
+    pip_class.debug = True
+    pkg_list = ["psutil"]
+    if main_os == "Darwin": pkg_list.extend(["posix-ipc", "pyobjc-core", "pyobjc-framework-Quartz"])
+    elif main_os == "Windows": pkg_list.extend(["pywin32"])
+    pip_class.install(pkg_list)
+    psutil = pip_class.importModule("psutil")
+    if main_os == "Darwin": Quartz, posix_ipc = pip_class.importModules(["Quartz", "posix_ipc"]); CGWindowListCopyWindowInfo = Quartz.CGWindowListCopyWindowInfo; kCGWindowListOptionOnScreenOnly = Quartz.kCGWindowListOptionOnScreenOnly
+    elif main_os == "Windows": win32gui, win32process, win32con, win32crypt, win32api = pip_class.importModules(["win32gui", "win32process", "win32con", "win32crypt", "win32api"])
 
+# Roblox Handling Class
 class Handler:
     # System Definitions
     roblox_player_event_names = [
@@ -3065,7 +1366,7 @@ class Handler:
                 elif "Roblox::terminateWaiter" in line: self.submitEvent(eventName="onRobloxTerminateInstance", data=line, isLine=True)
                 elif "[FLog::AudioFocusManager] AudioFocusManager::AudioFocusManager() constructor" in line: self.audio_focused = True
                 elif "[FLog::Network] Sending disconnect with reason" in line:
-                    code = line.split(':')[-1].strip()
+                    code = line.split(': ')[-1].strip()
                     if code and code.isdigit():
                         main_code = int(code)
                         if self.disconnect_cooldown == False:
@@ -3526,12 +1827,10 @@ class Handler:
         # Mac: https://clientsettings.roblox.com/v2/user-channel?binaryType=MacPlayer | MacStudio
         # Windows: https://clientsettings.roblox.com/v2/user-channel?binaryType=WindowsPlayer | WindowsStudio64 | WindowsStudio
         try:    
-            cookie_path = self.getRobloxCookieFileLocation()
-            if not cookie_path: return {"success": False, "message": "Roblox security cookie couldn't be found."}
-            founded_roblosecurity = self.parseRobloxCookieFile(cookie_path)
+            founded_roblosecurity = self.getRobloxCookieHeader(studio=studio)
             if self.__main_os__ == "Darwin":
                 if debug == True: printDebugMessage("Sending Request to Roblox Servers..") 
-                res = requests.get(f"https://clientsettings.roblox.com/v2/user-channel?binaryType={'MacStudio' if studio == True else 'MacPlayer'}", cookies={".ROBLOSECURITY": founded_roblosecurity})
+                res = requests.get(f"https://clientsettings.roblox.com/v2/user-channel?binaryType={'MacStudio' if studio == True else 'MacPlayer'}", cookies=founded_roblosecurity)
                 if res.ok:
                     jso = res.json
                     if jso.get("channelName"):
@@ -3546,7 +1845,7 @@ class Handler:
             elif self.__main_os__ == "Windows":
                 if debug == True: printDebugMessage("Sending Request to Roblox Servers..") 
                 is32Bit = pip_class.getIf32BitWindows()
-                res = requests.get(f"https://clientsettings.roblox.com/v2/user-channel?binaryType={('WindowsStudio' if is32Bit == True else 'WindowsStudio64') if studio == True else 'WindowsPlayer'}", cookies={".ROBLOSECURITY": founded_roblosecurity})
+                res = requests.get(f"https://clientsettings.roblox.com/v2/user-channel?binaryType={('WindowsStudio' if is32Bit == True else 'WindowsStudio64') if studio == True else 'WindowsPlayer'}", cookies=founded_roblosecurity)
                 if res.ok:
                     jso = res.json
                     if jso.get("channelName"):
@@ -3728,13 +2027,13 @@ class Handler:
         else: return {"success": False, "message": "Unable to find settings file."} 
     def getBestRobloxDownloadServer(self): return self.optimal_download_location
     def getLatestRobloxAppSettings(self, studio: bool=False, debug: bool=False, bootstrapper: bool=False, bucket: str=""):
-        # Mac: https://clientsettingscdn.roblox.com/v2/settings/application/MacDesktopPlayer | MacClientBootstrapper | MacStudioBootstrapper | MacStudioApp
+        # Mac: https://clientsettingscdn.roblox.com/v2/settings/application/MacDesktopClient | MacClientBootstrapper | MacStudioBootstrapper | MacStudioApp
         # Windows: https://clientsettingscdn.roblox.com/v2/settings/application/PCDesktopClient | PCClientBootstrapper | PCStudioBootstrapper | PCStudioApp
         try:    
             if bucket == "LIVE" or bucket == "production": bucket = ""
             if self.__main_os__ == "Darwin":
                 if debug == True: printDebugMessage("Sending Request to Roblox Servers..") 
-                res = requests.get(f"https://clientsettingscdn.roblox.com/v2/settings/application/{('MacStudioBootstrapper' if bootstrapper == True else 'MacStudioApp') if studio == True else ('MacClientBootstrapper' if bootstrapper == True else 'MacDesktopPlayer')}{f'/bucket/{bucket}' if not bucket == '' else ''}")
+                res = requests.get(f"https://clientsettingscdn.roblox.com/v2/settings/application/{('MacStudioBootstrapper' if bootstrapper == True else 'MacStudioApp') if studio == True else ('MacClientBootstrapper' if bootstrapper == True else 'MacDesktopClient')}{f'/bucket/{bucket}' if not bucket == '' else ''}")
                 if res.ok:
                     jso = res.json
                     if jso.get("applicationSettings"):
@@ -3839,7 +2138,7 @@ class Handler:
         s = []
         for i, v in data.items(): s.append(f"{i}:{v}")
         return f"{url_scheme}:1+{'+'.join(s)}"
-    def parseRobloxCookieFile(self, file_path: str=""):
+    def parseRobloxCookieFile(self, file_path: str="", file_index: int=1):
         if not file_path: return None
         if main_os == "Windows" and file_path.endswith(".dat"):
             with open(file_path, "r", encoding="utf-8") as f: cookie_file = json.load(f)
@@ -3849,7 +2148,7 @@ class Handler:
             cookie_data = win32crypt.CryptUnprotectData(base64_downed, None, None, None, 0)[1]
             match = re.search(br'\.ROBLOSECURITY\t([^;]+)', cookie_data)
             if match == None: return None
-            return match[1].decode("utf-8", errors="ignore")
+            return match[file_index].decode("utf-8", errors="ignore")
         elif main_os == "Darwin" and file_path.endswith(".binarycookies"):
             # A converted and non-package neeeding version of the binarycookies package
             from dataclasses import dataclass, field
@@ -4040,13 +2339,25 @@ class Handler:
                     return i.value
         else:
             self.unsupportedFunction()
-    def getRobloxCookieFileLocation(self):
-        if main_os == "Windows" and os.path.exists(os.path.join(windows_dir, "LocalStorage", "RobloxCookies.dat")):
-            return os.path.join(windows_dir, "LocalStorage", "RobloxCookies.dat")
-        elif main_os == "Darwin" and os.path.exists(os.path.join(user_folder, "Library", "HTTPStorages", "com.roblox.RobloxPlayer.binarycookies")):
-            return os.path.join(user_folder, "Library", "HTTPStorages", "com.roblox.RobloxPlayer.binarycookies")
-        else:
-            self.unsupportedFunction()
+    def getRobloxCookieFileLocation(self, studio: bool=False):
+        if main_os == "Windows" and os.path.exists(os.path.join(windows_dir, "LocalStorage", "RobloxCookies.dat")): return os.path.join(windows_dir, "LocalStorage", "RobloxCookies.dat"), 1
+        elif main_os == "Darwin":
+            if studio == True and os.path.exists(os.path.join(user_folder, "Library", "HTTPStorages", "com.roblox.RobloxStudio.binarycookies")): return os.path.join(user_folder, "Library", "HTTPStorages", "com.roblox.RobloxStudio.binarycookies"), -1
+            elif studio == False and os.path.exists(os.path.join(user_folder, "Library", "HTTPStorages", "com.roblox.RobloxPlayer.binarycookies")): return os.path.join(user_folder, "Library", "HTTPStorages", "com.roblox.RobloxPlayer.binarycookies"), -1
+        else: self.unsupportedFunction()
+        return None, None
+    def getRobloxCookieHeader(self, studio: bool=False):
+        cookie_path, cookie_index = self.getRobloxCookieFileLocation(studio=studio)
+        if not cookie_path: return {}
+        founded_roblosecurity = self.parseRobloxCookieFile(cookie_path, cookie_index)
+        return {".ROBLOSECURITY": founded_roblosecurity}
+    def getLoggedOnUser(self, studio: bool=False):
+        try:
+            cookie_headers = self.getRobloxCookieHeader(studio=studio)
+            logged_on_req = requests.get("https://users.roblox.com/v1/users/authenticated/app-launch-info", cookies=cookie_headers)
+            if logged_on_req.ok: return {"success": True, "data": logged_on_req.json}
+            else: return {"success": False, "message": "Unable to get logged on user. User may be logged out."}
+        except: return {"success": False, "message": "Unable to get logged on user because something went wrong."}
     def temporaryResetCustomizableVariables(self):
         global macOS_dir
         global macOS_studioDir
@@ -4242,11 +2553,12 @@ class Handler:
                     else:
                         printMainMessage(f"Closing any open Roblox windows..")
                         self.endRoblox()
+                set_location = os.path.join(macOS_studioDir if studio == True else macOS_dir, macOS_beforeClientServices, "ClientSettings", f'ClientAppSettings.json')
                 if orangeblox_mode == False:
                     printMainMessage(f"Generating ClientSettings Folder..")
-                    if not os.path.exists(os.path.join(macOS_studioDir if studio == True else macOS_dir, macOS_beforeClientServices, "ClientSettings")):
-                        os.mkdir(os.path.join(macOS_studioDir if studio == True else macOS_dir, macOS_beforeClientServices, "ClientSettings"))
-                        printSuccessMessage(f"Created {os.path.join(macOS_studioDir if studio == True else macOS_dir, macOS_beforeClientServices, 'ClientSettings')}..")
+                    if not os.path.exists(os.path.dirname(set_location)):
+                        makedirs(os.path.dirname(set_location))
+                        printSuccessMessage(f"Created {os.path.dirname(set_location)}..")
                     else: printWarnMessage(f"Client Settings is already created. Skipping Folder Creation..")
                 printMainMessage(f"Writing ClientAppSettings.json")
                 if merge == True:
@@ -4267,14 +2579,13 @@ class Handler:
                                 merge_json["EFlagRobloxPlayerFlags"].update(fflags)
                             fflags = merge_json
                         except Exception as e: printErrorMessage(f"Something went wrong while trying to generate a merged JSON: {str(e)}")
-                    elif os.path.exists(os.path.join(macOS_studioDir if studio == True else macOS_dir, macOS_beforeClientServices, "ClientSettings", 'ClientAppSettings.json')):
+                    elif os.path.exists(set_location):
                         try:
                             printMainMessage("Reading Previous Client App Settings..")
-                            with open(os.path.join(macOS_studioDir if studio == True else macOS_dir, macOS_beforeClientServices, "ClientSettings", f'ClientAppSettings.json'), "r", encoding="utf-8") as f: merge_json = json.load(f)
+                            with open(set_location, "r", encoding="utf-8") as f: merge_json = json.load(f)
                             merge_json.update(fflags)
                             fflags = merge_json
                         except Exception as e: printErrorMessage(f"Something went wrong while trying to generate a merged JSON: {str(e)}")
-                set_location = os.path.join(macOS_studioDir if studio == True else macOS_dir, macOS_beforeClientServices, "ClientSettings", f'ClientAppSettings.json')
                 if orangeblox_mode == True:
                     set_location = os.path.join(os.path.expanduser("~"), "Library", "Preferences", "dev.efaz.orangeblox.plist")
                     app_configuration = plist_class.readPListFile(set_location)
@@ -4311,15 +2622,16 @@ class Handler:
                 most_recent_roblox_version_dir = self.getRobloxInstallFolder(studio=studio)
                 if most_recent_roblox_version_dir:
                     printMainMessage(f"Found version: {most_recent_roblox_version_dir}")
+                    set_location = os.path.join(most_recent_roblox_version_dir, "ClientSettings", f"ClientAppSettings.json")
                     if orangeblox_mode == False:
                         printMainMessage(f"Generating ClientSettings Folder..")
-                        if not os.path.exists(os.path.join(most_recent_roblox_version_dir, "ClientSettings")):
-                            os.mkdir(os.path.join(most_recent_roblox_version_dir, "ClientSettings"))
-                            printSuccessMessage(f"Created {most_recent_roblox_version_dir}ClientSettings..")
+                        if not os.path.exists(os.path.dirname(set_location)):
+                            makedirs(os.path.dirname(set_location))
+                            printSuccessMessage(f"Created {os.path.dirname(set_location)}..")
                         else: printWarnMessage(f"Client Settings is already created. Skipping Folder Creation..")
                     printMainMessage(f"Writing ClientAppSettings.json")
                     if merge == True:
-                        if os.path.exists("Configuration.json"):
+                        if orangeblox_mode == True and os.path.exists("Configuration.json"):
                             try:
                                 printMainMessage("Reading Previous Configurations..")
                                 with open(f"Configuration.json", "rb") as f: merge_json = f.read()
@@ -4333,14 +2645,13 @@ class Handler:
                                     merge_json["EFlagRobloxPlayerFlags"].update(fflags)
                                 fflags = merge_json
                             except Exception as e: printErrorMessage(f"Something went wrong while trying to generate a merged JSON: {str(e)}")
-                        elif os.path.exists(os.path.join(most_recent_roblox_version_dir, "ClientSettings", f"ClientAppSettings.json")):
+                        elif os.path.exists(set_location):
                             try:
                                 printMainMessage("Reading Previous Client App Settings..")
-                                with open(os.path.join(most_recent_roblox_version_dir, "ClientSettings", f"ClientAppSettings.json"), "r", encoding="utf-8") as f: merge_json = json.load(f)
+                                with open(set_location, "r", encoding="utf-8") as f: merge_json = json.load(f)
                                 merge_json.update(fflags)
                                 fflags = merge_json
                             except Exception as e: printErrorMessage(f"Something went wrong while trying to generate a merged JSON: {str(e)}")
-                    set_location = os.path.join(most_recent_roblox_version_dir, "ClientSettings", f"ClientAppSettings.json")
                     if orangeblox_mode == True and os.path.exists("Configuration.json"):
                         data_in_string = zlib.compress(json.dumps(fflags).encode('utf-8'))
                         with open(os.path.join(cur_path, "Configuration.json"), "wb") as f: f.write(data_in_string)
@@ -4384,20 +2695,21 @@ class Handler:
                         if debug == True: printDebugMessage(f"Closing any open Roblox windows..")
                         self.endRoblox()
                 if submit_status: submit_status.submit("[FFLAGS] Creating ClientSettings Folder..", 25)
-                if not os.path.exists(os.path.join(macOS_studioDir if studio == True else macOS_dir, macOS_beforeClientServices, "ClientSettings")):
+                set_location = os.path.join(macOS_studioDir if studio == True else macOS_dir, macOS_beforeClientServices, "ClientSettings", f'ClientAppSettings.json')
+                if not os.path.exists(os.path.dirname(set_location)):
                     if debug == True: printDebugMessage("Creating ClientSettings folder..")
-                    os.mkdir(os.path.join(macOS_studioDir if studio == True else macOS_dir, macOS_beforeClientServices, "ClientSettings"))
+                    makedirs(os.path.dirname(set_location))
                 if merge == True:
                     if submit_status: submit_status.submit("[FFLAGS] Merging Possible Configurations..", 45)
-                    if os.path.exists(os.path.join(macOS_studioDir if studio == True else macOS_dir, macOS_beforeClientServices, "ClientSettings", f'ClientAppSettings.json')):
+                    if os.path.exists(set_location):
                         try:
-                            with open(os.path.join(macOS_studioDir if studio == True else macOS_dir, macOS_beforeClientServices, "ClientSettings", f'ClientAppSettings.json'), "r", encoding="utf-8") as f: merge_json = json.load(f)
+                            with open(set_location, "r", encoding="utf-8") as f: merge_json = json.load(f)
                             merge_json.update(fflags)
                             fflags = merge_json
                             if debug == True: printDebugMessage("Successfully merged the JSON in the ClientSettings folder with the provided json!")
                         except Exception as e: printLog(f"Something went wrong while trying to generate a merged JSON: {str(e)}")
                 if submit_status: submit_status.submit("[FFLAGS] Saving Configuration..", 50)
-                with open(os.path.join(macOS_studioDir if studio == True else macOS_dir, macOS_beforeClientServices, "ClientSettings", f'ClientAppSettings.json'), "w", encoding="utf-8") as f:
+                with open(set_location, "w", encoding="utf-8") as f:
                     if flat == True: json.dump(fflags, f)
                     else: json.dump(fflags, f, indent=4)
                 if submit_status: submit_status.submit("[FFLAGS] Saved FFlags!", 100)
@@ -4414,20 +2726,21 @@ class Handler:
                 most_recent_roblox_version_dir = self.getRobloxInstallFolder(studio=studio)
                 if most_recent_roblox_version_dir or orangeblox_mode == True:
                     if submit_status: submit_status.submit("[FFLAGS] Creating ClientSettings Folder..", 25)
-                    if not os.path.exists(os.path.join(most_recent_roblox_version_dir, "ClientSettings")):
+                    set_location = os.path.join(most_recent_roblox_version_dir, "ClientSettings", f"ClientAppSettings.json")
+                    if not os.path.exists(os.path.dirname(set_location)):
                         if debug == True: printDebugMessage("Creating ClientSettings folder..")
-                        os.mkdir(os.path.join(most_recent_roblox_version_dir, "ClientSettings"))
+                        makedirs(os.path.dirname(set_location))
                     if merge == True:
                         if submit_status: submit_status.submit("[FFLAGS] Merging Possible Configurations..", 45)
-                        if os.path.exists(os.path.join(most_recent_roblox_version_dir, "ClientSettings", f"ClientAppSettings.json")):
+                        if os.path.exists(set_location):
                             try:
-                                with open(os.path.join(most_recent_roblox_version_dir, "ClientSettings", f"ClientAppSettings.json"), "r", encoding="utf-8") as f: merge_json = json.load(f)
+                                with open(set_location, "r", encoding="utf-8") as f: merge_json = json.load(f)
                                 merge_json.update(fflags)
                                 fflags = merge_json
                                 if debug == True: printDebugMessage("Successfully merged the JSON in the ClientSettings folder with the provided json!")
                             except Exception as e: printLog(f"Something went wrong while trying to generate a merged JSON: {str(e)}")
                     if submit_status: submit_status.submit("[FFLAGS] Saving Configuration..", 50)
-                    with open(os.path.join(most_recent_roblox_version_dir, "ClientSettings", f"ClientAppSettings.json"), "w", encoding="utf-8") as f:
+                    with open(set_location, "w", encoding="utf-8") as f:
                         if flat == True: json.dump(fflags, f)
                         else: json.dump(fflags, f, indent=4)
                     if submit_status: submit_status.submit("[FFLAGS] Saved FFlags!", 100)
@@ -4438,6 +2751,55 @@ class Handler:
             else:
                 self.unsupportedFunction()
                 if submit_status: submit_status.submit(f"{submit_status.error()}[FFLAGS] Roblox Fast Flags Installer is only supported for macOS and Windows.", 100)
+    def getCurrentFastFlags(self, studio: bool=False, debug: bool=False):
+        if self.__main_os__ == "Darwin":
+            if orangeblox_mode == False:
+                if not os.path.exists(os.path.join(macOS_studioDir if studio == True else macOS_dir, macOS_beforeClientServices, "ClientSettings")):
+                    makedirs(os.path.join(macOS_studioDir if studio == True else macOS_dir, macOS_beforeClientServices, "ClientSettings"))
+            flags_final = {}
+            if orangeblox_mode == True:
+                try:
+                    macos_preference_expected = os.path.join(os.path.expanduser("~"), "Library", "Preferences", "dev.efaz.orangeblox.plist")
+                    if os.path.exists(macos_preference_expected):
+                        app_configuration = plist_class.readPListFile(macos_preference_expected)
+                        if app_configuration.get("Configuration"): merge_json = app_configuration.get("Configuration")
+                        else: merge_json = {}
+                    else: merge_json = {}
+                    if studio == True: flags_final = merge_json.get("EFlagRobloxStudioFlags", {})
+                    else: flags_final = merge_json.get("EFlagRobloxPlayerFlags", {})
+                except Exception as e: printErrorMessage(f"Something went wrong while trying to generate a merged JSON: {str(e)}")
+            elif os.path.exists(os.path.join(macOS_studioDir if studio == True else macOS_dir, macOS_beforeClientServices, "ClientSettings", 'ClientAppSettings.json')):
+                try:
+                    printMainMessage("Reading Previous Client App Settings..")
+                    with open(os.path.join(macOS_studioDir if studio == True else macOS_dir, macOS_beforeClientServices, "ClientSettings", f'ClientAppSettings.json'), "r", encoding="utf-8") as f: merge_json = json.load(f)
+                    flags_final = merge_json
+                except Exception as e: printErrorMessage(f"Something went wrong while trying to generate a merged JSON: {str(e)}")
+            return flags_final
+        elif self.__main_os__ == "Windows":
+            most_recent_roblox_version_dir = self.getRobloxInstallFolder(studio=studio)
+            if most_recent_roblox_version_dir:
+                if orangeblox_mode == False:
+                    if not os.path.exists(os.path.join(most_recent_roblox_version_dir, "ClientSettings")):
+                        makedirs(os.path.join(most_recent_roblox_version_dir, "ClientSettings"))
+                flags_final = {}
+                if orangeblox_mode == True and os.path.exists("Configuration.json"):
+                    try:
+                        printMainMessage("Reading Previous Configurations..")
+                        with open(f"Configuration.json", "rb") as f: merge_json = f.read()
+                        try: merge_json = json.loads(merge_json)
+                        except Exception as e: merge_json = json.loads(zlib.decompress(merge_json).decode("utf-8"))
+                        if studio == True: flags_final = merge_json.get("EFlagRobloxStudioFlags", {})
+                        else: flags_final = merge_json.get("EFlagRobloxPlayerFlags", {})
+                    except Exception as e: printErrorMessage(f"Something went wrong while trying to generate a merged JSON: {str(e)}")
+                elif os.path.exists(os.path.join(most_recent_roblox_version_dir, "ClientSettings", f"ClientAppSettings.json")):
+                    try:
+                        printMainMessage("Reading Previous Client App Settings..")
+                        with open(os.path.join(most_recent_roblox_version_dir, "ClientSettings", f"ClientAppSettings.json"), "r", encoding="utf-8") as f: merge_json = json.load(f)
+                        flags_final = merge_json
+                    except Exception as e: printErrorMessage(f"Something went wrong while trying to generate a merged JSON: {str(e)}")
+                return flags_final
+            else: return {}
+        else: printErrorMessage("Roblox Fast Flags Installer is only supported for macOS and Windows.")
     def installGlobalBasicSettings(self, globalsettings: dict, studio: bool=False, askForPerms: bool=False, endRobloxInstances: bool=True, flat: bool=False, debug: bool=False):
         if askForPerms == True:
             if submit_status: submit_status.submit("[GLOBALSETTINGS] Asking for permissions..", 0)
@@ -4778,7 +3140,7 @@ class Handler:
                                                         if submit_status: submit_status.submit(f"[BUNDLE] Downloading Package [{i}]..", total)
                                                 if submit_status: submit_status.submit(f"[BUNDLE] Downloading Package [{i}]..", round(((per_step-1)/(len(marked_install_files)))*100, 2))
                                                 if debug == True: printDebugMessage(f"Downloading from Roblox's server: {i} [{round((per_step/(len(marked_install_files)))*100, 2)}/100]")
-                                                down_req = requests.download(f'https://{self.getBestRobloxDownloadServer()}/{starter_url}{cur_vers.get("client_version")}-{i}', os.path.join(installPath, i), submit_status=download_stat())
+                                                down_req = requests.download(f'https://{self.getBestRobloxDownloadServer()}/{starter_url}{cur_vers.get("client_version")}-{i}', os.path.join(installPath, i), submit_status=download_stat(), gradual=False)
                                                 if down_req.ok: downloaded_zip_files.append(i)
                                                 else:
                                                     printErrorMessage(f"Unable to install Roblox due to a download error.")
@@ -5071,6 +3433,8 @@ class Handler:
     def reinstallRobloxStudio(self, *args, **kwargs): """This function has been deprecated for ```Handler.reinstallRoblox(studio=True)```"""; return self.reinstallRoblox(studio=True, *args, **kwargs)
     def unsupportedFunction(self): printLog("Roblox Fast Flags Installer is only supported for macOS and Windows.")
 Main = Handler
+
+# Main Script
 def main():
     handler = Handler()
     if orangeblox_mode == False:
@@ -5166,865 +3530,946 @@ def main():
         if id == "1": return False
         elif id == "2": return True
         else: return getIfStudio()
+    def generateMenuSelection(options: typing.Dict[str, str], before_input: str="", star_option: str="", send_input_response: bool=False): 
+        main_ui_options = {}
+        options = sorted(options, key=lambda x: x["index"])
+        count = 0
+        for i in options:
+            count += 1
+            printMainMessage(f"[{str(count)}] = {i['message']}"); main_ui_options[str(count)] = i
+            main_ui_options[str(count)] = i
+        if not (star_option == ""): printMainMessage(f"[*] = {star_option}")
+        if not (before_input == ""): printMainMessage(before_input)
+        
+        res = input("> ")
+        if send_input_response == True: return res
+        if main_ui_options.get(res): return main_ui_options.get(res)
+        else: return None
 
     # Information
     user_id = getUserId()
-    generated_json = {}
     is_studio = getIfStudio()
-
+    generated_json = handler.getCurrentFastFlags(studio=is_studio)
     if not user_id: return
 
     # Important Information
     printWarnMessage("--- Important Information ---")
     printMainMessage("October 5th, 2025 - v2.4.5")
     printMainMessage("Due to some updates by Roblox, a lot of the flags that are used below will no longer work because Roblox decided to do a whitelist on the flags you can use.\nIf you want to, you can still select them below just in case they're allowed back by Roblox.")
+    printMainMessage("Please know this only applies to Roblox Player and not Roblox Studio.")
 
     # Setup Information
     printWarnMessage("--- Setup Information ---")
     printMainMessage(f"Roblox User ID: {user_id}")
     printMainMessage(f"Install to Studio: {is_studio==True}")
-    if is_studio == True: printMainMessage("Alright! So, we will start with flags that are available for the Roblox player to be run in the playtest window!")
 
-    # FPS Unlocker
-    printWarnMessage("--- FPS Unlocker ---")
-    printMainMessage("Would you like to use an FPS Unlocker? (y/n)")
-    installFPSUnlocker = input("> ")
-    def getFPSCap():
-        printWarnMessage("- FPS Cap -")
-        printMainMessage("Enter the FPS cap to install on your client. (Leave blank for no cap)")
-        cap = input("> ")
-        if cap.isdigit(): return cap
-        else: return None
-    if isYes(installFPSUnlocker) == True:
-        # FPS Cap
-        fpsCap = getFPSCap()
+    # Menu System
+    def menu():
+        nonlocal generated_json
+        printWarnMessage("--- Current Fast Flags ---")
+        generating_list = []
+        for i, v in generated_json.items():
+            generating_list.append({"index": 1, "message": f"{i} = {v} [{type(v).__name__}]", "i": i, "v": v})
+        generating_list.append({"index": 2, "message": f"Add New Flags"})
+        generating_list.append({"index": 3, "message": f"Go to Flag Garden"})
+        generating_list.append({"index": 4, "message": f"Clear All Fast Flags"})
+        generating_list.append({"index": 5, "message": f"Exit without Saving"})
+        result = generateMenuSelection(generating_list, star_option="Save & Exit")
+        def handle_saving():
+            # Installation Mode
+            if orangeblox_mode == False:
+                printWarnMessage("--- Installation Mode ---")
+                printMainMessage("[y/yes] = Install/Reinstall Flags")
+                printMainMessage("[n/no/(*)] = Cancel Install")
+                printMainMessage("[j/json] = Get JSON Settings")
+                printMainMessage("[nm/no-merge] = Don't Merge Settings with Previous Settings")
+                printMainMessage("[f/flat] = Flat JSON Install")
+                printMainMessage("[fnm/flat-no-merge] = Flat-No-Merge Install")
+                printMainMessage("[r/reset] = Reset Settings")
+                select_mode = input("> ")
+                if isYes(select_mode) == True: printMainMessage("Selected Mode: Install/Reinstall Flags")
+                elif select_mode.lower() == "j" or select_mode.lower() == "json": printMainMessage("Selected Mode: Get JSON Settings")
+                elif select_mode.lower() == "nm" or select_mode.lower() == "no-merge": printMainMessage("Selected Mode: Don't Merge Settings with Previous Settings")
+                elif select_mode.lower() == "f" or select_mode.lower() == "flat": printMainMessage("Selected Mode: Flat JSON Install")
+                elif select_mode.lower() == "fnm" or select_mode.lower() == "flat-no-merge": printMainMessage("Selected Mode: Flat-No-Merge Install")
+                elif select_mode.lower() == "r" or select_mode.lower() == "reset": printMainMessage("Selected Mode: Reset Settings")
+                else: printMainMessage("Ending installation.."); return
+            else: select_mode = "y"
 
-        # Roblox Vulkan Rendering
-        printWarnMessage("- Roblox Vulkan Rendering -")
-        printMainMessage("Would you like to use Vulkan Rendering? (It will remove the cap fully but may cause issues) (y/n)")
-        useVulkan = input("> ")
-        generated_json["FFlagTaskSchedulerLimitTargetFpsTo2402"] = "false"
-
-        if fpsCap == None: generated_json["DFIntTaskSchedulerTargetFps"] = "9999"
-        else: generated_json["DFIntTaskSchedulerTargetFps"] = fpsCap
-
-        if isYes(useVulkan) == True: 
-            generated_json["FFlagDebugGraphicsPreferVulkan"] = "true"
-            if main_os == "Darwin": generated_json["FFlagDebugGraphicsDisableMetal"] =  "true"
-        elif isNo(useVulkan) == True: 
-            generated_json["FFlagDebugGraphicsPreferVulkan"] = "false"
-            if main_os == "Darwin": generated_json["FFlagDebugGraphicsDisableMetal"] =  "false"
-        elif isRequestClose(useVulkan) == True:
-            printMainMessage("Ending installation..")
-            return
-    elif isRequestClose(installFPSUnlocker) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installFPSUnlocker) == True:
-        generated_json["FFlagDebugGraphicsPreferVulkan"] = "false"
-        generated_json["DFIntTaskSchedulerTargetFps"] = 60
-        generated_json["FFlagDebugGraphicsDisableMetal"] = "false"
-
-        # Roblox FPS Unlocker
-        printWarnMessage("- Roblox FPS Unlocker -")
-        printMainMessage("Would you like the Roblox FPS Unlocker in your settings? (This may not work depending on your Roblox client version.) (y/n)")
-        robloxFPSUnlocker = input("> ")
-        if isYes(robloxFPSUnlocker) == True:
-            generated_json["FFlagGameBasicSettingsFramerateCap1"] = "true" # If roblox decides to change, I won't need to :)
-            generated_json["FFlagGameBasicSettingsFramerateCap2"] = "true"
-            generated_json["FFlagGameBasicSettingsFramerateCap3"] = "true"
-            generated_json["FFlagGameBasicSettingsFramerateCap4"] = "true"
-            generated_json["FFlagGameBasicSettingsFramerateCap5"] = "true"
-            generated_json["FFlagGameBasicSettingsFramerateCap6"] = "true"
-            generated_json["FFlagGameBasicSettingsFramerateCap7"] = "true"
-            generated_json["FFlagGameBasicSettingsFramerateCap8"] = "true"
-            generated_json["FFlagGameBasicSettingsFramerateCap9"] = "true"
-            generated_json["FFlagGameBasicSettingsFramerateCap10"] = "true" # If roblox decides to change, I won't need to :)
-            generated_json["DFIntTaskSchedulerTargetFps"] = 0
-        elif isRequestClose(robloxFPSUnlocker) == True:
-            printMainMessage("Ending installation..")
-            return
-        elif isNo(robloxFPSUnlocker) == True:
-            generated_json["FFlagGameBasicSettingsFramerateCap1"] = "false" # If roblox decides to change, I won't need to :)
-            generated_json["FFlagGameBasicSettingsFramerateCap2"] = "false"
-            generated_json["FFlagGameBasicSettingsFramerateCap3"] = "false"
-            generated_json["FFlagGameBasicSettingsFramerateCap4"] = "false"
-            generated_json["FFlagGameBasicSettingsFramerateCap5"] = "false"
-            generated_json["FFlagGameBasicSettingsFramerateCap6"] = "false"
-            generated_json["FFlagGameBasicSettingsFramerateCap7"] = "false"
-            generated_json["FFlagGameBasicSettingsFramerateCap8"] = "false"
-            generated_json["FFlagGameBasicSettingsFramerateCap9"] = "false"
-            generated_json["FFlagGameBasicSettingsFramerateCap10"] = "false" # If roblox decides to change, I won't need to :)
-            generated_json["DFIntTaskSchedulerTargetFps"] = None
-
-    # Verified Badge
-    printWarnMessage("--- Verified Badge ---")
-    printMainMessage("Would you like to use a verified badge during Roblox Games? (y/n)")
-    installVerifiedBadge = input("> ")
-    if isYes(installVerifiedBadge) == True:
-        if user_id: generated_json["FStringWhitelistVerifiedUserId"] = str(user_id)
-    elif isRequestClose(installVerifiedBadge) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installVerifiedBadge) == True: generated_json["FStringWhitelistVerifiedUserId"] = None
-
-    # Rename Charts to Discover
-    printWarnMessage("--- Replace Charts ---")
-    printMainMessage("Would you like to rename Charts back to Discover (may work)? (y/n)")
-    installRenameCharts = input("> ")
-    if isYes(installRenameCharts) == True: generated_json["FFlagLuaAppChartsPageRenameIXP"] = "false"
-    elif isRequestClose(installRenameCharts) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installRenameCharts) == True: generated_json["FFlagLuaAppChartsPageRenameIXP"] = "true"
-
-    # Enable Developer Tools
-    printWarnMessage("--- Enable Developer Tools ---")
-    printMainMessage("Would you like to enable Developer Tools inside of the Roblox App (when website frame is opened) (Ctrl+Shift+I)? (y/n)")
-    installEnableDeveloper = input("> ")
-    if isYes(installEnableDeveloper) == True: generated_json["FFlagDebugEnableNewWebView2DevTool"] = "true"
-    elif isRequestClose(installEnableDeveloper) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installEnableDeveloper) == True: generated_json["FFlagDebugEnableNewWebView2DevTool"] = "false"
-
-    # Display FPS
-    printWarnMessage("--- Display FPS ---")
-    printMainMessage("Would you like your client to display the FPS? (y/n)")
-    installFPSViewer = input("> ")
-    if isYes(installFPSViewer) == True: generated_json["FFlagDebugDisplayFPS"] = "true"
-    elif isRequestClose(installFPSViewer) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installFPSViewer) == True: generated_json["FFlagDebugDisplayFPS"] = "false"
-
-    # Disable Ads
-    printWarnMessage("--- Disable Ads ---")
-    printMainMessage("Would you like your client to disable ads? (y/n)")
-    installRemoveAds = input("> ")
-    if isYes(installRemoveAds) == True: generated_json["FFlagAdServiceEnabled"] = "false"
-    elif isRequestClose(installRemoveAds) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installRemoveAds) == True: generated_json["FFlagAdServiceEnabled"] = "true"
-
-    # Increase Max Assets Loading
-    printWarnMessage("--- Increase Max Assets Loading ---")
-    printMainMessage("Would you like to increase the limit on Max Assets loading from 100? (this will make loading into games faster depending on your computer) (y/n)")
-    printYellowMessage("WARNING! This can crash your Roblox session!")
-    installRemoveMaxAssets = input("> ")
-    if isYes(installRemoveMaxAssets) == True:
-        printMainMessage("Enter the amount of assets you would like to load at the same time:")
-        installRemoveMaxAssetsNum = input("> ")
-        if installRemoveMaxAssetsNum.isdigit():
-            generated_json["DFIntNumAssetsMaxToPreload"] = str(int(installRemoveMaxAssetsNum))
-            generated_json["DFIntAssetPreloading"] = str(int(installRemoveMaxAssetsNum))
-        else:
-            printYellowMessage("Disabled limit due to invalid prompt.")
-            generated_json["DFIntNumAssetsMaxToPreload"] = "100"
-            generated_json["DFIntAssetPreloading"] = "100"
-    elif isRequestClose(installRemoveMaxAssets) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installRemoveMaxAssets) == True:
-        generated_json["DFIntNumAssetsMaxToPreload"] = "100"
-        generated_json["DFIntAssetPreloading"] = "100"
-
-    # Enable Genre System
-    printWarnMessage("--- Enable New Genre System Under Making ---")
-    printMainMessage("Would you like to enable the new genre system in beta? (y/n)")
-    installGenreSystem = input("> ")
-    if isYes(installGenreSystem) == True:
-        generated_json["FFlagLuaAppGenreUnderConstruction"] = "false"
-        generated_json["FFlagLuaAppGenreUnderConstructionDesktopFix"] = "false"
-    elif isRequestClose(installGenreSystem) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installGenreSystem) == True:
-        generated_json["FFlagLuaAppGenreUnderConstruction"] = "true"
-        generated_json["FFlagLuaAppGenreUnderConstructionDesktopFix"] = "true"
-
-    # Enable Freecam
-    printWarnMessage("--- Enable Freecam ---")
-    printMainMessage("Would you like to enable freecam on the Roblox client (only works if you're a Roblox Developer of a game or a Star Creator)? (y/n)")
-    installFreecam = input("> ")
-    if isYes(installFreecam) == True: generated_json["FFlagLoadFreecamModule"] = "true"
-    elif isRequestClose(installFreecam) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installFreecam) == True: generated_json["FFlagLoadFreecamModule"] = "false"
-
-    # Enable New Camera Controls
-    printWarnMessage("--- Enable New Camera Controls ---")
-    printMainMessage("Would you like to enable new camera controls? (y/n)")
-    installNewCamera = input("> ")
-    if isYes(installNewCamera) == True: generated_json["FFlagNewCameraControls"] = "true"
-    elif isRequestClose(installNewCamera) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installNewCamera) == True: generated_json["FFlagNewCameraControls"] = "false"
-
-    # Hide Internet Disconnect Message
-    printWarnMessage("--- Hide Internet Disconnect Message ---")
-    printMainMessage("Would you like to hide the Internet Disconnect message when you're kicked? (You will still be kicked, jsut the message will not show.) (y/n)")
-    installHideDisconnect = input("> ")
-    if isYes(installHideDisconnect) == True: generated_json["DFFlagDebugDisableTimeoutDisconnect"] = "true"
-    elif isRequestClose(installHideDisconnect) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installHideDisconnect) == True: generated_json["DFFlagDebugDisableTimeoutDisconnect"] = "false"
-
-    # Disable In-Game Purchases
-    printWarnMessage("--- Disable In-Game Purchases ---")
-    printMainMessage("Would you like to disable in-game purchases (game-passes, developer products, etc.)? (You will still be kicked, jsut the message will not show.) (y/n)")
-    installDisablePurchases = input("> ")
-    if isYes(installDisablePurchases) == True: generated_json["DFFlagOrder66"] = "true"
-    elif isRequestClose(installDisablePurchases) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installDisablePurchases) == True: generated_json["DFFlagOrder66"] = "false"
-
-    # Disable Voice Chat
-    printWarnMessage("--- Disable Voice Chat ---")
-    printMainMessage("Would you like to disable Voice Chat? (y/n)")
-    installDisableVoiceChat = input("> ")
-    if isYes(installDisableVoiceChat) == True: generated_json["DFFlagVoiceChat4"] = "false"
-    elif isRequestClose(installDisableVoiceChat) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installDisableVoiceChat) == True: generated_json["DFFlagVoiceChat4"] = "true"
-
-    # Disable In-Game Chat
-    printWarnMessage("--- Disable In-Game Chat ---")
-    printMainMessage("Would you like to disable In-Game Chat? (y/n)")
-    installDisableGameChat = input("> ")
-    if isYes(installDisableGameChat) == True: generated_json["FFlagDebugForceChatDisabled"] = "true"
-    elif isRequestClose(installDisableGameChat) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installDisableGameChat) == True: generated_json["FFlagDebugForceChatDisabled"] = "false"
-
-    # Disable Full Screen Title Bar
-    printWarnMessage("--- Disable Full Screen Title Bar ---")
-    printMainMessage("Would you like to disable the Title Bar when you go into full screen on the Roblox client? (y/n)")
-    installDisableFullScreenTitle = input("> ")
-    if isYes(installDisableFullScreenTitle) == True: generated_json["FIntFullscreenTitleBarTriggerDelayMillis"] = "3600000"
-    elif isRequestClose(installDisableFullScreenTitle) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installDisableFullScreenTitle) == True: generated_json["FIntFullscreenTitleBarTriggerDelayMillis"] = None
-
-    # Enable Red Text Font
-    printWarnMessage("--- Enable Red Text Font ---")
-    printMainMessage("Would you like to enable Red text instead of White text color in the lua app? (y/n)")
-    installRedText = input("> ")
-    if isYes(installRedText) == True: generated_json["FStringDebugHighlightSpecificFont"] = "rbxasset://fonts/families/BuilderSans.json"
-    elif isRequestClose(installRedText) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installRedText) == True: generated_json["FStringDebugHighlightSpecificFont"] = None
-
-    # Remove Automatically Translated
-    printWarnMessage("--- Remove Automatically Translated ---")
-    printMainMessage("Would you like to remove the chat automatically translated message in the chat? (y/n)")
-    installRemoveAutoTranslate = input("> ")
-    if isYes(installRemoveAutoTranslate) == True: generated_json["FFlagChatTranslationEnableSystemMessage"] = "false"
-    elif isRequestClose(installRemoveAutoTranslate) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installRemoveAutoTranslate) == True: generated_json["FFlagChatTranslationEnableSystemMessage"] = "true"
-
-    # Rendering Mode
-    got_modes = []
-    ui_options = {}
-    if main_os == "Darwin": got_modes.append("Metal (for MacOS)")
-    got_modes.append("Vulkan (may cause issues)")
-    got_modes.append("OpenGL")
-    got_modes.append("DirectX 10")
-    got_modes.append("DirectX 11")
-    got_modes = sorted(got_modes)
-    count = 1
-
-    generated_json["FFlagDebugGraphicsPreferMetal"] = None
-    generated_json["FFlagDebugGraphicsDisableDirect3D11"] = None
-    generated_json["FFlagDebugGraphicsPreferVulkan"] = None
-    generated_json["FFlagDebugGraphicsPreferOpenGL"] = None
-    generated_json["FFlagDebugGraphicsPreferD3D11FL10"] = None
-    generated_json["FFlagDebugGraphicsPreferD3D11"] = None
-        
-    printWarnMessage("--- Rendering Mode ---")
-    printMainMessage("Select a rendering mode to force on the client:")
-    colors_class.print(ts("This FFlag was from the LatteFlags GitHub! (https://github.com/espresso-soft/latteflags)"), 215)
-    for i in got_modes:
-        printMainMessage(f"[{str(count)}] = {i}")
-        ui_options[str(count)] = i
-        count += 1
-    print("[*] = None")
-    installRenderingMode = input("> ")
-    if ui_options.get(installRenderingMode):
-        opt = ui_options[installRenderingMode]
-        if opt == "Metal (for MacOS)": generated_json["FFlagDebugGraphicsPreferMetal"] = "true"
-        elif opt == "Vulkan (may cause issues)":
-            generated_json["FFlagDebugGraphicsDisableDirect3D11"] = "true"
-            generated_json["FFlagDebugGraphicsPreferVulkan"] = "true"
-        elif opt == "OpenGL":
-            generated_json["FFlagDebugGraphicsDisableDirect3D11"] = "true"
-            generated_json["FFlagDebugGraphicsPreferOpenGL"] = "true"
-        elif opt == "DirectX 10": generated_json["FFlagDebugGraphicsPreferD3D11FL10"] = "true"
-        elif opt == "DirectX 11": generated_json["FFlagDebugGraphicsPreferD3D11"] = "true"
-
-    # Lighting Mode
-    got_modes = []
-    ui_options = {}
-    got_modes.append("Voxel Lighting (Phase 1)")
-    got_modes.append("Shadowmap Lighting (Phase 2)")
-    got_modes.append("Future Lighting (Phase 3)")
-    got_modes.append("Unified Lighting")
-    got_modes = sorted(got_modes)
-    count = 1
-
-    generated_json["DFFlagDebugRenderForceTechnologyVoxel"] = None
-    generated_json["FFlagDebugForceFutureIsBrightPhase2"] = None
-    generated_json["FFlagDebugForceFutureIsBrightPhase3"] = None
-    generated_json["FFlagRenderUnifiedLighting10"] = None
-    generated_json["FFlagUnifiedLightingBetaFeature"] = None
-        
-    printWarnMessage("--- Lighting Mode ---")
-    printMainMessage("Select a lighting mode to force on the client:")
-    colors_class.print("This FFlag was from the LatteFlags GitHub! (https://github.com/espresso-soft/latteflags)", 215)
-    for i in got_modes:
-        printMainMessage(f"[{str(count)}] = {i}")
-        ui_options[str(count)] = i
-        count += 1
-    print("[*] = None")
-    installLightingMode = input("> ")
-    if ui_options.get(installLightingMode):
-        opt = ui_options[installLightingMode]
-        if opt == "Voxel Lighting (Phase 1)": generated_json["DFFlagDebugRenderForceTechnologyVoxel"] = "true"
-        elif opt == "Shadowmap Lighting (Phase 2)": generated_json["FFlagDebugForceFutureIsBrightPhase2"] = "true"
-        elif opt == "Future Lighting (Phase 3)": generated_json["FFlagDebugForceFutureIsBrightPhase3"] = "true"
-        elif opt == "Unified Lighting":
-            generated_json["FFlagRenderUnifiedLighting10"] = "true"
-            generated_json["FFlagUnifiedLightingBetaFeature"] = "true"
-
-    # Texture Quality
-    got_modes = []
-    ui_options = {}
-    got_modes.append("Level 1 (Low Quality)")
-    got_modes.append("Level 2 (Medium Quality)")
-    got_modes.append("Level 3 (Highest Quality)")
-    got_modes = sorted(got_modes)
-    count = 1
-
-    generated_json["DFFlagTextureQualityOverrideEnabled"] = None
-    generated_json["DFIntTextureQualityOverride"] = None
-        
-    printWarnMessage("--- Texture Quality ---")
-    printMainMessage("Select a texture quality number to put on the client:")
-    for i in got_modes:
-        printMainMessage(f"[{str(count)}] = {i}")
-        ui_options[str(count)] = i
-        count += 1
-    print("[*] = None")
-    installTextureQuality = input("> ")
-    if ui_options.get(installTextureQuality):
-        opt = ui_options[installTextureQuality]
-        if opt == "Level 1 (Low Quality)":
-            generated_json["DFFlagTextureQualityOverrideEnabled"] = "true"
-            generated_json["DFIntTextureQualityOverride"] = "1"
-        elif opt == "Level 2 (Medium Quality)":
-            generated_json["DFFlagTextureQualityOverrideEnabled"] = "true"
-            generated_json["DFIntTextureQualityOverride"] = "2"
-        elif opt == "Level 3 (Highest Quality)":
-            generated_json["DFFlagTextureQualityOverrideEnabled"] = "true"
-            generated_json["DFIntTextureQualityOverride"] = "3"
-
-    # Disable Highlights
-    printWarnMessage("--- Disable Highlights ---")
-    printMainMessage("Would you like to disable Highlight rendering on the client? (y/n)")
-    colors_class.print("This FFlag was from the LatteFlags GitHub! (https://github.com/espresso-soft/latteflags)", 215)
-    installDisableHighLight = input("> ")
-    if isYes(installDisableHighLight) == True: generated_json["DFFlagRenderHighlightManagerPrepare"] = "true"
-    elif isRequestClose(installDisableHighLight) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installDisableHighLight) == True: generated_json["DFFlagRenderHighlightManagerPrepare"] = "false"
-
-    # Disable VC Beta Badge
-    printWarnMessage("--- Disable VC Beta Badge ---")
-    printMainMessage("Would you like to disable the VC beta badge on the client? (y/n)")
-    colors_class.print("This FFlag was from the Dantez GitHub! (https://github.com/Dantezz025/Roblox-Fast-Flags)", 34)
-    installVCBadge = input("> ")
-    if isYes(installVCBadge) == True: 
-        generated_json["FFlagVoiceBetaBadge"] = "false"
-        generated_json["FFlagTopBarUseNewBadge"] = "false"
-        generated_json["FFlagEnableBetaBadgeLearnMore"] = "false"
-        generated_json["FFlagBetaBadgeLearnMoreLinkFormview"] = "false"
-        generated_json["FFlagControlBetaBadgeWithGuac"] = "false"
-    elif isRequestClose(installVCBadge) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installVCBadge) == True: 
-        generated_json["FFlagVoiceBetaBadge"] = "true"
-        generated_json["FFlagTopBarUseNewBadge"] = "true"
-        generated_json["FFlagEnableBetaBadgeLearnMore"] = "true"
-        generated_json["FFlagBetaBadgeLearnMoreLinkFormview"] = "true"
-        generated_json["FFlagControlBetaBadgeWithGuac"] = "true"
-
-    # Fix Stutter Animations
-    printWarnMessage("--- Stutter Animations Fix ---")
-    printMainMessage("Would you like to disable the VC beta badge on the client? (y/n)")
-    colors_class.print("This FFlag was from the Dantez GitHub! (https://github.com/Dantezz025/Roblox-Fast-Flags)", 34)
-    installStutterAnimation = input("> ")
-    if isYes(installStutterAnimation) == True:  generated_json["DFIntTimestepArbiterThresholdCFLThou"] = "300"
-    elif isRequestClose(installStutterAnimation) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installStutterAnimation) == True: generated_json["DFIntTimestepArbiterThresholdCFLThou"] = None
-
-    # Fix Stutter Animations
-    printWarnMessage("--- Disable Wi-Fi Disconnect ---")
-    printMainMessage("Would you like to disable disconnecting from servers when wifi is changed on the client? (y/n)")
-    colors_class.print("This FFlag was from the Dantez GitHub! (https://github.com/Dantezz025/Roblox-Fast-Flags)", 34)
-    installWifiConnect = input("> ")
-    if isYes(installWifiConnect) == True:  generated_json["DFFlagDebugDisableTimeoutDisconnect"] = "true"
-    elif isRequestClose(installWifiConnect) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installWifiConnect) == True: generated_json["DFFlagDebugDisableTimeoutDisconnect"] = "false"
-
-    # Rename Connections to Friends
-    printWarnMessage("--- Rename Connections to Friends ---")
-    printMainMessage("Would you like to enable renaming Connections back to Friends on the client? (y/n)")
-    installConnectionsRename = input("> ")
-    if isYes(installConnectionsRename) == True: 
-        generated_json.update({
-            "FFlagLuaAppRenameFriendsToConnectionsEdp": "false",
-            "FFlagRenameFriendsToConnections": "false",
-            "FFlagRenameFriendsToConnectionsAppChat2": "false",
-            "FFlagRenameFriendsToConnectionsCoreUI": "false",
-            "FFlagRenameFriendsToConnectionsFriendsMenu": "false",
-            "FFlagRenameFriendsToConnectionsFriendsPage": "false",
-            "FFlagRenameFriendsToConnectionsPartyLobby": "false",
-            "FFlagRenameFriendsToConnectionsProfile": "false",
-            "FFlagRenameFriendsToConnectionsWebviewHeading": "false"
-        })
-    elif isRequestClose(installConnectionsRename) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installConnectionsRename) == True: 
-        generated_json.update({
-            "FFlagLuaAppRenameFriendsToConnectionsEdp": "true",
-            "FFlagRenameFriendsToConnections": "true",
-            "FFlagRenameFriendsToConnectionsAppChat2": "true",
-            "FFlagRenameFriendsToConnectionsCoreUI": "true",
-            "FFlagRenameFriendsToConnectionsFriendsMenu": "true",
-            "FFlagRenameFriendsToConnectionsFriendsPage": "true",
-            "FFlagRenameFriendsToConnectionsPartyLobby": "true",
-            "FFlagRenameFriendsToConnectionsProfile": "true",
-            "FFlagRenameFriendsToConnectionsWebviewHeading": "true"
-        })
-
-    # Reduce FPS #1
-    printWarnMessage("--- Reduce FPS #1 ---")
-    printMainMessage("Would you like to enable reducing FPS using pack 1? (y/n)")
-    colors_class.print("This FFlag was from the Dantez GitHub! (https://github.com/Dantezz025/Roblox-Fast-Flags)", 34)
-    installReduceFPS1 = input("> ")
-    if isYes(installReduceFPS1) == True:  
-        generated_json["FFlagDebugDisableTelemetryEphemeralCounter"] = "true"
-        generated_json["FFlagDebugDisableTelemetryEphemeralStat"] = "true"
-        generated_json["FFlagDebugDisableTelemetryEventIngest"] = "true"
-        generated_json["FFlagDebugDisableTelemetryPoint"] = "true"
-        generated_json["FFlagDebugDisableTelemetryV2Counter"] = "true"
-        generated_json["FFlagDebugDisableTelemetryV2Event"] = "true"
-        generated_json["FFlagDebugDisableTelemetryV2Stat"] = "true"
-    elif isRequestClose(installReduceFPS1) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installReduceFPS1) == True:
-        generated_json["FFlagDebugDisableTelemetryEphemeralCounter"] = "false"
-        generated_json["FFlagDebugDisableTelemetryEphemeralStat"] = "false"
-        generated_json["FFlagDebugDisableTelemetryEventIngest"] = "false"
-        generated_json["FFlagDebugDisableTelemetryPoint"] = "false"
-        generated_json["FFlagDebugDisableTelemetryV2Counter"] = "false"
-        generated_json["FFlagDebugDisableTelemetryV2Event"] = "false"
-        generated_json["FFlagDebugDisableTelemetryV2Stat"] = "false"
-
-    # Reduce FPS #2
-    printWarnMessage("--- Reduce FPS #2 ---")
-    printMainMessage("Would you like to enable reducing FPS using pack 2 (comfort mode)? (y/n)")
-    colors_class.print("This FFlag was from the Dantez GitHub! (https://github.com/Dantezz025/Roblox-Fast-Flags)", 34)
-    installReduceFPS2 = input("> ")
-    if isYes(installReduceFPS2) == True:  
-        generated_json["DFIntCSGLevelOfDetailSwitchingDistance"] = 250
-        generated_json["DFIntCSGLevelOfDetailSwitchingDistanceL12"] = 500
-        generated_json["DFIntCSGLevelOfDetailSwitchingDistanceL23"] = 750
-        generated_json["DFIntCSGLevelOfDetailSwitchingDistanceL34"] = 1000
-        generated_json["DFIntTextureQualityOverride"] = 1
-        generated_json["FFlagDisablePostFx"] = "true"
-    elif isRequestClose(installReduceFPS2) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installReduceFPS2) == True:
-        generated_json["DFIntCSGLevelOfDetailSwitchingDistance"] = None
-        generated_json["DFIntCSGLevelOfDetailSwitchingDistanceL12"] = None
-        generated_json["DFIntCSGLevelOfDetailSwitchingDistanceL23"] = None
-        generated_json["DFIntCSGLevelOfDetailSwitchingDistanceL34"] = None
-        generated_json["DFIntTextureQualityOverride"] = None
-        generated_json["FFlagDisablePostFx"] = None
-
-    # Reduce Ping
-    printWarnMessage("--- Reduce Ping ---")
-    printMainMessage("Would you like to enable reducing ping flags? (y/n)")
-    colors_class.print("This FFlag was from the Dantez GitHub! (https://github.com/Dantezz025/Roblox-Fast-Flags)", 34)
-    installReducePing = input("> ")
-    if isYes(installReducePing) == True:  
-        generated_json.update({
-            "DFIntConnectionMTUSize": 900,
-            "FIntRakNetResendBufferArrayLength": "128",
-            "FFlagOptimizeNetwork": "True",
-            "FFlagOptimizeNetworkRouting": "True",
-            "FFlagOptimizeNetworkTransport": "True",
-            "FFlagOptimizeServerTickRate": "True",
-            "DFIntServerPhysicsUpdateRate": "60",
-            "DFIntServerTickRate": "60",
-            "DFIntRakNetResendRttMultiple": "1",
-            "DFIntRaknetBandwidthPingSendEveryXSeconds": "1",
-            "DFIntOptimizePingThreshold": "50",
-            "DFIntPlayerNetworkUpdateQueueSize": "20",
-            "DFIntPlayerNetworkUpdateRate": "60",
-            "DFIntNetworkPrediction": "120",
-            "DFIntNetworkLatencyTolerance": "1",
-            "DFIntMinimalNetworkPrediction": "0.1"
-        })
-    elif isRequestClose(installReducePing) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installReducePing) == True:
-        generated_json.update({
-            "DFIntConnectionMTUSize": None,
-            "FIntRakNetResendBufferArrayLength": None,
-            "FFlagOptimizeNetwork": None,
-            "FFlagOptimizeNetworkRouting": None,
-            "FFlagOptimizeNetworkTransport": None,
-            "FFlagOptimizeServerTickRate": None,
-            "DFIntServerPhysicsUpdateRate": None,
-            "DFIntServerTickRate": None,
-            "DFIntRakNetResendRttMultiple": None,
-            "DFIntRaknetBandwidthPingSendEveryXSeconds": None,
-            "DFIntOptimizePingThreshold": None,
-            "DFIntPlayerNetworkUpdateQueueSize": None,
-            "DFIntPlayerNetworkUpdateRate": None,
-            "DFIntNetworkPrediction": None,
-            "DFIntNetworkLatencyTolerance": None,
-            "DFIntMinimalNetworkPrediction": None
-        })
-
-    # Limit Videos Playing
-    printWarnMessage("--- Limit Videos Playing ---")
-    printMainMessage("Would you like to set a number of Videos that can be played in-game on the client? (y/n)")
-    colors_class.print("This FFlag was from the LatteFlags GitHub! (https://github.com/espresso-soft/latteflags)", 215)
-    installLimitVideos = input("> ")
-    if isYes(installLimitVideos) == True:
-        printMainMessage("Input the number of videos you would like to limit:")
-        installLimitVideosNum = input("> ")
-        if installLimitVideosNum.isdigit(): generated_json["DFIntVideoMaxNumberOfVideosPlaying"] = str(int(installLimitVideosNum))
-        else:
-            printYellowMessage("Disabled limit due to invalid prompt.")
-            generated_json["DFIntVideoMaxNumberOfVideosPlaying"] = None
-    elif isRequestClose(installLimitVideos) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installLimitVideos) == True: generated_json["DFIntVideoMaxNumberOfVideosPlaying"] = None
-
-    # Limit Animations Playing
-    printWarnMessage("--- Limit Animations Playing ---")
-    printMainMessage("Would you like to set a number of Animations that can be played in-game on the client? (y/n)")
-    installLimitAnimations = input("> ")
-    if isYes(installLimitAnimations) == True:
-        printMainMessage("Input the number of animations you would like to limit:")
-        installLimitAnimationsNum = input("> ")
-        if installLimitAnimationsNum.isdigit(): generated_json["DFIntMaxActiveAnimationTracks"] = str(int(installLimitAnimationsNum))
-        else:
-            printYellowMessage("Disabled limit due to invalid prompt.")
-            generated_json["DFIntMaxActiveAnimationTracks"] = None
-    elif isRequestClose(installLimitAnimations) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installLimitAnimations) == True: generated_json["DFIntMaxActiveAnimationTracks"] = None
-
-    # Disable Foundation Mode
-    printWarnMessage("--- Disable Foundation Mode ---")
-    printMainMessage("Would you like to disable Foundation mode on your client? (This is the new layout Roblox added) (y/n)")
-    installDisableFoundationMode = input("> ")
-    if isYes(installDisableFoundationMode) == True:
-        generated_json["FFlagLuaAppUseUIBloxColorPalettes1"] = "true"
-        generated_json["FFlagUIBloxUseNewThemeColorPalettes"] = "true"
-        generated_json["FFlagLuaAppEnableFoundationColors7"] = "false"
-    elif isRequestClose(installDisableFoundationMode) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installDisableFoundationMode) == True:
-        generated_json["FFlagLuaAppUseUIBloxColorPalettes1"] = "false"
-        generated_json["FFlagUIBloxUseNewThemeColorPalettes"] = "false"
-        generated_json["FFlagLuaAppEnableFoundationColors7"] = "true"
-
-    # Custom Disconnect Message
-    printWarnMessage("--- Custom Disconnect Message ---")
-    printMainMessage("Would you like to use your own disconnect message? (reconnect button will disappear) (y/n)")
-    installCustomDisconnect = input("> ")
-    if isYes(installCustomDisconnect) == True:
-        generated_json["FFlagReconnectDisabled"] = "true"
-        printMainMessage("Enter the Disconnect Message below:")
-        generated_json["FStringReconnectDisabledReason"] = input("> ")
-    elif isRequestClose(installCustomDisconnect) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installCustomDisconnect) == True:
-        generated_json["FFlagReconnectDisabled"] = "false"
-        generated_json["FStringReconnectDisabledReason"] = None
-
-    # Ability to Hide UI
-    printWarnMessage("--- Hide UI ---")
-    printMainMessage("Would you like to enable the ability to hide GUIs? (y/n)")
-    installHideUI = input("> ")
-    if isYes(installHideUI) == True:
-        printMainMessage("Enter a Group ID that you're currently in so this flag can work:")
-        generated_json["DFIntCanHideGuiGroupId"] = input("> ")
-        if main_os == "Windows":
-            printMainMessage("Combinations for hiding:")
-            printMainMessage("Ctrl+Shift+B = Toggles BillboardGuis and SurfaceGuis")
-            printMainMessage("Ctrl+Shift+C = Toggles PlayerGui")
-            printMainMessage("Ctrl+Shift+G = Toggles CoreGui")
-            printMainMessage("Ctrl+Shift+N = Toggles GUIs that appear above players")
-        elif main_os == "Darwin":
-            printMainMessage("Combinations for hiding:")
-            printMainMessage("Command+Shift+B = Toggles BillboardGuis and SurfaceGuis")
-            printMainMessage("Command+Shift+C = Toggles PlayerGui")
-            printMainMessage("Command+Shift+G = Toggles CoreGui")
-            printMainMessage("Command+Shift+N = Toggles GUIs that appear above players")
-        else:
-            printMainMessage("Ending installation..")
-            return
-    elif isRequestClose(installHideUI) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installHideUI) == True: generated_json["DFIntCanHideGuiGroupId"] = None
-
-    # Quick Connect
-    printWarnMessage("--- Quick Connect ---")
-    printMainMessage("Would you like to install Quick Connect on your client? (y/n)")
-    printErrorMessage("WARNING! This can be buggy and may cause issues on your Roblox experience!!!")
-    installQuickConnect = input("> ")
-    if isYes(installQuickConnect) == True: generated_json["FFlagEnableQuickGameLaunch"] = "true"
-    elif isRequestClose(installQuickConnect) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installQuickConnect) == True: generated_json["FFlagEnableQuickGameLaunch"] = "false"
-
-    # Pre-Rendering
-    printWarnMessage("--- Pre-Rendering ---")
-    printMainMessage("Would you like to enable Pre-Rendering on the client? (y/n)")
-    printYellowMessage("This may conclude a 25% Performance Boost but may cause compatibility issues in games.")
-    colors_class.print("This FFlag was from the LatteFlags GitHub! (https://github.com/espresso-soft/latteflags)", 215)
-    installPreRendering = input("> ")
-    if isYes(installPreRendering) == True: generated_json["FFlagMovePrerender"] = "true"
-    elif isRequestClose(installPreRendering) == True:
-        printMainMessage("Ending installation..")
-        return
-    elif isNo(installPreRendering) == True: generated_json["FFlagMovePrerender"] = "false"
-
-    # Studio Flags
-    if is_studio == True: 
-        printMainMessage("Alright! After that, we can now start with studio specific flags!")
-        # Default to Select Tool
-        printWarnMessage("--- Default to Select Tool ---")
-        printMainMessage("Would you like to enable defaulting to the Select tool when in a place? (y/n)")
-        installSelectTool = input("> ")
-        if isYes(installSelectTool) == True: generated_json["FFlagDefaultToSelectTool"] = True
-        elif isRequestClose(installSelectTool) == True:
-            printMainMessage("Ending installation..")
-            return
-        elif isNo(installSelectTool) == True: generated_json["FFlagDefaultToSelectTool"] = False
-        
-        # Enable Materials Generator
-        printWarnMessage("--- Enable Materials Generator ---")
-        printMainMessage("Would you like to enable materials generator? (y/n)")
-        installMaterialsGen = input("> ")
-        if isYes(installMaterialsGen) == True: generated_json["FFlagEnableMaterialGenerator"] = True
-        elif isRequestClose(installMaterialsGen) == True:
-            printMainMessage("Ending installation..")
-            return
-        elif isNo(installMaterialsGen) == True: generated_json["FFlagEnableMaterialGenerator"] = False
-
-        # Enable Ragdoll Death Animation
-        printWarnMessage("--- Enable Ragdoll Death Animation ---")
-        printMainMessage("Would you like to enable the ragdoll death animation? (y/n)")
-        installRagdoll = input("> ")
-        if isYes(installRagdoll) == True: generated_json["DFStringDefaultAvatarDeathType"] = "Ragdoll"
-        elif isRequestClose(installRagdoll) == True:
-            printMainMessage("Ending installation..")
-            return
-        elif isNo(installRagdoll) == True: generated_json["DFStringDefaultAvatarDeathType"] = None
-
-        # Enable Assistant Code Generation
-        printWarnMessage("--- Enable Assistant Code Generation ---")
-        printMainMessage("Would you like to allow the assistant to generate code? (y/n)")
-        installAssistantCode = input("> ")
-        if isYes(installAssistantCode) == True: generated_json["FFlagLuauCodegen"] = True
-        elif isRequestClose(installAssistantCode) == True:
-            printMainMessage("Ending installation..")
-            return
-        elif isNo(installAssistantCode) == True: generated_json["FFlagLuauCodegen"] = False
-        
-        # Enable Multi Select
-        printWarnMessage("--- Enable Multi Select ---")
-        printMainMessage("Would you like to enable multi selecting? (y/n)")
-        installMultiSelect = input("> ")
-        if isYes(installMultiSelect) == True: generated_json["FFlagMultiSelect"] = True
-        elif isRequestClose(installMultiSelect) == True:
-            printMainMessage("Ending installation..")
-            return
-        elif isNo(installMultiSelect) == True: generated_json["FFlagMultiSelect"] = False
-
-        # Enable Old Explorer
-        printWarnMessage("--- Enable Old Explorer ---")
-        printMainMessage("Would you like to enable the Old Explorer and disable the new explorer? (y/n)")
-        installOldExplorer = input("> ")
-        if isYes(installOldExplorer) == True: 
-            generated_json["FFlagKillOldExplorer1"] = False
-            generated_json["FFlagKillOldExplorer2"] = False
-            generated_json["FFlagKillOldExplorer3"] = False
-            generated_json["FFlagKillOldExplorer4"] = False
-            generated_json["FFlagKillOldExplorer5"] = False
-            generated_json["FFlagKillOldExplorer6"] = False
-            generated_json["FFlagKillOldExplorer7"] = False
-            generated_json["FFlagKillOldExplorer8"] = False
-            generated_json["FFlagKillOldExplorer9"] = False
-            generated_json["FFlagKillOldExplorer10"] = False
-            generated_json["FFlagKillOldExplorer11"] = False
-        elif isRequestClose(installOldExplorer) == True:
-            printMainMessage("Ending installation..")
-            return
-        elif isNo(installOldExplorer) == True: 
-            generated_json["FFlagKillOldExplorer1"] = True
-            generated_json["FFlagKillOldExplorer2"] = True
-            generated_json["FFlagKillOldExplorer3"] = True
-            generated_json["FFlagKillOldExplorer4"] = True
-            generated_json["FFlagKillOldExplorer5"] = True
-            generated_json["FFlagKillOldExplorer6"] = True
-            generated_json["FFlagKillOldExplorer7"] = True
-            generated_json["FFlagKillOldExplorer8"] = True
-            generated_json["FFlagKillOldExplorer9"] = True
-            generated_json["FFlagKillOldExplorer10"] = True
-            generated_json["FFlagKillOldExplorer11"] = True
-
-    # Custom Fast Flags
-    printWarnMessage("--- Custom Fast Flags ---")
-    def custom():
-        def loop():
-            printMainMessage("Select FFlag Mode:")
-            printMainMessage("[1] = Import JSON")
-            printMainMessage("[2] = Create Value Manually")
-            printMainMessage("[*] = Exit FFlag Maker")
-            d = input("> ")
-            if d == "1":
-                printMainMessage("Please input the JSON text below:")
-                printErrorMessage("FLAGS MAY BREAK YOUR ROBLOX INSTALLATION. PLEASE MAKE SURE TO BE CAREFUL OF WHAT YOU PUT HERE!")
-                js = input("> ")
-                try:
-                    js = json.loads(js)
-                    if not type(js) is dict: raise Exception("Not dictionary")
-                    printMainMessage("Are you sure you would like to use this FFlag JSON?")
-                    for i, v in js.items(): printMainMessage(f"[{i}] = {v} ({type(v).__name__})")
-                    if not (isYes(input("> ")) == True): raise Exception("Canceled save")
-                    for i, v in js.items(): generated_json[i] = v
-                except Exception as e: return loop()
-            elif d == "2":
-                printMainMessage("Enter Key Name: ")
-                key = input("> ")
-                if isRequestClose(key) or key == "": return {"success": False, "key": "", "value": ""}
-                if orangeblox_mode == True and key.startswith("EFlag"):
-                    printMainMessage("This setting cannot be changed through Roblox Fast Flags Installer. Please configure this through OrangeBlox settings instead.")
-                    input("> ")
-                    return loop()
-                printMainMessage("Enter Key Value: ")
-                value = input("> ")
-                if isRequestClose(value): return {"success": False, "key": "", "value": ""}
-                if value.isdigit():
-                    printMainMessage("Would you like this value to be a number value or do you want to keep it as a string? (y/n)")
-                    isNum = input("> ")
-                    if isYes(isNum) == True: value = int(value)
-                elif value == "true" or value == "false":
-                    printMainMessage("Would you like this value to be a boolean value or do you want to keep it as a string? (y/n)")
-                    isBool = input("> ")
-                    if isYes(isBool) == True: value = value=="true"
-                return {"success": True, "key": key, "value": value}
-            else: return {"success": False, "key": "", "value": ""}
-        completeLoop = loop()
-        if completeLoop["success"] == True:
-            generated_json[completeLoop["key"]] = completeLoop["value"]
-            printMainMessage("Would you like to add more fast flags? (y/n)")
-            more = input("> ")
-            if isYes(more) == True: custom()
-    printMainMessage("Would you like to use custom fast flags? (y/n)")
-    installCustom = input("> ")
-    if isYes(installCustom) == True: custom()
-    elif isRequestClose(installCustom) == True:
-        printMainMessage("Ending installation..")
-        return
-
-    # Installation Mode
-    if orangeblox_mode == False:
-        printWarnMessage("--- Installation Mode ---")
-        printMainMessage("[y/yes] = Install/Reinstall Flags")
-        printMainMessage("[n/no/(*)] = Cancel Install")
-        printMainMessage("[j/json] = Get JSON Settings")
-        printMainMessage("[nm/no-merge] = Don't Merge Settings with Previous Settings")
-        printMainMessage("[f/flat] = Flat JSON Install")
-        printMainMessage("[fnm/flat-no-merge] = Flat-No-Merge Install")
-        printMainMessage("[r/reset] = Reset Settings")
-        select_mode = input("> ")
-        if isYes(select_mode) == True: printMainMessage("Selected Mode: Install/Reinstall Flags")
-        elif select_mode.lower() == "j" or select_mode.lower() == "json": printMainMessage("Selected Mode: Get JSON Settings")
-        elif select_mode.lower() == "nm" or select_mode.lower() == "no-merge": printMainMessage("Selected Mode: Don't Merge Settings with Previous Settings")
-        elif select_mode.lower() == "f" or select_mode.lower() == "flat": printMainMessage("Selected Mode: Flat JSON Install")
-        elif select_mode.lower() == "fnm" or select_mode.lower() == "flat-no-merge": printMainMessage("Selected Mode: Flat-No-Merge Install")
-        elif select_mode.lower() == "r" or select_mode.lower() == "reset": printMainMessage("Selected Mode: Reset Settings")
-        else:
-            printMainMessage("Ending installation..")
-            return
-    else: select_mode = "y"
-
-    # Installation
-    if orangeblox_mode == False:
-        printWarnMessage("--- Installation Ready! ---")
-        printMainMessage("Settings are now finished and now ready for setup!")
-        printMainMessage("Would you like to continue with the fast flag installation? (y/n)")
-        printErrorMessage("WARNING! This will force-quit any open Roblox windows! Please close them now before continuing in order to prevent data loss!")
-        install_now = input("> ")
-        if isYes(install_now) == True:
-            if isYes(select_mode) == True: handler.installFastFlags(generated_json, studio=is_studio, main=True)
-            elif select_mode.lower() == "j" or select_mode.lower() == "json":
-                printMainMessage("Generated JSON:")
-                printMainMessage(json.dumps(generated_json))
-                return
-            elif select_mode.lower() == "nm" or select_mode.lower() == "no-merge": handler.installFastFlags(generated_json, merge=False, studio=is_studio, main=True)
-            elif select_mode.lower() == "f" or select_mode.lower() == "flat": handler.installFastFlags(generated_json, flat=True, studio=is_studio, main=True)
-            elif select_mode.lower() == "fnm" or select_mode.lower() == "flat-no-merge": handler.installFastFlags(generated_json, merge=False, flat=True, studio=is_studio, main=True)
-            elif select_mode.lower() == "r" or select_mode.lower() == "reset": handler.installFastFlags({}, studio=is_studio, main=True)
+            # Installation
+            if orangeblox_mode == False:
+                printWarnMessage("--- Installation Ready! ---")
+                printMainMessage("Settings are now finished and now ready for setup!")
+                printMainMessage("Would you like to continue with the fast flag installation? (y/n)")
+                printErrorMessage("WARNING! This will force-quit any open Roblox windows! Please close them now before continuing in order to prevent data loss!")
+                install_now = input("> ")
+                if isYes(install_now) == True:
+                    if isYes(select_mode) == True: handler.installFastFlags(generated_json, studio=is_studio, main=True)
+                    elif select_mode.lower() == "j" or select_mode.lower() == "json":
+                        printMainMessage("Generated JSON:")
+                        printMainMessage(json.dumps(generated_json))
+                        return
+                    elif select_mode.lower() == "nm" or select_mode.lower() == "no-merge": handler.installFastFlags(generated_json, merge=False, studio=is_studio, main=True)
+                    elif select_mode.lower() == "f" or select_mode.lower() == "flat": handler.installFastFlags(generated_json, flat=True, studio=is_studio, main=True)
+                    elif select_mode.lower() == "fnm" or select_mode.lower() == "flat-no-merge": handler.installFastFlags(generated_json, merge=False, flat=True, studio=is_studio, main=True)
+                    elif select_mode.lower() == "r" or select_mode.lower() == "reset": handler.installFastFlags({}, studio=is_studio, main=True)
+                    else: printMainMessage("Ending installation.."); return
+                else: printMainMessage("Ending installation.."); return
             else:
-                printMainMessage("Ending installation..")
-                return
-        else:
-            printMainMessage("Ending installation..")
-            return
-    else:
-        printWarnMessage("--- Saving Ready! ---")
-        printMainMessage("Are you sure you would like to save these FFlags in the bootstrap system? (y/n)")
-        install_now = input("> ")
-        if isNo(install_now) == True:
-            printMainMessage("Ending installation..")
-            return
-        else: handler.installFastFlags(generated_json, endRobloxInstances=False, studio=is_studio, main=True)
+                printWarnMessage("--- Saving Ready! ---")
+                printMainMessage("Are you sure you would like to save these FFlags in the bootstrap system? (y/n)")
+                install_now = input("> ")
+                if isNo(install_now) == True: return
+                else: handler.installFastFlags(generated_json, endRobloxInstances=False, studio=is_studio, main=True)
+        if result:
+            if result.get("index") == 1:
+                # Edit Fast Flag
+                key = result.get('i')
+                value = result.get('v')
+                printWarnMessage(f"--- Editing Flag: {key} ---")
+                printMainMessage(f"Current Value: {value} [{type(value).__name__}]")
+                printMainMessage("Please enter the new value for this flag! (Type \"delete\" to remove the flag, or type \"back\" to go back!)")
+                printMainMessage("You may also format the value but separating the actual value using |. For example:")
+                printMainMessage("int|1234 = Will set value to integer 1234")
+                printMainMessage("float|123.45 = Will set value to floating point number 123.45")
+                printMainMessage("null| = Will set value to null or None")
+                printMainMessage("bool|true = Will set value to boolean true")
+                try:
+                    user_input = input("> ")
+                    if "|" in user_input:
+                        def attempt_format(func, val):
+                            try: return func(val)
+                            except: return None
+                        input_split = user_input[:user_input.find("|")]
+                        final_value = user_input[user_input.find("|")+1:]
+                        if input_split == "int": user_input = attempt_format(int, final_value)
+                        elif input_split == "float": user_input = attempt_format(float, final_value)
+                        elif input_split == "null" or input_split == "None": user_input = None
+                        elif input_split == "bool": user_input = final_value.lower()=="true"
+                    elif user_input.lower() == "delete":
+                        generated_json.pop(key)
+                        printSuccessMessage(f"Successfully deleted flag: {key}!")
+                        return menu()
+                    elif user_input.lower() == "back":
+                        printMainMessage("Returning to menu..")
+                        return menu()
+                    generated_json[key] = user_input
+                    printSuccessMessage(f"Successfully edited flag: {key} to value: {user_input} [{type(user_input).__name__}]!")
+                except KeyboardInterrupt: printMainMessage("Returning to menu..")
+                except Exception as e: printErrorMessage(f"Unable to edit value.. Exception: {str(e)}")
+            elif result.get("index") == 2:
+                # Add Fast Flags
+                pre_generating_list = []
+                pre_generating_list.append({"index": 1, "message": f"Add Manually"})
+                pre_generating_list.append({"index": 2, "message": f"Add using JSON"})
+                printWarnMessage(f"--- Select Adding Method ---")
+                printErrorMessage("Please check what the flags actually do!! You will be responsible for what flags are enabled through this option.")
+                printErrorMessage("Any flag that'll cause you to get banned is solely on your decisions.")
+                pre_result = generateMenuSelection(pre_generating_list, star_option="Return to menu")
+                if pre_result:
+                    try:
+                        if pre_result.get("index") == 1:
+                            printWarnMessage(f"--- Add Manually ---")
+                            printMainMessage("Please enter the flag to add to the list:")
+                            adding_key = input("> ")
+                            value = result.get('v')
+                            printWarnMessage(f"--- Adding Flag: {adding_key} ---")
+                            printMainMessage("Please enter the value for this flag! (Type \"back\" to go back!)")
+                            printMainMessage("You may also format the value but separating the actual value using |. For example:")
+                            printMainMessage("int|1234 = Will set value to integer 1234")
+                            printMainMessage("float|123.45 = Will set value to floating point number 123.45")
+                            printMainMessage("null| = Will set value to null or None")
+                            printMainMessage("bool|true = Will set value to boolean true")
+                            user_input = input("> ")
+                            if "|" in user_input:
+                                def attempt_format(func, val):
+                                    try: return func(val)
+                                    except: return None
+                                input_split = user_input[:user_input.find("|")]
+                                final_value = user_input[user_input.find("|")+1:]
+                                if input_split == "int": user_input = attempt_format(int, final_value)
+                                elif input_split == "float": user_input = attempt_format(float, final_value)
+                                elif input_split == "null" or input_split == "None": user_input = None
+                                elif input_split == "bool": user_input = final_value.lower()=="true"
+                            elif user_input.lower() == "back":
+                                printMainMessage("Returning to menu..")
+                                return menu()
+                            generated_json[adding_key] = user_input
+                            printSuccessMessage(f"Successfully added flag: {adding_key} to value: {user_input} [{type(user_input).__name__}]!")
+                        elif pre_result.get("index") == 2:
+                            printMainMessage("Please input the JSON text below:")
+                            printErrorMessage("FLAGS MAY BREAK YOUR ROBLOX INSTALLATION. PLEASE MAKE SURE TO BE CAREFUL OF WHAT YOU PUT HERE!")
+                            js = input("> ")
+                            js = json.loads(js)
+                            if not type(js) is dict: raise Exception("Not dictionary")
+                            printMainMessage("Are you sure you would like to use this fast flag JSON?")
+                            for i, v in js.items(): printMainMessage(f"[{i}] = {v} [{type(v).__name__}]")
+                            if not (isYes(input("> ")) == True): 
+                                printMainMessage("Returning to menu..")
+                                return menu()
+                            for i, v in js.items(): generated_json[i] = v
+                    except KeyboardInterrupt: printMainMessage("Returning to menu..")
+                    except Exception as e: printErrorMessage(f"Unable to add flag. Exception: {str(e)}")
+                else: printMainMessage("Returning to menu..")
+            elif result.get("index") == 3:
+                # Flag Garden
+
+                # Additional Message
+                if is_studio == True: printMainMessage("Alright! So, we will start with flags that are available for the Roblox player to be run in the playtest window!")
+
+                # FPS Unlocker
+                printWarnMessage("--- FPS Unlocker ---")
+                printMainMessage("Would you like to use an FPS Unlocker? (y/n)")
+                installFPSUnlocker = input("> ")
+                def getFPSCap():
+                    printWarnMessage("- FPS Cap -")
+                    printMainMessage("Enter the FPS cap to install on your client. (Leave blank for no cap)")
+                    cap = input("> ")
+                    if cap.isdigit(): return cap
+                    else: return None
+                if isYes(installFPSUnlocker) == True:
+                    # FPS Cap
+                    fpsCap = getFPSCap()
+
+                    # Roblox Vulkan Rendering
+                    printWarnMessage("- Roblox Vulkan Rendering -")
+                    printMainMessage("Would you like to use Vulkan Rendering? (It will remove the cap fully but may cause issues) (y/n)")
+                    useVulkan = input("> ")
+                    generated_json["FFlagTaskSchedulerLimitTargetFpsTo2402"] = "false"
+
+                    if fpsCap == None: generated_json["DFIntTaskSchedulerTargetFps"] = "9999"
+                    else: generated_json["DFIntTaskSchedulerTargetFps"] = fpsCap
+
+                    if isYes(useVulkan) == True: 
+                        generated_json["FFlagDebugGraphicsPreferVulkan"] = "true"
+                        if main_os == "Darwin": generated_json["FFlagDebugGraphicsDisableMetal"] =  "true"
+                    elif isNo(useVulkan) == True: 
+                        generated_json["FFlagDebugGraphicsPreferVulkan"] = "false"
+                        if main_os == "Darwin": generated_json["FFlagDebugGraphicsDisableMetal"] =  "false"
+                    elif isRequestClose(useVulkan) == True:
+                        printMainMessage("Exiting garden..")
+                        return menu()
+                elif isRequestClose(installFPSUnlocker) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installFPSUnlocker) == True:
+                    generated_json["FFlagDebugGraphicsPreferVulkan"] = "false"
+                    generated_json["DFIntTaskSchedulerTargetFps"] = 60
+                    generated_json["FFlagDebugGraphicsDisableMetal"] = "false"
+
+                    # Roblox FPS Unlocker
+                    printWarnMessage("- Roblox FPS Unlocker -")
+                    printMainMessage("Would you like the Roblox FPS Unlocker in your settings? (This may not work depending on your Roblox client version.) (y/n)")
+                    robloxFPSUnlocker = input("> ")
+                    if isYes(robloxFPSUnlocker) == True:
+                        generated_json["FFlagGameBasicSettingsFramerateCap1"] = "true" # If roblox decides to change, I won't need to :)
+                        generated_json["FFlagGameBasicSettingsFramerateCap2"] = "true"
+                        generated_json["FFlagGameBasicSettingsFramerateCap3"] = "true"
+                        generated_json["FFlagGameBasicSettingsFramerateCap4"] = "true"
+                        generated_json["FFlagGameBasicSettingsFramerateCap5"] = "true"
+                        generated_json["FFlagGameBasicSettingsFramerateCap6"] = "true"
+                        generated_json["FFlagGameBasicSettingsFramerateCap7"] = "true"
+                        generated_json["FFlagGameBasicSettingsFramerateCap8"] = "true"
+                        generated_json["FFlagGameBasicSettingsFramerateCap9"] = "true"
+                        generated_json["FFlagGameBasicSettingsFramerateCap10"] = "true" # If roblox decides to change, I won't need to :)
+                        generated_json["DFIntTaskSchedulerTargetFps"] = 0
+                    elif isRequestClose(robloxFPSUnlocker) == True:
+                        printMainMessage("Exiting garden..")
+                        return menu()
+                    elif isNo(robloxFPSUnlocker) == True:
+                        generated_json["FFlagGameBasicSettingsFramerateCap1"] = "false" # If roblox decides to change, I won't need to :)
+                        generated_json["FFlagGameBasicSettingsFramerateCap2"] = "false"
+                        generated_json["FFlagGameBasicSettingsFramerateCap3"] = "false"
+                        generated_json["FFlagGameBasicSettingsFramerateCap4"] = "false"
+                        generated_json["FFlagGameBasicSettingsFramerateCap5"] = "false"
+                        generated_json["FFlagGameBasicSettingsFramerateCap6"] = "false"
+                        generated_json["FFlagGameBasicSettingsFramerateCap7"] = "false"
+                        generated_json["FFlagGameBasicSettingsFramerateCap8"] = "false"
+                        generated_json["FFlagGameBasicSettingsFramerateCap9"] = "false"
+                        generated_json["FFlagGameBasicSettingsFramerateCap10"] = "false" # If roblox decides to change, I won't need to :)
+                        generated_json["DFIntTaskSchedulerTargetFps"] = None
+
+                # Verified Badge
+                printWarnMessage("--- Verified Badge ---")
+                printMainMessage("Would you like to use a verified badge during Roblox Games? (y/n)")
+                installVerifiedBadge = input("> ")
+                if isYes(installVerifiedBadge) == True:
+                    if user_id: generated_json["FStringWhitelistVerifiedUserId"] = str(user_id)
+                elif isRequestClose(installVerifiedBadge) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installVerifiedBadge) == True: generated_json["FStringWhitelistVerifiedUserId"] = None
+
+                # Rename Charts to Discover
+                printWarnMessage("--- Replace Charts ---")
+                printMainMessage("Would you like to rename Charts back to Discover (may work)? (y/n)")
+                installRenameCharts = input("> ")
+                if isYes(installRenameCharts) == True: generated_json["FFlagLuaAppChartsPageRenameIXP"] = "false"
+                elif isRequestClose(installRenameCharts) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installRenameCharts) == True: generated_json["FFlagLuaAppChartsPageRenameIXP"] = "true"
+
+                # Enable Developer Tools
+                printWarnMessage("--- Enable Developer Tools ---")
+                printMainMessage("Would you like to enable Developer Tools inside of the Roblox App (when website frame is opened) (Ctrl+Shift+I)? (y/n)")
+                installEnableDeveloper = input("> ")
+                if isYes(installEnableDeveloper) == True: generated_json["FFlagDebugEnableNewWebView2DevTool"] = "true"
+                elif isRequestClose(installEnableDeveloper) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installEnableDeveloper) == True: generated_json["FFlagDebugEnableNewWebView2DevTool"] = "false"
+
+                # Display FPS
+                printWarnMessage("--- Display FPS ---")
+                printMainMessage("Would you like your client to display the FPS? (y/n)")
+                installFPSViewer = input("> ")
+                if isYes(installFPSViewer) == True: generated_json["FFlagDebugDisplayFPS"] = "true"
+                elif isRequestClose(installFPSViewer) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installFPSViewer) == True: generated_json["FFlagDebugDisplayFPS"] = "false"
+
+                # Disable Ads
+                printWarnMessage("--- Disable Ads ---")
+                printMainMessage("Would you like your client to disable ads? (y/n)")
+                installRemoveAds = input("> ")
+                if isYes(installRemoveAds) == True: generated_json["FFlagAdServiceEnabled"] = "false"
+                elif isRequestClose(installRemoveAds) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installRemoveAds) == True: generated_json["FFlagAdServiceEnabled"] = "true"
+
+                # Increase Max Assets Loading
+                printWarnMessage("--- Increase Max Assets Loading ---")
+                printMainMessage("Would you like to increase the limit on Max Assets loading from 100? (this will make loading into games faster depending on your computer) (y/n)")
+                printYellowMessage("WARNING! This can crash your Roblox session!")
+                installRemoveMaxAssets = input("> ")
+                if isYes(installRemoveMaxAssets) == True:
+                    printMainMessage("Enter the amount of assets you would like to load at the same time:")
+                    installRemoveMaxAssetsNum = input("> ")
+                    if installRemoveMaxAssetsNum.isdigit():
+                        generated_json["DFIntNumAssetsMaxToPreload"] = str(int(installRemoveMaxAssetsNum))
+                        generated_json["DFIntAssetPreloading"] = str(int(installRemoveMaxAssetsNum))
+                    else:
+                        printYellowMessage("Disabled limit due to invalid prompt.")
+                        generated_json["DFIntNumAssetsMaxToPreload"] = "100"
+                        generated_json["DFIntAssetPreloading"] = "100"
+                elif isRequestClose(installRemoveMaxAssets) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installRemoveMaxAssets) == True:
+                    generated_json["DFIntNumAssetsMaxToPreload"] = "100"
+                    generated_json["DFIntAssetPreloading"] = "100"
+
+                # Enable Genre System
+                printWarnMessage("--- Enable New Genre System Under Making ---")
+                printMainMessage("Would you like to enable the new genre system in beta? (y/n)")
+                installGenreSystem = input("> ")
+                if isYes(installGenreSystem) == True:
+                    generated_json["FFlagLuaAppGenreUnderConstruction"] = "false"
+                    generated_json["FFlagLuaAppGenreUnderConstructionDesktopFix"] = "false"
+                elif isRequestClose(installGenreSystem) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installGenreSystem) == True:
+                    generated_json["FFlagLuaAppGenreUnderConstruction"] = "true"
+                    generated_json["FFlagLuaAppGenreUnderConstructionDesktopFix"] = "true"
+
+                # Enable Freecam
+                printWarnMessage("--- Enable Freecam ---")
+                printMainMessage("Would you like to enable freecam on the Roblox client (only works if you're a Roblox Developer of a game or a Star Creator)? (y/n)")
+                installFreecam = input("> ")
+                if isYes(installFreecam) == True: generated_json["FFlagLoadFreecamModule"] = "true"
+                elif isRequestClose(installFreecam) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installFreecam) == True: generated_json["FFlagLoadFreecamModule"] = "false"
+
+                # Enable New Camera Controls
+                printWarnMessage("--- Enable New Camera Controls ---")
+                printMainMessage("Would you like to enable new camera controls? (y/n)")
+                installNewCamera = input("> ")
+                if isYes(installNewCamera) == True: generated_json["FFlagNewCameraControls"] = "true"
+                elif isRequestClose(installNewCamera) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installNewCamera) == True: generated_json["FFlagNewCameraControls"] = "false"
+
+                # Hide Internet Disconnect Message
+                printWarnMessage("--- Hide Internet Disconnect Message ---")
+                printMainMessage("Would you like to hide the Internet Disconnect message when you're kicked? (You will still be kicked, jsut the message will not show.) (y/n)")
+                installHideDisconnect = input("> ")
+                if isYes(installHideDisconnect) == True: generated_json["DFFlagDebugDisableTimeoutDisconnect"] = "true"
+                elif isRequestClose(installHideDisconnect) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installHideDisconnect) == True: generated_json["DFFlagDebugDisableTimeoutDisconnect"] = "false"
+
+                # Disable In-Game Purchases
+                printWarnMessage("--- Disable In-Game Purchases ---")
+                printMainMessage("Would you like to disable in-game purchases (game-passes, developer products, etc.)? (You will still be kicked, jsut the message will not show.) (y/n)")
+                installDisablePurchases = input("> ")
+                if isYes(installDisablePurchases) == True: generated_json["DFFlagOrder66"] = "true"
+                elif isRequestClose(installDisablePurchases) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installDisablePurchases) == True: generated_json["DFFlagOrder66"] = "false"
+
+                # Disable Voice Chat
+                printWarnMessage("--- Disable Voice Chat ---")
+                printMainMessage("Would you like to disable Voice Chat? (y/n)")
+                installDisableVoiceChat = input("> ")
+                if isYes(installDisableVoiceChat) == True: generated_json["DFFlagVoiceChat4"] = "false"
+                elif isRequestClose(installDisableVoiceChat) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installDisableVoiceChat) == True: generated_json["DFFlagVoiceChat4"] = "true"
+
+                # Disable In-Game Chat
+                printWarnMessage("--- Disable In-Game Chat ---")
+                printMainMessage("Would you like to disable In-Game Chat? (y/n)")
+                installDisableGameChat = input("> ")
+                if isYes(installDisableGameChat) == True: generated_json["FFlagDebugForceChatDisabled"] = "true"
+                elif isRequestClose(installDisableGameChat) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installDisableGameChat) == True: generated_json["FFlagDebugForceChatDisabled"] = "false"
+
+                # Disable Full Screen Title Bar
+                printWarnMessage("--- Disable Full Screen Title Bar ---")
+                printMainMessage("Would you like to disable the Title Bar when you go into full screen on the Roblox client? (y/n)")
+                installDisableFullScreenTitle = input("> ")
+                if isYes(installDisableFullScreenTitle) == True: generated_json["FIntFullscreenTitleBarTriggerDelayMillis"] = "3600000"
+                elif isRequestClose(installDisableFullScreenTitle) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installDisableFullScreenTitle) == True: generated_json["FIntFullscreenTitleBarTriggerDelayMillis"] = None
+
+                # Enable Red Text Font
+                printWarnMessage("--- Enable Red Text Font ---")
+                printMainMessage("Would you like to enable Red text instead of White text color in the lua app? (y/n)")
+                installRedText = input("> ")
+                if isYes(installRedText) == True: generated_json["FStringDebugHighlightSpecificFont"] = "rbxasset://fonts/families/BuilderSans.json"
+                elif isRequestClose(installRedText) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installRedText) == True: generated_json["FStringDebugHighlightSpecificFont"] = None
+
+                # Remove Automatically Translated
+                printWarnMessage("--- Remove Automatically Translated ---")
+                printMainMessage("Would you like to remove the chat automatically translated message in the chat? (y/n)")
+                installRemoveAutoTranslate = input("> ")
+                if isYes(installRemoveAutoTranslate) == True: generated_json["FFlagChatTranslationEnableSystemMessage"] = "false"
+                elif isRequestClose(installRemoveAutoTranslate) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installRemoveAutoTranslate) == True: generated_json["FFlagChatTranslationEnableSystemMessage"] = "true"
+
+                # Rendering Mode
+                got_modes = []
+                ui_options = {}
+                if main_os == "Darwin": got_modes.append("Metal (for MacOS)")
+                got_modes.append("Vulkan (may cause issues)")
+                got_modes.append("OpenGL")
+                got_modes.append("DirectX 10")
+                got_modes.append("DirectX 11")
+                got_modes = sorted(got_modes)
+                count = 1
+
+                generated_json["FFlagDebugGraphicsPreferMetal"] = None
+                generated_json["FFlagDebugGraphicsDisableDirect3D11"] = None
+                generated_json["FFlagDebugGraphicsPreferVulkan"] = None
+                generated_json["FFlagDebugGraphicsPreferOpenGL"] = None
+                generated_json["FFlagDebugGraphicsPreferD3D11FL10"] = None
+                generated_json["FFlagDebugGraphicsPreferD3D11"] = None
+                    
+                printWarnMessage("--- Rendering Mode ---")
+                printMainMessage("Select a rendering mode to force on the client:")
+                colors_class.print(ts("This FFlag was from the LatteFlags GitHub! (https://github.com/espresso-soft/latteflags)"), 215)
+                for i in got_modes:
+                    printMainMessage(f"[{str(count)}] = {i}")
+                    ui_options[str(count)] = i
+                    count += 1
+                print("[*] = None")
+                installRenderingMode = input("> ")
+                if ui_options.get(installRenderingMode):
+                    opt = ui_options[installRenderingMode]
+                    if opt == "Metal (for MacOS)": generated_json["FFlagDebugGraphicsPreferMetal"] = "true"
+                    elif opt == "Vulkan (may cause issues)":
+                        generated_json["FFlagDebugGraphicsDisableDirect3D11"] = "true"
+                        generated_json["FFlagDebugGraphicsPreferVulkan"] = "true"
+                    elif opt == "OpenGL":
+                        generated_json["FFlagDebugGraphicsDisableDirect3D11"] = "true"
+                        generated_json["FFlagDebugGraphicsPreferOpenGL"] = "true"
+                    elif opt == "DirectX 10": generated_json["FFlagDebugGraphicsPreferD3D11FL10"] = "true"
+                    elif opt == "DirectX 11": generated_json["FFlagDebugGraphicsPreferD3D11"] = "true"
+
+                # Lighting Mode
+                got_modes = []
+                ui_options = {}
+                got_modes.append("Voxel Lighting (Phase 1)")
+                got_modes.append("Shadowmap Lighting (Phase 2)")
+                got_modes.append("Future Lighting (Phase 3)")
+                got_modes.append("Unified Lighting")
+                got_modes = sorted(got_modes)
+                count = 1
+
+                generated_json["DFFlagDebugRenderForceTechnologyVoxel"] = None
+                generated_json["FFlagDebugForceFutureIsBrightPhase2"] = None
+                generated_json["FFlagDebugForceFutureIsBrightPhase3"] = None
+                generated_json["FFlagRenderUnifiedLighting10"] = None
+                generated_json["FFlagUnifiedLightingBetaFeature"] = None
+                    
+                printWarnMessage("--- Lighting Mode ---")
+                printMainMessage("Select a lighting mode to force on the client:")
+                colors_class.print("This FFlag was from the LatteFlags GitHub! (https://github.com/espresso-soft/latteflags)", 215)
+                for i in got_modes:
+                    printMainMessage(f"[{str(count)}] = {i}")
+                    ui_options[str(count)] = i
+                    count += 1
+                print("[*] = None")
+                installLightingMode = input("> ")
+                if ui_options.get(installLightingMode):
+                    opt = ui_options[installLightingMode]
+                    if opt == "Voxel Lighting (Phase 1)": generated_json["DFFlagDebugRenderForceTechnologyVoxel"] = "true"
+                    elif opt == "Shadowmap Lighting (Phase 2)": generated_json["FFlagDebugForceFutureIsBrightPhase2"] = "true"
+                    elif opt == "Future Lighting (Phase 3)": generated_json["FFlagDebugForceFutureIsBrightPhase3"] = "true"
+                    elif opt == "Unified Lighting":
+                        generated_json["FFlagRenderUnifiedLighting10"] = "true"
+                        generated_json["FFlagUnifiedLightingBetaFeature"] = "true"
+
+                # Texture Quality
+                got_modes = []
+                ui_options = {}
+                got_modes.append("Level 1 (Low Quality)")
+                got_modes.append("Level 2 (Medium Quality)")
+                got_modes.append("Level 3 (Highest Quality)")
+                got_modes = sorted(got_modes)
+                count = 1
+
+                generated_json["DFFlagTextureQualityOverrideEnabled"] = None
+                generated_json["DFIntTextureQualityOverride"] = None
+                    
+                printWarnMessage("--- Texture Quality ---")
+                printMainMessage("Select a texture quality number to put on the client:")
+                for i in got_modes:
+                    printMainMessage(f"[{str(count)}] = {i}")
+                    ui_options[str(count)] = i
+                    count += 1
+                print("[*] = None")
+                installTextureQuality = input("> ")
+                if ui_options.get(installTextureQuality):
+                    opt = ui_options[installTextureQuality]
+                    if opt == "Level 1 (Low Quality)":
+                        generated_json["DFFlagTextureQualityOverrideEnabled"] = "true"
+                        generated_json["DFIntTextureQualityOverride"] = "1"
+                    elif opt == "Level 2 (Medium Quality)":
+                        generated_json["DFFlagTextureQualityOverrideEnabled"] = "true"
+                        generated_json["DFIntTextureQualityOverride"] = "2"
+                    elif opt == "Level 3 (Highest Quality)":
+                        generated_json["DFFlagTextureQualityOverrideEnabled"] = "true"
+                        generated_json["DFIntTextureQualityOverride"] = "3"
+
+                # Disable Highlights
+                printWarnMessage("--- Disable Highlights ---")
+                printMainMessage("Would you like to disable Highlight rendering on the client? (y/n)")
+                colors_class.print("This FFlag was from the LatteFlags GitHub! (https://github.com/espresso-soft/latteflags)", 215)
+                installDisableHighLight = input("> ")
+                if isYes(installDisableHighLight) == True: generated_json["DFFlagRenderHighlightManagerPrepare"] = "true"
+                elif isRequestClose(installDisableHighLight) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installDisableHighLight) == True: generated_json["DFFlagRenderHighlightManagerPrepare"] = "false"
+
+                # Disable VC Beta Badge
+                printWarnMessage("--- Disable VC Beta Badge ---")
+                printMainMessage("Would you like to disable the VC beta badge on the client? (y/n)")
+                colors_class.print("This FFlag was from the Dantez GitHub! (https://github.com/Dantezz025/Roblox-Fast-Flags)", 34)
+                installVCBadge = input("> ")
+                if isYes(installVCBadge) == True: 
+                    generated_json["FFlagVoiceBetaBadge"] = "false"
+                    generated_json["FFlagTopBarUseNewBadge"] = "false"
+                    generated_json["FFlagEnableBetaBadgeLearnMore"] = "false"
+                    generated_json["FFlagBetaBadgeLearnMoreLinkFormview"] = "false"
+                    generated_json["FFlagControlBetaBadgeWithGuac"] = "false"
+                elif isRequestClose(installVCBadge) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installVCBadge) == True: 
+                    generated_json["FFlagVoiceBetaBadge"] = "true"
+                    generated_json["FFlagTopBarUseNewBadge"] = "true"
+                    generated_json["FFlagEnableBetaBadgeLearnMore"] = "true"
+                    generated_json["FFlagBetaBadgeLearnMoreLinkFormview"] = "true"
+                    generated_json["FFlagControlBetaBadgeWithGuac"] = "true"
+
+                # Fix Stutter Animations
+                printWarnMessage("--- Stutter Animations Fix ---")
+                printMainMessage("Would you like to install the stutter animations fix? (y/n)")
+                colors_class.print("This FFlag was from the Dantez GitHub! (https://github.com/Dantezz025/Roblox-Fast-Flags)", 34)
+                installStutterAnimation = input("> ")
+                if isYes(installStutterAnimation) == True:  generated_json["DFIntTimestepArbiterThresholdCFLThou"] = "300"
+                elif isRequestClose(installStutterAnimation) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installStutterAnimation) == True: generated_json["DFIntTimestepArbiterThresholdCFLThou"] = None
+
+                # Fix Stutter Animations
+                printWarnMessage("--- Disable Wi-Fi Disconnect ---")
+                printMainMessage("Would you like to disable disconnecting from servers when wifi is changed on the client? (y/n)")
+                colors_class.print("This FFlag was from the Dantez GitHub! (https://github.com/Dantezz025/Roblox-Fast-Flags)", 34)
+                installWifiConnect = input("> ")
+                if isYes(installWifiConnect) == True:  generated_json["DFFlagDebugDisableTimeoutDisconnect"] = "true"
+                elif isRequestClose(installWifiConnect) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installWifiConnect) == True: generated_json["DFFlagDebugDisableTimeoutDisconnect"] = "false"
+
+                # Rename Connections to Friends
+                printWarnMessage("--- Rename Connections to Friends ---")
+                printMainMessage("Would you like to enable renaming Connections back to Friends on the client? (y/n)")
+                installConnectionsRename = input("> ")
+                if isYes(installConnectionsRename) == True: 
+                    generated_json.update({
+                        "FFlagLuaAppRenameFriendsToConnectionsEdp": "false",
+                        "FFlagRenameFriendsToConnections": "false",
+                        "FFlagRenameFriendsToConnectionsAppChat2": "false",
+                        "FFlagRenameFriendsToConnectionsCoreUI": "false",
+                        "FFlagRenameFriendsToConnectionsFriendsMenu": "false",
+                        "FFlagRenameFriendsToConnectionsFriendsPage": "false",
+                        "FFlagRenameFriendsToConnectionsPartyLobby": "false",
+                        "FFlagRenameFriendsToConnectionsProfile": "false",
+                        "FFlagRenameFriendsToConnectionsWebviewHeading": "false"
+                    })
+                elif isRequestClose(installConnectionsRename) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installConnectionsRename) == True: 
+                    generated_json.update({
+                        "FFlagLuaAppRenameFriendsToConnectionsEdp": "true",
+                        "FFlagRenameFriendsToConnections": "true",
+                        "FFlagRenameFriendsToConnectionsAppChat2": "true",
+                        "FFlagRenameFriendsToConnectionsCoreUI": "true",
+                        "FFlagRenameFriendsToConnectionsFriendsMenu": "true",
+                        "FFlagRenameFriendsToConnectionsFriendsPage": "true",
+                        "FFlagRenameFriendsToConnectionsPartyLobby": "true",
+                        "FFlagRenameFriendsToConnectionsProfile": "true",
+                        "FFlagRenameFriendsToConnectionsWebviewHeading": "true"
+                    })
+
+                # Increase FPS #1
+                printWarnMessage("--- Increase FPS #1 ---")
+                printMainMessage("Would you like to enable increasing FPS using pack 1? (y/n)")
+                colors_class.print("This FFlag was from the Dantez GitHub! (https://github.com/Dantezz025/Roblox-Fast-Flags)", 34)
+                installIncreaseFPS1 = input("> ")
+                if isYes(installIncreaseFPS1) == True:  
+                    generated_json["FFlagDebugDisableTelemetryEphemeralCounter"] = "true"
+                    generated_json["FFlagDebugDisableTelemetryEphemeralStat"] = "true"
+                    generated_json["FFlagDebugDisableTelemetryEventIngest"] = "true"
+                    generated_json["FFlagDebugDisableTelemetryPoint"] = "true"
+                    generated_json["FFlagDebugDisableTelemetryV2Counter"] = "true"
+                    generated_json["FFlagDebugDisableTelemetryV2Event"] = "true"
+                    generated_json["FFlagDebugDisableTelemetryV2Stat"] = "true"
+                elif isRequestClose(installIncreaseFPS1) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installIncreaseFPS1) == True:
+                    generated_json["FFlagDebugDisableTelemetryEphemeralCounter"] = "false"
+                    generated_json["FFlagDebugDisableTelemetryEphemeralStat"] = "false"
+                    generated_json["FFlagDebugDisableTelemetryEventIngest"] = "false"
+                    generated_json["FFlagDebugDisableTelemetryPoint"] = "false"
+                    generated_json["FFlagDebugDisableTelemetryV2Counter"] = "false"
+                    generated_json["FFlagDebugDisableTelemetryV2Event"] = "false"
+                    generated_json["FFlagDebugDisableTelemetryV2Stat"] = "false"
+
+                # Increase FPS #2
+                printWarnMessage("--- Increase FPS #2 ---")
+                printMainMessage("Would you like to enable increasing FPS using pack 2 (comfort mode)? (y/n)")
+                colors_class.print("This FFlag was from the Dantez GitHub! (https://github.com/Dantezz025/Roblox-Fast-Flags)", 34)
+                installIncreaseFPS2 = input("> ")
+                if isYes(installIncreaseFPS2) == True:  
+                    generated_json["DFIntCSGLevelOfDetailSwitchingDistance"] = 250
+                    generated_json["DFIntCSGLevelOfDetailSwitchingDistanceL12"] = 500
+                    generated_json["DFIntCSGLevelOfDetailSwitchingDistanceL23"] = 750
+                    generated_json["DFIntCSGLevelOfDetailSwitchingDistanceL34"] = 1000
+                    generated_json["DFIntTextureQualityOverride"] = 1
+                    generated_json["FFlagDisablePostFx"] = "true"
+                elif isRequestClose(installIncreaseFPS2) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installIncreaseFPS2) == True:
+                    generated_json["DFIntCSGLevelOfDetailSwitchingDistance"] = None
+                    generated_json["DFIntCSGLevelOfDetailSwitchingDistanceL12"] = None
+                    generated_json["DFIntCSGLevelOfDetailSwitchingDistanceL23"] = None
+                    generated_json["DFIntCSGLevelOfDetailSwitchingDistanceL34"] = None
+                    generated_json["DFIntTextureQualityOverride"] = None
+                    generated_json["FFlagDisablePostFx"] = None
+
+                # Reduce Ping
+                printWarnMessage("--- Reduce Ping ---")
+                printMainMessage("Would you like to enable reducing ping flags? (y/n)")
+                colors_class.print("This FFlag was from the Dantez GitHub! (https://github.com/Dantezz025/Roblox-Fast-Flags)", 34)
+                installReducePing = input("> ")
+                if isYes(installReducePing) == True:  
+                    generated_json.update({
+                        "DFIntConnectionMTUSize": 900,
+                        "FIntRakNetResendBufferArrayLength": "128",
+                        "FFlagOptimizeNetwork": "True",
+                        "FFlagOptimizeNetworkRouting": "True",
+                        "FFlagOptimizeNetworkTransport": "True",
+                        "FFlagOptimizeServerTickRate": "True",
+                        "DFIntServerPhysicsUpdateRate": "60",
+                        "DFIntServerTickRate": "60",
+                        "DFIntRakNetResendRttMultiple": "1",
+                        "DFIntRaknetBandwidthPingSendEveryXSeconds": "1",
+                        "DFIntOptimizePingThreshold": "50",
+                        "DFIntPlayerNetworkUpdateQueueSize": "20",
+                        "DFIntPlayerNetworkUpdateRate": "60",
+                        "DFIntNetworkPrediction": "120",
+                        "DFIntNetworkLatencyTolerance": "1",
+                        "DFIntMinimalNetworkPrediction": "0.1"
+                    })
+                elif isRequestClose(installReducePing) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installReducePing) == True:
+                    generated_json.update({
+                        "DFIntConnectionMTUSize": None,
+                        "FIntRakNetResendBufferArrayLength": None,
+                        "FFlagOptimizeNetwork": None,
+                        "FFlagOptimizeNetworkRouting": None,
+                        "FFlagOptimizeNetworkTransport": None,
+                        "FFlagOptimizeServerTickRate": None,
+                        "DFIntServerPhysicsUpdateRate": None,
+                        "DFIntServerTickRate": None,
+                        "DFIntRakNetResendRttMultiple": None,
+                        "DFIntRaknetBandwidthPingSendEveryXSeconds": None,
+                        "DFIntOptimizePingThreshold": None,
+                        "DFIntPlayerNetworkUpdateQueueSize": None,
+                        "DFIntPlayerNetworkUpdateRate": None,
+                        "DFIntNetworkPrediction": None,
+                        "DFIntNetworkLatencyTolerance": None,
+                        "DFIntMinimalNetworkPrediction": None
+                    })
+
+                # Limit Videos Playing
+                printWarnMessage("--- Limit Videos Playing ---")
+                printMainMessage("Would you like to set a number of Videos that can be played in-game on the client? (y/n)")
+                colors_class.print("This FFlag was from the LatteFlags GitHub! (https://github.com/espresso-soft/latteflags)", 215)
+                installLimitVideos = input("> ")
+                if isYes(installLimitVideos) == True:
+                    printMainMessage("Input the number of videos you would like to limit:")
+                    installLimitVideosNum = input("> ")
+                    if installLimitVideosNum.isdigit(): generated_json["DFIntVideoMaxNumberOfVideosPlaying"] = str(int(installLimitVideosNum))
+                    else:
+                        printYellowMessage("Disabled limit due to invalid prompt.")
+                        generated_json["DFIntVideoMaxNumberOfVideosPlaying"] = None
+                elif isRequestClose(installLimitVideos) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installLimitVideos) == True: generated_json["DFIntVideoMaxNumberOfVideosPlaying"] = None
+
+                # Limit Animations Playing
+                printWarnMessage("--- Limit Animations Playing ---")
+                printMainMessage("Would you like to set a number of Animations that can be played in-game on the client? (y/n)")
+                installLimitAnimations = input("> ")
+                if isYes(installLimitAnimations) == True:
+                    printMainMessage("Input the number of animations you would like to limit:")
+                    installLimitAnimationsNum = input("> ")
+                    if installLimitAnimationsNum.isdigit(): generated_json["DFIntMaxActiveAnimationTracks"] = str(int(installLimitAnimationsNum))
+                    else:
+                        printYellowMessage("Disabled limit due to invalid prompt.")
+                        generated_json["DFIntMaxActiveAnimationTracks"] = None
+                elif isRequestClose(installLimitAnimations) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installLimitAnimations) == True: generated_json["DFIntMaxActiveAnimationTracks"] = None
+
+                # Disable Foundation Mode
+                printWarnMessage("--- Disable Foundation Mode ---")
+                printMainMessage("Would you like to disable Foundation mode on your client? (This is the new layout Roblox added) (y/n)")
+                installDisableFoundationMode = input("> ")
+                if isYes(installDisableFoundationMode) == True:
+                    generated_json["FFlagLuaAppUseUIBloxColorPalettes1"] = "true"
+                    generated_json["FFlagUIBloxUseNewThemeColorPalettes"] = "true"
+                    generated_json["FFlagLuaAppEnableFoundationColors7"] = "false"
+                elif isRequestClose(installDisableFoundationMode) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installDisableFoundationMode) == True:
+                    generated_json["FFlagLuaAppUseUIBloxColorPalettes1"] = "false"
+                    generated_json["FFlagUIBloxUseNewThemeColorPalettes"] = "false"
+                    generated_json["FFlagLuaAppEnableFoundationColors7"] = "true"
+
+                # Custom Disconnect Message
+                printWarnMessage("--- Custom Disconnect Message ---")
+                printMainMessage("Would you like to use your own disconnect message? (reconnect button will disappear) (y/n)")
+                installCustomDisconnect = input("> ")
+                if isYes(installCustomDisconnect) == True:
+                    generated_json["FFlagReconnectDisabled"] = "true"
+                    printMainMessage("Enter the Disconnect Message below:")
+                    generated_json["FStringReconnectDisabledReason"] = input("> ")
+                elif isRequestClose(installCustomDisconnect) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installCustomDisconnect) == True:
+                    generated_json["FFlagReconnectDisabled"] = "false"
+                    generated_json["FStringReconnectDisabledReason"] = None
+
+                # Ability to Hide UI
+                printWarnMessage("--- Hide UI ---")
+                printMainMessage("Would you like to enable the ability to hide GUIs? (y/n)")
+                installHideUI = input("> ")
+                if isYes(installHideUI) == True:
+                    printMainMessage("Enter a Group ID that you're currently in so this flag can work:")
+                    generated_json["DFIntCanHideGuiGroupId"] = input("> ")
+                    if main_os == "Windows":
+                        printMainMessage("Combinations for hiding:")
+                        printMainMessage("Ctrl+Shift+B = Toggles BillboardGuis and SurfaceGuis")
+                        printMainMessage("Ctrl+Shift+C = Toggles PlayerGui")
+                        printMainMessage("Ctrl+Shift+G = Toggles CoreGui")
+                        printMainMessage("Ctrl+Shift+N = Toggles GUIs that appear above players")
+                    elif main_os == "Darwin":
+                        printMainMessage("Combinations for hiding:")
+                        printMainMessage("Command+Shift+B = Toggles BillboardGuis and SurfaceGuis")
+                        printMainMessage("Command+Shift+C = Toggles PlayerGui")
+                        printMainMessage("Command+Shift+G = Toggles CoreGui")
+                        printMainMessage("Command+Shift+N = Toggles GUIs that appear above players")
+                    else:
+                        printMainMessage("Exiting garden..")
+                        return menu()
+                elif isRequestClose(installHideUI) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installHideUI) == True: generated_json["DFIntCanHideGuiGroupId"] = None
+
+                # Quick Connect
+                printWarnMessage("--- Quick Connect ---")
+                printMainMessage("Would you like to install Quick Connect on your client? (y/n)")
+                printErrorMessage("WARNING! This can be buggy and may cause issues on your Roblox experience!!!")
+                installQuickConnect = input("> ")
+                if isYes(installQuickConnect) == True: generated_json["FFlagEnableQuickGameLaunch"] = "true"
+                elif isRequestClose(installQuickConnect) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installQuickConnect) == True: generated_json["FFlagEnableQuickGameLaunch"] = "false"
+
+                # Pre-Rendering
+                printWarnMessage("--- Pre-Rendering ---")
+                printMainMessage("Would you like to enable Pre-Rendering on the client? (y/n)")
+                printYellowMessage("This may conclude a 25% Performance Boost but may cause compatibility issues in games.")
+                colors_class.print("This FFlag was from the LatteFlags GitHub! (https://github.com/espresso-soft/latteflags)", 215)
+                installPreRendering = input("> ")
+                if isYes(installPreRendering) == True: generated_json["FFlagMovePrerender"] = "true"
+                elif isRequestClose(installPreRendering) == True:
+                    printMainMessage("Exiting garden..")
+                    return menu()
+                elif isNo(installPreRendering) == True: generated_json["FFlagMovePrerender"] = "false"
+
+                # Studio Flags
+                if is_studio == True: 
+                    printMainMessage("Alright! After that, we can now start with studio specific flags!")
+                    # Default to Select Tool
+                    printWarnMessage("--- Default to Select Tool ---")
+                    printMainMessage("Would you like to enable defaulting to the Select tool when in a place? (y/n)")
+                    installSelectTool = input("> ")
+                    if isYes(installSelectTool) == True: generated_json["FFlagDefaultToSelectTool"] = True
+                    elif isRequestClose(installSelectTool) == True:
+                        printMainMessage("Exiting garden..")
+                        return menu()
+                    elif isNo(installSelectTool) == True: generated_json["FFlagDefaultToSelectTool"] = False
+                    
+                    # Enable Materials Generator
+                    printWarnMessage("--- Enable Materials Generator ---")
+                    printMainMessage("Would you like to enable materials generator? (y/n)")
+                    installMaterialsGen = input("> ")
+                    if isYes(installMaterialsGen) == True: generated_json["FFlagEnableMaterialGenerator"] = True
+                    elif isRequestClose(installMaterialsGen) == True:
+                        printMainMessage("Exiting garden..")
+                        return menu()
+                    elif isNo(installMaterialsGen) == True: generated_json["FFlagEnableMaterialGenerator"] = False
+
+                    # Enable Ragdoll Death Animation
+                    printWarnMessage("--- Enable Ragdoll Death Animation ---")
+                    printMainMessage("Would you like to enable the ragdoll death animation? (y/n)")
+                    installRagdoll = input("> ")
+                    if isYes(installRagdoll) == True: generated_json["DFStringDefaultAvatarDeathType"] = "Ragdoll"
+                    elif isRequestClose(installRagdoll) == True:
+                        printMainMessage("Exiting garden..")
+                        return menu()
+                    elif isNo(installRagdoll) == True: generated_json["DFStringDefaultAvatarDeathType"] = None
+
+                    # Enable Assistant Code Generation
+                    printWarnMessage("--- Enable Assistant Code Generation ---")
+                    printMainMessage("Would you like to allow the assistant to generate code? (y/n)")
+                    installAssistantCode = input("> ")
+                    if isYes(installAssistantCode) == True: generated_json["FFlagLuauCodegen"] = True
+                    elif isRequestClose(installAssistantCode) == True:
+                        printMainMessage("Exiting garden..")
+                        return menu()
+                    elif isNo(installAssistantCode) == True: generated_json["FFlagLuauCodegen"] = False
+                    
+                    # Enable Multi Select
+                    printWarnMessage("--- Enable Multi Select ---")
+                    printMainMessage("Would you like to enable multi selecting? (y/n)")
+                    installMultiSelect = input("> ")
+                    if isYes(installMultiSelect) == True: generated_json["FFlagMultiSelect"] = True
+                    elif isRequestClose(installMultiSelect) == True:
+                        printMainMessage("Exiting garden..")
+                        return menu()
+                    elif isNo(installMultiSelect) == True: generated_json["FFlagMultiSelect"] = False
+
+                    # Enable Old Explorer
+                    printWarnMessage("--- Enable Old Explorer ---")
+                    printMainMessage("Would you like to enable the Old Explorer and disable the new explorer? (y/n)")
+                    installOldExplorer = input("> ")
+                    if isYes(installOldExplorer) == True: 
+                        generated_json["FFlagKillOldExplorer1"] = False
+                        generated_json["FFlagKillOldExplorer2"] = False
+                        generated_json["FFlagKillOldExplorer3"] = False
+                        generated_json["FFlagKillOldExplorer4"] = False
+                        generated_json["FFlagKillOldExplorer5"] = False
+                        generated_json["FFlagKillOldExplorer6"] = False
+                        generated_json["FFlagKillOldExplorer7"] = False
+                        generated_json["FFlagKillOldExplorer8"] = False
+                        generated_json["FFlagKillOldExplorer9"] = False
+                        generated_json["FFlagKillOldExplorer10"] = False
+                        generated_json["FFlagKillOldExplorer11"] = False
+                    elif isRequestClose(installOldExplorer) == True:
+                        printMainMessage("Exiting garden..")
+                        return menu()
+                    elif isNo(installOldExplorer) == True: 
+                        generated_json["FFlagKillOldExplorer1"] = True
+                        generated_json["FFlagKillOldExplorer2"] = True
+                        generated_json["FFlagKillOldExplorer3"] = True
+                        generated_json["FFlagKillOldExplorer4"] = True
+                        generated_json["FFlagKillOldExplorer5"] = True
+                        generated_json["FFlagKillOldExplorer6"] = True
+                        generated_json["FFlagKillOldExplorer7"] = True
+                        generated_json["FFlagKillOldExplorer8"] = True
+                        generated_json["FFlagKillOldExplorer9"] = True
+                        generated_json["FFlagKillOldExplorer10"] = True
+                        generated_json["FFlagKillOldExplorer11"] = True
+            elif result.get("index") == 4:
+                # Clear Fast Flags
+                printWarnMessage("--- Clear Fast Flags ---")
+                printMainMessage("Are you sure you want to want to clear your fast flag configuration? (y/n)")
+                printMainMessage("Data can be recovered if chose not to save.")
+                resetConfirm = input("> ")
+                if isYes(resetConfirm) == True:
+                    generated_json = {}
+                    printMainMessage("Fast Flag Configuration has been cleared!")
+            elif result.get("index") == 5:
+                # Exit without Saving
+                printWarnMessage("--- Exit without saving ---")
+                printMainMessage("Are you sure you want to want to exit Fast Flags Installer without saving? (y/n)")
+                printMainMessage("Data cannot be recovered after this.")
+                confirmExit = input("> ")
+                if isYes(confirmExit) == True: return
+            else: return handle_saving()
+            menu()
+        else: return handle_saving()
+
+    # Start Menu System
+    menu()
 if __name__ == "__main__": main()

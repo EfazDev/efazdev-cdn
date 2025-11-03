@@ -3,10 +3,10 @@
         "name": "GUESTY - By NK Studio",
         "url": "https://www.roblox.com/games/4842364293/GUESTY",
         "download_url": "https://www.roblox.com/games/4842364293/GUESTY",
-        "discontinued": false,
+        "discontinued": true,
         "showInProjectsPage": true,
         "buttonText": {"ProjectsPage": "Play on Roblox!", "ProjectPage": "Play on Roblox!"},
-        "dateDiscontinued": "None",
+        "dateDiscontinued": "November 3rd, 2025",
         "description": "A Roblox horror game to complete a chapter without getting caught by a guest!"
     },
     {

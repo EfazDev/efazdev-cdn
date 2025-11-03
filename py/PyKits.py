@@ -1,5 +1,5 @@
 """
-PyKits v1.6.3 | Made by Efaz from efaz.dev
+PyKits v1.7.0 | Made by Efaz from efaz.dev
 
 A usable set of classes with extra functions that can be used within apps. \n
 Import from file: 
@@ -20,6 +20,7 @@ colors_class = Colors()
 ```
 
 However! Classes may depend on other classes. Use this resource list:
+    curl: typing (module)
     (request, requests, Requests, Request): typing (module)
     (pip, Pip): typing (module), request
     (plist, Plist): typing (module)
@@ -35,7 +36,7 @@ However! Classes may depend on other classes. Use this resource list:
 """
 
 # Module Information
-__version__ = "1.6.3"
+__version__ = "1.7.0"
 __license__ = "MIT"
 __author__ = "EfazDev"
 __maintainer__ = "EfazDev"
@@ -58,7 +59,7 @@ __all__ = [
 import typing
 
 # PyKits Classes
-class request:
+class curl:
     """
     A class that allows you to make HTTP requests using the curl command line tool.
     """
@@ -92,6 +93,8 @@ class request:
         def __init__(self, url: str, time: float): super().__init__(f"Connecting to URL ({url}) took too long to respond in {time}s!")
     class ProcessError(Exception):
         def __init__(self, url: str, exception: Exception): super().__init__(f"Something went wrong connecting to URL ({url})! This was a problem created by subprocess. Exception: {str(exception)}")
+    class DownloadError(Exception):
+        def __init__(self, path: str, proc): super().__init__(f"Unable to download file at {path} with return code {proc.returncode}!")
     class UnknownResponse(Exception):
         def __init__(self, url: str, exception: Exception): super().__init__(f"Something went wrong processing the response from URL ({url})! Exception: {str(exception)}")
     class OpenContext:
@@ -370,7 +373,7 @@ class request:
     def open(self, *k, **s) -> OpenContext:
         mai = self.get(*k, **s)
         return self.OpenContext(mai)
-    def download(self, path: str, output: str, check: bool=False, delete_existing: bool=True, submit_status=None) -> FileDownload:
+    def download(self, path: str, output: str, check: bool=False, delete_existing: bool=True, submit_status=None, gradual: bool=True) -> FileDownload:
         if not self.get_if_connected():
             while not self.get_if_connected(): self._time.sleep(0.5)
         if self._os.path.exists(output) and delete_existing == False: raise FileExistsError(f"This file already exists in {output}!")
@@ -389,31 +392,35 @@ class request:
                 if stripped_line and stripped_line[0].isdigit():
                     progress = self.process_download_status(line)
                     if progress:
-                        if progress.percent < 100:
-                            def pro(tar_prog, before_bytes, target_t):
-                                for i in range(100):
-                                    byte_target = int(before_bytes+((tar_prog.downloaded_bytes-before_bytes)*((i+1)/100)))
-                                    total_size_bytes = self.format_size_to_bytes(tar_prog.total_size)
+                        if gradual == True:
+                            if progress.percent < 100:
+                                def pro(tar_prog, before_bytes, target_t):
+                                    for i in range(100):
+                                        byte_target = int(before_bytes+((tar_prog.downloaded_bytes-before_bytes)*((i+1)/100)))
+                                        total_size_bytes = self.format_size_to_bytes(tar_prog.total_size)
+                                        perc_target = int((byte_target/total_size_bytes)*100) if not (byte_target == 0 and total_size_bytes == 0) else 0
+                                        if not (new_t == target_t): return
+                                        submit_status.submit(self.DownloadStatus(percent=perc_target, total_size=tar_prog.total_size, speed=tar_prog.speed, downloaded_bytes=byte_target, downloaded=self.format_bytes_to_size(byte_target)))
+                                        if not (new_t == target_t): return
+                                        self._time.sleep(0.01)
+                                new_t += 1
+                                self._threading.Thread(target=pro, args=[progress, before_bytes, new_t], daemon=True).start()
+                                before_bytes = progress.downloaded_bytes
+                            elif before_bytes < self.format_size_to_bytes(progress.total_size):
+                                new_t += 1
+                                next_tar = self.format_size_to_bytes(progress.total_size)
+                                for i in range(10):
+                                    byte_target = int(before_bytes+((next_tar-before_bytes)*((i+1)/10)))
+                                    total_size_bytes = self.format_size_to_bytes(progress.total_size)
                                     perc_target = int((byte_target/total_size_bytes)*100) if not (byte_target == 0 and total_size_bytes == 0) else 0
-                                    if not (new_t == target_t): return
-                                    submit_status.submit(self.DownloadStatus(percent=perc_target, total_size=tar_prog.total_size, speed=tar_prog.speed, downloaded_bytes=byte_target, downloaded=self.format_bytes_to_size(byte_target)))
-                                    if not (new_t == target_t): return
+                                    submit_status.submit(self.DownloadStatus(percent=perc_target, total_size=progress.total_size, speed=progress.speed, downloaded_bytes=byte_target, downloaded=self.format_bytes_to_size(byte_target)))
                                     self._time.sleep(0.01)
-                            new_t += 1
-                            self._threading.Thread(target=pro, args=[progress, before_bytes, new_t], daemon=True).start()
-                            before_bytes = progress.downloaded_bytes
-                        elif before_bytes < self.format_size_to_bytes(progress.total_size):
-                            new_t += 1
-                            next_tar = self.format_size_to_bytes(progress.total_size)
-                            for i in range(10):
-                                byte_target = int(before_bytes+((next_tar-before_bytes)*((i+1)/10)))
-                                total_size_bytes = self.format_size_to_bytes(progress.total_size)
-                                perc_target = int((byte_target/total_size_bytes)*100) if not (byte_target == 0 and total_size_bytes == 0) else 0
-                                submit_status.submit(self.DownloadStatus(percent=perc_target, total_size=progress.total_size, speed=progress.speed, downloaded_bytes=byte_target, downloaded=self.format_bytes_to_size(byte_target)))
-                                self._time.sleep(0.01)
-                            before_bytes = next_tar
+                                before_bytes = next_tar
+                            else:
+                                new_t += 1
+                                before_bytes = progress.downloaded_bytes
+                                submit_status.submit(progress)
                         else:
-                            new_t += 1
                             before_bytes = progress.downloaded_bytes
                             submit_status.submit(progress)
         download_proc.wait() 
@@ -430,7 +437,7 @@ class request:
             for i, v in processed_stderr.items(): setattr(s, i, v)
             return s
         else: 
-            if check == True: raise Exception(f"Unable to download file at {path} with return code {download_proc.returncode}!")
+            if check == True: raise self.DownloadError(path, download_proc)
             else: 
                 s = self.FileDownload()
                 s.returncode = download_proc.returncode
@@ -633,6 +640,457 @@ class request:
             downloaded_bytes = self.format_size_to_bytes(downloaded)
             return self.DownloadStatus(speed=speed, downloaded=downloaded, downloaded_bytes=downloaded_bytes, percent=percent, total_size=total_size)
         return None
+class request:
+    """
+    A class that allows you to make HTTP requests using the Python runtime.
+    """
+    class Response:
+        text: str = ""
+        json: typing.Union[typing.Dict, typing.List, None] = None
+        ipv4: typing.List[str] = []
+        ipv6: typing.List[str] = []
+        redirected_urls: typing.List[str] = []
+        port: int = 0
+        host: str = ""
+        status_code: int = 0
+        headers: typing.Dict[str, str] = {}
+        http_version: str = ""
+        path: str = ""
+        url: str = ""
+        method: str = ""
+        scheme: str = ""
+        redirected: bool = False
+        raw_data: bytes = b""
+        ok: bool = False
+    class FileDownload(Response):
+        returncode = 0
+        path = ""
+    class TimedOut(Exception):
+        def __init__(self, url: str, time: float): super().__init__(f"Connecting to URL ({url}) took too long to respond in {time}s!")
+    class DownloadError(Exception):
+        def __init__(self, path: str, status_code: int): super().__init__(f"Unable to download file at {path}! Status code: {status_code}.")
+    class UnknownResponse(Exception):
+        def __init__(self, url: str, exception: Exception): super().__init__(f"Something went wrong processing the response from URL ({url})! Exception: {str(exception)}")
+    class WrongResponse(Exception):
+        def __init__(self, url: str): super().__init__(f"Something went wrong processing the response from URL ({url}) because it is not the same type as expected!")
+    class ResolveError(Exception):
+        def __init__(self, url: str, reason: str): super().__init__(f"Something went wrong trying to resolve the response from URL ({url})! Reason: {reason}")
+    class SSLException(Exception):
+        def __init__(self, url: str, reason: str): super().__init__(f"Something went wrong to validate SSL trust of ({url})! Reason: {reason}")
+    class ConnectionRefusedException(Exception):
+        def __init__(self, url: str, reason: str): super().__init__(f"Something went wrong to connect to ({url}) because the connection was refused by the server.")
+    class InvalidFileContent(Exception): pass
+    class OpenContext:
+        val = None
+        def __init__(self, val): self.val = val
+        def __enter__(self): return self.val
+        def __exit__(self, exc_type, exc_val, exc_tb): pass
+    class DownloadStatus:
+        speed: str=""
+        downloaded: str=""
+        downloaded_bytes: int=0
+        total_size: str=""
+        percent: int=0
+        def __init__(self, percent: int=0, speed: str="", total_size: str="", downloaded: str="", downloaded_bytes: int=0): self.speed = speed; self.downloaded = downloaded; self.percent = percent; self.downloaded_bytes = downloaded_bytes; self.total_size = total_size
+    class CookieJar:
+        def __init__(self, initial_cookies: typing.Dict[str, str]={}):
+            import http.client as _http_client
+            from http.cookiejar import CookieJar
+            import urllib.request as _urlreq
+            self._http_client = _http_client
+            self._urlreq = _urlreq
+            self._cookie_jar = CookieJar
+            self._cookies = {}
+            for i, v in initial_cookies.items(): self.set(i, v)
+        def set(self, key: str, value: str):
+            if value == None:
+                if self._cookies.get(key) != None: self._cookies.pop(key) 
+                return
+            if not isinstance(key, str) or not isinstance(value, str):
+                raise ValueError("Cookie key and value must be strings.")
+            self._cookies[key] = value
+        def get(self, key: str):
+            return self._cookies.get(key, None)
+        def _generate_http_cookiejar(self, url: str):
+            class _FakeResponse:
+                def __init__(self, headers):
+                    self._headers = headers
+                def info(self):
+                    return self._headers
+                def getheaders(self, name=None):
+                    if name:
+                        return self._headers.get_all(name)
+                    return self._headers.items()
+            jar = self._cookie_jar()
+            for name, value in self._cookies.items():
+                headers = self._http_client.HTTPMessage()
+                headers.add_header("Set-Cookie", f"{name}={value}")
+                fake_resp = _FakeResponse(headers)
+                req = self._urlreq.Request(url)
+                jar.extract_cookies(fake_resp, req)
+            return jar
+    __DATA__ = typing.Union[typing.Dict, typing.List, str, bytes]
+    __AUTH__ = typing.List[str]
+    __HEADERS__ = typing.Dict[str, str]
+    __FILES__ = typing.Union[typing.Dict[str, typing.Union[typing.Tuple, typing.List]], typing.Dict[str, str]]
+    __COOKIES__ = typing.Union[typing.Dict[str, str], str]
+    include_ips = True
+    def __init__(self):
+        import subprocess
+        import json
+        import os
+        import re
+        import ssl
+        import sys
+        import stat
+        import shutil
+        import time
+        import socket
+        import base64
+        import threading
+        import urllib.request
+        import urllib.parse
+        import urllib.error
+        import importlib.metadata
+        import http.client
+        import platform
+        import io
+        import gzip 
+        import uuid
+        import zlib
+        from http.cookiejar import CookieJar
+        self._subprocess = subprocess
+        self._json = json
+        self._os = os
+        self._re = re
+        self._io = io
+        self._ssl = ssl
+        self._sys = sys
+        self._uuid = uuid
+        self._shutil = shutil
+        self._socket = socket
+        self._time = time
+        self._stat = stat
+        self._gzip = gzip
+        self._zlib = zlib
+        self._threading = threading
+        self._urlreq = urllib.request
+        self._urlerr = urllib.error
+        self._urlparse = urllib.parse
+        self._base64 = base64
+        self._platform = platform
+        self._importlib_metadata = importlib.metadata
+        self._cookie_jar = CookieJar
+        self._http_client = http.client
+        self._main_os = platform.system()
+        self.cookie_jar = CookieJar()
+    def __bool__(self): return self.get_if_connected()
+    def _make_opener(self, jar=None):
+        class HTTPStatusProcessor(self._urlreq.HTTPErrorProcessor):
+            def http_response(self, request, response): return response
+            https_response = http_response
+        if jar is None: jar = self._cookie_jar()
+        handler = self._urlreq.HTTPCookieProcessor(jar)
+        return self._urlreq.build_opener(HTTPStatusProcessor(), handler)
+    def _resolve_ips(self, host: str):
+        if self.include_ips == True:
+            ipv4, ipv6 = [], []
+            try:
+                for res in self._socket.getaddrinfo(host, None):
+                    family, _, _, _, sockaddr = res
+                    if family == self._socket.AF_INET: ipv4.append(sockaddr[0])
+                    elif family == self._socket.AF_INET6: ipv6.append(sockaddr[0])
+            except Exception: pass
+            return ipv4, ipv6
+        else: return [], []
+    def _create_response(self, resp, url: str, redirected_urls: typing.List[str]=[], downloading: bool=False, download_path: str=""):
+        # Checks
+        if not isinstance(resp, self._http_client.HTTPResponse): raise self.WrongResponse(url)
+
+        # Generate Object
+        if downloading == False: res = self.Response()
+        else: res = self.FileDownload()
+
+        # Headers
+        res.status_code = getattr(resp, "status", None) or resp.getcode()
+        res.headers = {}
+        res.ok = self.get_if_ok(res.status_code)
+        for i, v in dict(resp.headers).items(): res.headers[i.lower()] = v
+
+        # Fill Data
+        if downloading == False:
+            data = resp.read()
+            res.text = data.decode(errors="replace")
+            res.raw_data = data
+            if res.headers.get("content-encoding"): res.text = self._handle_compression(res.raw_data, res.headers["content-encoding"]).decode(errors="replace")
+            try: res.json = self._json.loads(res.text)
+            except Exception: res.json = None
+        else:
+            res.raw_data = b""
+            res.returncode = 0 if res.ok else 1
+            res.path = download_path
+
+        # Response Info
+        res.url = url
+        res.path = self.get_url_path(url)
+        res.redirected = len(redirected_urls) > 0
+        res.redirected_urls = redirected_urls
+
+        # Location
+        obj = self._urlparse.urlparse(url)
+        res.scheme = obj.scheme
+        res.host = obj.netloc
+        res.port = obj.port or (443 if obj.scheme == "https" else 80)
+        res.ipv4, res.ipv6 = self._resolve_ips(res.host)
+        return res
+    def _add_auth_to_headers(self, headers: __HEADERS__, auth: __AUTH__):
+        if not auth: return headers
+        if isinstance(auth, (tuple, list)) and len(auth) == 2:
+            user, pw = auth
+            token = self._base64.b64encode(f"{user}:{pw}".encode()).decode()
+            headers["Authorization"] = f"Basic {token}"
+        elif isinstance(auth, str):
+            if not auth.lower().startswith(("basic ", "bearer ")): auth = f"Bearer {auth}"
+            headers["Authorization"] = auth
+        return headers
+    def _make_request(self, url: str, method: str, data: __DATA__, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], files: __FILES__={}, timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1):
+        # Prepare to make the request
+        url, opener, method, data, headers, cookies, auth, files = self._handle_data(url, method=method, data=data, headers=headers, cookies=cookies, auth=auth, files=files)
+        redirected_urls = []
+
+        # Let's make the request!
+        try:
+            req = self._urlreq.Request(url, data=data, method=method, headers=headers)
+            with opener.open(req, timeout=timeout) as resp:
+                if follow_redirects:
+                    status_code = getattr(resp, "status", None) or resp.getcode()
+                    while self.get_if_redirect(status_code):
+                        redirected_urls.append(url)
+                        parsed_previous = self._urlparse.urlparse(url)
+                        url = self.generate_location_url(resp.headers.get("location"), parsed_previous.scheme + "://" + parsed_previous.netloc)
+                        req = self._urlreq.Request(url, data=data, method=method, headers=headers)
+                        resp = opener.open(req, timeout=timeout)
+                        status_code = getattr(resp, "status", None) or resp.getcode()
+                response_obj = self._create_response(resp, url, redirected_urls=redirected_urls, downloading=False)
+                if self.get_if_cooldown(response_obj.status_code) and loop_429 == True and ((1 if loop_count == -1 else loop_count) >= 1):
+                    self._time.sleep(loop_timeout)
+                    return self._make_request(url, method, data=data, headers=headers, cookies=cookies, auth=auth, files=files, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=(loop_count-1 if not (loop_count == -1) else loop_count), loop_timeout=loop_timeout)
+                return response_obj
+        except self._urlerr.URLError as e:
+            if isinstance(e.reason, self._ssl.SSLCertVerificationError): raise self.SSLException(url, str(e.reason))
+            elif isinstance(e.reason, self._socket.timeout): raise self.TimedOut(url, timeout)
+            elif isinstance(e.reason, self._socket.gaierror): raise self.ResolveError(url, str(e.reason))
+            elif isinstance(e.reason, ConnectionRefusedError) or isinstance(e.reason, ConnectionResetError): raise self.ConnectionRefusedException(url, str(e.reason))
+            raise self.ResolveError(url, str(e.reason))
+        except Exception as e: raise self.UnknownResponse(url, e)
+    def _handle_compression(self, data: bytes, encoding: str):
+        # Format response
+        if not data: return b""
+        encoding = (encoding or "").lower().strip()
+
+        # Handle more compression types
+        try: import brotli # type: ignore
+        except ImportError: brotli = None
+        try: import zstandard as zstd # type: ignore
+        except ImportError: zstd = None
+
+        # Auto determine encoding
+        if not encoding:
+            if data.startswith(b"\x1f\x8b"): encoding = "gzip"
+            elif data.startswith(b"\x78\x9c") or data.startswith(b"\x78\xda"): encoding = "deflate"
+            elif data.startswith(b"\x28\xb5\x2f\xfd"): encoding = "zstd"
+            elif brotli and data[:2] in (b"\x8b\x0b", b"\xce\xb2"):encoding = "br"
+
+        # Decompress data
+        if encoding == "gzip":
+            try: return self._gzip.decompress(data)
+            except OSError: return self._zlib.decompress(data, 16 + self._zlib.MAX_WBITS)
+        elif encoding == "deflate":
+            try: return self._zlib.decompress(data, -self._zlib.MAX_WBITS)
+            except self._zlib.error: return self._zlib.decompress(data)
+        elif encoding == "br" and brotli: return brotli.decompress(data)
+        elif encoding == "zstd" and zstd: dctx = zstd.ZstdDecompressor(); return dctx.decompress(data)
+        return data
+    def _handle_data(self, url: str, method: str="GET", data: __DATA__=None, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], files: __FILES__={}):
+        try:
+            if type(cookies) is self.CookieJar: cookie_jar = cookies._generate_http_cookiejar(url)
+            elif type(cookies) is dict: cookie_jar = self.CookieJar(cookies)._generate_http_cookiejar(url)
+            else: cookie_jar = self.cookie_jar
+            headers.setdefault("user-agent", f"PyKits/1.7.0")
+            headers = self._add_auth_to_headers(headers, auth)
+            opener = self._make_opener(jar=cookie_jar)
+            method = method.upper()
+            if isinstance(data, self.__DATA__) and method in ["POST", "PUT", "PATCH"]:
+                if len(files) > 0:
+                    boundary = f"----WebKitFormBoundary{self._uuid.uuid4().hex}"
+                    body = []
+                    if type(data) is dict:
+                        for k, v in data.items(): body.append(f"--{boundary}\r\nContent-Disposition: form-data; name=\"{k}\"\r\n\r\n{v}\r\n")
+                    for field, info in files.items():
+                        filename, content, mimetype = None, None, None
+                        if isinstance(info, (tuple, list)):
+                            filename = info[0]
+                            content = info[1]
+                            mimetype = info[2] if len(info) > 2 else "application/octet-stream"
+                        elif isinstance(info, str):
+                            with open(info, "rb") as f: content = f.read()
+                            filename = self._os.path.basename(info)
+                            mimetype = "application/octet-stream"
+                        else: raise ValueError("File value must be a tuple of (filename, content, mimetype)")
+                        body.append(
+                            f"--{boundary}\r\n"
+                            f"Content-Disposition: form-data; name=\"{field}\"; filename=\"{filename}\"\r\n"
+                            f"Content-Type: {mimetype}\r\n\r\n"
+                        )
+                        if isinstance(content, str): content = content.encode()
+                        elif not isinstance(content, (bytes, bytearray)): raise self.InvalidFileContent(f"Invalid file content type for {field}!")
+                        body.append(content)
+                        body.append(b"\r\n")
+                    body.append(f"--{boundary}--\r\n".encode())
+                    body = b"".join([p if isinstance(p, (bytes, bytearray)) else p.encode() for p in body])
+                    headers["Content-Type"] = f"multipart/form-data; boundary={boundary}"
+                    headers["Content-Length"] = str(len(body))
+                    data = body
+                elif isinstance(data, str): data = data.encode()
+                elif isinstance(data, bytes): pass
+                else: data = self._json.dumps(data).encode(); headers.setdefault("Content-Type", "application/json")
+            else: data = None
+            return url, opener, method, data, headers, cookies, auth, files
+        except Exception as e: raise self.UnknownResponse(url, e)
+    def get(self, url: str, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
+        return self._make_request(url=url, method="GET", data=None, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=follow_redirects, loop_429=loop_429, loop_count=loop_count, loop_timeout=loop_timeout)
+    def post(self, url: str, data: __DATA__, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], files: __FILES__={}, timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
+        return self._make_request(url=url, method="POST", data=data, headers=headers, cookies=cookies, auth=auth, files=files, timeout=timeout, follow_redirects=follow_redirects, loop_429=loop_429, loop_count=loop_count, loop_timeout=loop_timeout)
+    def patch(self, url: str, data: __DATA__, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], files: __FILES__={}, timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
+        return self._make_request(url=url, method="PATCH", data=data, headers=headers, cookies=cookies, auth=auth, files=files, timeout=timeout, follow_redirects=follow_redirects, loop_429=loop_429, loop_count=loop_count, loop_timeout=loop_timeout)
+    def put(self, url: str, data: __DATA__, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], files: __FILES__={}, timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
+        return self._make_request(url=url, method="PUT", data=data, headers=headers, cookies=cookies, auth=auth, files=files, timeout=timeout, follow_redirects=follow_redirects, loop_429=loop_429, loop_count=loop_count, loop_timeout=loop_timeout)
+    def delete(self, url: str, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
+        return self._make_request(url=url, method="DELETE", data=None, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=follow_redirects, loop_429=loop_429, loop_count=loop_count, loop_timeout=loop_timeout)
+    def head(self, url: str, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
+        return self._make_request(url=url, method="HEAD", data=None, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=follow_redirects, loop_429=loop_429, loop_count=loop_count, loop_timeout=loop_timeout)
+    def custom(self, url: str, method: str, data: __DATA__=None, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
+        return self._make_request(url=url, method=method, data=data, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=follow_redirects, loop_429=loop_429, loop_count=loop_count, loop_timeout=loop_timeout)
+    def open(self, *k, **s) -> OpenContext:
+        mai = self._make_request(*k, **s)
+        return self.OpenContext(mai)
+    def download(self, url: str, output: str, method: str="GET", data: __DATA__=None, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], files: __FILES__={}, check: bool=False, follow_redirects: bool=False, delete_existing: bool=True, submit_status=None, chunk_size: int=65535) -> FileDownload:
+        # Assurance
+        self.ensure_python_certs()
+        if not self.get_if_connected():
+            while not self.get_if_connected(): self._time.sleep(0.5)
+        if self._os.path.exists(output) and delete_existing == False: raise FileExistsError(f"This file already exists in {output}!")
+        elif self._os.path.exists(output) and self._os.path.isdir(output): self._shutil.rmtree(output, ignore_errors=True)
+        elif self._os.path.exists(output) and self._os.path.isfile(output): self._os.remove(output)
+        
+        # Prepare Data
+        existing = 0
+        redirected_urls = []
+        url, opener, method, data, headers, cookies, auth, files = self._handle_data(url, method=method, data=data, headers=headers, cookies=cookies, auth=auth, files=files)
+        req = self._urlreq.Request(url, data=data, method=method, headers=headers)
+
+        # Let's download the request!
+        try:
+            with opener.open(req) as resp:
+                if follow_redirects:
+                    status_code = getattr(resp, "status", None) or resp.getcode()
+                    while self.get_if_redirect(status_code):
+                        redirected_urls.append(url)
+                        parsed_previous = self._urlparse.urlparse(url)
+                        url = self.generate_location_url(resp.headers.get("location"), parsed_previous.scheme + "://" + parsed_previous.netloc)
+                        req = self._urlreq.Request(url, data=data, method=method, headers=headers)
+                        resp = opener.open(req)
+                        status_code = getattr(resp, "status", None) or resp.getcode()
+                download_info = self._create_response(resp, url, downloading=True, download_path=output)
+                total = download_info.headers.get("content-length")
+                encoding = download_info.headers.get("content-encoding")
+                if total is not None: total = int(total) + existing
+                with open(output, "ab") as f:
+                    downloaded = existing
+                    while True:
+                        # Read and write chunk into file
+                        start = self._time.time()
+                        chunk_size = min(chunk_size, total)
+                        chunk = resp.read(chunk_size)
+                        if encoding: chunk = self._handle_compression(chunk, encoding)
+                        if not chunk: break
+                        f.write(chunk)
+                        end = self._time.time()
+                        duration = end-start
+                        speed = chunk_size
+                        try: speed = chunk_size / duration
+                        except: pass
+
+                        # Update status
+                        downloaded += chunk_size
+                        if downloaded > total: downloaded = total
+                        if total and submit_status:
+                            percent = downloaded * 100 / total
+                            progress = self.DownloadStatus(speed=speed, downloaded=self.format_bytes_to_size(downloaded), downloaded_bytes=downloaded, percent=percent, total_size=total)
+                            submit_status.submit(progress)
+                if check == True: raise self.DownloadError(f"Unable to download file at {url}!", download_info.status_code)
+                return download_info
+        except Exception as e: raise self.DownloadError(url, str(e))
+    def ensure_python_certs(self):
+        def che(a):
+            try: self._importlib_metadata.version(a); return True
+            except self._importlib_metadata.PackageNotFoundError: return False
+        if che("certifi") == False and self._main_os == "Darwin":
+            STAT_0o775 = ( self._stat.S_IRUSR | self._stat.S_IWUSR | self._stat.S_IXUSR | self._stat.S_IRGRP | self._stat.S_IWGRP | self._stat.S_IXGRP | self._stat.S_IROTH |  self._stat.S_IXOTH )
+            openssl_dir, openssl_cafile = self._os.path.split(self._ssl.get_default_verify_paths().openssl_cafile)
+            self._subprocess.check_call([self._sys.executable, "-E", "-s", "-m", "pip", "install", "--upgrade", "certifi"])
+            import certifi
+            self._os.chdir(openssl_dir)
+            relpath_to_certifi_cafile = self._os.path.relpath(certifi.where())
+            try: self._os.remove(openssl_cafile)
+            except FileNotFoundError: pass
+            self._os.symlink(relpath_to_certifi_cafile, openssl_cafile)
+            self._os.chmod(openssl_cafile, STAT_0o775) 
+    def get_if_ok(self, code: int): return int(code) < 300 and int(code) >= 200
+    def get_if_redirect(self, code: int): return int(code) < 400 and int(code) >= 300
+    def get_if_cooldown(self, code: int): return int(code) == 429
+    def generate_location_url(self, location_header: str="", host: str="https://google.com"):
+        if not location_header: return ""
+        if location_header.startswith("/"): return host + location_header
+        return location_header
+    def get_if_connected(self):
+        try: self._socket.create_connection(("8.8.8.8", 443), timeout=3).close(); return True # Connect to Google failed?
+        except Exception: return False
+    def get_url_scheme(self, url: str): 
+        obj = self._urlparse.urlparse(url)
+        return obj.scheme
+    def get_url_path(self, url: str):
+        obj = self._urlparse.urlparse(url)
+        if obj.query == "": return obj.path
+        else: return obj.path + "?" + obj.query
+    def format_params(self, data: typing.Dict[str, str]={}):
+        mai_query = ""
+        if len(data.keys()) > 0:
+            mai_query = "?"
+            for i, v in data.items(): mai_query = mai_query + f"{i}={v}"
+        return mai_query
+    def format_size_to_bytes(self, size_str: str):
+        size_str = size_str.upper()
+        try:
+            if size_str.endswith("K") or size_str.endswith("k"): return int(float(size_str[:-1]) * 1024)
+            if size_str.endswith("M"): return int(float(size_str[:-1]) * 1024**2)
+            if size_str.endswith("G"): return int(float(size_str[:-1]) * 1024**3)
+            if size_str.endswith("T"): return int(float(size_str[:-1]) * 1024**4)
+            return int(size_str)
+        except Exception: return 0
+    def format_bytes_to_size(self, size_bytes: int):
+        thresholds = [
+            (1024**4, "T"),
+            (1024**3, "G"),
+            (1024**2, "M"),
+            (1024, "k"),
+        ]
+        for factor, suffix in thresholds:
+            if size_bytes >= factor:
+                size = size_bytes / factor
+                return f"{size:.1f}{suffix}"
+        return str(size_bytes)
+    def process_bytes_to_str(self, bytes: bytes): return bytes.decode("utf-8")
 class pip:
     """
     A class that allows you to configure pip and Python installations.
@@ -1301,6 +1759,22 @@ class pip:
                 self._time.sleep(1)
                 return self.importModule(module_name=module_name, install_module_if_not_found=install_module_if_not_found, loop_until_import=loop_until_import)
         except Exception as e: raise ImportError(f'Unable to import module "{module_name}" in Python {self.getCurrentPythonVersion()} environment. Exception: {str(e)}')
+    def importModules(self, modules: typing.List[str], install_modules_if_not_found: bool=False):
+        self.uncacheLoadedModules()
+        modules_collected = []
+        if install_modules_if_not_found == True:
+            installed = self.installed(modules)
+            needing_install = []
+            for i,v in installed.items():
+                if v == False: needing_install.append(i)
+            if len(needing_install) > 0: self.install(needing_install)
+        for module_name in modules:
+            try: 
+                s = self._importlib.import_module(module_name)
+                if type(s) is None: raise ModuleNotFoundError("")
+                modules_collected.append(s)
+            except Exception as e: raise ImportError(f'Unable to import module "{module_name}" in Python {self.getCurrentPythonVersion()} environment. Exception: {str(e)}')
+        return tuple(modules_collected)
     def uncacheLoadedModules(self):
         if getattr(self._sys, "frozen", False): pass
         else:
@@ -1535,6 +2009,25 @@ class plist:
                 else: self._plistlib.dump(data, f)
             return {"success": True, "message": "Success!", "data": data}
         except Exception as e: return {"success": False, "message": "Something went wrong.", "data": e}
+    def dump(self, data: typing.Union[dict, str, int, float], f, binary: bool=False):
+        try:
+            if binary == True: self._plistlib.dump(data, f, fmt=self._plistlib.FMT_BINARY)
+            else: self._plistlib.dump(data, f)
+            return {"success": True, "message": "Success!", "data": data}
+        except Exception as e: return {"success": False, "message": "Something went wrong.", "data": e}
+    def dumps(self, data: typing.Union[dict, str, int, float], binary: bool=False):
+        try:
+            if binary == True: return self._plistlib.dumps(data, fmt=self._plistlib.FMT_BINARY)
+            else: return self._plistlib.dumps(data)
+        except Exception as e: return None
+    def load(self, f):
+        plist_data = self._plistlib.load(f)
+        return plist_data
+    def loads(self, path: str):
+        if self._os.path.exists(path):
+            with open(path, "rb") as f: plist_data = self._plistlib.load(f)
+            return plist_data
+        else: return {}
 class Colors:
     """
     A class that allows you to work with console colors with different formats of text and ANSI.
