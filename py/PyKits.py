@@ -44,6 +44,7 @@ __email__ = "support@efaz.dev"
 __all__ = [
     "request", 
     "pip", 
+    "curl",
     "plist", 
     "Colors", 
     "Translator", 
@@ -659,11 +660,16 @@ class request:
         url: str = ""
         method: str = ""
         scheme: str = ""
+        encoding: str = ""
         redirected: bool = False
         raw_data: bytes = b""
+        time: float = 0
+        ssl_context = None
         ok: bool = False
     class FileDownload(Response):
         returncode = 0
+        size = 0
+        downloaded = 0
         path = ""
     class TimedOut(Exception):
         def __init__(self, url: str, time: float): super().__init__(f"Connecting to URL ({url}) took too long to respond in {time}s!")
@@ -752,6 +758,7 @@ class request:
         import urllib.parse
         import urllib.error
         import importlib.metadata
+        import importlib
         import http.client
         import platform
         import io
@@ -780,9 +787,11 @@ class request:
         self._base64 = base64
         self._platform = platform
         self._importlib_metadata = importlib.metadata
+        self._importlib = importlib
         self._cookie_jar = CookieJar
         self._http_client = http.client
         self._main_os = platform.system()
+        self._ssl_context = self.ensure_python_certs()
         self.cookie_jar = CookieJar()
     def __bool__(self): return self.get_if_connected()
     def _make_opener(self, jar=None):
@@ -790,8 +799,14 @@ class request:
             def http_response(self, request, response): return response
             https_response = http_response
         if jar is None: jar = self._cookie_jar()
-        handler = self._urlreq.HTTPCookieProcessor(jar)
-        return self._urlreq.build_opener(HTTPStatusProcessor(), handler)
+        processors = []
+        processors.append(self._urlreq.HTTPCookieProcessor(jar))
+        processors.append(HTTPStatusProcessor())
+        if not self._ssl_context:
+            self._ssl_context = self.ensure_python_certs()
+        if self._ssl_context:
+            processors.append(self._urlreq.HTTPSHandler(context=self._ssl_context))
+        return self._urlreq.build_opener(*processors)
     def _resolve_ips(self, host: str):
         if self.include_ips == True:
             ipv4, ipv6 = [], []
@@ -803,7 +818,7 @@ class request:
             except Exception: pass
             return ipv4, ipv6
         else: return [], []
-    def _create_response(self, resp, url: str, redirected_urls: typing.List[str]=[], downloading: bool=False, download_path: str=""):
+    def _create_response(self, resp, url: str, redirected_urls: typing.List[str]=[], downloading: bool=False, download_path: str="", length: float=0):
         # Checks
         if not isinstance(resp, self._http_client.HTTPResponse): raise self.WrongResponse(url)
 
@@ -815,14 +830,18 @@ class request:
         res.status_code = getattr(resp, "status", None) or resp.getcode()
         res.headers = {}
         res.ok = self.get_if_ok(res.status_code)
+        res.time = length
         for i, v in dict(resp.headers).items(): res.headers[i.lower()] = v
 
         # Fill Data
+        res.encoding = res.headers.get("content-encoding")
         if downloading == False:
             data = resp.read()
             res.text = data.decode(errors="replace")
             res.raw_data = data
-            if res.headers.get("content-encoding"): res.text = self._handle_compression(res.raw_data, res.headers["content-encoding"]).decode(errors="replace")
+            if res.encoding: 
+                res.text, res.encoding = self._handle_compression(res.raw_data, res.encoding)
+                res.text = res.text.decode(errors="replace")
             try: res.json = self._json.loads(res.text)
             except Exception: res.json = None
         else:
@@ -860,6 +879,7 @@ class request:
 
         # Let's make the request!
         try:
+            start = self._time.time()
             req = self._urlreq.Request(url, data=data, method=method, headers=headers)
             with opener.open(req, timeout=timeout) as resp:
                 if follow_redirects:
@@ -874,7 +894,8 @@ class request:
                 response_obj = self._create_response(resp, url, redirected_urls=redirected_urls, downloading=False)
                 if self.get_if_cooldown(response_obj.status_code) and loop_429 == True and ((1 if loop_count == -1 else loop_count) >= 1):
                     self._time.sleep(loop_timeout)
-                    return self._make_request(url, method, data=data, headers=headers, cookies=cookies, auth=auth, files=files, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=(loop_count-1 if not (loop_count == -1) else loop_count), loop_timeout=loop_timeout)
+                    response_obj = self._make_request(url, method, data=data, headers=headers, cookies=cookies, auth=auth, files=files, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=(loop_count-1 if not (loop_count == -1) else loop_count), loop_timeout=loop_timeout)
+                response_obj.time = self._time.time()-start
                 return response_obj
         except self._urlerr.URLError as e:
             if isinstance(e.reason, self._ssl.SSLCertVerificationError): raise self.SSLException(url, str(e.reason))
@@ -885,8 +906,8 @@ class request:
         except Exception as e: raise self.UnknownResponse(url, e)
     def _handle_compression(self, data: bytes, encoding: str):
         # Format response
-        if not data: return b""
         encoding = (encoding or "").lower().strip()
+        if not data: return b"", encoding
 
         # Handle more compression types
         try: import brotli # type: ignore
@@ -903,16 +924,17 @@ class request:
 
         # Decompress data
         if encoding == "gzip":
-            try: return self._gzip.decompress(data)
-            except OSError: return self._zlib.decompress(data, 16 + self._zlib.MAX_WBITS)
+            try: return self._gzip.decompress(data), encoding
+            except OSError: return self._zlib.decompress(data, 16 + self._zlib.MAX_WBITS), encoding
         elif encoding == "deflate":
-            try: return self._zlib.decompress(data, -self._zlib.MAX_WBITS)
-            except self._zlib.error: return self._zlib.decompress(data)
-        elif encoding == "br" and brotli: return brotli.decompress(data)
-        elif encoding == "zstd" and zstd: dctx = zstd.ZstdDecompressor(); return dctx.decompress(data)
-        return data
+            try: return self._zlib.decompress(data, -self._zlib.MAX_WBITS), encoding
+            except self._zlib.error: return self._zlib.decompress(data), encoding
+        elif encoding == "br" and brotli: return brotli.decompress(data), encoding
+        elif encoding == "zstd" and zstd: dctx = zstd.ZstdDecompressor(); return dctx.decompress(data), encoding
+        return data, encoding
     def _handle_data(self, url: str, method: str="GET", data: __DATA__=None, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], files: __FILES__={}):
         try:
+            if not "://" in url: url = "http://" + url
             if type(cookies) is self.CookieJar: cookie_jar = cookies._generate_http_cookiejar(url)
             elif type(cookies) is dict: cookie_jar = self.CookieJar(cookies)._generate_http_cookiejar(url)
             else: cookie_jar = self.cookie_jar
@@ -991,6 +1013,7 @@ class request:
 
         # Let's download the request!
         try:
+            start_download = self._time.time()
             with opener.open(req) as resp:
                 if follow_redirects:
                     status_code = getattr(resp, "status", None) or resp.getcode()
@@ -1002,6 +1025,7 @@ class request:
                         resp = opener.open(req)
                         status_code = getattr(resp, "status", None) or resp.getcode()
                 download_info = self._create_response(resp, url, downloading=True, download_path=output)
+                if check == True and not download_info.ok: raise self.DownloadError(f"Unable to download file at {url}!", download_info.status_code)
                 total = download_info.headers.get("content-length")
                 encoding = download_info.headers.get("content-encoding")
                 if total is not None: total = int(total) + existing
@@ -1012,7 +1036,7 @@ class request:
                         start = self._time.time()
                         chunk_size = min(chunk_size, total)
                         chunk = resp.read(chunk_size)
-                        if encoding: chunk = self._handle_compression(chunk, encoding)
+                        if encoding: chunk, encoding = self._handle_compression(chunk, encoding)
                         if not chunk: break
                         f.write(chunk)
                         end = self._time.time()
@@ -1028,14 +1052,27 @@ class request:
                             percent = downloaded * 100 / total
                             progress = self.DownloadStatus(speed=speed, downloaded=self.format_bytes_to_size(downloaded), downloaded_bytes=downloaded, percent=percent, total_size=total)
                             submit_status.submit(progress)
-                if check == True: raise self.DownloadError(f"Unable to download file at {url}!", download_info.status_code)
+                    download_info.downloaded = downloaded
+                    download_info.size = total
+                download_info.time = self._time.time()-start_download
                 return download_info
         except Exception as e: raise self.DownloadError(url, str(e))
     def ensure_python_certs(self):
         def che(a):
             try: self._importlib_metadata.version(a); return True
             except self._importlib_metadata.PackageNotFoundError: return False
-        if che("certifi") == False and self._main_os == "Darwin":
+        if self._platform.python_version() >= "3.10.0": 
+            if not getattr(self._sys, "frozen", False) and che("truststore") == False:
+                self._subprocess.check_call([self._sys.executable, "-E", "-s", "-m", "pip", "install", "--upgrade", "truststore"], stdout=self._subprocess.DEVNULL)
+                import site
+                self._site = site
+                site_packages_paths = self._site.getsitepackages() + [self._site.getusersitepackages()]
+                for path in site_packages_paths:
+                    if path not in self._sys.path and self._os.path.exists(path): self._sys.path.append(path)
+                self._importlib.invalidate_caches()
+            import truststore # type: ignore
+            return truststore.SSLContext(self._ssl.PROTOCOL_TLS_CLIENT)
+        elif che("certifi") == False:
             STAT_0o775 = ( self._stat.S_IRUSR | self._stat.S_IWUSR | self._stat.S_IXUSR | self._stat.S_IRGRP | self._stat.S_IWGRP | self._stat.S_IXGRP | self._stat.S_IROTH |  self._stat.S_IXOTH )
             openssl_dir, openssl_cafile = self._os.path.split(self._ssl.get_default_verify_paths().openssl_cafile)
             self._subprocess.check_call([self._sys.executable, "-E", "-s", "-m", "pip", "install", "--upgrade", "certifi"])
@@ -1045,9 +1082,13 @@ class request:
             try: self._os.remove(openssl_cafile)
             except FileNotFoundError: pass
             self._os.symlink(relpath_to_certifi_cafile, openssl_cafile)
-            self._os.chmod(openssl_cafile, STAT_0o775) 
+            self._os.chmod(openssl_cafile, STAT_0o775)
+        return self._ssl.create_default_context()
     def get_if_ok(self, code: int): return int(code) < 300 and int(code) >= 200
     def get_if_redirect(self, code: int): return int(code) < 400 and int(code) >= 300
+    def get_if_ip(self, ip: int):
+        try: self._socket.inet_aton(ip); return True
+        except: return False
     def get_if_cooldown(self, code: int): return int(code) == 429
     def generate_location_url(self, location_header: str="", host: str="https://google.com"):
         if not location_header: return ""
@@ -1113,8 +1154,10 @@ class pip:
         import subprocess
         import glob
         import stat
+        import threading
         import shutil
         import urllib.parse
+        import weakref
         import time
         import mmap
 
@@ -1130,11 +1173,14 @@ class pip:
         self._stat = stat
         self._shutil = shutil
         self._urllib_parse = urllib.parse
+        self._weakref = weakref
+        self._threading = threading
         self._time = time
         self._json = json
         self._mmap = mmap
 
         self._main_os = platform.system()
+        self._daemon_threads = weakref.WeakSet()
         if type(executable) is str:
             if os.path.isfile(executable): self.executable = executable
             else: self.executable = self.findPython(arch=arch, path=True) if find == True else sys.executable
@@ -1880,6 +1926,11 @@ class pip:
             process_ids = result.stdout.decode("utf-8").strip().split("\n")
             return len([pid for pid in process_ids if pid.isdigit()])
     def getIfConnectedToInternet(self): return self.requests.get_if_connected()
+    def startThread(self, func: typing.Callable, daemon: bool=False, *args, **kwargs):
+        thread = self._threading.Thread(target=func, args=args, kwargs=kwargs, daemon=daemon)
+        thread.start()
+        self._daemon_threads.add(thread)
+        return thread
     def getProcessWindows(self, pid: int):
         if self._main_os == "Windows" and (not hasattr(self, "_win32gui") or not hasattr(self, "_win32process")):
             try:
