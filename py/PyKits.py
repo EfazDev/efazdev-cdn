@@ -741,36 +741,14 @@ class request:
     __FILES__ = typing.Union[typing.Dict[str, typing.Union[typing.Tuple, typing.List]], typing.Dict[str, str]]
     __COOKIES__ = typing.Union[typing.Dict[str, str], str]
     include_ips = True
-    def __init__(self):
-        import subprocess
-        import json
-        import os
-        import re
-        import ssl
-        import sys
-        import stat
-        import shutil
-        import time
-        import socket
-        import base64
-        import threading
-        import urllib.request
-        import urllib.parse
-        import urllib.error
-        import importlib.metadata
-        import importlib
-        import http.client
-        import platform
-        import io
-        import gzip 
-        import uuid
-        import zlib
+    handle_compression = True
+    opener_processors = []
+    def __init__(self, include_ips: bool=True, handle_compression: bool=True, opener_processors: list=[]):
+        import json, os, ssl, sys, stat, shutil, time, socket, base64, subprocess, urllib.request, urllib.parse, urllib.error, importlib.metadata, importlib, http.client, platform, gzip, uuid, zlib
         from http.cookiejar import CookieJar
         self._subprocess = subprocess
         self._json = json
         self._os = os
-        self._re = re
-        self._io = io
         self._ssl = ssl
         self._sys = sys
         self._uuid = uuid
@@ -780,7 +758,6 @@ class request:
         self._stat = stat
         self._gzip = gzip
         self._zlib = zlib
-        self._threading = threading
         self._urlreq = urllib.request
         self._urlerr = urllib.error
         self._urlparse = urllib.parse
@@ -793,6 +770,9 @@ class request:
         self._main_os = platform.system()
         self._ssl_context = self.ensure_python_certs()
         self.cookie_jar = CookieJar()
+        self.include_ips = include_ips==True
+        self.handle_compression == handle_compression==True
+        self.opener_processors = opener_processors
     def __bool__(self): return self.get_if_connected()
     def _make_opener(self, jar=None):
         class HTTPStatusProcessor(self._urlreq.HTTPErrorProcessor):
@@ -806,12 +786,15 @@ class request:
             self._ssl_context = self.ensure_python_certs()
         if self._ssl_context:
             processors.append(self._urlreq.HTTPSHandler(context=self._ssl_context))
+        for i in self.opener_processors:
+            if isinstance(i, self._urlreq.BaseHandler):
+                processors.append(i)
         return self._urlreq.build_opener(*processors)
-    def _resolve_ips(self, host: str):
+    def _resolve_ips(self, host: str, port: str=None):
         if self.include_ips == True:
             ipv4, ipv6 = [], []
             try:
-                for res in self._socket.getaddrinfo(host, None):
+                for res in self._socket.getaddrinfo(host, port):
                     family, _, _, _, sockaddr = res
                     if family == self._socket.AF_INET: ipv4.append(sockaddr[0])
                     elif family == self._socket.AF_INET6: ipv6.append(sockaddr[0])
@@ -860,7 +843,7 @@ class request:
         res.scheme = obj.scheme
         res.host = obj.netloc
         res.port = obj.port or (443 if obj.scheme == "https" else 80)
-        res.ipv4, res.ipv6 = self._resolve_ips(res.host)
+        res.ipv4, res.ipv6 = self._resolve_ips(res.host, res.port)
         return res
     def _add_auth_to_headers(self, headers: __HEADERS__, auth: __AUTH__):
         if not auth: return headers
@@ -879,7 +862,7 @@ class request:
 
         # Let's make the request!
         try:
-            start = self._time.time()
+            start = self._time.perf_counter()
             req = self._urlreq.Request(url, data=data, method=method, headers=headers)
             with opener.open(req, timeout=timeout) as resp:
                 if follow_redirects:
@@ -895,7 +878,7 @@ class request:
                 if self.get_if_cooldown(response_obj.status_code) and loop_429 == True and ((1 if loop_count == -1 else loop_count) >= 1):
                     self._time.sleep(loop_timeout)
                     response_obj = self._make_request(url, method, data=data, headers=headers, cookies=cookies, auth=auth, files=files, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=(loop_count-1 if not (loop_count == -1) else loop_count), loop_timeout=loop_timeout)
-                response_obj.time = self._time.time()-start
+                response_obj.time = (self._time.perf_counter()-start)*1000
                 return response_obj
         except self._urlerr.URLError as e:
             if isinstance(e.reason, self._ssl.SSLCertVerificationError): raise self.SSLException(url, str(e.reason))
@@ -905,6 +888,9 @@ class request:
             raise self.ResolveError(url, str(e.reason))
         except Exception as e: raise self.UnknownResponse(url, e)
     def _handle_compression(self, data: bytes, encoding: str):
+        # Reject Compression Reading if Disabled
+        if self.handle_compression == False: return data, encoding
+        
         # Format response
         encoding = (encoding or "").lower().strip()
         if not data: return b"", encoding
@@ -1013,7 +999,7 @@ class request:
 
         # Let's download the request!
         try:
-            start_download = self._time.time()
+            start_download = self._time.perf_counter()
             with opener.open(req) as resp:
                 if follow_redirects:
                     status_code = getattr(resp, "status", None) or resp.getcode()
@@ -1033,13 +1019,13 @@ class request:
                     downloaded = existing
                     while True:
                         # Read and write chunk into file
-                        start = self._time.time()
+                        start = self._time.perf_counter()
                         chunk_size = min(chunk_size, total)
                         chunk = resp.read(chunk_size)
                         if encoding: chunk, encoding = self._handle_compression(chunk, encoding)
                         if not chunk: break
                         f.write(chunk)
-                        end = self._time.time()
+                        end = self._time.perf_counter()
                         duration = end-start
                         speed = chunk_size
                         try: speed = chunk_size / duration
@@ -1054,7 +1040,7 @@ class request:
                             submit_status.submit(progress)
                     download_info.downloaded = downloaded
                     download_info.size = total
-                download_info.time = self._time.time()-start_download
+                download_info.time = (self._time.perf_counter()-start_download)*1000
                 return download_info
         except Exception as e: raise self.DownloadError(url, str(e))
     def ensure_python_certs(self):
