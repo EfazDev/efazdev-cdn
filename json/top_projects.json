@@ -1,13 +1,23 @@
 [
     {
-        "name": "EfazDev API v1",
-        "url": "https://www.efaz.dev/api",
-        "download_url": "https://api.efaz.dev/api/docs",
+        "name": "OrangeBlox",
+        "url": "https://www.efaz.dev/orangeblox",
+        "download_url": "https://cdn.efaz.dev/download?project=orangeblox",
         "discontinued": false,
         "showInProjectsPage": true,
-        "buttonText": {"ProjectsPage": "How to use", "ProjectPage": "Try it now!"},
+        "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
         "dateDiscontinued": "None",
-        "description": "An API that can help with using Roblox or selected platform APIs!"
+        "description": "A program heavily inspired by Bloxstrap but using Python!"
+    },
+    {
+        "name": "Efaz's Roblox Extension",
+        "url": "https://www.efaz.dev/roblox-extension",
+        "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-extension/iehkcelgogmkojgggahdefcdncfeiadf",
+        "discontinued": false,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
+        "dateDiscontinued": "None",
+        "description": "An extension that contains all of my Roblox Chrome extensions at once!"
     },
     {
         "name": "Efaz's Roblox Verified Badge Add-on",
@@ -18,6 +28,16 @@
         "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
         "dateDiscontinued": "None",
         "description": "Have a Roblox Verified Badge next to your name!"
+    },
+    {
+        "name": "EfazDev API v1",
+        "url": "https://www.efaz.dev/api",
+        "download_url": "https://api.efaz.dev/api/docs",
+        "discontinued": false,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "How to use", "ProjectPage": "Try it now!"},
+        "dateDiscontinued": "None",
+        "description": "An API that can help with using Roblox or selected platform APIs!"
     },
     {
         "name": "Item Moderation Scanner",
