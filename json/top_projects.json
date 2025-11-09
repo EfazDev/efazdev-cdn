@@ -1,7 +1,7 @@
 [
     {
         "name": "OrangeBlox",
-        "url": "https://www.efaz.dev/orangeblox",
+        "url": "https://www.efaz.dev/projects/orangeblox",
         "download_url": "https://cdn.efaz.dev/download?project=orangeblox",
         "discontinued": false,
         "showInProjectsPage": true,
@@ -11,7 +11,7 @@
     },
     {
         "name": "Efaz's Roblox Extension",
-        "url": "https://www.efaz.dev/roblox-extension",
+        "url": "https://www.efaz.dev/projects/efaz-roblox-extension",
         "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-extension/iehkcelgogmkojgggahdefcdncfeiadf",
         "discontinued": false,
         "showInProjectsPage": true,
@@ -21,7 +21,7 @@
     },
     {
         "name": "Efaz's Roblox Verified Badge Add-on",
-        "url": "https://www.efaz.dev/fake-roblox-verified-badge",
+        "url": "https://www.efaz.dev/projects/roblox-verification-badge",
         "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-verified-bad/kediboibmfffkllcmgemojpkphmokaea",
         "discontinued": false,
         "showInProjectsPage": true,
@@ -31,7 +31,7 @@
     },
     {
         "name": "EfazDev API v1",
-        "url": "https://www.efaz.dev/api",
+        "url": "https://www.efaz.dev/projects/efazdev-api",
         "download_url": "https://api.efaz.dev/api/docs",
         "discontinued": false,
         "showInProjectsPage": true,
@@ -41,7 +41,7 @@
     },
     {
         "name": "Item Moderation Scanner",
-        "url": "https://www.efaz.dev/itemmoderation",
+        "url": "https://item-moderation.efaz.dev/",
         "download_url": "https://item-moderation.efaz.dev",
         "discontinued": false,
         "showInProjectsPage": true,

@@ -1,0 +1,237 @@
+/* 
+
+Remade EfazDev Website!
+Modified on November 9th, 2025
+
+*/
+
+.topbar-wrapper, .listOnRight {
+    display: flex;
+    flex-direction: row;
+}
+.topbar-ui, .topbar-ui > div  {
+    display: flex;
+    width: initial;
+}
+.topbar-title, .topbar-title-link {
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    margin-left: 6px;
+    margin-right: 6px;
+}
+.footer-link {
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.footer-link > * {
+    margin: auto;
+    margin-right: 0;
+    margin-left: 10px;
+}
+.project-list-text {
+    text-align: left;
+}
+body {
+    overflow: scroll;
+    position: absolute;
+    height: auto;
+    justify-content: start;
+    overflow-x: hidden;
+}
+html {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top:0;
+    left:0;
+    word-break: keep-all;
+    overflow-x: hidden;
+}
+div {
+    display: block;
+    max-width: initial;
+    margin-top: initial;
+}
+.topbar-wrapper {
+    width: auto;
+}
+.footer-link > img {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+.listOnRight > * {
+    margin-right: 5px;
+}
+.listOnRight {
+    justify-content: initial;
+}
+.norm-button, .norm-button > * {
+    padding: 5px;
+    gap: 0;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+.list {
+    list-style: initial;
+    text-align: left;
+    justify-content: initial;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: initial;
+    margin-left: 4% !important;
+}
+.list > li {
+    font-family: arial;
+}
+p > img {
+    float: left; 
+    margin-right: 5px;
+    margin-left: 5px;
+}
+.description-block > * {
+    width: 80%;
+    max-width: initial;
+}
+a > img {
+    scale: 1;
+    height: 40;
+    width: 40;
+    margin: auto;
+}
+.description {
+    font-family: arial;
+}
+.move-left > .description {
+    max-width: 90%;
+}
+.indented {
+    text-indent: 22px !important;
+}
+.copy-block {
+    background-color: black;
+    display: block;
+    position: relative;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+}
+.copy-block-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: black;
+    display: block;
+}
+#copy-block-content {
+    text-align: left;
+}
+.move-left, .move-left > * {
+    margin-left: 2%;
+    margin-right: auto;
+    text-align: left;
+    max-width: 95%;
+}
+footer {
+    background-color: #004200;
+    height: auto;
+}
+#welcome-title {
+    font-size: 50px;
+    padding-block: 100px;
+    margin: 0px;
+    background: linear-gradient(90deg, #4e1700 0%, #4e4e00 50%, #004200 100%);
+    background-size: cover;
+}
+.vertical-menu {
+    overflow-y: auto;
+    width: 60%;
+    height: 500px;
+    background-color: #ffffff10;
+    padding-block: 10px;
+    border-radius: 8px;
+}
+body {
+    background-size: cover;
+    width: 100%
+}
+ul {
+    width: initial;
+    display: flex;
+    flex-direction: row;
+}
+.project-list > div {
+    margin-left: initial;
+}
+div > p {
+    max-width: initial;
+}
+.main-font {
+    font-family: mainfont;
+}
+@media (max-width: 650px) {
+    .topbar-buttons {
+        display: none;
+    }
+}
+@media (orientation: portrait) {
+    div {
+        margin: 0;
+        width: initial;
+        gap: initial;
+        width: 100%
+    }
+
+    body {
+        padding: initial;
+        padding-left: initial;
+        padding-right: initial;
+    }
+
+    .norm-button, .norm-button > * {
+        padding: initial;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .norm-button > img {
+        height: 15px;
+        width: 15px;
+    }
+
+    p > img {
+        scale: 1.5;
+        height: initial;
+    }
+
+    ul > button {
+        margin: 5px;
+    }
+
+    p, label, a {
+        font-size: 1.125rem;
+    }
+
+    .vertical-menu {
+        width: 95%;
+    }
+
+    html {
+        font-size: 100%;
+    }
+
+    .topbar-title {
+        margin-left: 10px;
+    }
+    img {
+        height: initial !important;
+        margin: auto !important;
+    }
+}

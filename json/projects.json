@@ -1,7 +1,7 @@
 [
     {
         "name": "Item Moderation Scanner",
-        "url": "https://www.efaz.dev/itemmoderation",
+        "url": "https://item-moderation.efaz.dev",
         "download_url": "https://item-moderation.efaz.dev",
         "discontinued": false,
         "showInProjectsPage": true,
@@ -11,7 +11,7 @@
     },
     {
         "name": "EfazDev API v1",
-        "url": "https://www.efaz.dev/api",
+        "url": "https://www.efaz.dev/projects/efazdev-api",
         "download_url": "https://api.efaz.dev/api/docs",
         "discontinued": false,
         "showInProjectsPage": true,
@@ -21,7 +21,7 @@
     },
     {
         "name": "OrangeBlox",
-        "url": "https://www.efaz.dev/orangeblox",
+        "url": "https://www.efaz.dev/projects/orangeblox",
         "download_url": "https://cdn.efaz.dev/download?project=orangeblox",
         "discontinued": false,
         "showInProjectsPage": true,
@@ -31,7 +31,7 @@
     },
     {
         "name": "Efaz's Roblox Extension",
-        "url": "https://www.efaz.dev/roblox-extension",
+        "url": "https://www.efaz.dev/projects/efaz-roblox-extension",
         "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-extension/iehkcelgogmkojgggahdefcdncfeiadf",
         "discontinued": false,
         "showInProjectsPage": true,
@@ -41,7 +41,7 @@
     },
     {
         "name": "Efaz's Roblox Verified Badge Add-on",
-        "url": "https://www.efaz.dev/fake-roblox-verified-badge",
+        "url": "https://www.efaz.dev/projects/roblox-verification-badge",
         "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-verified-bad/kediboibmfffkllcmgemojpkphmokaea",
         "discontinued": false,
         "showInProjectsPage": true,
@@ -51,7 +51,7 @@
     },
     {
         "name": "Efaz's Builder Font Remover",
-        "url": "https://www.efaz.dev/remove-builder-font",
+        "url": "https://www.efaz.dev/projects/remove-builder-font",
         "download_url": "https://chromewebstore.google.com/detail/efazs-builder-font-remove/hapbigglmmihgdmpficddjdmfgikalcp",
         "discontinued": false,
         "showInProjectsPage": true,
@@ -60,9 +60,9 @@
         "description": "Chrome extension that removes the Builder font on the Roblox website and replaces it with the old font again!"
     },
     {
-        "name": "Efaz's Roblox Charts/Discover Renamer",
-        "url": "https://www.efaz.dev/roblox-charts-discover-rename",
-        "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-discover-renamer/eghkpfdncgmcaifihhfgihcenboakjck",
+        "name": "Efaz's Roblox Charts Renamer",
+        "url": "https://www.efaz.dev/projects/roblox-charts-renamer",
+        "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-charts-renamer/eghkpfdncgmcaifihhfgihcenboakjck",
         "discontinued": false,
         "showInProjectsPage": true,
         "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
@@ -71,7 +71,7 @@
     },
     {
         "name": "Efaz's Roblox Communities Renamer",
-        "url": "https://www.efaz.dev/roblox-communities-rename",
+        "url": "https://www.efaz.dev/projects/roblox-communities-renamer",
         "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-communities-renamer/afaoamnkmjkkpheiblblbinpmdnacipm",
         "discontinued": false,
         "showInProjectsPage": true,
@@ -81,7 +81,7 @@
     },
     {
         "name": "Efaz's Roblox Connections Renamer",
-        "url": "https://www.efaz.dev/roblox-connections-rename",
+        "url": "https://www.efaz.dev/projects/roblox-connections-renamer",
         "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-connections-renamer/knlbpobhdckkodfgggidkcegiifhgljo",
         "discontinued": false,
         "showInProjectsPage": true,
@@ -91,7 +91,7 @@
     },
     {
         "name": "Efaz's Roblox Experiences Renamer",
-        "url": "https://www.efaz.dev/roblox-experiences-rename",
+        "url": "https://www.efaz.dev/projects/roblox-experiences-renamer",
         "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-experiences/bifmkgmhcilgfcmmnlejgahbjoclaogc",
         "discontinued": false,
         "showInProjectsPage": true,
@@ -101,7 +101,7 @@
     },
     {
         "name": "Efaz's Roblox Marketplace Renamer",
-        "url": "https://www.efaz.dev/roblox-marketplace-rename",
+        "url": "https://www.efaz.dev/projects/roblox-marketplace-renamer",
         "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-marketplace/inldlclpnahnjoknaombbdbikdofkmla",
         "discontinued": false,
         "showInProjectsPage": true,
@@ -111,7 +111,7 @@
     },
     {
         "name": "Efaz's Roblox Connections Renamer",
-        "url": "https://www.efaz.dev/roblox-connections-rename",
+        "url": "https://www.efaz.dev/projects/roblox-connections-renamer",
         "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-connections-renamer/knlbpobhdckkodfgggidkcegiifhgljo",
         "discontinued": false,
         "showInProjectsPage": true,
@@ -121,7 +121,7 @@
     },
     {
         "name": "Efaz's Roblox Foundation Color Accents",
-        "url": "https://www.efaz.dev/roblox-foundation-color-accents",
+        "url": "https://www.efaz.dev/projects/roblox-color-accents",
         "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-foundation-color-accents/ofblldaagkkmhajigieajamomjcbohgf",
         "discontinued": false,
         "showInProjectsPage": true,
@@ -131,7 +131,7 @@
     },
     {
         "name": "Efaz's Roblox Logo Changer",
-        "url": "https://www.efaz.dev/roblox-logo-changer",
+        "url": "https://www.efaz.dev/projects/roblox-logo-changer",
         "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-logo-changer/cpickeibcibgfokapikmokmfgnjlglph",
         "discontinued": false,
         "showInProjectsPage": true,
@@ -141,7 +141,7 @@
     },
     {
         "name": "Efaz's Form System",
-        "url": "https://www.efaz.dev/formsystem",
+        "url": "https://www.efaz.dev/projects/forms-system",
         "download_url": "https://forms.efaz.dev",
         "discontinued": false,
         "showInProjectsPage": true,
@@ -161,7 +161,7 @@
     },
     {
         "name": "discord.gg Redirect",
-        "url": "https://www.efaz.dev/discord-gg",
+        "url": "https://www.efaz.dev/projects/discord-gg-redirect",
         "download_url": "https://www.efaz.dev/discord-gg",
         "discontinued": false,
         "showInProjectsPage": true,
@@ -171,7 +171,7 @@
     },
     {
         "name": "Efaz's Cookie Destroyer",
-        "url": "https://www.efaz.dev/cookiedestroyer",
+        "url": "https://www.efaz.dev/projects/roblox-cookie-destroyer",
         "download_url": "https://cdn.efaz.dev/py/download?fileName=CookieDestroyer.py",
         "discontinued": true,
         "showInProjectsPage": true,
@@ -181,7 +181,7 @@
     },
     {
         "name": "Efaz's Roblox In-Game UGC Tracer",
-        "url": "https://www.efaz.dev/ingameugctracer",
+        "url": "https://www.efaz.dev/projects/roblox-in-game-ugc-tracer",
         "download_url": "https://cdn.efaz.dev/py/download?fileName=RobloxInGameUGCTracer.py",
         "discontinued": true,
         "showInProjectsPage": true,
@@ -191,7 +191,7 @@
     },
     {
         "name": "Merch Code System",
-        "url": "https://www.efaz.dev/merch-code-system",
+        "url": "https://www.efaz.dev/projects/merch-code-system",
         "download_url": "https://cdn.efaz.dev/download?project=merch-code-system",
         "discontinued": true,
         "showInProjectsPage": true,
@@ -201,7 +201,7 @@
     },
     {
         "name": "hazem.gg Auto Redeemer",
-        "url": "https://www.efaz.dev/hazemggredeemer",
+        "url": "https://www.efaz.dev/projects/hazem-gg-redeemer",
         "download_url": "https://cdn.efaz.dev/js/download?fileName=HazemGGAutoRedeemer.js",
         "discontinued": true,
         "showInProjectsPage": true,
@@ -211,7 +211,7 @@
     },
     {
         "name": "Item Fixer",
-        "url": "https://www.efaz.dev/item-fixer",
+        "url": "https://www.efaz.dev/projects/roblox-item-fixer",
         "download_url": "https://cdn.efaz.dev/py/download?fileName=ItemFixer-v1.5.1.py",
         "discontinued": true,
         "showInProjectsPage": true,
@@ -221,7 +221,7 @@
     },
     {
         "name": "Ban Service",
-        "url": "https://www.efaz.dev/banservice",
+        "url": "https://www.efaz.dev/projects/ban-service",
         "download_url": "https://cdn.efaz.dev/rbxm/download?fileName=BanService.rbxm",
         "discontinued": true,
         "showInProjectsPage": true,
@@ -231,7 +231,7 @@
     },
     {
         "name": "Efaz's Developer Product to Item Game",
-        "url": "https://www.efaz.dev/devproduct-to-item",
+        "url": "https://www.efaz.dev/projects/roblox-developer-product-to-item",
         "download_url": "https://cdn.efaz.dev/rbxl/download?fileName=DeveloperProductItem.rbxl",
         "discontinued": true,
         "showInProjectsPage": true,
@@ -241,7 +241,7 @@
     },
     {
         "name": "Twitter Verification System",
-        "url": "https://www.efaz.dev/twitterverificationsystem",
+        "url": "https://www.efaz.dev/projects/twitter-verification-system",
         "download_url": "https://cdn.efaz.dev/download?project=twitter-verification",
         "discontinued": true,
         "showInProjectsPage": true,
@@ -251,7 +251,7 @@
     },
     {
         "name": "Logger Detector",
-        "url": "https://www.efaz.dev/logger-detector",
+        "url": "https://www.efaz.dev/projects/logger-detector",
         "download_url": "https://cdn.efaz.dev/py/download?fileName=LoggerDetector.py",
         "discontinued": true,
         "showInProjectsPage": true,
@@ -261,7 +261,7 @@
     },
     {
         "name": "Logger Detector (JSON)",
-        "url": "https://www.efaz.dev/logger-detector",
+        "url": "https://www.efaz.dev/projects/logger-detector",
         "download_url": "https://cdn.efaz.dev/json/download?fileName=logger_word.json",
         "discontinued": true,
         "showInProjectsPage": false,
@@ -271,7 +271,7 @@
     },
     {
         "name": "Logger Detector (Combined)",
-        "url": "https://www.efaz.dev/logger-detector",
+        "url": "https://www.efaz.dev/projects/logger-detector",
         "download_url": "https://cdn.efaz.dev/zip/download?fileName=LoggerDetector.zip",
         "discontinued": true,
         "showInProjectsPage": false,
