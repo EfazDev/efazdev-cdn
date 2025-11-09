@@ -190,16 +190,6 @@
         "description": "Get Game IDs and Link of an In-Game Limited!"
     },
     {
-        "name": "Efaz's Roblox Account Bulk Verifier",
-        "url": "https://www.efaz.dev/bulkrobloxverifier",
-        "download_url": "https://cdn.efaz.dev/py/download?fileName=VerifyAllRobloxAccounts.py",
-        "discontinued": true,
-        "showInProjectsPage": true,
-        "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
-        "dateDiscontinued": "End of Summer 2025",
-        "description": "Bulk Verify Roblox accounts with just a valid cookie!"
-    },
-    {
         "name": "Merch Code System",
         "url": "https://www.efaz.dev/merch-code-system",
         "download_url": "https://cdn.efaz.dev/download?project=merch-code-system",
