@@ -663,7 +663,8 @@ class request:
         encoding: str = ""
         redirected: bool = False
         raw_data: bytes = b""
-        time: float = 0
+        ssl_handshake_time: float = 0
+        loading_time: float = 0
         ssl_context = None
         ok: bool = False
     class FileDownload(Response):
@@ -746,6 +747,7 @@ class request:
     def __init__(self, include_ips: bool=True, handle_compression: bool=True, opener_processors: list=[]):
         import json, os, ssl, sys, stat, shutil, time, socket, base64, subprocess, urllib.request, urllib.parse, urllib.error, importlib.metadata, importlib, http.client, platform, gzip, uuid, zlib
         from http.cookiejar import CookieJar
+        from functools import lru_cache
         self._subprocess = subprocess
         self._json = json
         self._os = os
@@ -768,11 +770,29 @@ class request:
         self._cookie_jar = CookieJar
         self._http_client = http.client
         self._main_os = platform.system()
-        self._ssl_context = self.ensure_python_certs()
         self.cookie_jar = CookieJar()
         self.include_ips = include_ips==True
-        self.handle_compression == handle_compression==True
+        self.handle_compression = handle_compression==True
         self.opener_processors = opener_processors
+        if not hasattr(self, "_cached_functions"):
+            def cache_method(name):
+                fn = getattr(self, name, None)
+                if fn: setattr(self, name, lru_cache(maxsize=8192)(fn))
+            for name in [
+                "_resolve_ips", 
+                "get_if_ok", 
+                "get_if_ip", 
+                "get_if_cooldown", 
+                "get_if_redirect", 
+                "process_bytes_to_str",
+                "format_bytes_to_size", 
+                "format_size_to_bytes", 
+                "get_url_path", 
+                "get_url_scheme", 
+                "generate_location_url"
+            ]: cache_method(name)
+            self._cached_functions = True
+        self._ssl_context = self.ensure_python_certs()
     def __bool__(self): return self.get_if_connected()
     def _make_opener(self, jar=None):
         class HTTPStatusProcessor(self._urlreq.HTTPErrorProcessor):
@@ -865,6 +885,8 @@ class request:
             start = self._time.perf_counter()
             req = self._urlreq.Request(url, data=data, method=method, headers=headers)
             with opener.open(req, timeout=timeout) as resp:
+                ssl_handshake = (self._time.perf_counter()-start)*1000
+                start = self._time.perf_counter()
                 if follow_redirects:
                     status_code = getattr(resp, "status", None) or resp.getcode()
                     while self.get_if_redirect(status_code):
@@ -875,10 +897,11 @@ class request:
                         resp = opener.open(req, timeout=timeout)
                         status_code = getattr(resp, "status", None) or resp.getcode()
                 response_obj = self._create_response(resp, url, redirected_urls=redirected_urls, downloading=False)
+                response_obj.ssl_handshake_time = ssl_handshake
                 if self.get_if_cooldown(response_obj.status_code) and loop_429 == True and ((1 if loop_count == -1 else loop_count) >= 1):
                     self._time.sleep(loop_timeout)
                     response_obj = self._make_request(url, method, data=data, headers=headers, cookies=cookies, auth=auth, files=files, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=(loop_count-1 if not (loop_count == -1) else loop_count), loop_timeout=loop_timeout)
-                response_obj.time = (self._time.perf_counter()-start)*1000
+                response_obj.loading_time = (self._time.perf_counter()-start)*1000
                 return response_obj
         except self._urlerr.URLError as e:
             if isinstance(e.reason, self._ssl.SSLCertVerificationError): raise self.SSLException(url, str(e.reason))
@@ -983,24 +1006,25 @@ class request:
         mai = self._make_request(*k, **s)
         return self.OpenContext(mai)
     def download(self, url: str, output: str, method: str="GET", data: __DATA__=None, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], files: __FILES__={}, check: bool=False, follow_redirects: bool=False, delete_existing: bool=True, submit_status=None, chunk_size: int=65535) -> FileDownload:
-        # Assurance
-        self.ensure_python_certs()
-        if not self.get_if_connected():
-            while not self.get_if_connected(): self._time.sleep(0.5)
-        if self._os.path.exists(output) and delete_existing == False: raise FileExistsError(f"This file already exists in {output}!")
-        elif self._os.path.exists(output) and self._os.path.isdir(output): self._shutil.rmtree(output, ignore_errors=True)
-        elif self._os.path.exists(output) and self._os.path.isfile(output): self._os.remove(output)
-        
-        # Prepare Data
-        existing = 0
-        redirected_urls = []
-        url, opener, method, data, headers, cookies, auth, files = self._handle_data(url, method=method, data=data, headers=headers, cookies=cookies, auth=auth, files=files)
-        req = self._urlreq.Request(url, data=data, method=method, headers=headers)
-
-        # Let's download the request!
         try:
+            # Assurance
+            self.ensure_python_certs()
+            if not self.get_if_connected():
+                while not self.get_if_connected(): self._time.sleep(0.5)
+            if self._os.path.exists(output) and delete_existing == False: raise FileExistsError(f"This file already exists in {output}!")
+            elif self._os.path.exists(output) and self._os.path.isdir(output): self._shutil.rmtree(output, ignore_errors=True)
+            elif self._os.path.exists(output) and self._os.path.isfile(output): self._os.remove(output)
+
+            # Prepare Data
+            redirected_urls = []
+            url, opener, method, data, headers, cookies, auth, files = self._handle_data(url, method=method, data=data, headers=headers, cookies=cookies, auth=auth, files=files)
+            req = self._urlreq.Request(url, data=data, method=method, headers=headers)
             start_download = self._time.perf_counter()
+
+            # Let's download the request!
             with opener.open(req) as resp:
+                ssl_handshake = (self._time.perf_counter()-start_download)*1000
+                start_download = self._time.perf_counter()
                 if follow_redirects:
                     status_code = getattr(resp, "status", None) or resp.getcode()
                     while self.get_if_redirect(status_code):
@@ -1014,9 +1038,9 @@ class request:
                 if check == True and not download_info.ok: raise self.DownloadError(f"Unable to download file at {url}!", download_info.status_code)
                 total = download_info.headers.get("content-length")
                 encoding = download_info.headers.get("content-encoding")
-                if total is not None: total = int(total) + existing
+                if total is not None: total = int(total)
                 with open(output, "ab") as f:
-                    downloaded = existing
+                    downloaded = 0
                     while True:
                         # Read and write chunk into file
                         start = self._time.perf_counter()
@@ -1040,13 +1064,20 @@ class request:
                             submit_status.submit(progress)
                     download_info.downloaded = downloaded
                     download_info.size = total
-                download_info.time = (self._time.perf_counter()-start_download)*1000
+                download_info.ssl_handshake_time = ssl_handshake
+                download_info.loading_time = (self._time.perf_counter()-start_download)*1000
                 return download_info
+        except self._urlerr.URLError as e:
+            if isinstance(e.reason, self._ssl.SSLCertVerificationError): raise self.SSLException(url, str(e.reason))
+            elif isinstance(e.reason, self._socket.gaierror): raise self.ResolveError(url, str(e.reason))
+            elif isinstance(e.reason, ConnectionRefusedError) or isinstance(e.reason, ConnectionResetError): raise self.ConnectionRefusedException(url, str(e.reason))
+            raise self.ResolveError(url, str(e.reason))
         except Exception as e: raise self.DownloadError(url, str(e))
     def ensure_python_certs(self):
         def che(a):
             try: self._importlib_metadata.version(a); return True
             except self._importlib_metadata.PackageNotFoundError: return False
+        ssl_ctx = None
         if self._platform.python_version() >= "3.10.0": 
             if not getattr(self._sys, "frozen", False) and che("truststore") == False:
                 self._subprocess.check_call([self._sys.executable, "-E", "-s", "-m", "pip", "install", "--upgrade", "truststore"], stdout=self._subprocess.DEVNULL)
@@ -1057,7 +1088,7 @@ class request:
                     if path not in self._sys.path and self._os.path.exists(path): self._sys.path.append(path)
                 self._importlib.invalidate_caches()
             import truststore # type: ignore
-            return truststore.SSLContext(self._ssl.PROTOCOL_TLS_CLIENT)
+            ssl_ctx = truststore.SSLContext(self._ssl.PROTOCOL_TLS_CLIENT)
         elif che("certifi") == False:
             STAT_0o775 = ( self._stat.S_IRUSR | self._stat.S_IWUSR | self._stat.S_IXUSR | self._stat.S_IRGRP | self._stat.S_IWGRP | self._stat.S_IXGRP | self._stat.S_IROTH |  self._stat.S_IXOTH )
             openssl_dir, openssl_cafile = self._os.path.split(self._ssl.get_default_verify_paths().openssl_cafile)
@@ -1069,7 +1100,8 @@ class request:
             except FileNotFoundError: pass
             self._os.symlink(relpath_to_certifi_cafile, openssl_cafile)
             self._os.chmod(openssl_cafile, STAT_0o775)
-        return self._ssl.create_default_context()
+            ssl_ctx = self._ssl.create_default_context()
+        return ssl_ctx
     def get_if_ok(self, code: int): return int(code) < 300 and int(code) >= 200
     def get_if_redirect(self, code: int): return int(code) < 400 and int(code) >= 300
     def get_if_ip(self, ip: int):
