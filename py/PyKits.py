@@ -147,11 +147,11 @@ class curl:
             curl_res = self._subprocess.run([self.get_curl(), "-v", "--compressed"] + self.format_headers(headers) + self.format_auth(auth) + self.format_cookies(cookies) + [url], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, timeout=timeout)
             if type(curl_res) is self._subprocess.CompletedProcess:
                 new_response = self.Response()
-                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8").strip())
+                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8", errors="ignore").strip())
                 for i, v in processed_stderr.items(): setattr(new_response, i, v)
                 new_response.url = url
-                new_response.text = curl_res.stdout.decode("utf-8").strip()
-                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8").strip()
+                new_response.text = curl_res.stdout.decode("utf-8", errors="ignore").strip()
+                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8", errors="ignore").strip()
                 new_response.method = "GET"
                 new_response.scheme = self.get_url_scheme(url)
                 new_response.path = self.get_url_path(url)
@@ -180,11 +180,11 @@ class curl:
             curl_res = self._subprocess.run([self.get_curl(), "-v", "-X", "POST", "--compressed"] + self.format_headers(headers) + self.format_auth(auth) + self.format_cookies(cookies) + self.format_data(data) + [url], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, timeout=timeout)
             if type(curl_res) is self._subprocess.CompletedProcess:
                 new_response = self.Response()
-                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8").strip())
+                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8", errors="ignore").strip())
                 for i, v in processed_stderr.items(): setattr(new_response, i, v)
                 new_response.url = url
-                new_response.text = curl_res.stdout.decode("utf-8").strip()
-                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8").strip()
+                new_response.text = curl_res.stdout.decode("utf-8", errors="ignore").strip()
+                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8", errors="ignore").strip()
                 new_response.method = "POST"
                 new_response.scheme = self.get_url_scheme(url)
                 new_response.path = self.get_url_path(url)
@@ -213,11 +213,11 @@ class curl:
             curl_res = self._subprocess.run([self.get_curl(), "-v", "-X", "PATCH", "--compressed"] + self.format_headers(headers) + self.format_auth(auth) + self.format_cookies(cookies) + self.format_data(data) + [url], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, timeout=timeout)
             if type(curl_res) is self._subprocess.CompletedProcess:
                 new_response = self.Response()
-                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8").strip())
+                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8", errors="ignore").strip())
                 for i, v in processed_stderr.items(): setattr(new_response, i, v)
                 new_response.url = url
-                new_response.text = curl_res.stdout.decode("utf-8").strip()
-                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8").strip()
+                new_response.text = curl_res.stdout.decode("utf-8", errors="ignore").strip()
+                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8", errors="ignore").strip()
                 new_response.method = "PATCH"
                 new_response.scheme = self.get_url_scheme(url)
                 new_response.path = self.get_url_path(url)
@@ -246,11 +246,11 @@ class curl:
             curl_res = self._subprocess.run([self.get_curl(), "-v", "-X", "PUT", "--compressed"] + self.format_headers(headers) + self.format_auth(auth) + self.format_cookies(cookies) + self.format_data(data) + [url], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, timeout=timeout)
             if type(curl_res) is self._subprocess.CompletedProcess:
                 new_response = self.Response()
-                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8").strip())
+                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8", errors="ignore").strip())
                 for i, v in processed_stderr.items(): setattr(new_response, i, v)
                 new_response.url = url
-                new_response.text = curl_res.stdout.decode("utf-8").strip()
-                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8").strip()
+                new_response.text = curl_res.stdout.decode("utf-8", errors="ignore").strip()
+                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8", errors="ignore").strip()
                 new_response.method = "PUT"
                 new_response.scheme = self.get_url_scheme(url)
                 new_response.path = self.get_url_path(url)
@@ -279,11 +279,11 @@ class curl:
             curl_res = self._subprocess.run([self.get_curl(), "-v", "-X", "DELETE", "--compressed"] + self.format_headers(headers) + self.format_auth(auth) + self.format_cookies(cookies) + [url], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, timeout=timeout)
             if type(curl_res) is self._subprocess.CompletedProcess:
                 new_response = self.Response()
-                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8").strip())
+                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8", errors="ignore").strip())
                 for i, v in processed_stderr.items(): setattr(new_response, i, v)
                 new_response.url = url
-                new_response.text = curl_res.stdout.decode("utf-8").strip()
-                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8").strip()
+                new_response.text = curl_res.stdout.decode("utf-8", errors="ignore").strip()
+                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8", errors="ignore").strip()
                 new_response.method = "DELETE"
                 new_response.scheme = self.get_url_scheme(url)
                 new_response.path = self.get_url_path(url)
@@ -312,11 +312,11 @@ class curl:
             curl_res = self._subprocess.run([self.get_curl(), "-v", "-X", "HEAD", "--compressed"] + self.format_headers(headers) + self.format_auth(auth) + self.format_cookies(cookies) + [url], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, timeout=timeout)
             if type(curl_res) is self._subprocess.CompletedProcess:
                 new_response = self.Response()
-                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8").strip())
+                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8", errors="ignore").strip())
                 for i, v in processed_stderr.items(): setattr(new_response, i, v)
                 new_response.url = url
-                new_response.text = curl_res.stdout.decode("utf-8").strip()
-                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8").strip()
+                new_response.text = curl_res.stdout.decode("utf-8", errors="ignore").strip()
+                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8", errors="ignore").strip()
                 new_response.method = "HEAD"
                 new_response.scheme = self.get_url_scheme(url)
                 new_response.path = self.get_url_path(url)
@@ -345,11 +345,11 @@ class curl:
             curl_res = self._subprocess.run([self.get_curl(), "-v", "-X", method, "--compressed"] + self.format_headers(headers) + self.format_auth(auth) + self.format_cookies(cookies) + self.format_data(data) + [url], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, timeout=timeout)
             if type(curl_res) is self._subprocess.CompletedProcess:
                 new_response = self.Response()
-                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8").strip())
+                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8", errors="ignore").strip())
                 for i, v in processed_stderr.items(): setattr(new_response, i, v)
                 new_response.url = url
-                new_response.text = curl_res.stdout.decode("utf-8").strip()
-                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8").strip()
+                new_response.text = curl_res.stdout.decode("utf-8", errors="ignore").strip()
+                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8", errors="ignore").strip()
                 new_response.method = method.upper()
                 new_response.scheme = self.get_url_scheme(url)
                 new_response.path = self.get_url_path(url)
@@ -616,7 +616,7 @@ class curl:
                     sl = i.split("*  subject: ")
                     if len(sl) > 1: sl.pop(0); data["ssl_subject"] = sl[0]
         return data
-    def process_bytes_to_str(self, bytes: bytes): return bytes.decode("utf-8")
+    def process_bytes_to_str(self, bytes: bytes): return bytes.decode("utf-8", errors="ignore")
     def process_download_status(self, download_stat_line: str):
         pattern = self._re.compile(
             r"^\s*(\d{1,3})\s+"  # Percent
@@ -1149,7 +1149,7 @@ class request:
                 size = size_bytes / factor
                 return f"{size:.1f}{suffix}"
         return str(size_bytes)
-    def process_bytes_to_str(self, bytes: bytes): return bytes.decode("utf-8")
+    def process_bytes_to_str(self, bytes: bytes): return bytes.decode("utf-8", errors="ignore")
 class pip:
     """
     A class that allows you to configure pip and Python installations.
@@ -1780,7 +1780,7 @@ class pip:
         if ma_os == "Darwin":
             logged_in_folder = self.getUserFolder()
             username = self._os.path.basename(logged_in_folder)
-            groups_res = self._subprocess.run(["/usr/bin/groups", username], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE)
+            groups_res = self._subprocess.run([self.getPathFile("/usr/bin/groups"), username], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE)
             if groups_res.returncode == 0: return "admin" in groups_res.stdout.decode("utf-8").split(" ")
             else: return False
         else: return False
@@ -1798,7 +1798,7 @@ class pip:
     def endProcess(self, name="", pid=""):
         main_os = self._main_os
         if pid == "":
-            if main_os == "Darwin": self._subprocess.run(["/usr/bin/killall", "-9", name], stdout=self._subprocess.DEVNULL)
+            if main_os == "Darwin": self._subprocess.run([self.getPathFile("/usr/bin/killall"), "-9", name], stdout=self._subprocess.DEVNULL)
             elif main_os == "Windows": self._subprocess.run(f"taskkill /IM {name} /F", shell=True, stdout=self._subprocess.DEVNULL)
             else: self._subprocess.run(f"killall -9 {name}", shell=True, stdout=self._subprocess.DEVNULL)
         else:
@@ -1856,8 +1856,8 @@ class pip:
         previous_output = output
         if output.endswith("/"): output = output[:-1]
         if len(look_for) > 0: output = output + f"_Full_{self._os.urandom(3).hex()}"; self._os.makedirs(output, mode=511)
-        if self._main_os == "Windows": zip_extract = self._subprocess.run(["C:\\Windows\\System32\\tar.exe", "-xf", path] + export_out + ["-C", output], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, check=check)
-        else: zip_extract = self._subprocess.run(["/usr/bin/ditto", "-xk", path, output], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, check=check)
+        if self._main_os == "Windows": zip_extract = self._subprocess.run([self.getPathFile("C:\\Windows\\System32\\tar.exe"), "-xf", path] + export_out + ["-C", output], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, check=check)
+        else: zip_extract = self._subprocess.run([self.getPathFile("/usr/bin/ditto"), "-xk", path, output], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, check=check)
         if len(look_for) > 0:
             if zip_extract.returncode == 0:
                 for ro, dir, fi in self._os.walk(output):
@@ -1889,6 +1889,10 @@ class pip:
             s.path = previous_output
             s.returncode = 0
             return s
+    def getPathFile(self, file: str, name: str=""):
+        if self._os.path.exists(file): return file
+        elif not name: return self._shutil.which(self._os.basename(file).replace(".exe", "")) if self._os.basename(file).endswith(".exe") else self._shutil.which(self._os.basename(file))
+        else: return self._shutil.which(name)
     def copyTreeWithMetadata(self, src: str, dst: str, symlinks=False, ignore=None, dirs_exist_ok=False, ignore_if_not_exist=False):
         if not self._os.path.exists(src) and ignore_if_not_exist == False: return
         if not dirs_exist_ok and self._os.path.exists(dst): raise FileExistsError(f"Destination '{dst}' already exists.")
@@ -1926,7 +1930,7 @@ class pip:
     def getIfProcessIsOpened(self, process_name="", pid=""):
         ma_os = self._main_os
         if ma_os == "Windows":
-            process_list = self._subprocess.run(["tasklist"], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE).stdout.decode("utf-8")
+            process_list = self._subprocess.run(["tasklist"], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE).stdout.decode("utf-8", errors="ignore")
             if pid == "" or pid == None: return process_name in process_list
             else: return f"{pid} Console" in process_list or f"{pid} Service" in process_list
         else:

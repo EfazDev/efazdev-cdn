@@ -11,7 +11,6 @@ import re
 import sys
 import json
 import time
-import stat
 import zlib
 import PyKits
 import base64
@@ -21,7 +20,6 @@ import hashlib
 import asyncio
 import platform
 import datetime
-import threading
 import subprocess
 import urllib.parse
 import xml.dom.minidom
@@ -58,7 +56,7 @@ def getIfLoggedInIsMacOSAdmin():
         logged_in_folder = getUserFolder()
         username = os.path.basename(logged_in_folder)
         groups_res = subprocess.run(["/usr/bin/groups", username], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        if groups_res.returncode == 0: return "admin" in groups_res.stdout.decode("utf-8").split(" ")
+        if groups_res.returncode == 0: return "admin" in groups_res.stdout.decode("utf-8", errors="ignore").split(" ")
         else: return False
     else: return False
 def getInstallableApplicationsFolder():
@@ -479,13 +477,14 @@ class Handler:
         is_studio = False
         loading_existing_logs = False
         await_log_creation = False
+        clean_logs = False
         await_log_creation_attempts = 0
         one_threaded = True
         roblox_starter_launched = False
         audio_focused = False
         daemon = False
 
-        def __init__(self, main_handler, pid: str="", log_file: str="", debug_mode: bool=False, allow_other_logs: bool=False, await_log_creation: bool=False, created_mutex: bool=False, studio: bool=False, one_threaded: bool=True, daemon: bool=False, start_watchdog: bool=True):
+        def __init__(self, main_handler, pid: str="", log_file: str="", debug_mode: bool=False, allow_other_logs: bool=False, await_log_creation: bool=False, created_mutex: bool=False, studio: bool=False, one_threaded: bool=True, daemon: bool=False, start_watchdog: bool=True, clean_logs: bool=False):
             if type(main_handler) is Handler:
                 self.main_handler = main_handler
                 if pid == "": self.pid = self.main_handler.getLatestOpenedRobloxPid(studio=studio)
@@ -497,6 +496,7 @@ class Handler:
                 self.await_log_creation = await_log_creation==True
                 self.one_threaded = one_threaded==True
                 self.daemon = daemon==True
+                self.clean_logs = clean_logs==True
                 if log_file != "" and os.path.exists(log_file): self.log_file = log_file
                 if start_watchdog == True: self.startActivityTracking()
             else: raise Handler.InvalidRobloxHandlerException()
@@ -916,7 +916,7 @@ class Handler:
                         def b():
                             time.sleep(3)
                             self.disconnect_cooldown = False
-                        threading.Thread(target=b, daemon=True).start()
+                        pip_class.startThread(func=b, daemon=True)
                         self.submitEvent(eventName="onPlayTestDisconnected", data=None, isLine=False)
                 elif "[telemetryLog]" in line:
                     def generate_arg():
@@ -1374,7 +1374,7 @@ class Handler:
                             def b():
                                 time.sleep(3)
                                 self.disconnect_cooldown = False
-                            threading.Thread(target=b, daemon=True).start()
+                            pip_class.startThread(func=b, daemon=True)
                             code_message = "Unknown"
                             if self.main_handler.disconnect_code_list.get(str(main_code)): code_message = self.main_handler.disconnect_code_list.get(str(main_code))
                             self.submitEvent(eventName="onGameDisconnected", data={"code": main_code, "message": code_message}, isLine=False); self.connected_to_game = False; self.validating_disconnect = True
@@ -1398,7 +1398,7 @@ class Handler:
                     if self.one_threaded == True:
                         try: i.get("callback")(data)
                         except Exception as e: printErrorMessage(e)
-                    else: threading.Thread(target=i.get("callback"), args=[data], daemon=self.daemon).start()
+                    else: pip_class.startThread(i.get("callback"), self.daemon, data)
         def startActivityTracking(self):
             if self.watchdog_started == False:
                 self.watchdog_started = True
@@ -1418,7 +1418,7 @@ class Handler:
                             while True:
                                 line = file.readline()
                                 if not line:
-                                    threading.Thread(target=self.cleanLogs).start()
+                                    if self.clean_logs: pip_class.startThread(func=self.cleanLogs)
                                     break
                                 if self.ended_process == True:
                                     self.submitEvent(eventName="onRobloxExit", data=line)
@@ -1437,7 +1437,7 @@ class Handler:
                                                         res = self.handleLogLine(line)
                                                         if res:
                                                             if res.code == 0:
-                                                                threading.Thread(target=self.cleanLogs).start()
+                                                                if self.clean_logs: pip_class.startThread(func=self.cleanLogs)
                                                                 break
                                                             elif res.code == 1:
                                                                 self.ended_process = True
@@ -1455,7 +1455,7 @@ class Handler:
                                         if res:
                                             if res.code == 0:
                                                 self.ended_process = True
-                                                threading.Thread(target=self.cleanLogs).start()
+                                                if self.clean_logs: pip_class.startThread(func=self.cleanLogs)
                                                 break     
                                             elif res.code == 1:
                                                 self.ended_process = True
@@ -1472,7 +1472,7 @@ class Handler:
                                 line = file.readline()
                                 if self.ended_process == True:
                                     self.submitEvent(eventName="onRobloxExit", data=line)
-                                    threading.Thread(target=self.cleanLogs).start()
+                                    if self.clean_logs: pip_class.startThread(func=self.cleanLogs)
                                     break
                                 if not line:
                                     time.sleep(0.01)
@@ -1491,7 +1491,7 @@ class Handler:
                                                     if res:
                                                         if res.code == 0:
                                                             self.ended_process = True
-                                                            threading.Thread(target=self.cleanLogs).start()
+                                                            if self.clean_logs: pip_class.startThread(func=self.cleanLogs)
                                                             break     
                                                         elif res.code == 1:
                                                             self.ended_process = True
@@ -1507,7 +1507,7 @@ class Handler:
                                             if res:
                                                 if res.code == 0:
                                                     self.ended_process = True
-                                                    threading.Thread(target=self.cleanLogs).start()
+                                                    if self.clean_logs: pip_class.startThread(func=self.cleanLogs)
                                                     break     
                                                 elif res.code == 1:
                                                     self.ended_process = True
@@ -1523,7 +1523,7 @@ class Handler:
                                         if res:
                                             if res.code == 0:
                                                 self.ended_process = True
-                                                threading.Thread(target=self.cleanLogs).start()
+                                                if self.clean_logs: pip_class.startThread(func=self.cleanLogs)
                                                 break     
                                             elif res.code == 1:
                                                 self.ended_process = True
@@ -1534,8 +1534,8 @@ class Handler:
                                                 self.submitEvent("onWatchdogReconnection", None, isLine=False)
                                                 self.startActivityTracking()
                                                 return                         
-                threading.Thread(target=watchDog, daemon=self.daemon).start()
-                threading.Thread(target=self.awaitRobloxClosing, daemon=self.daemon).start()
+                pip_class.startThread(func=watchDog, daemon=self.daemon)
+                pip_class.startThread(func=self.awaitRobloxClosing, daemon=self.daemon)
         def requestThreadClosing(self): self.end_tracking = True
     class RobloxWindow():
         pid = None
@@ -1683,17 +1683,17 @@ class Handler:
                                 for t in tasks: t.cancel()
                                 return i.result()
             def start_asyncio_loop(): self.optimal_download_location = asyncio.run(overall())
-            if pip_class.pythonSupported(3, 11, 0): threading.Thread(target=start_asyncio_loop, daemon=True).start()
+            if pip_class.pythonSupported(3, 11, 0): pip_class.startThread(func=start_asyncio_loop, daemon=True)
         else: self.optimal_download_location = "setup.rbxcdn.com"
     def endRoblox(self, studio: bool=False, pid: str=""):
         if self.getIfRobloxIsOpen(studio=studio, pid=pid):
             if pid == "":
                 if studio == True:
-                    if self.__main_os__ == "Darwin": subprocess.run(["/usr/bin/killall", "-9", "RobloxStudio"], stdout=subprocess.DEVNULL)
+                    if self.__main_os__ == "Darwin": subprocess.run([pip_class.getPathFile("/usr/bin/killall"), "-9", "RobloxStudio"], stdout=subprocess.DEVNULL)
                     elif self.__main_os__ == "Windows": subprocess.run("taskkill /IM RobloxStudioBeta.exe /F", shell=True, stdout=subprocess.DEVNULL)
                     else: self.unsupportedFunction()
                 else:
-                    if self.__main_os__ == "Darwin": subprocess.run(["/usr/bin/killall", "-9", "RobloxPlayer"], stdout=subprocess.DEVNULL)
+                    if self.__main_os__ == "Darwin": subprocess.run([pip_class.getPathFile("/usr/bin/killall"), "-9", "RobloxPlayer"], stdout=subprocess.DEVNULL)
                     elif self.__main_os__ == "Windows": subprocess.run("taskkill /IM RobloxPlayerBeta.exe /F", shell=True, stdout=subprocess.DEVNULL)
                     else: self.unsupportedFunction()
             else:
@@ -1702,7 +1702,7 @@ class Handler:
                 else: self.unsupportedFunction()
     def endRobloxCrashHandler(self, pid: str=""):
         if pid == "":
-            if self.__main_os__ == "Darwin": subprocess.run(["/usr/bin/killall", "-9", "RobloxCrashHandler"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            if self.__main_os__ == "Darwin": subprocess.run([pip_class.getPathFile("/usr/bin/killall"), "-9", "RobloxCrashHandler"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             elif self.__main_os__ == "Windows": subprocess.run("taskkill /IM RobloxCrashHandler.exe /F", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             else: self.unsupportedFunction()
         else:
@@ -2121,8 +2121,8 @@ class Handler:
                             finally: kernel32.ReleaseMutex(mutexA)
                         else:
                             if debug == True: printDebugMessage(f"There was an error holding mutex A due to response: {mutexA}")
-                    threading.Thread(target=hold_mutex, args=[mutex_name]).start()
-                    threading.Thread(target=hold_mutex2, args=[mutex_bytename]).start()
+                    pip_class.startThread(hold_mutex, False, mutex_name)
+                    pip_class.startThread(hold_mutex2, False, mutex_bytename)
                     is_created = True
             return is_created
         else:
@@ -2260,9 +2260,9 @@ class Handler:
                     if count > size:
                         break
                 try:
-                    return result_bytes.decode("utf-8")
+                    return result_bytes.decode("utf-8", errors="ignore")
                 except Exception:
-                    return result_bytes.decode("latin-1")
+                    return result_bytes.decode("latin-1", errors="ignore")
             def read_field(data: BytesIO, field: BcField) -> typing.Union[str, int, float]:
                 data.seek(field.offset)
                 if field.format == Format.string:
@@ -2636,7 +2636,7 @@ class Handler:
                                 printMainMessage("Reading Previous Configurations..")
                                 with open(f"Configuration.json", "rb") as f: merge_json = f.read()
                                 try: merge_json = json.loads(merge_json)
-                                except Exception as e: merge_json = json.loads(zlib.decompress(merge_json).decode("utf-8"))
+                                except Exception as e: merge_json = json.loads(zlib.decompress(merge_json).decode("utf-8", errors="ignore"))
                                 if studio == True:
                                     if not merge_json.get("EFlagRobloxStudioFlags"): merge_json["EFlagRobloxStudioFlags"] = {}
                                     merge_json["EFlagRobloxStudioFlags"].update(fflags)
@@ -2787,7 +2787,7 @@ class Handler:
                         printMainMessage("Reading Previous Configurations..")
                         with open(f"Configuration.json", "rb") as f: merge_json = f.read()
                         try: merge_json = json.loads(merge_json)
-                        except Exception as e: merge_json = json.loads(zlib.decompress(merge_json).decode("utf-8"))
+                        except Exception as e: merge_json = json.loads(zlib.decompress(merge_json).decode("utf-8", errors="ignore"))
                         if studio == True: flags_final = merge_json.get("EFlagRobloxStudioFlags", {})
                         else: flags_final = merge_json.get("EFlagRobloxPlayerFlags", {})
                     except Exception as e: printErrorMessage(f"Something went wrong while trying to generate a merged JSON: {str(e)}")
@@ -3536,9 +3536,9 @@ def main():
         count = 0
         for i in options:
             count += 1
-            printMainMessage(f"[{str(count)}] = {i['message']}"); main_ui_options[str(count)] = i
+            printMainMessage(f"[{str(count)}] {i['message']}"); main_ui_options[str(count)] = i
             main_ui_options[str(count)] = i
-        if not (star_option == ""): printMainMessage(f"[*] = {star_option}")
+        if not (star_option == ""): printMainMessage(f"[*] {star_option}")
         if not (before_input == ""): printMainMessage(before_input)
         
         res = input("> ")
@@ -3703,7 +3703,7 @@ def main():
                             js = json.loads(js)
                             if not type(js) is dict: raise Exception("Not dictionary")
                             printMainMessage("Are you sure you would like to use this fast flag JSON?")
-                            for i, v in js.items(): printMainMessage(f"[{i}] = {v} [{type(v).__name__}]")
+                            for i, v in js.items(): printMainMessage(f"[{i}] {v} [{type(v).__name__}]")
                             if not (isYes(input("> ")) == True): 
                                 printMainMessage("Returning to menu..")
                                 return menu()
@@ -3988,10 +3988,10 @@ def main():
                 printMainMessage("Select a rendering mode to force on the client:")
                 colors_class.print(ts("This FFlag was from the LatteFlags GitHub! (https://github.com/espresso-soft/latteflags)"), 215)
                 for i in got_modes:
-                    printMainMessage(f"[{str(count)}] = {i}")
+                    printMainMessage(f"[{str(count)}] {i}")
                     ui_options[str(count)] = i
                     count += 1
-                print("[*] = None")
+                print("[*] None")
                 installRenderingMode = input("> ")
                 if ui_options.get(installRenderingMode):
                     opt = ui_options[installRenderingMode]
@@ -4025,10 +4025,10 @@ def main():
                 printMainMessage("Select a lighting mode to force on the client:")
                 colors_class.print("This FFlag was from the LatteFlags GitHub! (https://github.com/espresso-soft/latteflags)", 215)
                 for i in got_modes:
-                    printMainMessage(f"[{str(count)}] = {i}")
+                    printMainMessage(f"[{str(count)}] {i}")
                     ui_options[str(count)] = i
                     count += 1
-                print("[*] = None")
+                print("[*] None")
                 installLightingMode = input("> ")
                 if ui_options.get(installLightingMode):
                     opt = ui_options[installLightingMode]
@@ -4054,10 +4054,10 @@ def main():
                 printWarnMessage("--- Texture Quality ---")
                 printMainMessage("Select a texture quality number to put on the client:")
                 for i in got_modes:
-                    printMainMessage(f"[{str(count)}] = {i}")
+                    printMainMessage(f"[{str(count)}] {i}")
                     ui_options[str(count)] = i
                     count += 1
-                print("[*] = None")
+                print("[*] None")
                 installTextureQuality = input("> ")
                 if ui_options.get(installTextureQuality):
                     opt = ui_options[installTextureQuality]
