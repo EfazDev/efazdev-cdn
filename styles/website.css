@@ -241,4 +241,44 @@ div > p {
         height: initial !important;
         margin: auto !important;
     }
+
+    #main_menu.portrait-menu-enabled, .topbar-ui.portrait-menu-enabled {
+        display: none;
+    }
+
+    .portrait-menu-enabled {
+        display: block;
+    }
+
+    .portrait-toggle {
+        display: flex;
+    }
+
+    .portrait-buttons {
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .portrait-buttons > button {
+        margin: 5px;
+        margin-left: 8px;
+    }
+
+    .portrait-wrapper {
+        display: block;
+    }
+
+    .portrait-title, .portrait-title-link {
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        display: flex;
+        flex-direction: row;
+        margin-left: 6px;
+    }
+
+    .portrait-title-link > img {
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+    }
 }

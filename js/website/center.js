@@ -1,46 +1,55 @@
 function home() {
-    window.location.href = "/"
+    window.location.href = "/";
 }
 function redirect(uri) {
-    window.location.href = (uri)
+    window.location.href = (uri);
 }
 function redirectPrivacy() {
-    window.location.href = ("/privacy")
+    window.location.href = ("/privacy");
 }
 function redirectTOS() {
-    window.location.href = ("/tos")
+    window.location.href = ("/tos");
 }
 function redirectTwitter() {
-    window.location.href = ("https://twitter.efaz.dev")
+    window.location.href = ("https://twitter.efaz.dev");
 }
 function redirectDiscord() {
-    window.location.href = ("https://discord.efaz.dev")
+    window.location.href = ("https://discord.efaz.dev");
 }
 function redirectYouTube() {
-    window.location.href = ("https://youtube.efaz.dev")
+    window.location.href = ("https://youtube.efaz.dev");
 }
 function redirectProjects() {
-    window.location.href = ("/projects")
+    window.location.href = ("/projects");
 }
 function redirectToPython() {
-    window.location.href = ("https://www.python.org/downloads/")
+    window.location.href = ("https://www.python.org/downloads/");
 }
 function redirectDashboard() {
-    window.location.href = ("https://dashboard.efaz.dev/")
+    window.location.href = ("https://dashboard.efaz.dev/");
 }
 function redirectAPIStatus() {
-    window.location.href = ("https://status.efaz.dev")
+    window.location.href = ("https://status.efaz.dev");
 }
 function redirectToItemTryoutGame() {
-    window.location.href = ("https://www.roblox.com/games/15910786450/Efazs-Item-Tryout")
+    window.location.href = ("https://www.roblox.com/games/15910786450/Efazs-Item-Tryout");
 }
 function redirectToDonationGame() {
-    window.location.href = ("https://donate.efaz.dev")
+    window.location.href = ("https://donate.efaz.dev");
+}
+function exitPortraitMenu() {
+    document.getElementById("main_menu").setAttribute("class", "");
+    document.querySelector(".topbar-ui").setAttribute("class", "topbar-ui");
+}
+function openPortraitMenu() {
+    document.getElementById("main_menu").setAttribute("class", "portrait-menu-enabled");
+    document.querySelector(".topbar-ui").setAttribute("class", "topbar-ui portrait-menu-enabled");
+
 }
 function destroyFooter() {
     if (document.getElementById("main_footer")) {
-        document.getElementById("main_footer").remove()
-        window.localStorage.setItem("destroyFooter", "true")
+        document.getElementById("main_footer").remove();
+        window.localStorage.setItem("destroyFooter", "true");
     }
 }
 async function loopThroughArrayAsync(array, callback) {
@@ -58,7 +67,7 @@ function generateHTMLDom(code) {
     let temp_div = document.createElement("div");
     temp_div.innerHTML = code;
     let dom = temp_div.children[0];
-    temp_div.remove()
+    temp_div.remove();
     return dom;
 }
 function loopThroughArray(array, callback) {
@@ -73,27 +82,28 @@ function loopThroughArray(array, callback) {
     }
 }
 async function GetProjects() {
-    return fetch("https://api.efaz.dev/api/projects", {"mode": "cors"}).then(res => {
-        return res.json()
-    })
+    return fetch("https://api.efaz.dev/api/projects", { "mode": "cors" }).then(res => {
+        return res.json();
+    });
 }
 async function GetTopProjects() {
-    return fetch("https://api.efaz.dev/api/projects/top", {"mode": "cors"}).then(res => {
-        return res.json()
-    })
+    return fetch("https://api.efaz.dev/api/projects/top", { "mode": "cors" }).then(res => {
+        return res.json();
+    });
 }
 async function GetOtherProjects() {
-    return fetch("https://api.efaz.dev/api/projects/other", {"mode": "cors"}).then(res => {
-        return res.json()
-    })
+    return fetch("https://api.efaz.dev/api/projects/other", { "mode": "cors" }).then(res => {
+        return res.json();
+    });
 }
 async function GetPaidProjects() {
-    return fetch("https://api.efaz.dev/api/projects/paid", {"mode": "cors"}).then(res => {
-        return res.json()
-    })
+    return fetch("https://api.efaz.dev/api/projects/paid", { "mode": "cors" }).then(res => {
+        return res.json();
+    });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    // Compile HTML
     let topbar = generateHTMLDom(`<div class="topbar-ui">
         <div class="topbar">
             <div class="wrapper">
@@ -109,10 +119,29 @@ document.addEventListener("DOMContentLoaded", () => {
                         <button onclick="redirectDashboard()">Dashboard</button>
                         <button onclick="redirectAPIStatus()">API Status</button>
                     </div>
+                    <button onclick="openPortraitMenu()" class="portrait-toggle">
+                        <img id="img" src="https://cdn.efaz.dev/svg/menu.svg">
+                    </button>
                 </div>
             </div>
         </div>
-    </div>`)
+    </div>`);
+    let portrait = generateHTMLDom(`
+        <div class="portrait-ui">
+            <div class="portrait-wrapper">
+                <a rel="noopener noreferrer" class="link portrait-title-link" href="https://www.efaz.dev/" target="_blank"><img height="40" width="40" src="https://cdn.efaz.dev/png/logo.png">
+                    <p class="portrait-title">EfazDev</p>
+                </a>
+                <div class="portrait-buttons">
+                    <button onclick="home()">Home</button>
+                    <button onclick="redirectProjects()">Projects</button>
+                    <button onclick="redirectDashboard()">Dashboard</button>
+                    <button onclick="redirectAPIStatus()">API Status</button>
+                    <button onclick="exitPortraitMenu()">Exit Menu</button>
+                </div>
+            </div>
+        </div>
+    `);
     let footer = generateHTMLDom(`
     <div class="footer" id="main_footer">
     <br>
@@ -139,7 +168,12 @@ document.addEventListener("DOMContentLoaded", () => {
         </ul>
         <br>
     </div>
-    `)
-    document.body.prepend(topbar)
-    document.body.appendChild(footer)
-})
+    `);
+
+    // Add All Base Elements
+    document.body.prepend(portrait);
+    document.body.prepend(topbar);
+    document.body.appendChild(footer);
+
+
+});
