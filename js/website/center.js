@@ -174,6 +174,4 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.prepend(portrait);
     document.body.prepend(topbar);
     document.body.appendChild(footer);
-
-
 });

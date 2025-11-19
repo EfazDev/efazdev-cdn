@@ -183,6 +183,9 @@ div > p {
 .main-font {
     font-family: mainfont;
 }
+.portrait-menu-enabled, .portrait-toggle, .portrait-buttons, .portrait-buttons > button, .portrait-wrapper, .portrait-title, .portrait-title-link, .portrait-title-link > img {
+    display: none;
+}
 @media (max-width: 650px) {
     .topbar-buttons {
         display: none;
