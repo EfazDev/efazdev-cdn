@@ -183,7 +183,7 @@ div > p {
 .main-font {
     font-family: mainfont;
 }
-.portrait-menu-enabled, .portrait-toggle, .portrait-buttons, .portrait-buttons > button, .portrait-wrapper, .portrait-title, .portrait-title-link, .portrait-title-link > img {
+.portrait-menu-enabled, .portrait-toggle, .portrait-buttons, .portrait-buttons > button, .portrait-wrapper, .portrait-title, .portrait-title-link, .portrait-title-link > img, .portrait-ui {
     display: none;
 }
 @media (max-width: 650px) {
@@ -243,6 +243,10 @@ div > p {
     img {
         height: initial !important;
         margin: auto !important;
+    }
+
+    .portrait-menu-enabled, .portrait-toggle, .portrait-buttons, .portrait-buttons > button, .portrait-wrapper, .portrait-title, .portrait-title-link, .portrait-title-link > img {
+        display: block;
     }
 
     #main_menu.portrait-menu-enabled, .topbar-ui.portrait-menu-enabled {

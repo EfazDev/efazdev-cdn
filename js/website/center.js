@@ -40,11 +40,12 @@ function redirectToDonationGame() {
 function exitPortraitMenu() {
     document.getElementById("main_menu").setAttribute("class", "");
     document.querySelector(".topbar-ui").setAttribute("class", "topbar-ui");
+    document.querySelector(".portrait-ui").setAttribute("class", "portrait-ui");
 }
 function openPortraitMenu() {
     document.getElementById("main_menu").setAttribute("class", "portrait-menu-enabled");
     document.querySelector(".topbar-ui").setAttribute("class", "topbar-ui portrait-menu-enabled");
-
+    document.querySelector(".portrait-ui").setAttribute("class", "portrait-ui portrait-menu-enabled");
 }
 function destroyFooter() {
     if (document.getElementById("main_footer")) {
