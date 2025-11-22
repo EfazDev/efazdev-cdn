@@ -88,11 +88,13 @@ inject.js:
                 let tab = window.location;
                 if (tab.href) {
                     const localeSets = {
-                        "English": ["Marketplace"],
-                        "Español": ["Mercado"],
-                        "Français": ["Marketplace"],
+                        "English (United States)": ["Marketplace"],
+                        "English (United Kingdom)": ["Marketplace"],
+                        "Español (España)": ["Mercado"],
+                        "Español (México)*": ["Mercado"],
+                        "Français (France)": ["Marketplace"],
                         "Deutsch": ["Marktplatz"],
-                        "Italiano": ["Marketplace"]
+                        "Italiano": ["Marketplace"],
                     };
                     if (tab.hostname == "www.roblox.com") {
                         /* Set Names */

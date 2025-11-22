@@ -529,14 +529,14 @@ inject.js:
                     } else if (tab.hostname.endsWith(".roblox.com")) {
                         if (otherSub == true) {
                             async function applyCSS(selector, css) {
-                                if ((selector.getAttribute("data-emotion") == "web-blox-css-mui-global" || selector.getAttribute("data-emotion") == "css-global") && sheetToString(selector.sheet).includes("@font-face")) {
+                                if ((selector.getAttribute("data-emotion") == "web-blox-css-mui-global" || selector.getAttribute("data-emotion") == "css-global") && (sheetToString(selector.sheet).includes("@font-face") || selector.textContent.includes("@font-face"))) {
                                     let selector_val = selector.textContent;
                                     if (selector_val.includes("Efaz's Builder Font Remover")) {
                                         return
                                     }
                                     if (selector_val == "") {
                                         selector.textContent = css;
-                                    } else if (selector_val.includes("@font-face") && selector_val.includes("BuilderSans")) {
+                                    } else if (selector_val.includes("@font-face") && (selector_val.includes("BuilderSans") || selector_val.includes("Builder Sans"))) {
                                         selector.textContent = `${selector_val} \n\n${css}`;
                                     }
                                 }

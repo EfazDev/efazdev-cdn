@@ -99,11 +99,13 @@ inject.js:
                 let tab = window.location;
                 if (tab.href) {
                     const localeSets = {
-                        "English": ["Communities", "Community", "communities", "community"],
-                        "Español": ["Comunidades", "Comunidad", "comunidades", "comunidad"],
-                        "Français": ["Communautés", "Communauté", "communautés", "communauté"],
+                        "English (United States)": ["Communities", "Community", "communities", "community"],
+                        "English (United Kingdom)": ["Communities", "Community", "communities", "community"],
+                        "Español (España)": ["Comunidades", "Comunidad", "comunidades", "comunidad"],
+                        "Español (México)*": ["Comunidades", "Comunidad", "comunidades", "comunidad"],
+                        "Français (France)": ["Communautés", "Communauté", "communautés", "communauté"],
                         "Deutsch": ["Communitys", "Community", "communitys", "community"],
-                        "Italiano": ["games", "charts", "discover", "Charts"]
+                        "Italiano": ["Communitys", "Community", "communitys", "community"]
                     };
                     if (tab.hostname == "www.roblox.com") {
                         /* Set Names */

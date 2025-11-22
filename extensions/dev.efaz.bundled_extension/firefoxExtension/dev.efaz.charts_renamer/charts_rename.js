@@ -88,9 +88,11 @@ inject.js:
                 let tab = window.location;
                 if (tab.href) {
                     const localeSets = {
-                        "English": ["games", "charts", "discover", "Charts"],
-                        "Español": ["games", "charts", "discover", "Destacadas"],
-                        "Français": ["games", "charts", "discover", "Charts"],
+                        "English (United States)": ["games", "charts", "discover", "Charts"],
+                        "English (United Kingdom)": ["games", "charts", "discover", "Charts"],
+                        "Español (España)": ["games", "charts", "discover", "Destacadas"],
+                        "Español (México)*": ["games", "charts", "discover", "Destacadas"],
+                        "Français (France)": ["games", "charts", "discover", "Charts"],
                         "Deutsch": ["games", "charts", "discover", "Charts"],
                         "Italiano": ["games", "charts", "discover", "Charts"]
                     };

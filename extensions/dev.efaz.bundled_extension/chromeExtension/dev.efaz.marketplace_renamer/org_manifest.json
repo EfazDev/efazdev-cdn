@@ -1,7 +1,7 @@
 {
     "name": "__MSG_dev_efaz_marketplace_renamer_exName__",
     "description": "__MSG_dev_efaz_marketplace_renamer_exDescription__",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "manifest_version": 3,
     "author": "EfazDev",
     "homepage_url": "https://www.efaz.dev/roblox-marketplace-rename",

@@ -99,9 +99,11 @@ inject.js:
                 let tab = window.location;
                 if (tab.href) {
                     const localeSets = {
-                        "English": ["Connections", "Connection", "Connect", "Connection", "Add ", "Un", "Remove "],
-                        "Español": ["Conexiones", "Conexion", "Conectar", "conexión", "Añadir ", "Eliminar ", "Eliminar "],
-                        "Français": ["Connexions", "Connexion", "Connexion", "connexion", "Ajouter une ", "Supprimer ", "Supprimer "],
+                        "English (United States)": ["Connections", "Connection", "Connect", "Connection", "Add ", "Un", "Remove "],
+                        "English (United Kingdom)": ["Connections", "Connection", "Connect", "Connection", "Add ", "Un", "Remove "],
+                        "Español (España)": ["Conexiones", "Conexion", "Conectar", "conexión", "Añadir ", "Eliminar ", "Eliminar "],
+                        "Español (México)*": ["Conexiones", "Conexion", "Conectar", "conexión", "Añadir ", "Eliminar ", "Eliminar "],
+                        "Français (France)": ["Connexions", "Connexion", "Connexion", "connexion", "Ajouter une ", "Supprimer ", "Supprimer "],
                         "Deutsch": ["Connections", "Connection", "Connect", "Connection", "Connection hinzufügen", "Beenden ", "Connection entfernen"],
                         "Italiano": ["Contatti", "Contatto", "Collegati", "Contatto", "Aggiungi ", "Rimuovi ", "Rimuovi "],
                     };
