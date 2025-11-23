@@ -159,7 +159,7 @@ footer {
 }
 .vertical-menu {
     overflow-y: auto;
-    width: 60%;
+    width: 90vw;
     height: 500px;
     background-color: #ffffff10;
     padding-block: 10px;
@@ -175,7 +175,10 @@ ul {
     flex-direction: row;
 }
 .project-list > div {
-    margin-left: initial;
+    margin-left: 10px;
+}
+ul.project-list>div:first-child { 
+    margin-left: 10px;
 }
 div > p {
     max-width: initial;
