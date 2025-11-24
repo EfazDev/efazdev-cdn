@@ -164,6 +164,7 @@ inject.js:
                             'div.popover-content > div > li > button',
                             ".friends-title",
                             ".roseal-tooltip",
+                            ".send-friend-request",
                             ".server-list-header",
                             "#friendsTooltip",
                             ".avatar-status-container > div.avatar-card-label",
