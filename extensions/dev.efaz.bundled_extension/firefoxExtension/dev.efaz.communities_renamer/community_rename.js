@@ -187,6 +187,7 @@ inject.js:
                             if (ngBind && (ngBind.includes("group.description") || ngBind === "$ctrl.data.currentRoleName" || ngBind === "role.name" || ngBind.includes("role.name") || ngBind.includes("currentRoleFilter") || ngBind.includes("post."))) { return true; }
                             if (ngBindHtml && (ngBindHtml === "piece.content" || ngBindHtml.includes("log") || ngBindHtml.includes("post.body") || ngBindHtml.includes("library.currentGroup"))) { return true; }
                             if (ngIf && ngIf.includes("chatUser.previewMessage")) { return true; }
+                            if (header.getAttribute("class") && header.getAttribute("class").includes("icon-robux-container")) { return true; }
                             return false;
                         }
                         function addRename(header, k) {
