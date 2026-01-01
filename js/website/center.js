@@ -148,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
         '<br>' +
         '<a rel="noopener noreferrer" class="link footer-link">' +
             '<img height="40" width="40" src="https://cdn.efaz.dev/png/logo.png">' +
-            '<p class="description">© Copyright 2025 EfazDev. All rights reserved</p>' +
+            '<p class="description">© Copyright 2026 EfazDev. All rights reserved</p>' +
         '</a>' +
         '<ul>' +
             '<button onclick="redirectPrivacy()" style="background-color: #ff4b00;" class="norm-button">' +
