@@ -60,6 +60,16 @@
         "description": "Chrome extension that removes the Builder font on the Roblox website and replaces it with the old font again!"
     },
     {
+        "name": "NordWireConnect",
+        "url": "https://github.com/EfazDev/nordwireconnect",
+        "download_url": "https://cdn.efaz.dev/download?project=nordwireconnect",
+        "discontinued": false,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "Download Link", "ProjectPage": "Download Now!"},
+        "dateDiscontinued": "None",
+        "description": "Connect to NordVPN using Wireguard!"
+    },
+    {
         "name": "Efaz's Roblox Charts Renamer",
         "url": "https://www.efaz.dev/projects/roblox-charts-renamer",
         "download_url": "https://chromewebstore.google.com/detail/efazs-roblox-charts-renamer/eghkpfdncgmcaifihhfgihcenboakjck",
