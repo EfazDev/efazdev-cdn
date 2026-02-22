@@ -92,7 +92,7 @@ async function saveData() {
                         items[system_settings["name"]][key + "_filename"] = null;
                     }
                 } catch (err) {
-                    console.warn("Unable to save image!" + err.toString());
+                    console.warn("Unable to save image!" + err.stack);
                 }
             } else {
                 items[system_settings["name"]][key] = document.getElementById(key).value;

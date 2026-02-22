@@ -385,6 +385,6 @@ inject.js:
             }
         });
     } catch (err) {
-        console.warn(`Failed to insert rename into this tab. Error Message: ${err.message}`);
+        console.warn(`Failed to insert rename into this tab. Error Message: ${err.stack}`);
     }
 }());

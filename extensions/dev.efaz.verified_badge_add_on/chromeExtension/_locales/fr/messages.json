@@ -180,7 +180,7 @@
         "description": "Paramètres pour la couleur"
     },
     "dev_efaz_verified_badge_add_on_groupsIncluded_mes": {
-        "message": "Inclure les groupes dont vous êtes propriétaire",
+        "message": "Inclure les groupes",
         "description": "Paramètres pour groupsIncluded"
     },
     "dev_efaz_verified_badge_add_on_verifiedPrompt_mes": {

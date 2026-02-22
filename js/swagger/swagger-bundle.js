@@ -8667,7 +8667,7 @@
                     (n = o.error ? m()({
                         error: !0,
                         name: o.err.name,
-                        message: o.err.message,
+                        message: o.err.stack,
                         statusCode: o.err.statusCode
                     }, o.err.response) : o).headers = n.headers || {};
                     var s = e.setIn(["responses", a, i], (0,

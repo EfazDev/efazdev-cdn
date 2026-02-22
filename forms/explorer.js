@@ -308,7 +308,7 @@ function send_response(verification_key) {
                 console.log(`
             Error:
             
-            ${err.message}
+            ${err.stack}
             `);
             }
             get_values().then(values => {
@@ -433,7 +433,7 @@ function send_response(verification_key) {
                                             }
                                         });
                                     } catch (err) {
-                                        view_error_menu(err.message);
+                                        view_error_menu(err.stack);
                                     }
                                 }, task_key);
                             }
@@ -784,7 +784,7 @@ function start_system() {
             console.log("Successfully created form!");
             on_form_loaded(system_json);
         } catch (err) {
-            console.warn("System was disabled due to an error, please check if the json is valid: " + err.message);
+            console.warn("System was disabled due to an error, please check if the json is valid: " + err.stack);
         }
     } else {
         console.warn("System was disabled due to a JSON error, please check if the json is valid: " + JSON.stringify(system_json));
@@ -813,7 +813,7 @@ function loadFormJSONfromURL(url) {
             }
         });
     } catch (err) {
-        console.log(`Error while loading from url: ${err.message}`);
+        console.log(`Error while loading from url: ${err.stack}`);
         loadLastLoadedJSON();
     }
 }
@@ -856,26 +856,26 @@ async function loadFormJSONfromURLByAsync(url) {
                     start_system();
                     return [true, "success"];
                 }).catch(err => {
-                    return [false, err.message];
+                    return [false, err.stack];
                 });
             } else {
                 return res.json().then(json => {
                     console.error(`Request failed, json resulted with: ${JSON.stringify(json)}`);
                     return [false, JSON.stringify(json)];
                 }).catch(err => {
-                    console.error(`Request failed, json resulted with: ${err.message}`);
-                    return [false, err.message];
+                    console.error(`Request failed, json resulted with: ${err.stack}`);
+                    return [false, err.stack];
                 });
             }
         }).catch(err => {
-            console.log(`Error while loading from url: ${err.message}`);
+            console.log(`Error while loading from url: ${err.stack}`);
             loadLastLoadedJSON();
-            return [false, err.message];
+            return [false, err.stack];
         });
     } catch (err) {
-        console.log(`Error while loading from url: ${err.message}`);
+        console.log(`Error while loading from url: ${err.stack}`);
         loadLastLoadedJSON();
-        return [false, err.message];
+        return [false, err.stack];
     }
 }
 
@@ -891,7 +891,7 @@ async function loadLastLoadedJSONByAsync() {
         start_system();
         return [true, "success"];
     } catch (err) {
-        return [false, err.message];
+        return [false, err.stack];
     }
 }
 
@@ -907,7 +907,7 @@ async function loadFormJSONByAsync(json) {
         start_system();
         return [true, "success"];
     } catch (err) {
-        return [false, err.message];
+        return [false, err.stack];
     }
 }
 

@@ -299,7 +299,7 @@ function set_buttons() {
         try {
             function responseToError(err) {
                 view_error_menu("Response couldn't be sent due to a client error. View console for specific details.");
-                make_log(console.warn, 'There was an issue sending response due to a client error: ' + err.message);
+                make_log(console.warn, 'There was an issue sending response due to a client error: ' + err.stack);
             }
             get_values().then(values => {
                 get_xcsrf(values).then(x_csrf_token => {
@@ -425,8 +425,8 @@ function set_buttons() {
                                         };
                                     });
                                 } catch (err) {
-                                    view_error_menu(err.message);
-                                    make_log(console.log, "Unable to submit form: " + err.message);
+                                    view_error_menu(err.stack);
+                                    make_log(console.log, "Unable to submit form: " + err.stack);
                                 }
                             }, task_key);
                         }
@@ -803,14 +803,14 @@ function start_system() {
         try {
             on_form_loaded(system_json);
         } catch (err) {
-            make_log(console.warn, "Unable to run on_form_loaded event due to an error: " + err.message);
+            make_log(console.warn, "Unable to run on_form_loaded event due to an error: " + err.stack);
         }
     } catch (err) {
         document.body.innerHTML = html_set;
         view_awaiting_menu();
         document.getElementById("title4").innerText = "Uh oh!";
         document.getElementById("message3").innerText = "Something went wrong loading this form! Please try again later!";
-        make_log(console.warn, "System was disabled due to an error, please check if the json is valid: " + err.message);
+        make_log(console.warn, "System was disabled due to an error, please check if the json is valid: " + err.stack);
     }
 };
 
@@ -836,7 +836,7 @@ function loadFormJSONfromURL(url) {
             }
         });
     } catch (err) {
-        make_log(console.log, 'Error while loading from url: ' + err.message);
+        make_log(console.log, 'Error while loading from url: ' + err.stack);
         loadLastLoadedJSON();
     };
 };
@@ -879,26 +879,26 @@ async function loadFormJSONfromURLByAsync(url) {
                     start_system();
                     return [true, "success"];
                 }).catch(err => {
-                    return [false, err.message];
+                    return [false, err.stack];
                 });
             } else {
                 return res.json().then(json => {
                     console.error('Request failed, json resulted with: ' + JSON.stringify(json));
                     return [false, JSON.stringify(json)];
                 }).catch(err => {
-                    console.error('Request failed, json resulted with: ' + err.message);
-                    return [false, err.message];
+                    console.error('Request failed, json resulted with: ' + err.stack);
+                    return [false, err.stack];
                 });
             }
         }).catch(err => {
-            make_log(console.log, 'Error while loading from url: ' + err.message);
+            make_log(console.log, 'Error while loading from url: ' + err.stack);
             loadLastLoadedJSON();
-            return [false, err.message];
+            return [false, err.stack];
         });
     } catch (err) {
-        make_log(console.log, 'Error while loading from url: ' + err.message);
+        make_log(console.log, 'Error while loading from url: ' + err.stack);
         loadLastLoadedJSON();
-        return [false, err.message];
+        return [false, err.stack];
     }
 };
 
@@ -914,7 +914,7 @@ async function loadLastLoadedJSONByAsync() {
         start_system();
         return [true, "success"];
     } catch (err) {
-        return [false, err.message];
+        return [false, err.stack];
     }
 };
 
@@ -930,6 +930,6 @@ async function loadFormJSONByAsync(json) {
         start_system();
         return [true, "success"];
     } catch (err) {
-        return [false, err.message];
+        return [false, err.stack];
     }
 };

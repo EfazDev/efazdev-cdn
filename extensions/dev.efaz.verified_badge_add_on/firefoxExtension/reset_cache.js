@@ -17,6 +17,9 @@ reset_cache.js:
                 chrome.storage.local.set({ "group_ownership": {} }, () => {
                     alert("Successfully cleared all group cache!")
                 });
+                chrome.storage.local.set({ "group_ownership_v2": {} }, () => {
+                    alert("Successfully cleared all group cache!")
+                });
             })
         }
 
