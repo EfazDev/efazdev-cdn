@@ -15,6 +15,7 @@ CSS is created based on Roblox's servers for old files. Styles using specific cl
 @font-face { font-family: "Builder Sans"; font-weight: 500; font-style: swap; src: url("https://css.rbxcdn.com/66d562e3299ee732a53db150038c026e-GothamSSm-Medium.woff2") format("woff2"), url("https://css.rbxcdn.com/2ed7693f8cf4d79466dd604c35502f76-GothamSSm-Medium.woff") format("woff"); font-display: swap; }
 @font-face { font-family: "Builder Sans"; font-weight: 800; font-style: swap; src: url("https://css.rbxcdn.com/3c102ace52ea35b16da4383819acfa38-GothamSSm-Bold.woff2") format("woff2"), url("https://css.rbxcdn.com/fe0e9885efc341b17f7e600781493f69-GothamSSm-Bold.woff") format("woff"); font-display: swap; }
 @font-face { font-family: "Builder Mono"; font-weight: 400; font-style: swap; src: url("https://fonts.roblox.com/firamono/FiraMono-Regular.woff2") format("woff2"), url("https://fonts.roblox.com/firamono/FiraMono-Regular.woff") format("woff"); font-display: swap; }
+@font-face { font-family: "Builder Extended"; font-weight: 700; font-style: normal; src: url("https://css.rbxcdn.com/3c102ace52ea35b16da4383819acfa38-GothamSSm-Bold.woff2") format("woff2"), url("https://css.rbxcdn.com/fe0e9885efc341b17f7e600781493f69-GothamSSm-Bold.woff") format("woff"); font-display: swap; }
 
 /* [Overwrite pre-existing Builder font-faces with provided font files.]  */
 html { -webkit-font-smoothing: antialiased; box-sizing: border-box; text-size-adjust: 100%; }
@@ -22,14 +23,14 @@ html { -webkit-font-smoothing: antialiased; box-sizing: border-box; text-size-ad
 strong, b { font-weight: 800; }
 body { 
     margin: 0px; 
-    font-family: "Builder Sans", Helvetica, Arial, san-serif; 
+    font-family: "Builder Sans2", Helvetica, Arial, san-serif; 
     font-weight: 300; 
     font-style: normal; 
     line-height: 150%; 
     font-size: 14px; 
 }
 body { 
-    font-family: "Builder Sans", Arial, san-serif; 
+    font-family: "Builder Sans2", Arial, san-serif; 
     font-weight: 325; 
     font-style: normal; 
     line-height: 140%; 
@@ -124,7 +125,7 @@ body {
 }
 .highcharts-root {
     font-weight: 500 !important;
-    font-family: "Builder Sans";
+    font-family: "Builder Sans2";
     font-size: 12px;
 }
 .web-blox-css-tss-1aszub1-Typography-buttonMedium {
@@ -170,10 +171,13 @@ body {
     font-weight: initial !important;
 }
 .web-blox-css-tss-14ceqbe-Typography-hero-Typography-root-label-headerLabel-arrowLabel {
-    font-family: "Builder Sans" !important;
+    font-family: "Builder Sans2" !important;
     padding-left: 10px !important;
 }
 .web-blox-css-tss-6602vi-Typography-hero-Typography-root-label-headerLabel {
-    font-family: "Builder Sans" !important;
+    font-family: "Builder Sans2" !important;
     padding-left: 10px !important;
+}
+.web-blox-css-tss-18otxoq-Typography-largeLabel2-Typography-root-label {
+    font-weight: 500 !important;
 }

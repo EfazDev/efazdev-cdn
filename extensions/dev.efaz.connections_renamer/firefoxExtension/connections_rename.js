@@ -172,7 +172,8 @@ inject.js:
                             ".profile-header-social-count-label",
                             "button.content-action-utility > .text-truncate-end",
                             "a.content-action-utility > .text-truncate-end",
-                            "#friend-action"
+                            "#friend-action",
+                            ".foundation-web-menu-item-title.text-no-wrap.text-truncate-split.content-emphasis"
                         ];
                         let custom_renames = [
                             ".web-blox-css-tss-1283320-Button-textContainer",

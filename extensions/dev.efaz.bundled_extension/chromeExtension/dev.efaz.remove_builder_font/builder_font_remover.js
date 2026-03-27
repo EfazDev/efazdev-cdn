@@ -451,21 +451,46 @@ inject.js:
                     } else if (tab.hostname == "create.roblox.com") {
                         if (overwriteCreateDashboard == true) {
                             async function applyCSS(selector, css) {
-                                let sheet_text = sheetToString(selector.sheet);
-                                if (selector.getAttribute("data-emotion") == "web-blox-css-mui-global" && sheet_text.includes("@font-face")) {
-                                    let selector_val = selector.textContent;
-                                    if (!(selector_val.includes("Efaz's Builder Font Remover"))) {
-                                        if (selector_val == "") {
-                                            selector.textContent = `${sheet_text} \n\n${css}`;
-                                        } else if (selector_val.includes("/fonts/builder-sans/")) {
-                                            selector.textContent = `${sheet_text} \n\n${css}`;
+                                if (selector.nodeName.toLowerCase() == "style") {
+                                    let sheet_text = sheetToString(selector.sheet);
+                                    if (selector.getAttribute("data-emotion") && selector.getAttribute("data-emotion").includes("web-blox-css")) {
+                                        let selector_val = selector.textContent;
+                                        if (!selector_val.includes("Efaz's Builder Font Remover") && !selector_val.includes("Builder Remover")) {
+                                            if (selector_val.includes("@font-face") || sheet_text.includes("@font-face")) {
+                                                selector.textContent = `${sheet_text.replaceAll("Builder Sans", "Builder Remover Sans").replaceAll("Builder Mono", "Builder Remover Mono").replaceAll("Builder Extended", "Builder Remover Extended")} \n\n${css}`;
+                                            }
                                         }
+                                    }
+                                } else if (selector.rel && selector.href && selector.href.includes("/_next/static/css/") && selector.getAttribute("fonted") != "true") {
+                                    let fetchLink = selector.href;
+                                    let roblox_css = await fetch(fetchLink);
+                                    if (roblox_css.ok) {
+                                        try {
+                                            let roblox_css_res = await roblox_css.text();
+                                            let d = document.createElement("style");
+                                            d.setAttribute("rel", "stylesheet");
+                                            d.setAttribute("org_href", selector.href);
+                                            if (!roblox_css_res.includes("Efaz's Builder Font Remover") && !roblox_css_res.includes("Builder Remover")) {
+                                                if (roblox_css_res.includes("@font-face")) {
+                                                    roblox_css_res = `${roblox_css_res.substring(roblox_css_res.indexOf(":root"))} \n\n${css}`;
+                                                }
+                                            }
+                                            d.textContent = roblox_css_res;
+                                            selector.setAttribute("rel", "")
+                                            selector.href = "";
+                                            selector.append(d);
+                                            selector.setAttribute("fonted", "true");
+                                        } catch (e) {
+                                            console.warn('There was an issue to load the requested CSS and inject font! Error Message: ' + e.message);
+                                        }
+                                    } else {
+                                        console.warn('There was an issue to load the requested CSS and inject font! Status Code: ' + roblox_css.status);
                                     }
                                 }
                             }
                             async function injectCSS(css) {
                                 if (css) {
-                                    let query_names = "style"
+                                    let query_names = "style, link"
                                     let observer = new MutationObserver((mutations) => {
                                         mutations.forEach(m => {
                                             m.addedNodes.forEach(node => {
@@ -490,9 +515,9 @@ inject.js:
                                         characterData: true
                                     });
 
-                                    let selectors = document.querySelectorAll("style");
+                                    let selectors = document.querySelectorAll("style, link");
                                     await loopThroughArrayAsync(selectors, async (_, header) => {
-                                        applyCSS(header);
+                                        applyCSS(header, css);
                                     });
                                     selectors = null;
                                 }
@@ -570,7 +595,7 @@ inject.js:
 
                                     let selectors = document.querySelectorAll("style");
                                     await loopThroughArrayAsync(selectors, async (_, header) => {
-                                        applyCSS(header);
+                                        applyCSS(header, css);
                                     });
                                     selectors = null;
                                 }

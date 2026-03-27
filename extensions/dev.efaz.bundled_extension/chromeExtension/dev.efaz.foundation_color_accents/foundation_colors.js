@@ -323,11 +323,11 @@ inject.js:
                             async function applyCSS(header) {
                                 if (header.nodeName.toLowerCase() == "link") {
                                     if (!(header.getAttribute("foundationColor") == "true") && header.rel && header.rel == "stylesheet" && header.href && header.href.includes("color_definitions")) {
-                                        let fetchLink = "https://corsproxy.io/?" + header.href;
-                                        let roblox_css = await fetch(fetchLink);
-                                        if (roblox_css.ok) {
+                                        let fetchLink = header.href;
+                                        //let roblox_css = await fetch(fetchLink);
+                                        if (true) {
                                             try {
-                                                let roblox_css_res = await roblox_css.text();
+                                                let roblox_css_res = "";
                                                 let base_color_res = applyBaseColoring(roblox_css_res);
                                                 roblox_css_res = base_color_res[1];
                                                 let d = document.createElement("style");
@@ -342,7 +342,7 @@ inject.js:
                                                 console.warn('There was an issue to load the requested CSS and inject accent color! Error Message: ' + e.message);
                                             }
                                         } else {
-                                            console.warn('There was an issue to load the requested CSS and inject accent color! Status Code: ' + res.status);
+                                            console.warn('There was an issue to load the requested CSS and inject accent color! Status Code: ' + roblox_css.status);
                                         }
                                     }
                                 }
