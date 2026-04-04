@@ -419,6 +419,10 @@
         "message": "Modification en masse du contenu HTML avec connexion ou texte de connexion",
         "description": "Définition du texte pour massEdit"
     },
+    "dev_efaz_connections_renamer_adjustFriendsUpdate_mes": {
+        "message": "Ajuster pour la mise à jour des amis du 07/04/2026",
+        "description": "Texte de paramètre pour adjustFriendsUpdate"
+    },
     "dev_efaz_connections_renamer_changeTitleHtml_mes": {
         "message": "Remplacer le nom de l'onglet par un nouveau nom",
         "description": "Définition du texte pour changeTitleHtml"

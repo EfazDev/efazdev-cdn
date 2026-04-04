@@ -193,7 +193,20 @@ inject.js:
                         function addRename(header, k) {
                             function m(a) {
                                 if (!header[a]) { return; }
-                                if (blacklisted(header, a)) { return; }
+                                if (header.nodeType === Node.ELEMENT_NODE) {
+                                    if (blacklisted(header, a)) { return; }
+                                    if (a == "innerHTML") {  
+                                        loopThroughArray(header.children, (_, v) => {
+                                            addRename(v, a);
+                                        });
+                                        header.childNodes.forEach(node => {
+                                            if (node.nodeType === Node.TEXT_NODE) {
+                                                addRename(node, "textContent");
+                                            }
+                                        });
+                                        return;
+                                    }
+                                }
                                 let val = header[a];
                                 let changed = false;
                                 if (val.includes(localeSet[0])) {

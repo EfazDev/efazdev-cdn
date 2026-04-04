@@ -198,5 +198,9 @@
     "dev_efaz_connections_renamer_changeTitleHtml_mes": {
         "message": "Replace Tab Name with New Name",
         "description": "Setting text for changeTitleHtml"
+    },
+    "dev_efaz_connections_renamer_adjustFriendsUpdate_mes": {
+        "message": "Adjust for 04/07/2026 Friends Update",
+        "description": "Setting text for adjustFriendsUpdate"
     }
 }

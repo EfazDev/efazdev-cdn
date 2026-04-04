@@ -46,6 +46,17 @@ inject.js:
                 }
             }
         }
+        function loopThroughArray(array, callback) {
+            if (Array.isArray(array)) {
+                for (let a = 0; a < array.length; a++) {
+                    callback(a, array[a]);
+                }
+            } else if (array && typeof array === "object") {
+                for (const a of Object.keys(array)) {
+                    callback(a, array[a]);
+                }
+            }
+        }
         async function getSettings(storage_key, callback) {
             return await fetch(getChromeURL("settings.json")).then((res) => {
                 if (res.ok) { return res.json(); }
@@ -79,7 +90,6 @@ inject.js:
                 }
             });
         }
-        function timeout(func, ms) { setTimeout(func, ms); }
         getSettings(storage_key, function (items) {
             let enabled = true;
             let settings = items[storage_key];
@@ -140,7 +150,20 @@ inject.js:
                         function addRename(header, k) {
                             function m(a) {
                                 if (!header[a]) { return; }
-                                if (blacklisted(header, a)) { return; }
+                                if (header.nodeType === Node.ELEMENT_NODE) {
+                                    if (blacklisted(header, a)) { return; }
+                                    if (a == "innerHTML") {  
+                                        loopThroughArray(header.children, (_, v) => {
+                                            addRename(v, a);
+                                        });
+                                        header.childNodes.forEach(node => {
+                                            if (node.nodeType === Node.TEXT_NODE) {
+                                                addRename(node, "textContent");
+                                            }
+                                        });
+                                        return;
+                                    }
+                                }
                                 let val = header[a];
                                 let changed = false;
                                 if (val.includes(localeSet[3])) {
@@ -231,11 +254,13 @@ inject.js:
                                 }
                             }
                         }
-                        function startRenameLoop() {
+                        function startRenameLoop(n) {
+                            if (!n) { n = 1; }
                             renameLoopId = setTimeout(() => {
+                                n++;
                                 injectRename();
-                                startRenameLoop();
-                            }, 3000);
+                                startRenameLoop(n);
+                            }, 3000*n);
                         }
                         function init() {
                             clear_local_set = setLanguage();

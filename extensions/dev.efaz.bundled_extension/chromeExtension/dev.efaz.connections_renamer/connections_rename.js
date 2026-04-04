@@ -99,18 +99,19 @@ inject.js:
                 let tab = window.location;
                 if (tab.href) {
                     const localeSets = {
-                        "English (United States)": ["Connections", "Connection", "Connect", "Connection", "Add ", "Un", "Remove "],
-                        "English (United Kingdom)": ["Connections", "Connection", "Connect", "Connection", "Add ", "Un", "Remove "],
-                        "Español (España)": ["Conexiones", "Conexion", "Conectar", "conexión", "Añadir ", "Eliminar ", "Eliminar "],
-                        "Español (México)*": ["Conexiones", "Conexion", "Conectar", "conexión", "Añadir ", "Eliminar ", "Eliminar "],
-                        "Français (France)": ["Connexions", "Connexion", "Connexion", "connexion", "Ajouter une ", "Supprimer ", "Supprimer "],
-                        "Deutsch": ["Connections", "Connection", "Connect", "Connection", "Connection hinzufügen", "Beenden ", "Connection entfernen"],
-                        "Italiano": ["Contatti", "Contatto", "Collegati", "Contatto", "Aggiungi ", "Rimuovi ", "Rimuovi "],
+                        "English (United States)": ["Connections", "Connection", "Connect", "Connection", "Add ", "Un", "Remove ", "Friends", "Friend"],
+                        "English (United Kingdom)": ["Connections", "Connection", "Connect", "Connection", "Add ", "Un", "Remove ", "Friends", "Friend"],
+                        "Español (España)": ["Conexiones", "Conexion", "Conectar", "conexión", "Añadir ", "Eliminar ", "Eliminar ", "Amigos", "Amigo"],
+                        "Español (México)*": ["Conexiones", "Conexion", "Conectar", "conexión", "Añadir ", "Eliminar ", "Eliminar ", "Amigos", "Amigo"],
+                        "Français (France)": ["Connexions", "Connexion", "Connexion", "connexion", "Ajouter une ", "Supprimer ", "Supprimer ", "Amis", "Ami"],
+                        "Deutsch": ["Connections", "Connection", "Connect", "Connection", "Connection hinzufügen", "Beenden ", "Connection entfernen", "Freunde", "Freund"],
+                        "Italiano": ["Contatti", "Contatto", "Collegati", "Contatto", "Aggiungi ", "Rimuovi ", "Rimuovi ", "Amici", "Amico"],
                     };
                     if (tab.hostname == "www.roblox.com") {
                         /* Set Names */
                         let newName = settings["newName"];
                         let newNameWithoutEndingS = settings["newNameWithoutEndingS"];
+                        let adjustFriendsUpdate = settings["adjustFriendsUpdate"];
 
                         /* Clean New Name to prevent crashes */
                         let filter_name = document.createElement("div");
@@ -141,7 +142,6 @@ inject.js:
                             '.input-field',
                             '.text-label-large',
                             '.text-caption-large',
-                            '.friends-filter-searchbar-input',
                             '.text-body-large',
                             '.text-heading-large',
                             '.text-label-small',
@@ -172,13 +172,17 @@ inject.js:
                             ".profile-header-social-count-label",
                             "button.content-action-utility > .text-truncate-end",
                             "a.content-action-utility > .text-truncate-end",
+                            ".education-text-container",
                             "#friend-action",
+                            "h2.friends-subtitle",
+                            ".avatar-card-caption > span > .avatar-card-label",
                             ".foundation-web-menu-item-title.text-no-wrap.text-truncate-split.content-emphasis"
                         ];
                         let custom_renames = [
                             ".web-blox-css-tss-1283320-Button-textContainer",
+                            '.friends-filter-searchbar-input',
                             ".friends-carousel-tile-labels",
-                            ".friends-subtitle",
+                            ".friends-subtitle > h2",
                             ".friends-header > div > h2",
                             ".header-left > h2",
                             "a",
@@ -205,7 +209,20 @@ inject.js:
                         function addRename(header, k) {
                             function m(a) {
                                 if (!header[a]) { return; }
-                                if (blacklisted(header, a)) { return; }
+                                if (header.nodeType === Node.ELEMENT_NODE) {
+                                    if (blacklisted(header, a)) { return; }
+                                    if (a == "innerHTML") {
+                                        loopThroughArray(header.children, (_, v) => {
+                                            addRename(v, a);
+                                        });
+                                        header.childNodes.forEach(node => {
+                                            if (node.nodeType === Node.TEXT_NODE) {
+                                                addRename(node, "textContent");
+                                            }
+                                        });
+                                        return;
+                                    }
+                                }
                                 let val = header[a];
                                 let changed = false;
                                 if (val.includes(localeSet[0])) {
@@ -244,6 +261,24 @@ inject.js:
                                     val = val.replaceAll(localeSet[3], newNameWithoutEndingS.toLowerCase());
                                     changed = true;
                                 }
+                                if (adjustFriendsUpdate == true) {
+                                    if (val.includes(localeSet[7]) && newName != localeSet[7]) {
+                                        val = val.replaceAll(localeSet[7], newName);
+                                        changed = true;
+                                    }
+                                    if (val.includes(localeSet[8]) && newNameWithoutEndingS != localeSet[8]) {
+                                        val = val.replaceAll(localeSet[8], newNameWithoutEndingS);
+                                        changed = true;
+                                    }
+                                    if (val.includes(localeSet[7].toLowerCase()) && newName.toLowerCase() != localeSet[7].toLowerCase()) {
+                                        val = val.replaceAll(localeSet[7].toLowerCase(), newName.toLowerCase());
+                                        changed = true;
+                                    }
+                                    if (val.includes(localeSet[8].toLowerCase()) && newNameWithoutEndingS.toLowerCase() != localeSet[8].toLowerCase()) {
+                                        val = val.replaceAll(localeSet[8].toLowerCase(), newNameWithoutEndingS.toLowerCase());
+                                        changed = true;
+                                    }
+                                }
                                 if (changed == true) { header[a] = val; }
                             }
                             if (k) {
@@ -280,7 +315,43 @@ inject.js:
                                 } else if (innerHTML.includes(localeSet[3]) && !(innerHTML.includes(newNameWithoutEndingS.toLowerCase()))) {
                                     header.innerHTML = innerHTML.replace(localeSet[3], newNameWithoutEndingS.toLowerCase());
                                 }
-                            } else if (header.matches(".friends-subtitle, .header-left > h2, .friends-header > div > h2")) {
+                                if (adjustFriendsUpdate == true) {
+                                    innerHTML = header.innerHTML;
+                                    if (innerHTML.includes(localeSet[7]) && newName != localeSet[7]) {
+                                        header.innerHTML = innerHTML.replaceAll(localeSet[7], newName);
+                                    } else if (innerHTML.includes(localeSet[8]) && newNameWithoutEndingS != localeSet[8]) {
+                                        header.innerHTML = innerHTML.replaceAll(localeSet[8], newNameWithoutEndingS);
+                                    } else if (innerHTML.includes(localeSet[7].toLowerCase()) && newName.toLowerCase() != localeSet[7].toLowerCase()) {
+                                        header.innerHTML = innerHTML.replaceAll(localeSet[7].toLowerCase(), newName.toLowerCase());
+                                    } else if (innerHTML.includes(localeSet[8].toLowerCase()) && newNameWithoutEndingS.toLowerCase() != localeSet[8].toLowerCase()) {
+                                        header.innerHTML = innerHTML.replaceAll(localeSet[8].toLowerCase(), newNameWithoutEndingS.toLowerCase());
+                                    }
+                                }
+                            } else if (header.matches('.friends-filter-searchbar-input')) {
+                                if (blacklisted(header, "placeholder")) { return; }
+                                let placeholder = header.getAttribute("placeholder");
+                                if (placeholder.includes(localeSet[0]) && !(placeholder.includes(newName))) {
+                                    header.setAttribute("placeholder", placeholder.replace(localeSet[0], newName));
+                                } else if (placeholder.includes(localeSet[1]) && !(placeholder.includes(newNameWithoutEndingS))) {
+                                    header.setAttribute("placeholder", placeholder.replace(localeSet[1], newNameWithoutEndingS));
+                                } else if (placeholder.includes(localeSet[0].toLowerCase()) && !(placeholder.includes(newName.toLowerCase()))) {
+                                    header.setAttribute("placeholder", placeholder.replace(localeSet[0].toLowerCase(), newName.toLowerCase()));
+                                } else if (placeholder.includes(localeSet[1].toLowerCase()) && !(placeholder.includes(newNameWithoutEndingS.toLowerCase()))) {
+                                    header.setAttribute("placeholder", placeholder.replace(localeSet[1].toLowerCase(), newNameWithoutEndingS.toLowerCase()));
+                                }
+                                if (adjustFriendsUpdate == true) {
+                                    placeholder = header.getAttribute("placeholder");
+                                    if (placeholder.includes(localeSet[7]) && newName != localeSet[7]) {
+                                        header.setAttribute("placeholder", placeholder.replaceAll(localeSet[7], newName));
+                                    } else if (placeholder.includes(localeSet[8]) && newNameWithoutEndingS != localeSet[8]) {
+                                        header.setAttribute("placeholder", placeholder.replaceAll(localeSet[8], newNameWithoutEndingS));
+                                    } else if (placeholder.includes(localeSet[7].toLowerCase()) && newName.toLowerCase() != localeSet[7].toLowerCase()) {
+                                        header.setAttribute("placeholder", placeholder.replaceAll(localeSet[7].toLowerCase(), newName.toLowerCase()));
+                                    } else if (placeholder.includes(localeSet[8].toLowerCase()) && newNameWithoutEndingS.toLowerCase() != localeSet[8].toLowerCase()) {
+                                        header.setAttribute("placeholder", placeholder.replaceAll(localeSet[8].toLowerCase(), newNameWithoutEndingS.toLowerCase()));
+                                    }
+                                }
+                            } else if (header.matches(".friends-subtitle > h2, .header-left > h2, .friends-header > div > h2")) {
                                 if (header.childNodes && header.childNodes[0]) {
                                     let child_node = header.childNodes[0];
                                     let txt_content = child_node.textContent;
@@ -325,6 +396,8 @@ inject.js:
                                     let val = header.textContent;
                                     if (val.includes(localeSet[0])) {
                                         header.textContent = val.replaceAll(localeSet[0], newName);
+                                    } else if (adjustFriendsUpdate == true && val.includes(localeSet[7]) && newName != localeSet[7]) {
+                                        header.textContent = val.replaceAll(localeSet[7], newName);
                                     }
                                 }
                             }

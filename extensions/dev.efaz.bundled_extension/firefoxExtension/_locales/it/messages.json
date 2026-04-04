@@ -423,6 +423,10 @@
         "message": "Modifica di massa dei contenuti HTML con testo Connection o Connections",
         "description": "Setting text for massEdit"
     },
+    "dev_efaz_connections_renamer_adjustFriendsUpdate_mes": {
+        "message": "Adatta per l'aggiornamento amici del 07/04/2026",
+        "description": "Testo dell'impostazione per adjustFriendsUpdate"
+    },
     "dev_efaz_connections_renamer_changeTitleHtml_mes": {
         "message": "Sostituisci nome della scheda con il nuovo nome",
         "description": "Setting text for changeTitleHtml"

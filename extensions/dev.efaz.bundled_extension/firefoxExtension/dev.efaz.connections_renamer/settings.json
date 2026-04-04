@@ -24,6 +24,14 @@
                 "enabled"
             ]
         },
+        "adjustFriendsUpdate": {
+            "text": "Adjust for 04/07/2026 Friends Update",
+            "type": "checkbox",
+            "default": true,
+            "neededSettings": [
+                "enabled"
+            ]
+        },
         "massEdit": {
             "text": "Mass Edit HTML Contents with Connection or Connections Text",
             "type": "checkbox",

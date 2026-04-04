@@ -46,6 +46,17 @@ inject.js:
                 }
             }
         }
+        function loopThroughArray(array, callback) {
+            if (Array.isArray(array)) {
+                for (let a = 0; a < array.length; a++) {
+                    callback(a, array[a]);
+                }
+            } else if (array && typeof array === "object") {
+                for (const a of Object.keys(array)) {
+                    callback(a, array[a]);
+                }
+            }
+        }
         async function getSettings(storage_key, callback) {
             return await fetch(getChromeURL("settings.json")).then((res) => {
                 if (res.ok) { return res.json(); }
@@ -88,10 +99,13 @@ inject.js:
                 let tab = window.location;
                 if (tab.href) {
                     const localeSets = {
+                        "English": ["Experiences", "Experience"],
                         "English (United States)": ["Experiences", "Experience"],
                         "English (United Kingdom)": ["Experiences", "Experience"],
+                        "Español": ["Experiencias", "Experiencia"],
                         "Español (España)": ["Experiencias", "Experiencia"],
                         "Español (México)*": ["Experiencias", "Experiencia"],
+                        "Français": ["Expériences", "Expérience"],
                         "Français (France)": ["Expériences", "Expérience"],
                         "Deutsch": ["Experiences", "Experience"],
                         "Italiano": ["Esperienze", "Esperienza"]
@@ -191,6 +205,35 @@ inject.js:
                             function m(a) {
                                 if (!header[a]) { return; }
                                 if (blacklisted(header, a)) { return; }
+                                if (a == "innerHTML") {  
+                                    loopThroughArray(header.children, (_, v) => {
+                                        addRename(v, a);
+                                    });
+                                    header.childNodes.forEach(node => {
+                                        if (node.nodeType === Node.TEXT_NODE) {
+                                            let val = node.textContent;
+                                            let changed = false;
+                                            if (val.includes(localeSet[0])) {
+                                                val = val.replaceAll(localeSet[0], newName);
+                                                changed = true;
+                                            }
+                                            if (val.includes(localeSet[0].toLowerCase())) {
+                                                val = val.replaceAll(localeSet[0].toLowerCase(), newName.toLowerCase());
+                                                changed = true;
+                                            }
+                                            if (val.includes(localeSet[1])) {
+                                                val = val.replaceAll(localeSet[1], newNameWithoutEndingS);
+                                                changed = true;
+                                            }
+                                            if (val.includes(localeSet[1].toLowerCase())) {
+                                                val = val.replaceAll(localeSet[1].toLowerCase(), newNameWithoutEndingS.toLowerCase());
+                                                changed = true;
+                                            }
+                                            if (changed == true) { node.textContent = val; }
+                                        }
+                                    });
+                                    return;
+                                }
                                 let val = header[a];
                                 let changed = false;
                                 if (val.includes(localeSet[0])) {
@@ -317,6 +360,11 @@ inject.js:
                             ".web-blox-css-mui-e8q1iy",
                             ".web-blox-css-mui-1kqj7ax",
                             ".web-blox-css-mui-1de74pe",
+                            ".web-blox-css-mui-10iedg7",
+                            ".web-blox-css-mui-1de74pe",
+                            ".web-blox-css-tss-1283320-Button-textContainer",
+                            ".web-blox-css-mui-1fihns4-Typography-button",
+                            ".web-blox-css-tss-1283320-Button-textContainer",
                             ".web-blox-css-mui-gea1as-Typography-body1",
                             ".web-blox-css-mui-15wphe8-Typography-body1",
                             ".web-blox-css-mui-1v9omcg-Typography-body1",
@@ -348,7 +396,20 @@ inject.js:
                         function addRename(header, k) {
                             function m(a) {
                                 if (!header[a]) { return; }
-                                if (blacklisted(header, a)) { return; }
+                                if (header.nodeType === Node.ELEMENT_NODE) {
+                                    if (blacklisted(header, a)) { return; }
+                                    if (a == "innerHTML") {  
+                                        loopThroughArray(header.children, (_, v) => {
+                                            addRename(v, a);
+                                        });
+                                        header.childNodes.forEach(node => {
+                                            if (node.nodeType === Node.TEXT_NODE) {
+                                                addRename(node, "textContent");
+                                            }
+                                        });
+                                        return;
+                                    }
+                                }
                                 let val = header[a];
                                 let changed = false;
                                 if (val.includes(localeSet[0])) {
@@ -403,7 +464,7 @@ inject.js:
                         function setLanguage() {
                             clear_local_set = false;
                             if (!(localeSet)) {
-                                let meta_tag = document.querySelector("a > div > .web-blox-css-mui-9iedg7.MuiChip-label");
+                                let meta_tag = document.querySelector("div > div > .MuiChip-labelMedium.web-blox-css-mui-11lqbxm");
                                 if (meta_tag) { localeSet = localeSets[meta_tag.textContent]; }
                                 if (!(localeSet)) {
                                     localeSet = localeSets["English"];

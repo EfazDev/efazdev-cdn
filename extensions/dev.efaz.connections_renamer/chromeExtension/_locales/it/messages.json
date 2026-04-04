@@ -198,5 +198,9 @@
     "dev_efaz_connections_renamer_changeTitleHtml_mes": {
         "message": "Sostituisci nome della scheda con il nuovo nome",
         "description": "Setting text for changeTitleHtml"
+    },
+    "dev_efaz_connections_renamer_adjustFriendsUpdate_mes": {
+        "message": "Adatta per l'aggiornamento amici del 07/04/2026",
+        "description": "Testo dell'impostazione per adjustFriendsUpdate"
     }
 }

@@ -419,6 +419,10 @@
         "message": "Edición masiva de contenido HTML con conexión o texto de conexiones",
         "description": "Configurando texto para massEdit"
     },
+    "dev_efaz_connections_renamer_adjustFriendsUpdate_mes": {
+        "message": "Ajustar para la actualización de amigos del 07/04/2026",
+        "description": "Texto de configuración para adjustFriendsUpdate"
+    },
     "dev_efaz_connections_renamer_changeTitleHtml_mes": {
         "message": "Reemplazar nombre de pestaña con nuevo nombre",
         "description": "Configurando texto para changeTitleHtml"

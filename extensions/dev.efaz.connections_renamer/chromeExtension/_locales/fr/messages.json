@@ -198,5 +198,9 @@
     "foundation_color_accents_exName": {
         "message": "Couleurs de la Fondation Roblox d'Efaz",
         "description": "Nom de l'extension"
+    },
+    "dev_efaz_connections_renamer_adjustFriendsUpdate_mes": {
+        "message": "Ajuster pour la mise à jour des amis du 07/04/2026",
+        "description": "Texte de paramètre pour adjustFriendsUpdate"
     }
 }
