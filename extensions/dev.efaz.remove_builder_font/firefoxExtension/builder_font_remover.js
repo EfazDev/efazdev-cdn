@@ -461,7 +461,7 @@ inject.js:
                                             }
                                         }
                                     }
-                                } else if (selector.rel && selector.href && selector.href.includes("/_next/static/css/") && selector.getAttribute("fonted") != "true") {
+                                } else if (selector.rel && selector.href && (selector.href.includes("/_next/static/css/") || selector.href.includes("/_next/static/chunks/06u52euuux792")) && selector.getAttribute("fonted") != "true") {
                                     let fetchLink = selector.href;
                                     let roblox_css = await fetch(fetchLink);
                                     if (roblox_css.ok) {

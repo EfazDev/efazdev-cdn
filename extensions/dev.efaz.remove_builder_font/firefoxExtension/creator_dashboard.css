@@ -12,14 +12,31 @@ CSS is created based on Roblox's servers for old files. Styles using specific cl
 /* [Create font faces based on the files.] */
 @font-face { font-family: "Builder Sans"; font-weight: 300; font-style: swap; src: url("https://css.rbxcdn.com/6eafc48312528e2515d622428b6b95cc-GothamSSm-Book.woff2") format("woff2"), url("https://css.rbxcdn.com/713e0b3a604ff4e44f55f9d1c100e8b5-GothamSSm-Book.woff") format("woff"); font-display: swap; }
 @font-face { font-family: "Builder Sans"; font-weight: 325; font-style: swap; src: url("https://css.rbxcdn.com/6eafc48312528e2515d622428b6b95cc-GothamSSm-Book.woff2") format("woff2"), url("https://css.rbxcdn.com/713e0b3a604ff4e44f55f9d1c100e8b5-GothamSSm-Book.woff") format("woff"); font-display: swap; }
+@font-face { font-family: "Builder Sans"; font-weight: 400; font-style: swap; src: url("https://css.rbxcdn.com/6eafc48312528e2515d622428b6b95cc-GothamSSm-Book.woff2") format("woff2"), url("https://css.rbxcdn.com/713e0b3a604ff4e44f55f9d1c100e8b5-GothamSSm-Book.woff") format("woff"); font-display: swap; }
 @font-face { font-family: "Builder Sans"; font-weight: 500; font-style: swap; src: url("https://css.rbxcdn.com/66d562e3299ee732a53db150038c026e-GothamSSm-Medium.woff2") format("woff2"), url("https://css.rbxcdn.com/2ed7693f8cf4d79466dd604c35502f76-GothamSSm-Medium.woff") format("woff"); font-display: swap; }
+@font-face { font-family: "Builder Sans"; font-weight: 600; font-style: swap; src: url("https://css.rbxcdn.com/66d562e3299ee732a53db150038c026e-GothamSSm-Medium.woff2") format("woff2"), url("https://css.rbxcdn.com/2ed7693f8cf4d79466dd604c35502f76-GothamSSm-Medium.woff") format("woff"); font-display: swap; }
+@font-face { font-family: "Builder Sans"; font-weight: 700; font-style: swap; src: url("https://css.rbxcdn.com/3c102ace52ea35b16da4383819acfa38-GothamSSm-Bold.woff2") format("woff2"), url("https://css.rbxcdn.com/fe0e9885efc341b17f7e600781493f69-GothamSSm-Bold.woff") format("woff"); font-display: swap; }
 @font-face { font-family: "Builder Sans"; font-weight: 800; font-style: swap; src: url("https://css.rbxcdn.com/3c102ace52ea35b16da4383819acfa38-GothamSSm-Bold.woff2") format("woff2"), url("https://css.rbxcdn.com/fe0e9885efc341b17f7e600781493f69-GothamSSm-Bold.woff") format("woff"); font-display: swap; }
 @font-face { font-family: "Builder Mono"; font-weight: 400; font-style: swap; src: url("https://fonts.roblox.com/firamono/FiraMono-Regular.woff2") format("woff2"), url("https://fonts.roblox.com/firamono/FiraMono-Regular.woff") format("woff"); font-display: swap; }
-@font-face { font-family: "Builder Extended"; font-weight: 700; font-style: normal; src: url("https://css.rbxcdn.com/3c102ace52ea35b16da4383819acfa38-GothamSSm-Bold.woff2") format("woff2"), url("https://css.rbxcdn.com/fe0e9885efc341b17f7e600781493f69-GothamSSm-Bold.woff") format("woff"); font-display: swap; }
+@font-face { font-family: "NewFont"; font-weight: 300; font-style: swap; src: url("https://css.rbxcdn.com/6eafc48312528e2515d622428b6b95cc-GothamSSm-Book.woff2") format("woff2"), url("https://css.rbxcdn.com/713e0b3a604ff4e44f55f9d1c100e8b5-GothamSSm-Book.woff") format("woff"); font-display: swap; }
+@font-face { font-family: "NewFont"; font-weight: 325; font-style: swap; src: url("https://css.rbxcdn.com/6eafc48312528e2515d622428b6b95cc-GothamSSm-Book.woff2") format("woff2"), url("https://css.rbxcdn.com/713e0b3a604ff4e44f55f9d1c100e8b5-GothamSSm-Book.woff") format("woff"); font-display: swap; }
+@font-face { font-family: "NewFont"; font-weight: 500; font-style: swap; src: url("https://css.rbxcdn.com/66d562e3299ee732a53db150038c026e-GothamSSm-Medium.woff2") format("woff2"), url("https://css.rbxcdn.com/2ed7693f8cf4d79466dd604c35502f76-GothamSSm-Medium.woff") format("woff"); font-display: swap; }
+@font-face { font-family: "NewFont"; font-weight: 800; font-style: swap; src: url("https://css.rbxcdn.com/3c102ace52ea35b16da4383819acfa38-GothamSSm-Bold.woff2") format("woff2"), url("https://css.rbxcdn.com/fe0e9885efc341b17f7e600781493f69-GothamSSm-Bold.woff") format("woff"); font-display: swap; }
+@font-face { font-family: "Builder Extended"; font-weight: 300; font-style: swap; src: url("https://css.rbxcdn.com/6eafc48312528e2515d622428b6b95cc-GothamSSm-Book.woff2") format("woff2"), url("https://css.rbxcdn.com/713e0b3a604ff4e44f55f9d1c100e8b5-GothamSSm-Book.woff") format("woff"); font-display: swap; }
+@font-face { font-family: "Builder Extended"; font-weight: 325; font-style: swap; src: url("https://css.rbxcdn.com/6eafc48312528e2515d622428b6b95cc-GothamSSm-Book.woff2") format("woff2"), url("https://css.rbxcdn.com/713e0b3a604ff4e44f55f9d1c100e8b5-GothamSSm-Book.woff") format("woff"); font-display: swap; }
+@font-face { font-family: "Builder Extended"; font-weight: 400; font-style: swap; src: url("https://css.rbxcdn.com/6eafc48312528e2515d622428b6b95cc-GothamSSm-Book.woff2") format("woff2"), url("https://css.rbxcdn.com/713e0b3a604ff4e44f55f9d1c100e8b5-GothamSSm-Book.woff") format("woff"); font-display: swap; }
+@font-face { font-family: "Builder Extended"; font-weight: 500; font-style: swap; src: url("https://css.rbxcdn.com/66d562e3299ee732a53db150038c026e-GothamSSm-Medium.woff2") format("woff2"), url("https://css.rbxcdn.com/2ed7693f8cf4d79466dd604c35502f76-GothamSSm-Medium.woff") format("woff"); font-display: swap; }
+@font-face { font-family: "Builder Extended"; font-weight: 600; font-style: swap; src: url("https://css.rbxcdn.com/66d562e3299ee732a53db150038c026e-GothamSSm-Medium.woff2") format("woff2"), url("https://css.rbxcdn.com/2ed7693f8cf4d79466dd604c35502f76-GothamSSm-Medium.woff") format("woff"); font-display: swap; }
+@font-face { font-family: "Builder Extended"; font-weight: 700; font-style: swap; src: url("https://css.rbxcdn.com/3c102ace52ea35b16da4383819acfa38-GothamSSm-Bold.woff2") format("woff2"), url("https://css.rbxcdn.com/fe0e9885efc341b17f7e600781493f69-GothamSSm-Bold.woff") format("woff"); font-display: swap; }
+@font-face { font-family: "Builder Extended"; font-weight: 800; font-style: swap; src: url("https://css.rbxcdn.com/3c102ace52ea35b16da4383819acfa38-GothamSSm-Bold.woff2") format("woff2"), url("https://css.rbxcdn.com/fe0e9885efc341b17f7e600781493f69-GothamSSm-Bold.woff") format("woff"); font-display: swap; }
 
 /* [Overwrite pre-existing Builder font-faces with provided font files.]  */
 html { -webkit-font-smoothing: antialiased; box-sizing: border-box; text-size-adjust: 100%; }
 *, ::before, ::after { box-sizing: inherit; }
+:root {
+    font-family: "Builder Sans" !important;
+    --config-text-font: "NewFont" !important;
+}
 strong, b { font-weight: 800; }
 body { 
     margin: 0px; 
@@ -188,5 +205,8 @@ body {
     font-weight: 500 !important;
 }
 .web-blox-css-mui-1de74pe, .web-blox-css-mui-ub1lrk {
+    font-weight: 500 !important;
+}
+.web-blox-css-tss-130gpte-Typography-tooltip {
     font-weight: 500 !important;
 }

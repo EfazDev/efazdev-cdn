@@ -176,6 +176,7 @@ inject.js:
                             "#friend-action",
                             "h2.friends-subtitle",
                             ".avatar-card-caption > span > .avatar-card-label",
+                            ".rbx-tab-heading > .text-lead",
                             ".foundation-web-menu-item-title.text-no-wrap.text-truncate-split.content-emphasis"
                         ];
                         let custom_renames = [
@@ -353,20 +354,9 @@ inject.js:
                                 }
                             } else if (header.matches(".friends-subtitle > h2, .header-left > h2, .friends-header > div > h2")) {
                                 if (header.childNodes && header.childNodes[0]) {
-                                    let child_node = header.childNodes[0];
-                                    let txt_content = child_node.textContent;
-                                    if (txt_content.includes(localeSet[0])) {
-                                        child_node.textContent = child_node.textContent.replaceAll(localeSet[0], newName);
-                                    } else if (txt_content.includes(localeSet[1])) {
-                                        child_node.textContent = child_node.textContent.replaceAll(localeSet[1], newNameWithoutEndingS);
-                                    }
+                                    addRename(header.childNodes[0], "textContent");
                                 } else {
-                                    let txt_content = header.textContent;
-                                    if (txt_content.includes(localeSet[0])) {
-                                        header.textContent = txt_content.replaceAll(localeSet[0], newName);
-                                    } else if (txt_content.includes(localeSet[1])) {
-                                        header.textContent = txt_content.replaceAll(localeSet[1], newNameWithoutEndingS);
-                                    }
+                                    addRename(header, "textContent");
                                 }
                             } else if (header.matches(".friends-carousel-tile-labels")) {
                                 let innerHTML = header.innerHTML;
