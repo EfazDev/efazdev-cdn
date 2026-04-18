@@ -277,6 +277,20 @@ inject.js:
                                     --tertiary-700: rgb(0, 116.7822641509, 184.76) !important;
                                     --tertiary-800: rgb(0, 129.9673584906, 205.62) !important;
                                     --tertiary-900: rgb(0, 141.2688679245, 223.5) !important;
+                                    --color-extended-blue-100: rgb(0, 52.7403773585, 83.44) !important;
+                                    --color-extended-blue-1000: #002dd6 !important;
+                                    --color-extended-blue-1100: #0027b8 !important;
+                                    --color-extended-blue-1200: #029 !important;
+                                    --color-extended-blue-1300: #001b7a !important;
+                                    --color-extended-blue-1400: #00145c !important;
+                                    --color-extended-blue-200: rgb(0, 58.3911320755, 92.38) !important;
+                                    --color-extended-blue-300: rgb(0, 65.9254716981, 104.3) !important;
+                                    --color-extended-blue-400: rgb(0, 79.1105660377, 125.16) !important;
+                                    --color-extended-blue-500: rgb(0, 90.4120754717, 143.04) !important;
+                                    --color-extended-blue-600: rgb(0, 103.5971698113, 163.9) !important;
+                                    --color-extended-blue-700: rgb(0, 116.7822641509, 184.76) !important;
+                                    --color-extended-blue-800: rgb(0, 129.9673584906, 205.62) !important;
+                                    --color-extended-blue-900: rgb(0, 141.2688679245, 223.5) !important;
                                     --quaternary-low: rgb(0, 56.5075471698, 89.4) !important;
                                     --highlight-bg: rgb(0, 37.6716981132, 59.6) !important;
                                     --highlight-low: rgb(0, 37.6716981132, 59.6) !important;
@@ -285,16 +299,16 @@ inject.js:
                                     --highlight-low-or-medium: rgb(0, 84.7613207547, 134.1) !important;
                                     --tertiary-or-tertiary-low: rgb(0, 65.9254716981, 104.3) !important;
                                     --tertiary-low-or-tertiary-high: rgb(0, 141.2688679245, 223.5) !important;
-                                    --love: #2bb1ff !important;
-                                    --success: #2bb1ff !important;
-                                    --success-low: rgb(0, 65.9254716981, 104.3) !important;
-                                    --success-medium: rgb(0, 79.1105660377, 125.16) !important;
-                                    --success-hover: rgb(0, 90.4120754717, 143.04) !important;
                                     --tertiary-med-or-tertiary: #2bb1ff !important;
                                 }
                                 `;
                                 new_sheet = new_sheet
                                     .replaceAll("#2bb1ff", rgbToHex(formatRgbVal(converted_rgb["r"] + 20), formatRgbVal(converted_rgb["g"] + 20), formatRgbVal(converted_rgb["b"] + 20)))
+                                    .replaceAll("#002dd6", rgbToHex(formatRgbVal(converted_rgb["r"] - 110), formatRgbVal(converted_rgb["g"] - 110), formatRgbVal(converted_rgb["b"] - 110)))
+                                    .replaceAll("#0027b8", rgbToHex(formatRgbVal(converted_rgb["r"] - 130), formatRgbVal(converted_rgb["g"] - 130), formatRgbVal(converted_rgb["b"] - 130)))
+                                    .replaceAll("#029", rgbToHex(formatRgbVal(converted_rgb["r"] - 150), formatRgbVal(converted_rgb["g"] - 150), formatRgbVal(converted_rgb["b"] - 150)))
+                                    .replaceAll("#001b7a", rgbToHex(formatRgbVal(converted_rgb["r"] - 180), formatRgbVal(converted_rgb["g"] - 180), formatRgbVal(converted_rgb["b"] - 180)))
+                                    .replaceAll("#00145c", rgbToHex(formatRgbVal(converted_rgb["r"] - 200), formatRgbVal(converted_rgb["g"] - 200), formatRgbVal(converted_rgb["b"] - 200)))
                                     .replaceAll("rgb(0, 141.2688679245, 223.5)", rgbToHex(formatRgbVal(converted_rgb["r"] - 20), formatRgbVal(converted_rgb["g"] - 20), formatRgbVal(converted_rgb["b"] - 20)))
                                     .replaceAll("rgb(0, 47.0896226415, 74.5)", rgbToHex(formatRgbVal(converted_rgb["r"] - 100), formatRgbVal(converted_rgb["g"] - 100), formatRgbVal(converted_rgb["b"] - 100)))
                                     .replaceAll("rgb(0, 65.9254716981, 104.3)", rgbToHex(formatRgbVal(converted_rgb["r"] - 80), formatRgbVal(converted_rgb["g"] - 80), formatRgbVal(converted_rgb["b"] - 80)))
@@ -335,7 +349,6 @@ inject.js:
                                                 d.setAttribute("foundationColor", "true");
                                                 d.setAttribute("org_href", header.href);
                                                 d.textContent = roblox_css_res;
-                                                header.href = "";
                                                 header.append(d);
                                                 header.setAttribute("foundationColor", "true");
                                             } catch (e) {
@@ -423,6 +436,34 @@ inject.js:
                                         .replaceAll("#335fff", settings["color"])
                                         .replaceAll("#1446FF", rgbToHex(formatRgbVal(converted_rgb["r"] - 20), formatRgbVal(converted_rgb["g"] - 20), formatRgbVal(converted_rgb["b"] - 20)))
                                         .replaceAll("#3C64FA", rgbToHex(formatRgbVal(converted_rgb["r"] - 10), formatRgbVal(converted_rgb["g"] - 10), formatRgbVal(converted_rgb["b"] - 10)));
+                                    converted_sheet = converted_sheet + `
+                                    * {
+                                        --color-extended-blue-100: rgb(0, 52.7403773585, 83.44) !important;
+                                        --color-extended-blue-1000: #002dd6 !important;
+                                        --color-extended-blue-1100: #0027b8 !important;
+                                        --color-extended-blue-1200: #029 !important;
+                                        --color-extended-blue-1300: #001b7a !important;
+                                        --color-extended-blue-1400: #00145c !important;
+                                        --color-extended-blue-200: rgb(0, 58.3911320755, 92.38) !important;
+                                        --color-extended-blue-300: rgb(0, 65.9254716981, 104.3) !important;
+                                        --color-extended-blue-400: rgb(0, 79.1105660377, 125.16) !important;
+                                        --color-extended-blue-500: rgb(0, 90.4120754717, 143.04) !important;
+                                        --color-extended-blue-600: rgb(0, 103.5971698113, 163.9) !important;
+                                        --color-extended-blue-700: rgb(0, 116.7822641509, 184.76) !important;
+                                        --color-extended-blue-800: rgb(0, 129.9673584906, 205.62) !important;
+                                        --color-extended-blue-900: rgb(0, 141.2688679245, 223.5) !important;
+                                    }
+                                    `.replaceAll("#002dd6", rgbToHex(formatRgbVal(converted_rgb["r"] - 110), formatRgbVal(converted_rgb["g"] - 110), formatRgbVal(converted_rgb["b"] - 110)))
+                                    .replaceAll("#0027b8", rgbToHex(formatRgbVal(converted_rgb["r"] - 130), formatRgbVal(converted_rgb["g"] - 130), formatRgbVal(converted_rgb["b"] - 130)))
+                                    .replaceAll("#029", rgbToHex(formatRgbVal(converted_rgb["r"] - 150), formatRgbVal(converted_rgb["g"] - 150), formatRgbVal(converted_rgb["b"] - 150)))
+                                    .replaceAll("#001b7a", rgbToHex(formatRgbVal(converted_rgb["r"] - 180), formatRgbVal(converted_rgb["g"] - 180), formatRgbVal(converted_rgb["b"] - 180)))
+                                    .replaceAll("#00145c", rgbToHex(formatRgbVal(converted_rgb["r"] - 200), formatRgbVal(converted_rgb["g"] - 200), formatRgbVal(converted_rgb["b"] - 200)))
+                                    .replaceAll("rgb(0, 52.7403773585, 83.44)", rgbToHex(formatRgbVal(converted_rgb["r"] - 90), formatRgbVal(converted_rgb["g"] - 90), formatRgbVal(converted_rgb["b"] - 90)))
+                                    .replaceAll("rgb(0, 58.3911320755, 92.38)", rgbToHex(formatRgbVal(converted_rgb["r"] - 70), formatRgbVal(converted_rgb["g"] - 70), formatRgbVal(converted_rgb["b"] - 70)))
+                                    .replaceAll("rgb(0, 79.1105660377, 125.16)", rgbToHex(formatRgbVal(converted_rgb["r"] - 50), formatRgbVal(converted_rgb["g"] - 50), formatRgbVal(converted_rgb["b"] - 50)))
+                                    .replaceAll("rgb(0, 90.4120754717, 143.04)", rgbToHex(formatRgbVal(converted_rgb["r"] - 30), formatRgbVal(converted_rgb["g"] - 30), formatRgbVal(converted_rgb["b"] - 30)))
+                                    .replaceAll("rgb(0, 116.7822641509, 184.76)", rgbToHex(formatRgbVal(converted_rgb["r"] - 20), formatRgbVal(converted_rgb["g"] - 20), formatRgbVal(converted_rgb["b"] - 20)))
+                                    .replaceAll("rgb(0, 129.9673584906, 205.62)", rgbToHex(formatRgbVal(converted_rgb["r"] - 10), formatRgbVal(converted_rgb["g"] - 10), formatRgbVal(converted_rgb["b"] - 10)));
                                     change_made = true;
                                 }
                                 return [change_made, converted_sheet];
