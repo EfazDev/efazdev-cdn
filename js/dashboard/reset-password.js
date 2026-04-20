@@ -19,7 +19,7 @@ window.onload = function () {
         'credentials': "include"
     }).then(_0x5ee1bd => {
         _0x5ee1bd.json().then(_0x4d2b4b => {
-            if (_0x4d2b4b.success == true) {
+            if (_0x4d2b4b.success == false) {
                 loadFormJSONfromURL("https://db.efaz.dev/forms/dev.efaz.forms.reset-password");
             } else {
                 window.location.replace('/');
