@@ -530,7 +530,7 @@ function start_system() {
 
         /* Captcha */
         if (google_captcha || cloudflare_captcha || cap_captcha) {
-            if ((google_captcha && google_captcha["enabled"] == true) + (cloudflare_captcha && cloudflare_captcha["enabled"] == true) + (cap_captcha && cap_captcha["enabled"] == true) >= 1) {
+            if ((google_captcha && google_captcha["enabled"] == true) + (cloudflare_captcha && cloudflare_captcha["enabled"] == true) + (cap_captcha && cap_captcha["enabled"] == true) > 1) {
                 make_log(console.warn, "You can't have multiple CAPTCHAs enabled at once. Enable only one in your JSON settings!");
             } else if (google_captcha && google_captcha["enabled"] == true) {
                 let new_html = '<input type="hidden" id="' + google_captcha["jsonName"] + '_input" name="' + google_captcha["jsonName"] + '_input"></input>';
