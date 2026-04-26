@@ -598,7 +598,7 @@ function start_system() {
                 } else {
                     new_html = new_html + "></textarea>";
                 };
-            } else if (newQuestion["type"] == "OneTimePassword" || newQuestion["type"] == "OTP") {
+            } else if (newQuestion["type"] == "One Time Password" || newQuestion["type"] == "OTP") {
                 new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="text" inputtype="numeric" autocomplete="one-time-code" pattern="\d{' + newQuestion["codeLength"] + '}" maxlength="' + newQuestion["codeLength"] + '" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
                 add_required = true;
             } else if (newQuestion["type"] == "Slider" || newQuestion["type"] == "RANGE") {
