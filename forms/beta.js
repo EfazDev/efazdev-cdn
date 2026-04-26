@@ -7,7 +7,7 @@ Made by Efaz from efaz.dev!
 
 (Information about this script)
 Made by: Efaz from https://www.efaz.dev
-Script Version: v1.1.5 Beta
+Script Version: v1.2.0 Beta
 Type of Code: JavaScript
 
 */
@@ -25,7 +25,6 @@ var questions = system_json["questions"];
 var modes = system_json["modes"];
 var selected_mode = system_json["defaultMode"];
 var specific_settings = system_json["specific_settings"];
-var identified_buttons = {};
 
 // API Functions
 function on_success_form(args) { };
@@ -62,6 +61,11 @@ var google_captcha = system_json["googleCaptcha"];
 var cloudflare_captcha_enabled = false;
 var cloudflare_captcha = system_json["cloudflareCaptcha"];
 var widget_id = "";
+
+// Cap Captcha
+var cap_captcha_enabled = false;
+var cap_captcha = system_json["capCaptcha"];
+var cap_captcha_object = null;
 
 // Run System
 async function getImageFromInput(input) {
@@ -365,6 +369,8 @@ function set_buttons() {
                                     new_formated_values[google_captcha["jsonName"]] = captcha_key[1];
                                 } else if (captcha_key[0] == "Cloudflare") {
                                     new_formated_values[cloudflare_captcha["jsonName"]] = captcha_key[1];
+                                } else if (captcha_key[0] == "Cap") {
+                                    new_formated_values[cap_captcha["jsonName"]] = captcha_key[1];
                                 };
 
                                 let converted_json_string = JSON.stringify(new_formated_values);
@@ -447,6 +453,10 @@ function get_captcha(callback_a, token) {
                     callback_a(["Cloudflare", token]);
                 },
             });
+        } else if (cap_captcha_enabled == true) {
+            return cap.solve().then(solution => {
+                callback_a(["Cap", solution.token]);
+            });
         } else {
             return callback_a(["None", ""]);
         }
@@ -519,9 +529,9 @@ function start_system() {
         };
 
         /* Captcha */
-        if (google_captcha || cloudflare_captcha) {
-            if (google_captcha && cloudflare_captcha && google_captcha["enabled"] == true && cloudflare_captcha["enabled"] == true) {
-                make_log(console.warn, "You can't have both CAPTCHAs enabled at the same time. Disable one in your JSON settings!");
+        if (google_captcha || cloudflare_captcha || cap_captcha) {
+            if ((google_captcha && google_captcha["enabled"] == true) + (cloudflare_captcha && cloudflare_captcha["enabled"] == true) + (cap_captcha && cap_captcha["enabled"] == true) == 1) {
+                make_log(console.warn, "You can't have multiple CAPTCHAs enabled at once. Enable only one in your JSON settings!");
             } else if (google_captcha && google_captcha["enabled"] == true) {
                 let new_html = '<input type="hidden" id="' + google_captcha["jsonName"] + '_input" name="' + google_captcha["jsonName"] + '_input"></input>';
                 add_html_to_main_menu(new_html);
@@ -555,6 +565,16 @@ function start_system() {
                     make_log(console.log, "Cloudflare Captcha is ready to be used!");
                 } catch (err) {
                     make_log(console.warn, "Cloudflare Captcha failed to load due to an error. Please make sure to use the module and is in your head object!");
+                }
+            } else if (cap_captcha && cap_captcha["enabled"] == true) {
+                try {
+                    cap_captcha_object = new Cap({
+                        apiEndpoint: cap_captcha["apiEndpoint"],
+                    });
+                    cap_captcha_enabled = true;
+                    make_log(console.log, "Cap Captcha is ready to be used!");
+                } catch (err) {
+                    make_log(console.warn, "Cap Captcha failed to load due to an error. Please make sure to use the module and is in your head object!");
                 }
             };
         }
@@ -821,6 +841,7 @@ function loadFormJSONfromURL(url) {
                     selected_mode = system_json["defaultMode"];
                     google_captcha = system_json["googleCaptcha"];
                     cloudflare_captcha = system_json["cloudflareCaptcha"];
+                    cap_captcha = system_json["capCaptcha"];
                     start_system();
                 });
             } else {
