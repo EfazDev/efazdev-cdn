@@ -454,7 +454,7 @@ function get_captcha(callback_a, token) {
                 },
             });
         } else if (cap_captcha_enabled == true) {
-            return cap.solve().then(solution => {
+            return cap_captcha_object.solve().then(solution => {
                 callback_a(["Cap", solution.token]);
             });
         } else {
