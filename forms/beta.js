@@ -582,22 +582,14 @@ function start_system() {
         /* Questions */
         for (let a = 0; a < questions.length; a++) {
             let newQuestion = questions[a];
+            let add_required = false;
+            let create_input_type = null;
+            let new_html = "";
+            let autocomplete_type = newQuestion["autocomplete"] ? ' autocomplete="' + newQuestion["autocomplete"] + '" ' : '';
             if (newQuestion["type"] == "Short Response" || newQuestion["type"] == "SR") {
-                let new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] +
-                    '" type="text" class="' + newQuestion["custom_class"] +
-                    '" id="' + newQuestion["jsonName"] + '_input"';
-                if (newQuestion["required"] == true) {
-                    new_html = new_html + ' required></input>';
-                    if (specific_settings["showRequiredText"] == true) {
-                        new_html = new_html + ' <e class="required">*</e>';
-                    };
-                } else {
-                    new_html = new_html + '></input>';
-                };
-                new_html = new_html + '</p>';
-                add_html_to_main_menu(new_html);
+                create_input_type = "text";
             } else if (newQuestion["type"] == "Detailed Message" || newQuestion["type"] == "DM") {
-                let new_html = '<p>' + newQuestion["name"] + ': </p><textarea placeholder="' + newQuestion["placeholder"] + '" type="text" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input" cols="40" rows="10"';
+                new_html = '<p>' + newQuestion["name"] + ': </p><textarea placeholder="' + newQuestion["placeholder"] + '" type="text" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input" cols="40" rows="10"' + autocomplete_type;
                 if (newQuestion["required"] == true) {
                     new_html = new_html + " required></textarea>";
                     if (specific_settings["showRequiredText"] == true) {
@@ -606,81 +598,32 @@ function start_system() {
                 } else {
                     new_html = new_html + "></textarea>";
                 };
-                add_html_to_main_menu(new_html);
+            } else if (newQuestion["type"] == "OneTimePassword" || newQuestion["type"] == "OTP") {
+                new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="text" inputtype="numeric" autocomplete="one-time-code" pattern="\d{' + newQuestion["codeLength"] + '}" maxlength="' + newQuestion["codeLength"] + '" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
+                add_required = true;
+            } else if (newQuestion["type"] == "Slider" || newQuestion["type"] == "RANGE") {
+                new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="range" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"' + autocomplete_type + ' min="' + newQuestion["min"] + '" max="' + newQuestion["max"] + '" step="' + newQuestion["step"] + '"';
+                add_required = true;
             } else if (newQuestion["type"] == "Integer" || newQuestion["type"] == "INT") {
-                let new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="number" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
-                if (newQuestion["required"] == true) {
-                    new_html = new_html + ' required></input>';
-                    if (specific_settings["showRequiredText"] == true) {
-                        new_html = new_html + ' <e class="required">*</e>';
-                    };
-                } else {
-                    new_html = new_html + '></input>';
-                };
-                new_html = new_html + '</p>';
-                add_html_to_main_menu(new_html);
+                create_input_type = "number";
             } else if (newQuestion["type"] == "Email" || newQuestion["type"] == "EMAIL") {
-                let new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="email" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
-                if (newQuestion["required"] == true) {
-                    new_html = new_html + ' required></input>';
-                    if (specific_settings["showRequiredText"] == true) {
-                        new_html = new_html + ' <e class="required">*</e>';
-                    };
-                } else {
-                    new_html = new_html + '></input>';
-                };
-                new_html = new_html + '</p>';
-                add_html_to_main_menu(new_html);
+                create_input_type = "email";
+            } else if (newQuestion["type"] == "Phone" || newQuestion["type"] == "TEL") {
+                create_input_type = "tel";
+            } else if (newQuestion["type"] == "URL") {
+                create_input_type = "url";
             } else if (newQuestion["type"] == "Password" || newQuestion["type"] == "PW") {
-                let new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="password" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
-                if (newQuestion["required"] == true) {
-                    new_html = new_html + ' required></input>';
-                    if (specific_settings["showRequiredText"] == true) {
-                        new_html = new_html + ' <e class="required">*</e>';
-                    };
-                } else {
-                    new_html = new_html + '></input>';
-                };
-                new_html = new_html + '</p>';
-                add_html_to_main_menu(new_html);
+                create_input_type = "password";
+            } else if (newQuestion["type"] == "Checkbox" || newQuestion["type"] == "CHECK") {
+                create_input_type = "checkbox";
             } else if (newQuestion["type"] == "Time" || newQuestion["type"] == "TIME") {
-                let new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="time" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
-                if (newQuestion["required"] == true) {
-                    new_html = new_html + ' required></input>';
-                    if (specific_settings["showRequiredText"] == true) {
-                        new_html = new_html + ' <e class="required">*</e>';
-                    };
-                } else {
-                    new_html = new_html + '></input>';
-                };
-                new_html = new_html + '</p>';
-                add_html_to_main_menu(new_html);
+                create_input_type = "time";
             } else if (newQuestion["type"] == "Datetime Local" || newQuestion["type"] == "DTLocal") {
-                let new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="datetime-local" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
-                if (newQuestion["required"] == true) {
-                    new_html = new_html + ' required></input>';
-                    if (specific_settings["showRequiredText"] == true) {
-                        new_html = new_html + ' <e class="required">*</e>';
-                    };
-                } else {
-                    new_html = new_html + '></input>';
-                };
-                new_html = new_html + '</p>';
-                add_html_to_main_menu(new_html);
+                create_input_type = "datetime-local";
             } else if (newQuestion["type"] == "Color" || newQuestion["type"] == "HEX") {
-                let new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="color" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
-                if (newQuestion["required"] == true) {
-                    new_html = new_html + ' required></input>';
-                    if (specific_settings["showRequiredText"] == true) {
-                        new_html = new_html + ' <e class="required">*</e>';
-                    };
-                } else {
-                    new_html = new_html + '></input>';
-                };
-                new_html = new_html + '</p>';
-                add_html_to_main_menu(new_html);
+                create_input_type = "color";
             } else if (newQuestion["type"] == "Selection" || newQuestion["type"] == "SELECT") {
-                let new_html = '<p>' + newQuestion["name"] + ': <select class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
+                new_html = '<p>' + newQuestion["name"] + ': <select class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"' + autocomplete_type;
                 if (newQuestion["required"] == true) {
                     new_html = new_html + ' required>';
 
@@ -703,59 +646,40 @@ function start_system() {
                     new_html = new_html + '</select>';
                 };
                 new_html = new_html + '</p>';
-                add_html_to_main_menu(new_html);
             } else if (newQuestion["type"] == "Image" || newQuestion["type"] == "IMG") {
-                let new_html = '<p>' + newQuestion["name"] + ': <input accept="image/*" type="file" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
-                if (newQuestion["required"] == true) {
-                    new_html = new_html + ' required></input>';
-                    if (specific_settings["showRequiredText"] == true) {
-                        new_html = new_html + ' <e class="required">*</e>';
-                    };
-                } else {
-                    new_html = new_html + '></input>';
-                };
-                new_html = new_html + '</p>';
-                add_html_to_main_menu(new_html);
+                new_html = '<p>' + newQuestion["name"] + ': <input accept="image/*" type="file" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
+                add_required = true;
             } else if (newQuestion["type"] == "Video" || newQuestion["type"] == "VID") {
-                let new_html = '<p>' + newQuestion["name"] + ': <input accept="video/*" type="file" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
-                if (newQuestion["required"] == true) {
-                    new_html = new_html + ' required></input>';
-                    if (specific_settings["showRequiredText"] == true) {
-                        new_html = new_html + ' <e class="required">*</e>';
-                    };
-                } else {
-                    new_html = new_html + '></input>';
-                };
-                new_html = new_html + '</p>';
-                add_html_to_main_menu(new_html);
+                new_html = '<p>' + newQuestion["name"] + ': <input accept="video/*" type="file" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
+                add_required = true;
             } else if (newQuestion["type"] == "Audio" || newQuestion["type"] == "AUD") {
-                let new_html = '<p>' + newQuestion["name"] + ': <input accept="audio/*" type="file" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
-                if (newQuestion["required"] == true) {
-                    new_html = new_html + ' required></input>';
-                    if (specific_settings["showRequiredText"] == true) {
-                        new_html = new_html + ' <e class="required">*</e>';
-                    };
-                } else {
-                    new_html = new_html + '></input>';
-                };
-                new_html = new_html + '</p>';
-                add_html_to_main_menu(new_html);
+                new_html = '<p>' + newQuestion["name"] + ': <input accept="audio/*" type="file" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
+                add_required = true;
+            } else if (newQuestion["type"] == "File" || newQuestion["type"] == "FILE") {
+                new_html = '<p>' + newQuestion["name"] + ': <input accept="' + newQuestion["acceptingFiles"] + '" type="file" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
+                add_required = true;
             } else if (newQuestion["type"] == "Date" || newQuestion["type"] == "DATE") {
-                let new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="date" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"';
+                new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="date" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"' + autocomplete_type;
+                add_required = true;
+            } else {
+                new_html = '<p>' + newQuestion["name"] + ': Failed to create question. Please ask the owner of this form to correct the question type.</p>"';
+            };
+            if (create_input_type) {
+                new_html = '<p>' + newQuestion["name"] + ': <input placeholder="' + newQuestion["placeholder"] + '" type="' + create_input_type + '" class="' + newQuestion["custom_class"] + '" id="' + newQuestion["jsonName"] + '_input"' + autocomplete_type;
+                add_required = true;
+            }
+            if (add_required == true) {
                 if (newQuestion["required"] == true) {
-                    new_html = new_html + ' required></input>';
+                    new_html += ' required></input>';
                     if (specific_settings["showRequiredText"] == true) {
-                        new_html = new_html + ' <e class="required">*</e>';
+                        new_html += ' <e class="required">*</e>';
                     };
                 } else {
-                    new_html = new_html + '></input>';
+                    new_html += '></input>';
                 };
-                new_html = new_html + '</p>';
-                add_html_to_main_menu(new_html);
-            } else {
-                let new_html = '<p>' + newQuestion["name"] + ': Failed to create question. Please ask the owner of this form to correct the question type.</p>"';
-                add_html_to_main_menu(new_html);
-            };
+                new_html += '</p>';
+            }
+            add_html_to_main_menu(new_html);
             if (document.getElementById(newQuestion["jsonName"] + '_input')) {
                 let object = document.getElementById(newQuestion["jsonName"] + '_input');
                 if (object.tagName.toLowerCase() == "input") {
