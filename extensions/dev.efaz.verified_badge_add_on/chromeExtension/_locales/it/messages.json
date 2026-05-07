@@ -230,5 +230,9 @@
     "enabled_mes": {
         "message": "Abilita Estensione",
         "description": "Enable Extension text"
+    },
+    "dev_efaz_verified_badge_add_on_removeRobloxPlusBadges_mes": {
+        "message": "Rimuovi Badge Roblox Plus",
+        "description": "Setting text for removeRobloxPlusBadges"
     }
 }

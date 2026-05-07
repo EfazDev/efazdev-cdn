@@ -515,6 +515,10 @@
         "message": "Enable Verified Badge Between Accounts",
         "description": "Setting text for verifiedBadgeBetweenAccounts"
     },
+    "dev_efaz_verified_badge_add_on_removeRobloxPlusBadges_mes": {
+        "message": "Remove Roblox Plus Badges",
+        "description": "Setting text for removeRobloxPlusBadges"
+    },
     "dev_efaz_verified_badge_add_on_allowEfazDevApprovedBadges_mes": {
         "message": "Approve Verified Badges on Users Approved by EfazDev",
         "description": "Setting text for allowEfazDevApprovedBadges"

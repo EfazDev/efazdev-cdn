@@ -485,6 +485,8 @@ async function start() {
                     ".profile-header-premium-badge",
                     ".header-caption > .header-names > h1.profile-name",
                     ".header-caption > .header-names > h1.profile-name > .premium-badge-icon",
+                    ".user-profile-header-info > div > div > span > span > .icon-regular-roblox-plus",
+                    ".gap-xsmall.flex > .icon-regular-roblox-plus",
                     ".font-header-2.dynamic-ellipsis-item",
                     ".user-name-container",
                     ".friends-carousel-tile-labels",
@@ -556,56 +558,62 @@ async function start() {
                                     s.children[0].style = "height: 18px; width: 18px; margin-left: 4px;";
                                     usr_con.appendChild(s);
                                 }
-                            } else if (usr_con.matches(".premium-badge-right-aligned, .profile-content > .info > .names > h1 > .premium-badge-icon")) {
-                                if (usr_con && (usr_con.getAttribute("class") == "premium-badge-right-aligned" || usr_con.getAttribute("class") == "premium-badge-icon")) {
-                                    usr_con.remove();
-                                }
-                            } else if (usr_con.matches(".profile-header-premium-badge") || usr_con.matches(".gap-xxsmall.flex > .icon-filled-premium")) {
-                                if (usr_con) {
-                                    usr_con.remove();
+                            }
+                            if (settings["removeRobloxPlusBadges"]) {
+                                if (usr_con.matches(".premium-badge-right-aligned, .profile-content > .info > .names > h1 > .premium-badge-icon")) {
+                                    if (usr_con && (usr_con.getAttribute("class") == "premium-badge-right-aligned" || usr_con.getAttribute("class") == "premium-badge-icon")) {
+                                        usr_con.remove();
+                                    }
+                                } else if (usr_con.matches(".profile-header-premium-badge") || usr_con.matches(".gap-xxsmall.flex > .icon-filled-premium")) {
+                                    if (usr_con) {
+                                        usr_con.remove();
+                                    }
                                 }
                             }
                         }
                     });
 
-                    if (true) {
-                        let user_inf = running_users["*"];
-                        let profile2_html = user_inf["profile2_html"];
-                        let name_html = user_inf["name_html"];
-                        let name_side_real_html = user_inf["name_side_real_html"];
-                        if (usr_con.matches("a[href='/users/profile'] > span.flex > span.text-truncate-end")) {
-                            if (vIconPlaced(usr_con, true)) { return; }
-                            if (usr_con.innerHTML.includes(user_inf["display_name"])) {
-                                let s = generateDOMElement(profile2_html.replace("28", "18").replace("28", "18"));
-                                s.children[0].style = "height: 18px; width: 18px; margin-left: 8px;";
-                                usr_con.appendChild(s);
+                    let user_inf = running_users["*"];
+                    let profile2_html = user_inf["profile2_html"];
+                    let name_html = user_inf["name_html"];
+                    let name_side_real_html = user_inf["name_side_real_html"];
+                    if (usr_con.matches("a[href='/users/profile'] > span.flex > span.text-truncate-end")) {
+                        if (vIconPlaced(usr_con, true)) { return; }
+                        if (usr_con.innerHTML.includes(user_inf["display_name"])) {
+                            let s = generateDOMElement(profile2_html.replace("28", "18").replace("28", "18"));
+                            s.children[0].style = "height: 18px; width: 18px; margin-left: 8px;";
+                            usr_con.appendChild(s);
+                        }
+                    } else if (usr_con.matches(".header-caption > .header-names > h1.profile-name")) {
+                        if (vIconPlaced(usr_con, true)) { return; }
+                        if (usr_con.innerHTML.includes(user_inf["display_name"])) {
+                            let s = generateDOMElement(profile2_html.replace("28", "18").replace("28", "18"));
+                            s.children[0].style = "height: 18px; width: 18px; margin-left: 4px;";
+                            usr_con.appendChild(s);
+                        }
+                    } else if (usr_con.matches(".font-header-2.dynamic-ellipsis-item")) {
+                        if ((usr_con.outerHTML.includes(user_inf["display_name"]) || usr_con.outerHTML.includes(user_inf["username"])) && usr_con.parentElement && usr_con.parentElement.href) {
+                            if (getIfLinkIsUserProfile(usr_con.parentElement.href) && getIfLinkIsUser(usr_con.parentElement.href, user_inf["user_id"].toString())) {
+                                if (vIconPlaced(usr_con, false)) { return; }
+                                addOutsideElementInsideAfter(usr_con, " " + name_side_real_html);
                             }
-                        } else if (usr_con.matches(".header-caption > .header-names > h1.profile-name")) {
+                        }
+                    } else if (usr_con.matches(".user-name-container")) {
+                        if (usr_con.innerHTML.includes(user_inf["display_name"])) {
                             if (vIconPlaced(usr_con, true)) { return; }
-                            if (usr_con.innerHTML.includes(user_inf["display_name"])) {
-                                let s = generateDOMElement(profile2_html.replace("28", "18").replace("28", "18"));
-                                s.children[0].style = "height: 18px; width: 18px; margin-left: 4px;";
-                                usr_con.appendChild(s);
+                            if (usr_con.getAttribute("class") == "dynamic-ellipsis-item user-name-container text-link") {
+                                addOutsideElementInsideAfter(usr_con, " " + name_html.replace("width='28'", "width='14'").replace("height='28'", "height='14'"));
+                            } else {
+                                addOutsideElementInsideAfter(usr_con, " " + name_html);
                             }
-                        } else if (usr_con.matches(".header-caption > .header-names > h1.profile-name > .premium-badge-icon")) {
-                            if (usr_con && (usr_con.getAttribute("class") == "premium-badge-right-aligned" || usr_con.getAttribute("class") == "premium-badge-icon")) {
+                        }
+                    }
+                    if (settings["removeRobloxPlusBadges"]) {
+                        if (usr_con && usr_con.matches(".user-profile-header-info > div > div > span > span > .icon-regular-roblox-plus")) {
+                            usr_con.remove();
+                        } else if (usr_con.matches(".gap-xsmall.flex > .icon-regular-roblox-plus")) {
+                            if (usr_con) {
                                 usr_con.remove();
-                            }
-                        } else if (usr_con.matches(".font-header-2.dynamic-ellipsis-item")) {
-                            if ((usr_con.outerHTML.includes(user_inf["display_name"]) || usr_con.outerHTML.includes(user_inf["username"])) && usr_con.parentElement && usr_con.parentElement.href) {
-                                if (getIfLinkIsUserProfile(usr_con.parentElement.href) && getIfLinkIsUser(usr_con.parentElement.href, user_inf["user_id"].toString())) {
-                                    if (vIconPlaced(usr_con, false)) { return; }
-                                    addOutsideElementInsideAfter(usr_con, " " + name_side_real_html);
-                                }
-                            }
-                        } else if (usr_con.matches(".user-name-container")) {
-                            if (usr_con.innerHTML.includes(user_inf["display_name"])) {
-                                if (vIconPlaced(usr_con, true)) { return; }
-                                if (usr_con.getAttribute("class") == "dynamic-ellipsis-item user-name-container text-link") {
-                                    addOutsideElementInsideAfter(usr_con, " " + name_html.replace("width='28'", "width='14'").replace("height='28'", "height='14'"));
-                                } else {
-                                    addOutsideElementInsideAfter(usr_con, " " + name_html);
-                                }
                             }
                         }
                     }

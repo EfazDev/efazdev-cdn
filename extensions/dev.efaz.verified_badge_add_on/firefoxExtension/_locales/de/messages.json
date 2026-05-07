@@ -230,5 +230,9 @@
     "enabled_mes": {
         "message": "Erweiterung aktivieren",
         "description": "Text zum Aktivieren der Erweiterung"
+    },
+    "dev_efaz_verified_badge_add_on_removeRobloxPlusBadges_mes": {
+        "message": "Roblox Plus Abzeichen entfernen",
+        "description": "Einstellungstext für removeRobloxPlusBadges"
     }
 }

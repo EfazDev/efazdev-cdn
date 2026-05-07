@@ -515,6 +515,10 @@
         "message": "Verifizierungsabzeichen zwischen Konten aktivieren",
         "description": "Einstellungstext für verifiedBadgeBetweenAccounts"
     },
+    "dev_efaz_verified_badge_add_on_removeRobloxPlusBadges_mes": {
+        "message": "Roblox Plus Abzeichen entfernen",
+        "description": "Einstellungstext für removeRobloxPlusBadges"
+    },
     "dev_efaz_verified_badge_add_on_allowEfazDevApprovedBadges_mes": {
         "message": "Verifizierte Abzeichen für von EfazDev genehmigte Benutzer erlauben",
         "description": "Einstellungstext für allowEfazDevApprovedBadges"

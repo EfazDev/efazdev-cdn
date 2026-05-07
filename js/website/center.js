@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
             '<div class="topbar">' +
                 '<div class="wrapper">' +
                     '<div class="topbar-wrapper">' +
-                        '<a rel="noopener noreferrer" class="link topbar-title-link" href="https://www.efaz.dev/" target="_blank">' +
+                        '<a rel="noopener noreferrer" class="link topbar-title-link" href="https://www.efaz.dev/">' +
                             '<img height="40" width="40" src="https://cdn.efaz.dev/png/logo.png">' +
                             '<p class="topbar-title">EfazDev</p>' +
                         '</a>' +
@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
     );
     let portrait = generateHTMLDom('<div class="portrait-ui">' +
         '<div class="portrait-wrapper">' +
-            '<a rel="noopener noreferrer" class="link portrait-title-link" href="https://www.efaz.dev/" target="_blank">' +
+            '<a rel="noopener noreferrer" class="link portrait-title-link" href="https://www.efaz.dev/">' +
                 '<img height="40" width="40" src="https://cdn.efaz.dev/png/logo.png">' +
                 '<p class="portrait-title">EfazDev</p>' +
             '</a>' +

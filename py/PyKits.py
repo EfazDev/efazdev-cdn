@@ -1,5 +1,5 @@
 """
-PyKits v1.7.0 | Made by Efaz from efaz.dev
+PyKits v1.8.0 | Made by Efaz from efaz.dev
 
 A usable set of classes with extra functions that can be used within apps. \n
 Import from file: 
@@ -30,30 +30,38 @@ However! Classes may depend on other classes. Use this resource list:
     ProgressBar: None
     TimerBar: ProgressBar
     InstantRequestJSONResponse: None
+    FileSelector: typing (module), pip?
     IterableSetup: None
     BuiltinEditor: None
     PyKitsIsAModule: None
 """
 
 # Module Information
-__version__ = "1.7.0"
+__version__ = "1.8.0"
 __license__ = "MIT"
 __author__ = "EfazDev"
 __maintainer__ = "EfazDev"
 __email__ = "support@efaz.dev"
 __all__ = [
+    "requests",
+    "Request",
+    "Requests",
     "request", 
+    "Pip",
     "pip", 
     "curl",
+    "Plist",
     "plist", 
     "Colors", 
     "Translator", 
+    "Stdout",
     "stdout", 
     "ProgressBar",
     "TimerBar",
     "InstantRequestJSONResponse",
     "BuiltinEditor",
-    "IterableSetup"
+    "IterableSetup",
+    "FileSelector"
 ]
 
 # Modules
@@ -140,237 +148,62 @@ class curl:
         self._main_os = platform.system()
     def __bool__(self): return self.get_if_connected()
     def __str__(self): return self.get_curl()
+    def _make_request(self, method: str, url: str, data: __DATA__=None, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
+        try:
+            method = method.upper()
+            if not self.get_if_connected():
+                while not self.get_if_connected(): self._time.sleep(0.5)
+            cmd = [self.get_curl(), "-v", "--compressed"]
+            if method != "GET": cmd += ["-X", method]
+            cmd += self.format_headers(headers)
+            cmd += self.format_auth(auth)
+            cmd += self.format_cookies(cookies)
+            if method not in ["GET", "DELETE", "HEAD"] and data is not None: cmd += self.format_data(data)
+            cmd.append(url)
+            curl_res = self._subprocess.run(cmd, stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, timeout=timeout)
+            if type(curl_res) is self._subprocess.CompletedProcess:
+                new_response = self.Response()
+                stderr = curl_res.stderr.decode("utf-8", errors="ignore").strip()
+                processed_stderr = self.process_stderr(stderr)
+                for i, v in processed_stderr.items(): setattr(new_response, i, v)
+                new_response.url = url
+                new_response.text = curl_res.stdout.decode("utf-8", errors="ignore").strip()
+                new_response.__raw_stderr__ = stderr
+                new_response.method = method
+                new_response.scheme = self.get_url_scheme(url)
+                new_response.path = self.get_url_path(url)
+                new_response.redirected_urls = [url]
+                try: new_response.json = self._json.loads(new_response.text)
+                except Exception as e: pass
+                if self.get_if_redirect(new_response.status_code) and follow_redirects == True and new_response.headers.get("location"): 
+                    req = self._make_request(method, new_response.headers.get("location"), data=data, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=loop_count, loop_timeout=loop_timeout)
+                    req.redirected = True
+                    req.redirected_urls = [url] + req.redirected_urls
+                    return req
+                elif self.get_if_cooldown(new_response.status_code) and loop_429 == True and ((1 if loop_count == -1 else loop_count) >= 1):
+                    self._time.sleep(loop_timeout)
+                    return self._make_request(method, url, data=data, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=(loop_count-1 if loop_count != -1 else loop_count), loop_timeout=loop_timeout)
+                return new_response
+            elif type(curl_res) is self._subprocess.TimeoutExpired: raise self.TimedOut(url, timeout)
+            elif type(curl_res) is self._subprocess.SubprocessError: raise self.ProcessError(url, curl_res)
+            else: raise self.UnknownResponse(url, curl_res)
+        except self._subprocess.TimeoutExpired: raise self.TimedOut(url, timeout)
+        except self._subprocess.SubprocessError as curl_res: raise self.ProcessError(url, curl_res)
+        except Exception as e: raise self.UnknownResponse(url, e)
     def get(self, url: str, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
-        try:
-            if not self.get_if_connected():
-                while not self.get_if_connected(): self._time.sleep(0.5)
-            curl_res = self._subprocess.run([self.get_curl(), "-v", "--compressed"] + self.format_headers(headers) + self.format_auth(auth) + self.format_cookies(cookies) + [url], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, timeout=timeout)
-            if type(curl_res) is self._subprocess.CompletedProcess:
-                new_response = self.Response()
-                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8", errors="ignore").strip())
-                for i, v in processed_stderr.items(): setattr(new_response, i, v)
-                new_response.url = url
-                new_response.text = curl_res.stdout.decode("utf-8", errors="ignore").strip()
-                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8", errors="ignore").strip()
-                new_response.method = "GET"
-                new_response.scheme = self.get_url_scheme(url)
-                new_response.path = self.get_url_path(url)
-                new_response.redirected_urls = [url]
-                try: new_response.json = self._json.loads(new_response.text)
-                except Exception as e: pass
-                if self.get_if_redirect(new_response.status_code) and follow_redirects == True and new_response.headers.get("location"): 
-                    req = self.get(new_response.headers.get("location"), headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=loop_count)
-                    req.redirected = True
-                    req.redirected_urls = [url] + req.redirected_urls
-                    return req
-                elif self.get_if_cooldown(new_response.status_code) and loop_429 == True and ((1 if loop_count == -1 else loop_count) >= 1):
-                    self._time.sleep(loop_timeout)
-                    return self.get(url, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=(loop_count-1 if not (loop_count == -1) else loop_count))
-                return new_response
-            elif type(curl_res) is self._subprocess.TimeoutExpired: raise self.TimedOut(url, timeout)
-            elif type(curl_res) is self._subprocess.SubprocessError: raise self.ProcessError(url, curl_res)
-            else: raise self.UnknownResponse(url, curl_res)
-        except self._subprocess.TimeoutExpired: raise self.TimedOut(url, timeout)
-        except self._subprocess.SubprocessError as curl_res: raise self.ProcessError(url, curl_res)
-        except Exception as e: raise self.UnknownResponse(url, e)
+        return self._make_request(self, method="GET", url=url, data=None, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=follow_redirects, loop_429=loop_429, loop_count=loop_count, loop_timeout=loop_timeout)
     def post(self, url: str, data: __DATA__, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
-        try:
-            if not self.get_if_connected():
-                while not self.get_if_connected(): self._time.sleep(0.5)
-            curl_res = self._subprocess.run([self.get_curl(), "-v", "-X", "POST", "--compressed"] + self.format_headers(headers) + self.format_auth(auth) + self.format_cookies(cookies) + self.format_data(data) + [url], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, timeout=timeout)
-            if type(curl_res) is self._subprocess.CompletedProcess:
-                new_response = self.Response()
-                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8", errors="ignore").strip())
-                for i, v in processed_stderr.items(): setattr(new_response, i, v)
-                new_response.url = url
-                new_response.text = curl_res.stdout.decode("utf-8", errors="ignore").strip()
-                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8", errors="ignore").strip()
-                new_response.method = "POST"
-                new_response.scheme = self.get_url_scheme(url)
-                new_response.path = self.get_url_path(url)
-                new_response.redirected_urls = [url]
-                try: new_response.json = self._json.loads(new_response.text)
-                except Exception as e: pass
-                if self.get_if_redirect(new_response.status_code) and follow_redirects == True and new_response.headers.get("location"): 
-                    req = self.post(new_response.headers.get("location"), data, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=loop_count)
-                    req.redirected = True
-                    req.redirected_urls = [url] + req.redirected_urls
-                    return req
-                elif self.get_if_cooldown(new_response.status_code) and loop_429 == True and ((1 if loop_count == -1 else loop_count) >= 1):
-                    self._time.sleep(loop_timeout)
-                    return self.post(url, data, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=(loop_count-1 if not (loop_count == -1) else loop_count))
-                return new_response
-            elif type(curl_res) is self._subprocess.TimeoutExpired: raise self.TimedOut(url, timeout)
-            elif type(curl_res) is self._subprocess.SubprocessError: raise self.ProcessError(url, curl_res)
-            else: raise self.UnknownResponse(url, curl_res)
-        except self._subprocess.TimeoutExpired: raise self.TimedOut(url, timeout)
-        except self._subprocess.SubprocessError as curl_res: raise self.ProcessError(url, curl_res)
-        except Exception as e: raise self.UnknownResponse(url, e)
+        return self._make_request(self, method="POST", url=url, data=data, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=follow_redirects, loop_429=loop_429, loop_count=loop_count, loop_timeout=loop_timeout)
     def patch(self, url: str, data: __DATA__, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
-        try:
-            if not self.get_if_connected():
-                while not self.get_if_connected(): self._time.sleep(0.5)
-            curl_res = self._subprocess.run([self.get_curl(), "-v", "-X", "PATCH", "--compressed"] + self.format_headers(headers) + self.format_auth(auth) + self.format_cookies(cookies) + self.format_data(data) + [url], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, timeout=timeout)
-            if type(curl_res) is self._subprocess.CompletedProcess:
-                new_response = self.Response()
-                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8", errors="ignore").strip())
-                for i, v in processed_stderr.items(): setattr(new_response, i, v)
-                new_response.url = url
-                new_response.text = curl_res.stdout.decode("utf-8", errors="ignore").strip()
-                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8", errors="ignore").strip()
-                new_response.method = "PATCH"
-                new_response.scheme = self.get_url_scheme(url)
-                new_response.path = self.get_url_path(url)
-                new_response.redirected_urls = [url]
-                try: new_response.json = self._json.loads(new_response.text)
-                except Exception as e: pass
-                if self.get_if_redirect(new_response.status_code) and follow_redirects == True and new_response.headers.get("location"): 
-                    req = self.patch(new_response.headers.get("location"), data, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=loop_count)
-                    req.redirected = True
-                    req.redirected_urls = [url] + req.redirected_urls
-                    return req
-                elif self.get_if_cooldown(new_response.status_code) and loop_429 == True and ((1 if loop_count == -1 else loop_count) >= 1):
-                    self._time.sleep(loop_timeout)
-                    return self.patch(url, data, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=(loop_count-1 if not (loop_count == -1) else loop_count))
-                return new_response
-            elif type(curl_res) is self._subprocess.TimeoutExpired: raise self.TimedOut(url, timeout)
-            elif type(curl_res) is self._subprocess.SubprocessError: raise self.ProcessError(url, curl_res)
-            else: raise self.UnknownResponse(url, curl_res)
-        except self._subprocess.TimeoutExpired: raise self.TimedOut(url, timeout)
-        except self._subprocess.SubprocessError as curl_res: raise self.ProcessError(url, curl_res)
-        except Exception as e: raise self.UnknownResponse(url, e)
+        return self._make_request(self, method="PATCH", url=url, data=data, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=follow_redirects, loop_429=loop_429, loop_count=loop_count, loop_timeout=loop_timeout)
     def put(self, url: str, data: __DATA__, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
-        try:
-            if not self.get_if_connected():
-                while not self.get_if_connected(): self._time.sleep(0.5)
-            curl_res = self._subprocess.run([self.get_curl(), "-v", "-X", "PUT", "--compressed"] + self.format_headers(headers) + self.format_auth(auth) + self.format_cookies(cookies) + self.format_data(data) + [url], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, timeout=timeout)
-            if type(curl_res) is self._subprocess.CompletedProcess:
-                new_response = self.Response()
-                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8", errors="ignore").strip())
-                for i, v in processed_stderr.items(): setattr(new_response, i, v)
-                new_response.url = url
-                new_response.text = curl_res.stdout.decode("utf-8", errors="ignore").strip()
-                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8", errors="ignore").strip()
-                new_response.method = "PUT"
-                new_response.scheme = self.get_url_scheme(url)
-                new_response.path = self.get_url_path(url)
-                new_response.redirected_urls = [url]
-                try: new_response.json = self._json.loads(new_response.text)
-                except Exception as e: pass
-                if self.get_if_redirect(new_response.status_code) and follow_redirects == True and new_response.headers.get("location"):
-                    req = self.put(new_response.headers.get("location"), data, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=loop_count)
-                    req.redirected = True
-                    req.redirected_urls = [url] + req.redirected_urls
-                    return req
-                elif self.get_if_cooldown(new_response.status_code) and loop_429 == True and ((1 if loop_count == -1 else loop_count) >= 1):
-                    self._time.sleep(loop_timeout)
-                    return self.put(url, data, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=(loop_count-1 if not (loop_count == -1) else loop_count))
-                return new_response
-            elif type(curl_res) is self._subprocess.TimeoutExpired: raise self.TimedOut(url, timeout)
-            elif type(curl_res) is self._subprocess.SubprocessError: raise self.ProcessError(url, curl_res)
-            else: raise self.UnknownResponse(url, curl_res)
-        except self._subprocess.TimeoutExpired: raise self.TimedOut(url, timeout)
-        except self._subprocess.SubprocessError as curl_res: raise self.ProcessError(url, curl_res)
-        except Exception as e: raise self.UnknownResponse(url, e)
+        return self._make_request(self, method="PUT", url=url, data=data, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=follow_redirects, loop_429=loop_429, loop_count=loop_count, loop_timeout=loop_timeout)
     def delete(self, url: str, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
-        try:
-            if not self.get_if_connected():
-                while not self.get_if_connected(): self._time.sleep(0.5)
-            curl_res = self._subprocess.run([self.get_curl(), "-v", "-X", "DELETE", "--compressed"] + self.format_headers(headers) + self.format_auth(auth) + self.format_cookies(cookies) + [url], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, timeout=timeout)
-            if type(curl_res) is self._subprocess.CompletedProcess:
-                new_response = self.Response()
-                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8", errors="ignore").strip())
-                for i, v in processed_stderr.items(): setattr(new_response, i, v)
-                new_response.url = url
-                new_response.text = curl_res.stdout.decode("utf-8", errors="ignore").strip()
-                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8", errors="ignore").strip()
-                new_response.method = "DELETE"
-                new_response.scheme = self.get_url_scheme(url)
-                new_response.path = self.get_url_path(url)
-                new_response.redirected_urls = [url]
-                try: new_response.json = self._json.loads(new_response.text)
-                except Exception as e: pass
-                if self.get_if_redirect(new_response.status_code) and follow_redirects == True and new_response.headers.get("location"): 
-                    req = self.delete(new_response.headers.get("location"), headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=loop_count)
-                    req.redirected = True
-                    req.redirected_urls = [url] + req.redirected_urls
-                    return req
-                elif self.get_if_cooldown(new_response.status_code) and loop_429 == True and ((1 if loop_count == -1 else loop_count) >= 1):
-                    self._time.sleep(loop_timeout)
-                    return self.delete(url, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=(loop_count-1 if not (loop_count == -1) else loop_count))
-                return new_response
-            elif type(curl_res) is self._subprocess.TimeoutExpired: raise self.TimedOut(url, timeout)
-            elif type(curl_res) is self._subprocess.SubprocessError: raise self.ProcessError(url, curl_res)
-            else: raise self.UnknownResponse(url, curl_res)
-        except self._subprocess.TimeoutExpired: raise self.TimedOut(url, timeout)
-        except self._subprocess.SubprocessError as curl_res: raise self.ProcessError(url, curl_res)
-        except Exception as e: raise self.UnknownResponse(url, e)
+        return self._make_request(self, method="DELETE", url=url, data=None, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=follow_redirects, loop_429=loop_429, loop_count=loop_count, loop_timeout=loop_timeout)
     def head(self, url: str, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
-        try:
-            if not self.get_if_connected():
-                while not self.get_if_connected(): self._time.sleep(0.5)
-            curl_res = self._subprocess.run([self.get_curl(), "-v", "-X", "HEAD", "--compressed"] + self.format_headers(headers) + self.format_auth(auth) + self.format_cookies(cookies) + [url], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, timeout=timeout)
-            if type(curl_res) is self._subprocess.CompletedProcess:
-                new_response = self.Response()
-                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8", errors="ignore").strip())
-                for i, v in processed_stderr.items(): setattr(new_response, i, v)
-                new_response.url = url
-                new_response.text = curl_res.stdout.decode("utf-8", errors="ignore").strip()
-                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8", errors="ignore").strip()
-                new_response.method = "HEAD"
-                new_response.scheme = self.get_url_scheme(url)
-                new_response.path = self.get_url_path(url)
-                new_response.redirected_urls = [url]
-                try: new_response.json = self._json.loads(new_response.text)
-                except Exception as e: pass
-                if self.get_if_redirect(new_response.status_code) and follow_redirects == True and new_response.headers.get("location"): 
-                    req = self.head(new_response.headers.get("location"), headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=loop_count)
-                    req.redirected = True
-                    req.redirected_urls = [url] + req.redirected_urls
-                    return req
-                elif self.get_if_cooldown(new_response.status_code) and loop_429 == True and ((1 if loop_count == -1 else loop_count) >= 1):
-                    self._time.sleep(loop_timeout)
-                    return self.head(url, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=(loop_count-1 if not (loop_count == -1) else loop_count))
-                return new_response
-            elif type(curl_res) is self._subprocess.TimeoutExpired: raise self.TimedOut(url, timeout)
-            elif type(curl_res) is self._subprocess.SubprocessError: raise self.ProcessError(url, curl_res)
-            else: raise self.UnknownResponse(url, curl_res)
-        except self._subprocess.TimeoutExpired: raise self.TimedOut(url, timeout)
-        except self._subprocess.SubprocessError as curl_res: raise self.ProcessError(url, curl_res)
-        except Exception as e: raise self.UnknownResponse(url, e)
+        return self._make_request(self, method="HEAD", url=url, data=None, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=follow_redirects, loop_429=loop_429, loop_count=loop_count, loop_timeout=loop_timeout)
     def custom(self, url: str, method: str, data: __DATA__, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
-        try:
-            if not self.get_if_connected():
-                while not self.get_if_connected(): self._time.sleep(0.5)
-            curl_res = self._subprocess.run([self.get_curl(), "-v", "-X", method, "--compressed"] + self.format_headers(headers) + self.format_auth(auth) + self.format_cookies(cookies) + self.format_data(data) + [url], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, timeout=timeout)
-            if type(curl_res) is self._subprocess.CompletedProcess:
-                new_response = self.Response()
-                processed_stderr = self.process_stderr(curl_res.stderr.decode("utf-8", errors="ignore").strip())
-                for i, v in processed_stderr.items(): setattr(new_response, i, v)
-                new_response.url = url
-                new_response.text = curl_res.stdout.decode("utf-8", errors="ignore").strip()
-                new_response.__raw_stderr__ = curl_res.stderr.decode("utf-8", errors="ignore").strip()
-                new_response.method = method.upper()
-                new_response.scheme = self.get_url_scheme(url)
-                new_response.path = self.get_url_path(url)
-                new_response.redirected_urls = [url]
-                try: new_response.json = self._json.loads(new_response.text)
-                except Exception as e: pass
-                if self.get_if_redirect(new_response.status_code) and follow_redirects == True and new_response.headers.get("location"): 
-                    req = self.custom(new_response.headers.get("location"), method, data, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=loop_count)
-                    req.redirected = True
-                    req.redirected_urls = [url] + req.redirected_urls
-                    return req
-                elif self.get_if_cooldown(new_response.status_code) and loop_429 == True and ((1 if loop_count == -1 else loop_count) >= 1):
-                    self._time.sleep(loop_timeout)
-                    return self.custom(url, method, data, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=(loop_count-1 if not (loop_count == -1) else loop_count))
-                return new_response
-            elif type(curl_res) is self._subprocess.TimeoutExpired: raise self.TimedOut(url, timeout)
-            elif type(curl_res) is self._subprocess.SubprocessError: raise self.ProcessError(url, curl_res)
-            else: raise self.UnknownResponse(url, curl_res)
-        except self._subprocess.TimeoutExpired: raise self.TimedOut(url, timeout)
-        except self._subprocess.SubprocessError as curl_res: raise self.ProcessError(url, curl_res)
-        except Exception as e: raise self.UnknownResponse(url, e)
+        return self._make_request(self, method=method, url=url, data=data, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=follow_redirects, loop_429=loop_429, loop_count=loop_count, loop_timeout=loop_timeout)
     def open(self, *k, **s) -> OpenContext:
         mai = self.get(*k, **s)
         return self.OpenContext(mai)
@@ -399,10 +232,10 @@ class curl:
                                     for i in range(100):
                                         byte_target = int(before_bytes+((tar_prog.downloaded_bytes-before_bytes)*((i+1)/100)))
                                         total_size_bytes = self.format_size_to_bytes(tar_prog.total_size)
-                                        perc_target = int((byte_target/total_size_bytes)*100) if not (byte_target == 0 and total_size_bytes == 0) else 0
-                                        if not (new_t == target_t): return
+                                        perc_target = int((byte_target/total_size_bytes)*100) if byte_target != 0 or total_size_bytes != 0 else 0
+                                        if new_t != target_t: return
                                         submit_status.submit(self.DownloadStatus(percent=perc_target, total_size=tar_prog.total_size, speed=tar_prog.speed, downloaded_bytes=byte_target, downloaded=self.format_bytes_to_size(byte_target)))
-                                        if not (new_t == target_t): return
+                                        if new_t != target_t: return
                                         self._time.sleep(0.01)
                                 new_t += 1
                                 self._threading.Thread(target=pro, args=[progress, before_bytes, new_t], daemon=True).start()
@@ -413,7 +246,7 @@ class curl:
                                 for i in range(10):
                                     byte_target = int(before_bytes+((next_tar-before_bytes)*((i+1)/10)))
                                     total_size_bytes = self.format_size_to_bytes(progress.total_size)
-                                    perc_target = int((byte_target/total_size_bytes)*100) if not (byte_target == 0 and total_size_bytes == 0) else 0
+                                    perc_target = int((byte_target/total_size_bytes)*100) if byte_target != 0 or total_size_bytes != 0 else 0
                                     submit_status.submit(self.DownloadStatus(percent=perc_target, total_size=progress.total_size, speed=progress.speed, downloaded_bytes=byte_target, downloaded=self.format_bytes_to_size(byte_target)))
                                     self._time.sleep(0.01)
                                 before_bytes = next_tar
@@ -487,7 +320,7 @@ class curl:
         for i, v in headers.items(): formatted.append("-H"); formatted.append(f"{i}: {v}")
         return formatted
     def format_cookies(self, cookies: typing.Union[typing.Dict[str, str], str]={}):
-        if type(cookies) is str: return cookies
+        if type(cookies) is str: return ["-b", cookies]
         else:
             formatted = []
             for i, v in cookies.items(): formatted.append("-b"); formatted.append(f"{i}={v}")
@@ -744,7 +577,9 @@ class request:
     include_ips = True
     handle_compression = True
     opener_processors = []
-    def __init__(self, include_ips: bool=True, handle_compression: bool=True, opener_processors: list=[]):
+    automatic_redirect = True
+    throw_exceptions = True
+    def __init__(self, include_ips: bool=True, handle_compression: bool=True, automatic_redirect: bool=True, opener_processors: typing.List=[], throw_exceptions: bool=True):
         import json, os, ssl, sys, stat, shutil, time, socket, base64, subprocess, urllib.request, urllib.parse, urllib.error, importlib.metadata, importlib, http.client, platform, gzip, uuid, zlib
         from http.cookiejar import CookieJar
         from functools import lru_cache
@@ -773,25 +608,9 @@ class request:
         self.cookie_jar = CookieJar()
         self.include_ips = include_ips==True
         self.handle_compression = handle_compression==True
+        self.automatic_redirect = automatic_redirect==True
+        self.throw_exceptions = throw_exceptions==True
         self.opener_processors = opener_processors
-        if not hasattr(self, "_cached_functions"):
-            def cache_method(name):
-                fn = getattr(self, name, None)
-                if fn: setattr(self, name, lru_cache(maxsize=8192)(fn))
-            for name in [
-                "_resolve_ips", 
-                "get_if_ok", 
-                "get_if_ip", 
-                "get_if_cooldown", 
-                "get_if_redirect", 
-                "process_bytes_to_str",
-                "format_bytes_to_size", 
-                "format_size_to_bytes", 
-                "get_url_path", 
-                "get_url_scheme", 
-                "generate_location_url"
-            ]: cache_method(name)
-            self._cached_functions = True
         self._ssl_context = self.ensure_python_certs()
     def __bool__(self): return self.get_if_connected()
     def _make_opener(self, jar=None):
@@ -865,6 +684,16 @@ class request:
         res.port = obj.port or (443 if obj.scheme == "https" else 80)
         res.ipv4, res.ipv6 = self._resolve_ips(res.host, res.port)
         return res
+    def _create_blank_response(self, url: str):
+        res = self.Response()
+        res.url = url
+        res.path = self.get_url_path(url)
+        res.scheme = self.get_url_scheme(url)
+        res.host = self._urlparse.urlparse(url).netloc
+        res.port = self._urlparse.urlparse(url).port or (443 if res.scheme == "https" else 80)
+        res.status_code = -1
+        res.ok = False
+        return res
     def _add_auth_to_headers(self, headers: __HEADERS__, auth: __AUTH__):
         if not auth: return headers
         if isinstance(auth, (tuple, list)) and len(auth) == 2:
@@ -875,8 +704,10 @@ class request:
             if not auth.lower().startswith(("basic ", "bearer ")): auth = f"Bearer {auth}"
             headers["Authorization"] = auth
         return headers
-    def _make_request(self, url: str, method: str, data: __DATA__, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], files: __FILES__={}, timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1):
+    def _make_request(self, url: str, method: str, data: __DATA__, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], files: __FILES__={}, timeout: float=30.0, follow_redirects: bool=None, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1):
         # Prepare to make the request
+        if follow_redirects == None:
+            follow_redirects = self.automatic_redirect
         url, opener, method, data, headers, cookies, auth, files = self._handle_data(url, method=method, data=data, headers=headers, cookies=cookies, auth=auth, files=files)
         redirected_urls = []
 
@@ -900,16 +731,19 @@ class request:
                 response_obj.ssl_handshake_time = ssl_handshake
                 if self.get_if_cooldown(response_obj.status_code) and loop_429 == True and ((1 if loop_count == -1 else loop_count) >= 1):
                     self._time.sleep(loop_timeout)
-                    response_obj = self._make_request(url, method, data=data, headers=headers, cookies=cookies, auth=auth, files=files, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=(loop_count-1 if not (loop_count == -1) else loop_count), loop_timeout=loop_timeout)
+                    response_obj = self._make_request(url, method, data=data, headers=headers, cookies=cookies, auth=auth, files=files, timeout=timeout, follow_redirects=True, loop_429=loop_429, loop_count=(loop_count-1 if loop_count != -1 else loop_count), loop_timeout=loop_timeout)
                 response_obj.loading_time = (self._time.perf_counter()-start)*1000
                 return response_obj
         except self._urlerr.URLError as e:
+            if self.throw_exceptions == False: return self._create_blank_response(url)
             if isinstance(e.reason, self._ssl.SSLCertVerificationError): raise self.SSLException(url, str(e.reason))
             elif isinstance(e.reason, self._socket.timeout): raise self.TimedOut(url, timeout)
             elif isinstance(e.reason, self._socket.gaierror): raise self.ResolveError(url, str(e.reason))
             elif isinstance(e.reason, ConnectionRefusedError) or isinstance(e.reason, ConnectionResetError): raise self.ConnectionRefusedException(url, str(e.reason))
             raise self.ResolveError(url, str(e.reason))
-        except Exception as e: raise self.UnknownResponse(url, e)
+        except Exception as e: 
+            if self.throw_exceptions == False: return self._create_blank_response(url)
+            raise self.UnknownResponse(url, e)
     def _handle_compression(self, data: bytes, encoding: str):
         # Reject Compression Reading if Disabled
         if self.handle_compression == False: return data, encoding
@@ -947,7 +781,7 @@ class request:
             if type(cookies) is self.CookieJar: cookie_jar = cookies._generate_http_cookiejar(url)
             elif type(cookies) is dict: cookie_jar = self.CookieJar(cookies)._generate_http_cookiejar(url)
             else: cookie_jar = self.cookie_jar
-            headers.setdefault("user-agent", f"PyKits/1.7.0")
+            headers.setdefault("user-agent", f"PyKits/1.7.8")
             headers = self._add_auth_to_headers(headers, auth)
             opener = self._make_opener(jar=cookie_jar)
             method = method.upper()
@@ -988,24 +822,24 @@ class request:
             else: data = None
             return url, opener, method, data, headers, cookies, auth, files
         except Exception as e: raise self.UnknownResponse(url, e)
-    def get(self, url: str, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
+    def get(self, url: str, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], timeout: float=30.0, follow_redirects: bool=None, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
         return self._make_request(url=url, method="GET", data=None, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=follow_redirects, loop_429=loop_429, loop_count=loop_count, loop_timeout=loop_timeout)
-    def post(self, url: str, data: __DATA__, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], files: __FILES__={}, timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
+    def post(self, url: str, data: __DATA__, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], files: __FILES__={}, timeout: float=30.0, follow_redirects: bool=None, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
         return self._make_request(url=url, method="POST", data=data, headers=headers, cookies=cookies, auth=auth, files=files, timeout=timeout, follow_redirects=follow_redirects, loop_429=loop_429, loop_count=loop_count, loop_timeout=loop_timeout)
-    def patch(self, url: str, data: __DATA__, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], files: __FILES__={}, timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
+    def patch(self, url: str, data: __DATA__, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], files: __FILES__={}, timeout: float=30.0, follow_redirects: bool=None, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
         return self._make_request(url=url, method="PATCH", data=data, headers=headers, cookies=cookies, auth=auth, files=files, timeout=timeout, follow_redirects=follow_redirects, loop_429=loop_429, loop_count=loop_count, loop_timeout=loop_timeout)
-    def put(self, url: str, data: __DATA__, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], files: __FILES__={}, timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
+    def put(self, url: str, data: __DATA__, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], files: __FILES__={}, timeout: float=30.0, follow_redirects: bool=None, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
         return self._make_request(url=url, method="PUT", data=data, headers=headers, cookies=cookies, auth=auth, files=files, timeout=timeout, follow_redirects=follow_redirects, loop_429=loop_429, loop_count=loop_count, loop_timeout=loop_timeout)
-    def delete(self, url: str, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
+    def delete(self, url: str, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], timeout: float=30.0, follow_redirects: bool=None, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
         return self._make_request(url=url, method="DELETE", data=None, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=follow_redirects, loop_429=loop_429, loop_count=loop_count, loop_timeout=loop_timeout)
-    def head(self, url: str, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
+    def head(self, url: str, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], timeout: float=30.0, follow_redirects: bool=None, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
         return self._make_request(url=url, method="HEAD", data=None, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=follow_redirects, loop_429=loop_429, loop_count=loop_count, loop_timeout=loop_timeout)
-    def custom(self, url: str, method: str, data: __DATA__=None, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], timeout: float=30.0, follow_redirects: bool=False, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
+    def custom(self, url: str, method: str, data: __DATA__=None, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], timeout: float=30.0, follow_redirects: bool=None, loop_429: bool=False, loop_count: int=-1, loop_timeout: int=1) -> Response:
         return self._make_request(url=url, method=method, data=data, headers=headers, cookies=cookies, auth=auth, timeout=timeout, follow_redirects=follow_redirects, loop_429=loop_429, loop_count=loop_count, loop_timeout=loop_timeout)
     def open(self, *k, **s) -> OpenContext:
         mai = self._make_request(*k, **s)
         return self.OpenContext(mai)
-    def download(self, url: str, output: str, method: str="GET", data: __DATA__=None, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], files: __FILES__={}, check: bool=False, follow_redirects: bool=False, delete_existing: bool=True, submit_status=None, chunk_size: int=65535) -> FileDownload:
+    def download(self, url: str, output: str, method: str="GET", data: __DATA__=None, headers: __HEADERS__={}, cookies: __COOKIES__={}, auth: __AUTH__=[], files: __FILES__={}, check: bool=False, follow_redirects: bool=None, delete_existing: bool=True, submit_status=None, chunk_size: int=65535) -> FileDownload:
         try:
             # Assurance
             self.ensure_python_certs()
@@ -1022,6 +856,10 @@ class request:
             start_download = self._time.perf_counter()
 
             # Let's download the request!
+            if follow_redirects == None:
+                follow_redirects = self.automatic_redirect
+            if not chunk_size:
+                chunk_size = 65535
             with opener.open(req) as resp:
                 ssl_handshake = (self._time.perf_counter()-start_download)*1000
                 start_download = self._time.perf_counter()
@@ -1035,34 +873,37 @@ class request:
                         resp = opener.open(req)
                         status_code = getattr(resp, "status", None) or resp.getcode()
                 download_info = self._create_response(resp, url, downloading=True, download_path=output)
-                if check == True and not download_info.ok: raise self.DownloadError(f"Unable to download file at {url}!", download_info.status_code)
+                if check == True and not download_info.ok: raise self.DownloadError(url, download_info.status_code)
                 total = download_info.headers.get("content-length")
                 encoding = download_info.headers.get("content-encoding")
                 if total is not None: total = int(total)
+                chunk_size = (min(chunk_size, total) if total else chunk_size)
                 with open(output, "ab") as f:
                     downloaded = 0
+                    last_status = 0.0
                     while True:
                         # Read and write chunk into file
                         start = self._time.perf_counter()
-                        chunk_size = min(chunk_size, total)
                         chunk = resp.read(chunk_size)
+                        downloaded_chunk_size = len(chunk)
                         if encoding: chunk, encoding = self._handle_compression(chunk, encoding)
                         if not chunk: break
                         f.write(chunk)
                         end = self._time.perf_counter()
                         duration = end-start
-                        speed = chunk_size
-                        try: speed = chunk_size / duration
-                        except: pass
+                        speed = downloaded_chunk_size
+                        speed = (downloaded_chunk_size / duration) if duration > 0 else 0.0
 
                         # Update status
-                        downloaded += chunk_size
-                        if downloaded > total: downloaded = total
-                        if total and submit_status:
-                            percent = downloaded * 100 / total
+                        downloaded += downloaded_chunk_size
+                        now = self._time.perf_counter()
+                        if submit_status and (now - last_status) >= 0.1:
+                            last_status = now
+                            percent = (downloaded * 100 / total) if total else (99.9 if downloaded_chunk_size > 0 else 100.0)
                             progress = self.DownloadStatus(speed=speed, downloaded=self.format_bytes_to_size(downloaded), downloaded_bytes=downloaded, percent=percent, total_size=total)
                             submit_status.submit(progress)
                     download_info.downloaded = downloaded
+                    if not total: total = self._os.path.getsize(output)
                     download_info.size = total
                 download_info.ssl_handshake_time = ssl_handshake
                 download_info.loading_time = (self._time.perf_counter()-start_download)*1000
@@ -1073,26 +914,32 @@ class request:
             elif isinstance(e.reason, ConnectionRefusedError) or isinstance(e.reason, ConnectionResetError): raise self.ConnectionRefusedException(url, str(e.reason))
             raise self.ResolveError(url, str(e.reason))
         except Exception as e: raise self.DownloadError(url, str(e))
-    def ensure_python_certs(self):
+    def ensure_python_certs(self, certifi_only: bool=False):
         def che(a):
             try: self._importlib_metadata.version(a); return True
             except self._importlib_metadata.PackageNotFoundError: return False
         ssl_ctx = None
-        if self._platform.python_version() >= "3.10.0": 
-            if not getattr(self._sys, "frozen", False) and che("truststore") == False:
-                self._subprocess.check_call([self._sys.executable, "-E", "-s", "-m", "pip", "install", "--upgrade", "truststore"], stdout=self._subprocess.DEVNULL)
-                import site
-                self._site = site
-                site_packages_paths = self._site.getsitepackages() + [self._site.getusersitepackages()]
-                for path in site_packages_paths:
-                    if path not in self._sys.path and self._os.path.exists(path): self._sys.path.append(path)
-                self._importlib.invalidate_caches()
-            import truststore # type: ignore
-            ssl_ctx = truststore.SSLContext(self._ssl.PROTOCOL_TLS_CLIENT)
+        alleged_path = self._os.path.dirname(self._sys.executable)
+        virt = self._os.path.exists(self._os.path.join(alleged_path, "..", "pyvenv.cfg")) or (self._os.path.exists(self._os.path.join(alleged_path, "python.exe")) and self._os.path.exists(self._os.path.join(alleged_path, "pip.exe")))
+        if certifi_only == False and self._platform.python_version() >= "3.10.0": 
+            try:
+                if not getattr(self._sys, "frozen", False) and che("truststore") == False:
+                    import site
+                    self._site = site
+                    s = self._subprocess.run([self._sys.executable, "-m", "pip", "install"] + (["--user"] if (not virt and self._site.ENABLE_USER_SITE) else []) + ["--upgrade", "truststore"], stdout=self._subprocess.DEVNULL)
+                    if s.returncode == 0:
+                        site_packages_paths = self._site.getsitepackages() + [self._site.getusersitepackages()]
+                        for path in site_packages_paths:
+                            if path not in self._sys.path and self._os.path.exists(path): self._sys.path.append(path)
+                        self._importlib.invalidate_caches()
+                    else: return self.ensure_python_certs(certifi_only=True)
+                import truststore # type: ignore
+                ssl_ctx = truststore.SSLContext(self._ssl.PROTOCOL_TLS_CLIENT)
+            except Exception: return self.ensure_python_certs(certifi_only=True)
         elif che("certifi") == False:
             STAT_0o775 = ( self._stat.S_IRUSR | self._stat.S_IWUSR | self._stat.S_IXUSR | self._stat.S_IRGRP | self._stat.S_IWGRP | self._stat.S_IXGRP | self._stat.S_IROTH |  self._stat.S_IXOTH )
             openssl_dir, openssl_cafile = self._os.path.split(self._ssl.get_default_verify_paths().openssl_cafile)
-            self._subprocess.check_call([self._sys.executable, "-E", "-s", "-m", "pip", "install", "--upgrade", "certifi"])
+            self._subprocess.check_call([self._sys.executable, "-E", "-m", "pip", "install"] + (["--user"] if not virt else []) + ["--upgrade", "certifi"])
             import certifi
             self._os.chdir(openssl_dir)
             relpath_to_certifi_cafile = self._os.path.relpath(certifi.where())
@@ -1105,15 +952,18 @@ class request:
     def get_if_ok(self, code: int): return int(code) < 300 and int(code) >= 200
     def get_if_redirect(self, code: int): return int(code) < 400 and int(code) >= 300
     def get_if_ip(self, ip: int):
-        try: self._socket.inet_aton(ip); return True
-        except: return False
+        try: self._socket.inet_pton(self._socket.AF_INET, ip); return True
+        except OSError: 
+            try: self._socket.inet_pton(self._socket.AF_INET6, ip); return True
+            except Exception: return False
+        except Exception: return False
     def get_if_cooldown(self, code: int): return int(code) == 429
     def generate_location_url(self, location_header: str="", host: str="https://google.com"):
         if not location_header: return ""
         if location_header.startswith("/"): return host + location_header
         return location_header
-    def get_if_connected(self):
-        try: self._socket.create_connection(("8.8.8.8", 443), timeout=3).close(); return True # Connect to Google failed?
+    def get_if_connected(self, server: str="8.8.8.8", port: int=443, timeout: int=3):
+        try: self._socket.create_connection((server, port), timeout=timeout).close(); return True # Connect to server failed = Disconnected
         except Exception: return False
     def get_url_scheme(self, url: str): 
         obj = self._urlparse.urlparse(url)
@@ -1250,7 +1100,7 @@ class pip:
         return res
     def installed(self, packages: typing.List[str]=[], boolonly: bool=False):
         self.ensure()
-        if self.isSameRunningPythonExecutable() and not len(packages) == 0:
+        if self.isSameRunningPythonExecutable() and len(packages) != 0:
             def che(a):
                 try: self._importlib_metadata.version(a); return True
                 except self._importlib_metadata.PackageNotFoundError: return False
@@ -1271,13 +1121,14 @@ class pip:
                 if boolonly == True: return installed_checked["all"]
                 return installed_checked
         else:
+            if len(packages) == 1:
+                return self._subprocess.run([self.executable, "-m", "pip", "show", packages[0]], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE).returncode == 0
             sub = self._subprocess.run([self.executable, "-m", "pip", "list"], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE)
             line_splits = sub.stdout.decode().strip().splitlines()[2:]
             installed_packages = [package.split()[0].lower() for package in line_splits if package.strip()]
             installed_checked = {}
             all_installed = True
             if len(packages) == 0: return installed_packages
-            elif len(packages) == 1: return packages[0].lower() in installed_packages
             else:
                 for i in packages:
                     try:
@@ -1590,7 +1441,7 @@ class pip:
                                     ext_key = self._win32api.RegCreateKey(self._win32con.HKEY_CURRENT_USER, f"Software\\Classes\\{ext}")
                                     self._win32api.RegSetValueEx(ext_key, "", 0, self._win32con.REG_SZ, prog_id)
                                     self._win32api.RegCloseKey(ext_key)
-                                    cmd_key = win32api.RegCreateKey(self._win32con.HKEY_CURRENT_USER, f"Software\\Classes\\{prog_id}\\shell\\open\\command")
+                                    cmd_key = self._win32api.RegCreateKey(self._win32con.HKEY_CURRENT_USER, f"Software\\Classes\\{prog_id}\\shell\\open\\command")
                                     self._win32api.RegSetValueEx(cmd_key, "", 0, self._win32con.REG_SZ, f'"{python_exe}" "%1" %*')
                                     self._win32api.RegCloseKey(cmd_key)
                                 self._win32gui.SendMessageTimeout(
@@ -1628,7 +1479,7 @@ class pip:
             with open("./install_local_python_certs.py", "w") as f: f.write("""import os; import os.path; import ssl; import stat; import subprocess; import sys; STAT_0o775 = ( stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP | stat.S_IWGRP | stat.S_IXGRP | stat.S_IROTH |  stat.S_IXOTH ); openssl_dir, openssl_cafile = os.path.split(ssl.get_default_verify_paths().openssl_cafile); print(" -- pip install --upgrade certifi"); subprocess.check_call([sys.executable, "-E", "-s", "-m", "pip", "install", "--upgrade", "certifi"]); import certifi; os.chdir(openssl_dir); relpath_to_certifi_cafile = os.path.relpath(certifi.where()); print(" -- removing any existing file or link"); os.remove(openssl_cafile); print(" -- creating symlink to certifi certificate bundle"); os.symlink(relpath_to_certifi_cafile, openssl_cafile); print(" -- setting permissions"); os.chmod(openssl_cafile, STAT_0o775); print(" -- update complete");""")
             s = self._subprocess.run(f'"{self.executable}" ./install_local_python_certs.py', shell=True, stdout=self._subprocess.DEVNULL, stderr=self._subprocess.DEVNULL)
             self._os.remove("./install_local_python_certs.py")
-            if not (s.returncode == 0) and self.debug == True: print(f"Unable to install local python certificates!")
+            if s.returncode != 0 and self.debug == True: print(f"Unable to install local python certificates!")
     def getIf32BitWindows(self): return self._main_os == "Windows" and self.getArchitecture() == "x86"
     def getIfArmWindows(self): return self._main_os == "Windows" and self.getArchitecture() == "arm"
     def getIfRunningWindowsAdmin(self):
@@ -1766,7 +1617,7 @@ class pip:
         if not self.executable: return False
         if self._os.path.exists(self.executable) and self._os.path.exists(self._sys.executable): return self._os.path.samefile(self.executable, self._sys.executable)
         else: return False
-    def getMajorMinorVersion(self, version: str="3.14.0"): return ".".join(version.split(".")[:-1])
+    def getMajorMinorVersion(self, version: str="3.14.3"): return ".".join(version.split(".")[:-1])
 
     # Python Functions
     def getLocalAppData(self):
@@ -1860,15 +1711,10 @@ class pip:
         else: zip_extract = self._subprocess.run([self.getPathFile("/usr/bin/ditto"), "-xk", path, output], stdout=self._subprocess.PIPE, stderr=self._subprocess.PIPE, check=check)
         if len(look_for) > 0:
             if zip_extract.returncode == 0:
+                look_set = set(look_for)
                 for ro, dir, fi in self._os.walk(output):
-                    if either == True:
-                        found_all = False
-                        for a in look_for:
-                            if a in (fi + dir): found_all = True
-                    else:
-                        found_all = True
-                        for a in look_for:
-                            if not a in (fi + dir): found_all = False
+                    l = set(fi) | set(dir)
+                    found_all = bool(look_set & l) if either else look_set.issubset(l)
                     if found_all == True: 
                         if moving_file_func: moving_file_func()
                         if self._os.path.exists(previous_output): self._shutil.rmtree(previous_output, ignore_errors=True)
@@ -1891,7 +1737,7 @@ class pip:
             return s
     def getPathFile(self, file: str, name: str=""):
         if self._os.path.exists(file): return file
-        elif not name: return self._shutil.which(self._os.basename(file).replace(".exe", "")) if self._os.basename(file).endswith(".exe") else self._shutil.which(self._os.basename(file))
+        elif not name: return self._shutil.which(self._os.path.basename(file).replace(".exe", "")) if self._os.path.basename(file).endswith(".exe") else self._shutil.which(self._os.path.basename(file))
         else: return self._shutil.which(name)
     def copyTreeWithMetadata(self, src: str, dst: str, symlinks=False, ignore=None, dirs_exist_ok=False, ignore_if_not_exist=False):
         if not self._os.path.exists(src) and ignore_if_not_exist == False: return
@@ -1950,6 +1796,12 @@ class pip:
     def getIfConnectedToInternet(self): return self.requests.get_if_connected()
     def startThread(self, func: typing.Callable, daemon: bool=False, *args, **kwargs):
         thread = self._threading.Thread(target=func, args=args, kwargs=kwargs, daemon=daemon)
+        thread.start()
+        self._daemon_threads.add(thread)
+        return thread
+    def delayedThread(self, func: typing.Callable, time: float=3, daemon: bool=False, *args, **kwargs):
+        thread = self._threading.Timer(time, func, args=args, kwargs=kwargs)
+        thread.daemon = daemon
         thread.start()
         self._daemon_threads.add(thread)
         return thread
@@ -2220,20 +2072,16 @@ class Colors:
         "Teal": [36, 96, 46, 106], 
         "White": [37, 97, 47, 107]
     }
-    def __init__(self): import os, platform; self._os = os; self._platform = platform; self._main_os = platform.system()
+    def __init__(self): import os, platform, subprocess; self._os = os; self._platform = platform; self._subprocess = subprocess; self._main_os = platform.system()
     def fix_windows_ansi(self):
-        def getIfRunningWindowsAdmin():
-            if self._main_os == "Windows":
-                try: import ctypes; return ctypes.windll.shell32.IsUserAnAdmin()
-                except: return False
-            else: return False
-        if getIfRunningWindowsAdmin():
+        try:
             if not hasattr(self, "_ctypes"): import ctypes; self._ctypes = ctypes
             kernel32 = self._ctypes.windll.kernel32
             handle = kernel32.GetStdHandle(-11)
             mode = self._ctypes.c_uint()
             kernel32.GetConsoleMode(handle, self._ctypes.byref(mode))
             kernel32.SetConsoleMode(handle, mode.value | 0x0004)
+        except Exception: pass
     def get_reset_color(self): return "\033[0m"
     def get_ansi_start(self, ansi_num: int): 
         if isinstance(ansi_num, self.Color): ansi_num = ansi_num.ansi
@@ -2243,10 +2091,10 @@ class Colors:
     def italic(self, message: str): return f"\033[3m{message}\033[0m"
     def underline(self, message: str): return f"\033[4m{message}\033[0m"
     def strikethrough(self, message: str): return f"\033[9m{message}\033[0m"
-    def clear_console(self): self._os.system("cls" if self._os.name == "nt" else 'echo "\033c\033[3J"; clear')
+    def clear_console(self): self._subprocess.run("cls" if self._os.name == "nt" else 'echo "\033c\033[3J"; clear', shell=True)
     def set_console_title(self, title: str):
-        if self._platform.system() == "Windows": self._os.system(f"title {title}")
-        else: self._os.system(f'echo "\\033]0;{title}\\007"')
+        if self._platform.system() == "Windows": self._subprocess.run(f"title {title}", shell=True)
+        else: self._subprocess.run(f'echo "\\033]0;{title}\\007"', shell=True)
     def foreground(self, message: str, color: str="White", bright: bool=False): 
         if isinstance(color, self.Color): color = color.__str__()
         return f"{self.get_sgr_start(self.sgi_color_table[color][1 if bright == True else 0])}{message}{self.get_reset_color()}"
@@ -2439,14 +2287,14 @@ class stdout:
         import platform
         import subprocess
         import threading
-        if not platform.system() == "Windows": import pty
+        if platform.system() != "Windows": import pty
         import select
 
         self._sys = sys
         self._os = os
         self._subprocess = subprocess
         self._threading = threading
-        if not platform.system() == "Windows": self._pty = pty
+        if platform.system() != "Windows": self._pty = pty
         self._select = select
         self._platform = platform
         self._main_os = platform.system()
@@ -2460,7 +2308,7 @@ class stdout:
         self.awaiting_bar_logs = []
         self.translation_obj = Translator()
         self.translate = self.translation_obj.translate
-        if not (lang == "en" or lang == None): self.translation_obj.load_new_language(lang)
+        if lang != "en" and lang != None: self.translation_obj.load_new_language(lang)
     def __int__(self): return self.line_count
     def write(self, message: str): 
         if self.locked_new == True and not message.startswith("\033{progressend}"): self.awaiting_bar_logs.append(message); return
@@ -2490,7 +2338,7 @@ class stdout:
                 try: self.logger.log(self.log_level, line.rstrip())
                 except Exception: self.logger.log(self.log_level, line.rstrip().encode(self.encoding, errors="replace").decode(self.encoding))
     def clear(self):
-        self._os.system("cls" if self._os.name == "nt" else 'echo "\033c\033[3J"; clear')
+        self._subprocess.run("cls" if self._os.name == "nt" else 'echo "\033c\033[3J"; clear', shell=True)
         self.line_count = 0
     def fileno(self): return self._sys.__stdout__.fileno()
     def change_last_message(self, message: str):
@@ -2501,7 +2349,7 @@ class stdout:
         self._sys.__stdout__.flush()
     def run_process(self, args=["python3"], cwd=None):
         output = []
-        if not self._main_os == "Windows":
+        if self._main_os != "Windows":
             pid, fd = self._pty.fork()
             if pid == 0: 
                 if cwd: self._os.chdir(cwd)
@@ -2578,6 +2426,72 @@ class stdout:
             try: self.logger.log(self.log_level, self.buffer.rstrip()); 
             except Exception: self.logger.log(self.log_level, self.buffer.rstrip().encode(self.encoding, errors="replace").decode(self.encoding))
         self.buffer = ""
+class FileSelector:
+    unable_to_use_tkinter = False
+    class Response:
+        ok: bool = False
+        path: typing.Optional[str] = None
+        def __init__(self, ok: bool, path: typing.Optional[str]):
+            self.ok = ok
+            self.path = path
+    def __init__(self):
+        import subprocess, sys, os, platform, json
+        pip_class = pip()
+        try:
+            tk = pip_class.importModule("tkinter")
+            filedialog = pip_class.importModule("tkinter.filedialog")
+        except Exception as e:
+            print(e)
+            try:
+                pip_class.install(["tk"])
+                tk = pip_class.importModule("tkinter")
+                filedialog = pip_class.importModule("tkinter.filedialog")
+            except Exception as e: self.unable_to_use_tkinter = True; print(e)
+        if not self.unable_to_use_tkinter:
+            self._tk = tk
+            self._filedialog = filedialog
+        self._subprocess = subprocess
+        self._sys = sys
+        self._json = json
+        self._os = os
+        self._main_os = platform.system()
+    def _run_in_subprocess(self, python_code: str, is_multiple: bool=False):
+        s = self._subprocess.run([self._sys.executable, "-c", f"import tkinter as tk; from tkinter import filedialog; root = tk.Tk(); root.withdraw(); path = {python_code}; print(path)"], capture_output=True, text=True)
+        if s.returncode == 0 and s.stdout.strip(): 
+            filepath = s.stdout.strip()
+            if is_multiple:
+                r = self._json.loads(filepath)
+                return [self.Response(ok=True, path=i) for i in r]
+            if self._os.path.exists(filepath): return self.Response(ok=True, path=filepath)
+            else: return self.Response(ok=False, path=None)
+        return self.Response(ok=False, path=None)
+    def select_file(self, title: str="Select a file", initialdir: typing.Optional[str]=None, filetypes: typing.Tuple=(("All files", "*.*"),)):
+        if self.unable_to_use_tkinter: return self.Response(ok=False, path=None)
+        if self._main_os == "Darwin": return self._run_in_subprocess(f'filedialog.askopenfilename(title="{title}", initialdir="{initialdir}"' + (f', filetypes={filetypes}' if filetypes else "") + ")")
+        root = self._tk.Tk()
+        root.withdraw()
+        path = self._filedialog.askopenfilename(title=title, initialdir=initialdir, filetypes=filetypes)
+        if path: return self.Response(ok=True, path=path)
+        return self.Response(ok=False, path=None)
+    def select_files(self, title: str="Select a file", initialdir: typing.Optional[str]=None, filetypes: typing.Tuple=(("All files", "*.*"),)):
+        if self.unable_to_use_tkinter: return self.Response(ok=False, path=None)
+        if self._main_os == "Darwin": 
+            s = self._run_in_subprocess(f'filedialog.askopenfilenames(title="{title}", initialdir="{initialdir}"' + (f', filetypes={filetypes}' if filetypes else "") + ")")
+            if type(s) is self.Response: return False, [s]
+            return True, s
+        root = self._tk.Tk()
+        root.withdraw()
+        path = self._filedialog.askopenfilenames(title=title, initialdir=initialdir, filetypes=filetypes)
+        if path: return True, [self.Response(ok=True, path=p) for p in path]
+        return False, [self.Response(ok=False, path=None)]
+    def select_folder(self, title: str="Select a folder", initialdir: typing.Optional[str]=None, mustexist: bool=True):
+        if self.unable_to_use_tkinter: return self.Response(ok=False, path=None)
+        if self._main_os == "Darwin": return self._run_in_subprocess(f'filedialog.askdirectory(title="{title}", initialdir="{initialdir}", mustexist={mustexist})')
+        root = self._tk.Tk()
+        root.withdraw()
+        path = self._filedialog.askdirectory(title=title, initialdir=initialdir, mustexist=mustexist)
+        if path: return self.Response(ok=True, path=path)
+        return self.Response(ok=False, path=None)
 class ProgressBar:
     """
     A class that allows you to work with progress bars in the console.
@@ -2591,7 +2505,7 @@ class ProgressBar:
     def submit(self, status_text: str, percentage: int):
         self.current_percentage = percentage
         self.status_text = status_text
-        fin = round(self.current_percentage/(100/20))
+        fin = round(self.current_percentage*0.2)
         beginning = '\033[38;5;82m✅' if self.current_percentage >= 100 else '\033[38;5;255m🚀'
         if self.status_text.startswith("\033ERR"): beginning = '\033[38;5;196m❌'; self.status_text = self.status_text.replace("\033ERR", "", 1)
         message = f"{beginning} {self.status_text} [{'█'*int(fin)}{'░'*int(20-fin)}] {self.current_percentage}%\033[0m"

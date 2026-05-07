@@ -511,6 +511,10 @@
         "message": "Habilitar insignia verificada entre cuentas",
         "description": "Configuración Texto para verifiedBadgeBetweenAccounts"
     },
+    "dev_efaz_verified_badge_add_on_removeRobloxPlusBadges_mes": {
+        "message": "Eliminar insignias de Roblox Plus",
+        "description": "Configuración del texto para removeRobloxPlusBadges"
+    },
     "dev_efaz_verified_badge_add_on_allowEfazDevApprovedBadges_mes": {
         "message": "Aprobar insignias verificadas en usuarios aprobados por EfazDev",
         "description": "Configuración del texto para allowEfazDevApprovedBadges"

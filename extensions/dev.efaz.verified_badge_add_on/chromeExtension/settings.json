@@ -37,6 +37,12 @@
             "default": true,
             "neededSettings": ["enabled"]
         },
+        "removeRobloxPlusBadges": {
+            "text": "Remove Premium/Plus Badges",
+            "type": "checkbox",
+            "default": true,
+            "neededSettings": ["enabled"]
+        },
         "allowEfazDevApprovedBadges": {
             "text": "Approve Verified Badges on Users Approved by EfazDev",
             "type": "checkbox",
