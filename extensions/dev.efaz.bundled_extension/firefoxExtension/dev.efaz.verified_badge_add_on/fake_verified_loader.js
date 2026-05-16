@@ -55,6 +55,7 @@ function applyChangesToHTML(json, user_checkmark_color) {
     /* All of these HTML variables are extracted from the Roblox Website and modified to be functioned like the actual badge. */
     let profile_html = `<span evba="true" evba_type="profile_html" role="button" tabindex="0" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="jss16"><img class="profile-verified-badge-icon" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="${json["id"]}" alt="${json["id"]}"></span>`;
     let profile2_html = `<span evba="true" evba_type="profile2_html" role="button" tabindex="0" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="jss4"><img class="profile-verified-badge-icon" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="${json["id"]}" alt="${json["id"]}"></span>`;
+    let profile3_html = `<span evba="true" evba_type="profile3_html" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="items-center gap-xxsmall flex shrink-0"><span class="relative flex items-center justify-center"><span role="presentation" class="grow-0 shrink-0 basis-auto icon icon-filled-verified-backplate size-[var(--icon-size-large)] content-system-emphasis" style="color: #0066FF"></span><span role="presentation" class="grow-0 shrink-0 basis-auto icon icon-filled-verified-check size-[var(--icon-size-large)] absolute" style="color: white;"></span></span></span>`
     let name_html = `<img evba="true" evba_type="name_html" class="verified-badge-icon-catalog-item-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon">`;
     let name_side_html = `<img evba="true" evba_type="name_side_html" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon" style="margin-left: 2px;width: 12px;height: 12px; background: none !important;">`;
     let name_side_real_html = `<img evba="true" evba_type="name_side_real_html" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon" style="margin-left: 2px;width: 18px;height: 18px; background: none !important;">`;
@@ -82,6 +83,7 @@ function applyChangesToHTML(json, user_checkmark_color) {
     }
     profile_html = profile_html.replaceAll("%230066FF", hex_color);
     profile2_html = profile2_html.replaceAll("%230066FF", hex_color);
+    profile3_html = profile3_html.replaceAll("#0066FF", hex_color.replace("%23", "#"));
     name_html = name_html.replaceAll("%230066FF", hex_color);
     name_side_real_html = name_side_real_html.replaceAll("%230066FF", hex_color);
     name_side_html = name_side_html.replaceAll("%230066FF", hex_color);
@@ -95,7 +97,7 @@ function applyChangesToHTML(json, user_checkmark_color) {
     return [
         hex_color, profile_html, profile2_html, name_html, name_side_real_html, name_side_html, game_html,
         name_small_html, group_name_verified_html, group_owner_name_html, reseller_html,
-        efaz_approved_prompt_html, prompt_html, user_approved_prompt_html, friends_scroll_html
+        efaz_approved_prompt_html, prompt_html, user_approved_prompt_html, friends_scroll_html, profile3_html
     ];
 }
 function vIconPlaced(element, inner, select_existing) { 
@@ -326,6 +328,7 @@ async function start() {
                             let hex_color = fhe[0];
                             let profile_html = fhe[1];
                             let profile2_html = fhe[2];
+                            let profile3_html = fhe[15];
                             let name_html = fhe[3];
                             let name_side_real_html = fhe[4];
                             let name_side_html = fhe[5];
@@ -357,6 +360,7 @@ async function start() {
                                 "hex_color": hex_color,
                                 "profile_html": profile_html,
                                 "profile2_html": profile2_html,
+                                "profile3_html": profile3_html,
                                 "name_html": name_html,
                                 "name_side_real_html": name_side_real_html,
                                 "name_side_html": name_side_html,
@@ -529,32 +533,33 @@ async function start() {
                         if (open_user_data) {
                             let profile_html = open_user_data["profile_html"];
                             let profile2_html = open_user_data["profile2_html"];
+                            let profile3_html = open_user_data["profile3_html"];
                             if (usr_con.matches(".profile-name.text-overflow")) {
                                 if (usr_con.offsetParent && usr_con.offsetParent.getAttribute("class") == "header-title") {
                                     if (vIconPlaced(usr_con.offsetParent, true)) { return; }
                                     if (usr_con.offsetParent.innerHTML.includes(open_user_data["display_name"])) {
-                                        usr_con.offsetParent.appendChild(generateDOMElement(profile_html));
+                                        usr_con.offsetParent.appendChild(generateDOMElement(profile3_html));
                                     }
                                 } else if (usr_con.parentElement && usr_con.parentElement.getAttribute("class") == "header-title") {
                                     if (vIconPlaced(usr_con.parentElement, true)) { return; }
                                     if (usr_con.parentElement.innerHTML.includes(open_user_data["display_name"])) {
-                                        usr_con.parentElement.appendChild(generateDOMElement(profile_html));
+                                        usr_con.parentElement.appendChild(generateDOMElement(profile3_html));
                                     }
                                 } else if (usr_con.parentElement && usr_con.parentElement.parentElement && usr_con.parentElement.parentElement.getAttribute("class") == "header-title") {
                                     if (vIconPlaced(usr_con.parentElement.parentElement, true)) { return; }
                                     if (usr_con.parentElement.parentElement.innerHTML.includes(open_user_data["display_name"])) {
-                                        usr_con.parentElement.parentElement.appendChild(generateDOMElement(profile_html));
+                                        usr_con.parentElement.parentElement.appendChild(generateDOMElement(profile3_html));
                                     }
                                 }
                             } else if (usr_con.matches(".profile-header-title-container") || usr_con.matches("#profile-header-title-container-name")) {
                                 if (vIconPlaced(usr_con, true)) { return; }
-                                let s = generateDOMElement(profile2_html);
-                                s.children[0].style = "margin-left: 6px;";
-                                usr_con.appendChild(s);
+                                let s = generateDOMElement(profile3_html);
+                                if (!usr_con.parentElement || vIconPlaced(usr_con.parentElement, true)) { return; }
+                                usr_con.parentElement.appendChild(s);
                             } else if (usr_con.matches(".profile-content > .info > .names > h1")) {
                                 if (vIconPlaced(usr_con, true)) { return; }
                                 if (usr_con.innerHTML.includes(open_user_data["display_name"])) {
-                                    let s = generateDOMElement(profile2_html.replace("28", "18").replace("28", "18"));
+                                    let s = generateDOMElement(profile3_html.replace("28", "18").replace("28", "18"));
                                     s.children[0].style = "height: 18px; width: 18px; margin-left: 4px;";
                                     usr_con.appendChild(s);
                                 }
