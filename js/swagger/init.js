@@ -14,7 +14,7 @@ window.onload = function () {
                     "name": "Main API"
                 },
                 {
-                    "url": "https://dashboard.efaz.dev/api/swagger",
+                    "url": "https://db.efaz.dev/api/swagger",
                     "name": "Dashboard API"
                 },
                 {
@@ -32,11 +32,11 @@ window.onload = function () {
     };
     if (window.location.href.includes("?urls.primaryName=Dashboard%20API")) {
         options["customOptions"]["default"] = "Dashboard API"
-        options["customOptions"]["launchUrl"] = "https://dashboard.efaz.dev/api/swagger"
-        options["customOptions"]["configUrl"] = "https://dashboard.efaz.dev/api/swagger"
+        options["customOptions"]["launchUrl"] = "https://db.efaz.dev/api/swagger"
+        options["customOptions"]["configUrl"] = "https://db.efaz.dev/api/swagger"
         options["customOptions"]["urls"] = [
             {
-                "url": "https://dashboard.efaz.dev/api/swagger",
+                "url": "https://db.efaz.dev/api/swagger",
                 "name": "Dashboard API"
             },
             {
@@ -62,7 +62,7 @@ window.onload = function () {
                 "name": "Main API"
             },
             {
-                "url": "https://dashboard.efaz.dev/api/swagger",
+                "url": "https://db.efaz.dev/api/swagger",
                 "name": "Dashboard API"
             }
         ]
