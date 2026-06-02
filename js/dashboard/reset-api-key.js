@@ -9,7 +9,7 @@ function on_form_loaded(_0x24843b) {
     let temp_div = document.createElement("div");
     temp_div.innerHTML = data;
     document.getElementById("main_menu").appendChild(temp_div.children[0]);
-    document.getElementById("main_menu").innerHTML = _0x2e7068.hECxP(document.getElementById("main_menu").innerHTML, _0x2e7068.uUJTW);
+    //document.getElementById("main_menu").innerHTML = _0x2e7068.hECxP(document.getElementById("main_menu").innerHTML, _0x2e7068.uUJTW);
 }
 async function get_xcsrf(_0x54963b) {
     return fetch("https://db.efaz.dev/api/auth/account-xcsrftoken", {
