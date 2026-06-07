@@ -11,7 +11,10 @@ function redirectTOS() {
     window.location.href = ("/tos");
 }
 function redirectTwitter() {
-    window.location.href = ("https://twitter.efaz.dev");
+    window.location.href = ("https://x.efaz.dev");
+}
+function redirectX() {
+    window.location.href = ("https://x.efaz.dev");
 }
 function redirectDiscord() {
     window.location.href = ("https://discord.efaz.dev");
@@ -159,9 +162,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 '<img src="https://cdn.efaz.dev/png/orange_info_vector.png" height="30px" width="30px">' +
                 '<span>Terms of Service</span>' +
             '</button>' +
-            '<button onclick="redirectTwitter()" style="background-color: #53b0fd;" class="norm-button">' +
-                '<img src="https://cdn.efaz.dev/png/twitter_logo.png" height="30px" width="30px">' +
-                '<span>Twitter</span>' +
+            '<button onclick="redirectX()" style="background-color: #000000;" class="norm-button">' +
+                '<img src="https://cdn.efaz.dev/png/x_logo.png" height="30px" width="30px">' +
+                '<span>X</span>' +
             '</button>' +
             '<button onclick="redirectDiscord()" style="background-color: #5c53fd;" class="norm-button">' +
                 '<img src="https://cdn.efaz.dev/png/discord_logo.png" height="30px" width="30px">' +

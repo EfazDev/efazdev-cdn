@@ -190,5 +190,9 @@
     "dev_efaz_charts_renamer_changeTitleHtml_mes": {
         "message": "Tab-Name durch neuen Namen ersetzen",
         "description": "Einstellungstext für changeTitleHtml"
+    },
+    "x": {
+        "message": "X",
+        "description": "Titel des X-Links"
     }
 }

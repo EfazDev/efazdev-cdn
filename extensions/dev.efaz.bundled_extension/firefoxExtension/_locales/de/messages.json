@@ -155,9 +155,9 @@
         "message": "Firefox Add-ons",
         "description": "Titel des zweiten Webstore-Links"
     },
-    "twitter": {
-        "message": "Twitter",
-        "description": "Titel des Twitter-Links"
+    "x": {
+        "message": "X",
+        "description": "Titel des X-Links"
     },
     "discord": {
         "message": "Discord",

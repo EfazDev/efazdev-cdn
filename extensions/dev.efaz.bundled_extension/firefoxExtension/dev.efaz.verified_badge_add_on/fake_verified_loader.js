@@ -522,7 +522,9 @@ async function start() {
                     ".paired-name.text-name.username-container.font-header-2",
                     ".gap-xxsmall.flex > .icon-filled-premium",
                     "#profile-header-title-container-name",
-                    ".rbx-private-owner"
+                    ".rbx-private-owner",
+                    ".age-bracket-label > a.text-link dynamic-overflow-container > .age-bracket-label-plus-badge",
+                    ".friends-carousel-tile-name > .items-center > .icon-regular-roblox-plus"
                 ].join(", ");
                 let include_groups = settings && settings["groupsIncluded"] == true;
 
@@ -613,13 +615,15 @@ async function start() {
                             }
                         }
                     }
-                    if (settings["removeRobloxPlusBadges"]) {
-                        if (usr_con && usr_con.matches(".user-profile-header-info > div > div > span > span > .icon-regular-roblox-plus")) {
+                    if (settings["removeRobloxPlusBadges"] && usr_con) {
+                        if (usr_con.matches(".user-profile-header-info > div > div > span > span > .icon-regular-roblox-plus")) {
                             usr_con.remove();
                         } else if (usr_con.matches(".gap-xsmall.flex > .icon-regular-roblox-plus")) {
-                            if (usr_con) {
-                                usr_con.remove();
-                            }
+                            usr_con.remove();
+                        } else if (usr_con.matches(".age-bracket-label > a.text-link dynamic-overflow-container > .age-bracket-label-plus-badge")) {
+                            usr_con.remove();
+                        } else if (usr_con.matches(".friends-carousel-tile-name > .items-center > .icon-regular-roblox-plus")) {
+                            usr_con.remove();
                         }
                     }
                 }

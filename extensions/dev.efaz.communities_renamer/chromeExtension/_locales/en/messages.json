@@ -202,5 +202,9 @@
     "dev_efaz_communities_renamer_changeTitleHtml_mes": {
         "message": "Replace Tab Name with New Name",
         "description": "Setting text for changeTitleHtml"
+    },
+    "x": {
+        "message": "X",
+        "description": "X Link Title"
     }
 }

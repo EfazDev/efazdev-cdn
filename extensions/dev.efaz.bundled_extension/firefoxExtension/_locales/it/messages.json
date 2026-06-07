@@ -155,9 +155,9 @@
         "message": "Componenti Aggiuntivi Firefox",
         "description": "Webstore 2 Link Title"
     },
-    "twitter": {
-        "message": "Twitter",
-        "description": "Twitter Link Title"
+    "x": {
+        "message": "X",
+        "description": "X Link Title"
     },
     "discord": {
         "message": "Discord",

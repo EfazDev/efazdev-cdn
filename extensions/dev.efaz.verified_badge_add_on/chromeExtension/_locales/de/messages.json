@@ -234,5 +234,9 @@
     "dev_efaz_verified_badge_add_on_removeRobloxPlusBadges_mes": {
         "message": "Roblox Plus Abzeichen entfernen",
         "description": "Einstellungstext für removeRobloxPlusBadges"
+    },
+    "x": {
+        "message": "X",
+        "description": "Titel des X-Links"
     }
 }

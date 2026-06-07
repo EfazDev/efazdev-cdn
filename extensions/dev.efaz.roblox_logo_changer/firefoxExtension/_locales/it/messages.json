@@ -206,5 +206,9 @@
     "dev_efaz_roblox_logo_changer_projectedImage4_mes": {
         "message": "Imposta Icona della Scheda di Altri Siti",
         "description": "Setting text for projectedImage4"
+    },
+    "x": {
+        "message": "X",
+        "description": "X Link Title"
     }
 }

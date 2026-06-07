@@ -198,5 +198,9 @@
     "dev_efaz_experiences_renamer_includeCreatorDashboard_mes": {
         "message": "Creator Dashboard einbeziehen",
         "description": "Einstellungstext für includeCreatorDashboard"
+    },
+    "x": {
+        "message": "X",
+        "description": "Titel des X-Links"
     }
 }

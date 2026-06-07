@@ -203,9 +203,9 @@
         "message": "Complementos de Firefox",
         "description": "Título del enlace de la tienda web 2"
     },
-    "twitter": {
-        "message": "Twitter",
-        "description": "Título del enlace de Twitter"
+    "x": {
+        "message": "X",
+        "description": "Título del enlace de X"
     },
     "discord": {
         "message": "Discord",

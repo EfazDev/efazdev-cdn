@@ -202,5 +202,9 @@
     "foundation_color_accents_exName": {
         "message": "Efaz's Roblox Foundation Colour Accents",
         "description": "Extension name"
+    },
+    "x": {
+        "message": "X",
+        "description": "X Link Title"
     }
 }

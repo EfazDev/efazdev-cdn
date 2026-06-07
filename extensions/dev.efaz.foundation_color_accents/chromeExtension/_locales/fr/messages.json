@@ -242,5 +242,9 @@
     "dev_efaz_foundation_color_accents_set_old_green_color": {
         "message": "Définir l'ancienne couleur verte!",
         "description": "Bouton de couleur pour l'ancien vert Roblox"
+    },
+    "x": {
+        "message": "X",
+        "description": "Titre du lien X"
     }
 }

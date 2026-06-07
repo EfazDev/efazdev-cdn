@@ -190,5 +190,9 @@
     "foundation_color_accents_exName": {
         "message": "Acentos de color de la Fundación Roblox de Efaz",
         "description": "Nombre de la extensión"
+    },
+    "x": {
+        "message": "X",
+        "description": "Título del enlace de X"
     }
 }

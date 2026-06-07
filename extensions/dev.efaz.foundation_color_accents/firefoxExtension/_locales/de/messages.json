@@ -242,5 +242,9 @@
     "dev_efaz_foundation_color_accents_set_old_green_color": {
         "message": "Alte grüne Farbe setzen!",
         "description": "Farb-Button für altes Roblox-Grün"
+    },
+    "x": {
+        "message": "X",
+        "description": "Titel des X-Links"
     }
 }

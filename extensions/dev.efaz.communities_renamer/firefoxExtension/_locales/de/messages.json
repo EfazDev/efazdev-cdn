@@ -202,5 +202,9 @@
     "dev_efaz_communities_renamer_changeTitleHtml_mes": {
         "message": "Ersetze Tab-Namen mit neuem Namen",
         "description": "Einstellungstext für Tab-Titel-Ersetzung"
+    },
+    "x": {
+        "message": "X",
+        "description": "Titel des X-Links"
     }
 }

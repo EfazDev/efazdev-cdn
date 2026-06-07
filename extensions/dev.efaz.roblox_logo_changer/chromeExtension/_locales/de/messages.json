@@ -206,5 +206,9 @@
     "dev_efaz_roblox_logo_changer_projectedImage4_mes": {
         "message": "Setze Anderes Website Tab Icon",
         "description": "Einstellungstext für anderes Website Tab Icon"
+    },
+    "x": {
+        "message": "X",
+        "description": "Titel des X-Links"
     }
 }

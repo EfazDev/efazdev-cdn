@@ -202,5 +202,9 @@
     "dev_efaz_connections_renamer_adjustFriendsUpdate_mes": {
         "message": "Anpassung für das Freunde-Update vom 07.04.2026",
         "description": "Einstellungstext für adjustFriendsUpdate"
+    },
+    "x": {
+        "message": "X",
+        "description": "Titel des X-Links"
     }
 }

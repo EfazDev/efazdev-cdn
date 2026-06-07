@@ -234,5 +234,9 @@
     "dev_efaz_verified_badge_add_on_removeRobloxPlusBadges_mes": {
         "message": "Remove Roblox Plus Badges",
         "description": "Setting text for removeRobloxPlusBadges"
+    },
+    "x": {
+        "message": "X",
+        "description": "X Link Title"
     }
 }
