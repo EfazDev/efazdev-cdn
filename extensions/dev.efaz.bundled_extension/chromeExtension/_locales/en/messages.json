@@ -539,6 +539,10 @@
         "message": "Set Approved Users JSON! (not needed)",
         "description": "Set approved json text"
     },
+    "dev_efaz_verified_badge_add_on_thanksDisclaimer": {
+        "message": "Please read the full description before using this extension and rating!!\nThis extension is only visuals on the website and does not present in-game!",
+        "description": "Disclaimer text for the verified badge add-on"
+    },
     "dev_efaz_foundation_color_accents_exName": {
         "message": "Efaz's Roblox Foundation Color Accents",
         "description": "Extension name"

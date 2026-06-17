@@ -535,6 +535,10 @@
         "message": "¡Establecer JSON de usuarios aprobados! (No es necesario)",
         "description": "Establecer texto JSON de aprobado"
     },
+    "dev_efaz_verified_badge_add_on_thanksDisclaimer": {
+        "message": "Por favor, lee la descripción completa antes de usar esta extensión y calificarla!!\nEsta extensión es solo visual en el sitio web y no aparece en el juego!",
+        "description": "Disclaimer text for the verified badge add-on"
+    },
     "foundation_color_accents_exName": {
         "message": "Acentos de color de la Fundación Roblox de Efaz",
         "description": "Nombre de la extensión"

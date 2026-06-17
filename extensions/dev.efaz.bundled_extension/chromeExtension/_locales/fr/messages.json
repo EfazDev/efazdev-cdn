@@ -535,6 +535,10 @@
         "message": "Définir le JSON des utilisateurs approuvés! (non requis)",
         "description": "Définir le texte JSON approuvé"
     },
+    "dev_efaz_verified_badge_add_on_thanksDisclaimer": {
+        "message": "Veuillez lire la description complète avant d'utiliser cette extension et de la noter!!\nCette extension est uniquement visuelle sur le site web et n'apparaît pas en jeu!",
+        "description": "Disclaimer text for the verified badge add-on"
+    },
     "foundation_color_accents_exName": {
         "message": "Couleurs de la Fondation Roblox d'Efaz",
         "description": "Nom de l'extension"

@@ -67,7 +67,7 @@ function applyChangesToHTML(json, user_checkmark_color) {
     let group_name_verified_html = `<span evba="true" evba_type="group_name_verified_html" role="button" tabindex="0" data-rblx-verified-badge-icon="" replicate-badge-addon-prompt="${json["id"]}_true" data-rblx-badge-icon="true" class="jss250"><img class="verified-badge-icon-group-name-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span>`;
     let group_owner_name_html = `<span><span evba="true" evba_type="group_owner_name_html" role="button" tabindex="0" data-rblx-verified-badge-icon="" replicate-badge-addon-prompt="${json["id"]}_true" data-rblx-badge-icon="true" class="verified-badge-icon-group-owner-container"><img class="verified-badge-icon-group-owner-rendered" style="margin-left: 4px; width: 16px; height: 16px;" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span></span>`;
     let reseller_html = `<span><span evba="true" evba_type="reseller_html" role="button" tabindex="0" data-rblx-verified-badge-icon="" replicate-badge-addon-prompt="${json["id"]}_true" data-rblx-badge-icon="true" class="jss22"><img class="verified-badge-icon-item-resellers-rendered" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span></span>`;
-    let friends_scroll_html = `<div class="friend-tile-verified-badge"><div class="friend-tile-spacer"></div><span role="button" tabindex="0" evba="true" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="verified-badge jss40" style="margin-top: -2px;"><img class=" jss38" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span></div>`;
+    let friends_scroll_html = `<div class="friend-tile-verified-badge"><span role="button" tabindex="0" evba="true" data-rblx-verified-badge-icon="" data-rblx-badge-icon="true" class="verified-badge jss40" style="margin-top: -2px;"><img class=" jss38" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cg clip-path='url(%23clip0_8_46)'%3E%3Crect x='5.88818' width='22.89' height='22.89' transform='rotate(15 5.88818 0)' fill='%230066FF'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M20.543 8.7508L20.549 8.7568C21.15 9.3578 21.15 10.3318 20.549 10.9328L11.817 19.6648L7.45 15.2968C6.85 14.6958 6.85 13.7218 7.45 13.1218L7.457 13.1148C8.058 12.5138 9.031 12.5138 9.633 13.1148L11.817 15.2998L18.367 8.7508C18.968 8.1498 19.942 8.1498 20.543 8.7508Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_8_46'%3E%3Crect width='28' height='28' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E" title="Verified Badge Icon" alt="Verified Badge Icon"></span></div>`;
     /* All of these HTML variables are extracted from the Roblox Website and modified to be functioned like the actual badge. */
 
     /* Apply color changes to HTML above */
@@ -524,7 +524,9 @@ async function start() {
                     "#profile-header-title-container-name",
                     ".rbx-private-owner",
                     ".age-bracket-label > a.text-link dynamic-overflow-container > .age-bracket-label-plus-badge",
-                    ".friends-carousel-tile-name > .items-center > .icon-regular-roblox-plus"
+                    ".friends-carousel-tile-name > .items-center > .icon-regular-roblox-plus",
+                    ".dynamic-overflow-container > .age-bracket-label-plus-badge",
+                    "a[href='/users/profile'] > .gap-xsmall > span > .text-no-wrap"
                 ].join(", ");
                 let include_groups = settings && settings["groupsIncluded"] == true;
 
@@ -614,6 +616,11 @@ async function start() {
                                 addOutsideElementInsideAfter(usr_con, " " + name_html);
                             }
                         }
+                    } else if (usr_con.matches("a[href='/users/profile'] > .gap-xsmall > span > .text-no-wrap")) {
+                        if (usr_con.innerHTML.includes(user_inf["display_name"])) {
+                            if (vIconPlaced(usr_con, true)) { return; }
+                            addOutsideElementInsideAfter(usr_con, " " + name_html.replace("width='28'", "width='16'").replace("height='28'", "height='16'"));
+                        }
                     }
                     if (settings["removeRobloxPlusBadges"] && usr_con) {
                         if (usr_con.matches(".user-profile-header-info > div > div > span > span > .icon-regular-roblox-plus")) {
@@ -623,6 +630,8 @@ async function start() {
                         } else if (usr_con.matches(".age-bracket-label > a.text-link dynamic-overflow-container > .age-bracket-label-plus-badge")) {
                             usr_con.remove();
                         } else if (usr_con.matches(".friends-carousel-tile-name > .items-center > .icon-regular-roblox-plus")) {
+                            usr_con.remove();
+                        } else if (usr_con.matches(".dynamic-overflow-container > .age-bracket-label-plus-badge")) {
                             usr_con.remove();
                         }
                     }

@@ -238,5 +238,9 @@
     "x": {
         "message": "X",
         "description": "Titre du lien X"
+    },
+    "dev_efaz_verified_badge_add_on_thanksDisclaimer": {
+        "message": "Veuillez lire la description complète avant d'utiliser cette extension et de la noter!!\nCette extension est uniquement visuelle sur le site web et n'apparaît pas en jeu!",
+        "description": "Disclaimer text for the verified badge add-on"
     }
 }
