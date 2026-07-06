@@ -80,6 +80,16 @@
         "description": "A Hangout Roblox game where you can hangout at!"
     },
     {
+        "name": "Froststrap - By Froststrap",
+        "url": "https://github.com/Froststrap/Froststrap",
+        "download_url": "https://github.com/Froststrap/Froststrap",
+        "discontinued": false,
+        "showInProjectsPage": true,
+        "buttonText": {"ProjectsPage": "Go to GitHub!", "ProjectPage": "Go to GitHub!"},
+        "dateDiscontinued": "None",
+        "description": "A fork of Fishstrap, focused on performance and customization."
+    },
+    {
         "name": "Nugget - By LeminLimez",
         "url": "https://github.com/leminlimez/Nugget",
         "download_url": "https://github.com/leminlimez/Nugget",
