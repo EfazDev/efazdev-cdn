@@ -79,11 +79,14 @@ jobs:
                     <p>Sorry but what are you doing here?</p>
                 </body>
             </html>' > 404.html
+      - name: Prepare Pages artifact
+        run: |
+          rsync -aL --delete --exclude='.git' ./ ./_site
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
-          path: '.'
+          # Upload a symlink-free copy of the repository for GitHub Pages deployment
+          path: './_site'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
