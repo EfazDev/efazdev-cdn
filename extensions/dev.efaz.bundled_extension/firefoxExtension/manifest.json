@@ -1,7 +1,7 @@
 {
     "name": "__MSG_dev_efaz_bundled_extension_exName__",
     "description": "__MSG_dev_efaz_bundled_extension_exDescription__",
-    "version": "1.8.6",
+    "version": "1.8.7",
     "manifest_version": 3,
     "author": "EfazDev",
     "homepage_url": "https://www.efaz.dev/roblox-extension",
@@ -73,6 +73,15 @@
     "host_permissions": [
         "https://*.roblox.com/*"
     ],
+    "declarative_net_request": {
+        "rule_resources": [
+            {
+                "id": "dev.efaz.remove_builder_font_builder_font_declarative",
+                "enabled": true,
+                "path": "dev.efaz.remove_builder_font/builder_font_declarative.json"
+            }
+        ]
+    },
     "browser_specific_settings": {
         "gecko": {
             "id": "bundled_extension@efaz.dev",

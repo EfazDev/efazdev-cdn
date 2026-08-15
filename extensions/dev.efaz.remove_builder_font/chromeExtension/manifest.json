@@ -1,7 +1,7 @@
 {
     "name": "__MSG_dev_efaz_remove_builder_font_exName__",
     "description": "__MSG_dev_efaz_remove_builder_font_exDescription__",
-    "version": "1.8.8",
+    "version": "1.8.9",
     "manifest_version": 3,
     "author": "EfazDev",
     "homepage_url": "https://www.efaz.dev/remove-builder-font",
@@ -60,8 +60,16 @@
         "pages": []
     },
     "permissions": [
-        "storage"
+        "storage",
+        "declarativeNetRequest"
     ],
+    "declarative_net_request" : {
+        "rule_resources" : [{
+            "id": "builder_font_declarative",
+            "enabled": true,
+            "path": "builder_font_declarative.json"
+        }]
+    },
     "host_permissions": [
         "https://*.roblox.com/*"
     ]

@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (window.requirements) {
         let innerHTML = ""
         await loopThroughArrayAsync(window.requirements, (_, v) => {
-            innerHTML += `<li>${v}</li>`
+            innerHTML += '<li>' + v + '</li>'
         })
         requirement_list.innerHTML = innerHTML
     }

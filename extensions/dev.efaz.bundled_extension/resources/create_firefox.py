@@ -49,7 +49,6 @@ for i in os.listdir(extensions_folder):
                 }
             }
             if i == "dev.efaz.foundation_color_accents": man["browser_specific_settings"]["gecko"]["id"] = "roblox_foundation_color_accents@efaz.dev"
-            if i == "dev.efaz.remove_builder_font" or i == "dev.efaz.bundled_extension": man["permissions"].append("declarativeNetRequest")
             for res in man["web_accessible_resources"]: res.pop("use_dynamic_url")
             with open(os.path.join(extensions_folder, i, "firefoxExtension", "manifest.json"), "w") as f: json.dump(man, f, indent=4, ensure_ascii=False)
             with open(os.path.join(extensions_folder, i, "firefoxExtension", "settings.json"), "r") as f: man2 = json.load(f)

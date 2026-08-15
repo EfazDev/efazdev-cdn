@@ -2,53 +2,55 @@ function home() {
     window.location.href = "/";
 }
 function redirect(uri) {
-    window.location.href = (uri);
+    window.location.href = uri;
 }
 function redirectPrivacy() {
-    window.location.href = ("/privacy");
+    window.location.href = "/privacy";
 }
 function redirectTOS() {
-    window.location.href = ("/tos");
+    window.location.href = "/tos";
 }
 function redirectTwitter() {
-    window.location.href = ("https://x.efaz.dev");
+    window.location.href = "https://x.efaz.dev";
 }
 function redirectX() {
-    window.location.href = ("https://x.efaz.dev");
+    window.location.href = "https://x.efaz.dev";
 }
 function redirectDiscord() {
-    window.location.href = ("https://discord.efaz.dev");
+    window.location.href = "https://discord.efaz.dev";
 }
 function redirectYouTube() {
-    window.location.href = ("https://youtube.efaz.dev");
+    window.location.href = "https://youtube.efaz.dev";
 }
 function redirectProjects() {
-    window.location.href = ("/projects");
+    window.location.href = "/projects";
 }
 function redirectToPython() {
-    window.location.href = ("https://www.python.org/downloads/");
+    window.location.href = "https://www.python.org/downloads/";
 }
 function redirectDashboard() {
-    window.location.href = ("https://dashboard.efaz.dev/");
+    window.location.href = "https://dashboard.efaz.dev/";
 }
 function redirectAPIStatus() {
-    window.location.href = ("https://status.efaz.dev");
+    window.location.href = "https://status.efaz.dev";
 }
 function redirectToItemTryoutGame() {
-    window.location.href = ("https://www.roblox.com/games/15910786450/Efazs-Item-Tryout");
+    window.location.href = "https://www.roblox.com/games/15910786450/Efazs-Item-Tryout";
 }
 function redirectToDonationGame() {
-    window.location.href = ("https://donate.efaz.dev");
-}
-function exitPortraitMenu() {
-    document.getElementById("main_menu").setAttribute("class", "");
-    document.querySelector(".topbar-ui").setAttribute("class", "topbar-ui");
-    document.querySelector(".portrait-ui").setAttribute("class", "portrait-ui");
+    window.location.href = "https://donate.efaz.dev";
 }
 function openPortraitMenu() {
-    document.getElementById("main_menu").setAttribute("class", "portrait-menu-enabled");
-    document.querySelector(".topbar-ui").setAttribute("class", "topbar-ui portrait-menu-enabled");
-    document.querySelector(".portrait-ui").setAttribute("class", "portrait-ui portrait-menu-enabled");
+    const mainMenu = document.getElementById("main_menu");
+    if (mainMenu) mainMenu.classList.add("portrait-menu-enabled");
+    document.querySelector(".topbar-ui").classList.add("portrait-menu-enabled");
+    document.querySelector(".portrait-ui").classList.add("portrait-menu-enabled");
+}
+function exitPortraitMenu() {
+    document.querySelector(".portrait-ui").classList.remove("portrait-menu-enabled");
+    document.querySelector(".topbar-ui").classList.remove("portrait-menu-enabled");
+    const mainMenu = document.getElementById("main_menu");
+    if (mainMenu) mainMenu.classList.remove("portrait-menu-enabled");
 }
 function destroyFooter() {
     if (document.getElementById("main_footer")) {
@@ -132,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
             '</div>' +
         '</div>'
     );
-    let portrait = generateHTMLDom('<div class="portrait-ui">' +
+    let portrait = generateHTMLDom('<div class="portrait-ui" onclick="if(event.target === this) exitPortraitMenu()">' +
         '<div class="portrait-wrapper">' +
             '<a rel="noopener noreferrer" class="link portrait-title-link" href="https://www.efaz.dev/">' +
                 '<img height="40" width="40" src="https://cdn.efaz.dev/png/logo.png">' +

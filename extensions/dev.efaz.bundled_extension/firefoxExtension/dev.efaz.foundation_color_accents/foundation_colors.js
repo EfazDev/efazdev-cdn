@@ -42,6 +42,22 @@ inject.js:
             return sheet.cssRules ? Array.from(sheet.cssRules).map(rule => rule.cssText || "").join("\n") : "";
         } catch (e) { return ""; }
     };
+    function sheetToStringSpecific(sheet, filter) {
+        let cssString = "";
+        try {
+            const rules = sheet.cssRules;
+            if (!rules) return "";
+            for (let i = 0; i < rules.length; i++) {
+                try {
+                    const text = rules[i].cssText || "";
+                    if (filter.some(color => text.includes(color))) {
+                        cssString += text + "\n";
+                    }
+                } catch (e) { continue; }
+            }
+        } catch (e) { return ""; }
+        return cssString.trim();
+    };
     function hexToRgb(hex) {
         let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
         return result ? {
@@ -224,7 +240,7 @@ inject.js:
                                             applyCSS(parent);
                                         }
                                     }
-                                })
+                                });
                             });
                             observer.observe(document.documentElement, {
                                 childList: true,
@@ -250,7 +266,7 @@ inject.js:
                             document.addEventListener("DOMContentLoaded", () => {
                                 injectCSS();
                             });
-                        } else { injectCSS() }
+                        } else { injectCSS(); }
                     } else if (tab.hostname == "devforum.roblox.com") {
                         if (settings["overwriteDevForum"] == true) {
                             let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100;
@@ -323,7 +339,7 @@ inject.js:
                                     .replaceAll("rgb(0, 56.5075471698, 89.4)", rgbToHex(formatRgbVal(converted_rgb["r"] - 50), formatRgbVal(converted_rgb["g"] - 50), formatRgbVal(converted_rgb["b"] - 50)))
                                     .replaceAll("rgb(0, 37.6716981132, 59.6)", rgbToHex(formatRgbVal(converted_rgb["r"] - 70), formatRgbVal(converted_rgb["g"] - 70), formatRgbVal(converted_rgb["b"] - 70)))
                                     .replaceAll("rgb(0, 84.7613207547, 134.1)", rgbToHex(formatRgbVal(converted_rgb["r"] - 30), formatRgbVal(converted_rgb["g"] - 30), formatRgbVal(converted_rgb["b"] - 30)))
-                                    .replaceAll("rgb(13.2, 166.0358490566, 255)", rgbToHex(formatRgbVal(converted_rgb["r"] + 40), formatRgbVal(converted_rgb["g"] + 40), formatRgbVal(converted_rgb["b"] + 40)))
+                                    .replaceAll("rgb(13.2, 166.0358490566, 255)", rgbToHex(formatRgbVal(converted_rgb["r"] + 40), formatRgbVal(converted_rgb["g"] + 40), formatRgbVal(converted_rgb["b"] + 40)));
                                 if (!document.getElementById("changeFoundationColorsDevForum")) {
                                     let new_element = document.createElement("style");
                                     new_element.setAttribute("id", "changeFoundationColorsDevForum");
@@ -374,38 +390,39 @@ inject.js:
                         if (settings["overwriteCreateDashboard"] == true) {
                             let amountOfSecondsBeforeLoop = (typeof (settings["loopSeconds"]) == "string" && Number(settings["loopSeconds"])) ? Number(settings["loopSeconds"]) : 100;
                             let converted_rgb = hexToRgb(settings["color"]);
+                            const targetColors = [
+                                "51, 95, 255",
+                                "51,95,255",
+                                "82, 139, 255",
+                                "82,139,255",
+                                "20, 70, 255",
+                                "20,70,255",
+                                "112, 160, 255",
+                                "112,160,255",
+                                "0, 27, 122",
+                                "0,27,122",
+                                "60, 100, 250",
+                                "60,100,250",
+                                "0, 34, 255",
+                                "0,34,255",
+                                "58, 84, 255",
+                                "58,84,255",
+                                "115, 134, 255",
+                                "115,134,255",
+                                "173, 183, 255",
+                                "173,183,255",
+                                "85, 193, 255",
+                                "85,193,255",
+                                "43, 177, 255",
+                                "43,177,255",
+                                "#528BFF",
+                                "#335FFF",
+                                "#1446FF",
+                                "#3C64FA"
+                            ];
                             function applyBaseColoring(converted_sheet) {
                                 let change_made = false;
-                                if (
-                                    converted_sheet.includes("51, 95, 255") ||
-                                    converted_sheet.includes("51,95,255") ||
-                                    converted_sheet.includes("82, 139, 255") ||
-                                    converted_sheet.includes("82,139,255") ||
-                                    converted_sheet.includes("20, 70, 255") ||
-                                    converted_sheet.includes("20,70,255") ||
-                                    converted_sheet.includes("112, 160, 255") ||
-                                    converted_sheet.includes("112,160,255") ||
-                                    converted_sheet.includes("0, 27, 122") ||
-                                    converted_sheet.includes("0,27,122") ||
-                                    converted_sheet.includes("60, 100, 250") ||
-                                    converted_sheet.includes("60,100,250") ||
-                                    converted_sheet.includes("0, 34, 255") ||
-                                    converted_sheet.includes("0,34,255") ||
-                                    converted_sheet.includes("58, 84, 255") ||
-                                    converted_sheet.includes("58,84,255") ||
-                                    converted_sheet.includes("115, 134, 255") ||
-                                    converted_sheet.includes("115,134,255") ||
-                                    converted_sheet.includes("173, 183, 255") ||
-                                    converted_sheet.includes("173,183,255") ||
-                                    converted_sheet.includes("85, 193, 255") ||
-                                    converted_sheet.includes("85,193,255") ||
-                                    converted_sheet.includes("43, 177, 255") ||
-                                    converted_sheet.includes("43,177,255") ||
-                                    converted_sheet.includes("#528BFF") ||
-                                    converted_sheet.includes("#335FFF") ||
-                                    converted_sheet.includes("#1446FF") ||
-                                    converted_sheet.includes("#3C64FA")
-                                ) {
+                                if (targetColors.some(color => converted_sheet.includes(color))) {
                                     converted_sheet = converted_sheet
                                         .replaceAll("51, 95, 255", `${converted_rgb["r"]}, ${converted_rgb["g"]}, ${converted_rgb["b"]}`)
                                         .replaceAll("51,95,255", `${converted_rgb["r"]}, ${converted_rgb["g"]}, ${converted_rgb["b"]}`)
@@ -454,33 +471,57 @@ inject.js:
                                         --color-extended-blue-900: rgb(0, 141.2688679245, 223.5) !important;
                                     }
                                     `.replaceAll("#002dd6", rgbToHex(formatRgbVal(converted_rgb["r"] - 110), formatRgbVal(converted_rgb["g"] - 110), formatRgbVal(converted_rgb["b"] - 110)))
-                                    .replaceAll("#0027b8", rgbToHex(formatRgbVal(converted_rgb["r"] - 130), formatRgbVal(converted_rgb["g"] - 130), formatRgbVal(converted_rgb["b"] - 130)))
-                                    .replaceAll("#029", rgbToHex(formatRgbVal(converted_rgb["r"] - 150), formatRgbVal(converted_rgb["g"] - 150), formatRgbVal(converted_rgb["b"] - 150)))
-                                    .replaceAll("#001b7a", rgbToHex(formatRgbVal(converted_rgb["r"] - 180), formatRgbVal(converted_rgb["g"] - 180), formatRgbVal(converted_rgb["b"] - 180)))
-                                    .replaceAll("#00145c", rgbToHex(formatRgbVal(converted_rgb["r"] - 200), formatRgbVal(converted_rgb["g"] - 200), formatRgbVal(converted_rgb["b"] - 200)))
-                                    .replaceAll("rgb(0, 52.7403773585, 83.44)", rgbToHex(formatRgbVal(converted_rgb["r"] - 90), formatRgbVal(converted_rgb["g"] - 90), formatRgbVal(converted_rgb["b"] - 90)))
-                                    .replaceAll("rgb(0, 58.3911320755, 92.38)", rgbToHex(formatRgbVal(converted_rgb["r"] - 70), formatRgbVal(converted_rgb["g"] - 70), formatRgbVal(converted_rgb["b"] - 70)))
-                                    .replaceAll("rgb(0, 79.1105660377, 125.16)", rgbToHex(formatRgbVal(converted_rgb["r"] - 50), formatRgbVal(converted_rgb["g"] - 50), formatRgbVal(converted_rgb["b"] - 50)))
-                                    .replaceAll("rgb(0, 90.4120754717, 143.04)", rgbToHex(formatRgbVal(converted_rgb["r"] - 30), formatRgbVal(converted_rgb["g"] - 30), formatRgbVal(converted_rgb["b"] - 30)))
-                                    .replaceAll("rgb(0, 116.7822641509, 184.76)", rgbToHex(formatRgbVal(converted_rgb["r"] - 20), formatRgbVal(converted_rgb["g"] - 20), formatRgbVal(converted_rgb["b"] - 20)))
-                                    .replaceAll("rgb(0, 129.9673584906, 205.62)", rgbToHex(formatRgbVal(converted_rgb["r"] - 10), formatRgbVal(converted_rgb["g"] - 10), formatRgbVal(converted_rgb["b"] - 10)));
+                                        .replaceAll("#0027b8", rgbToHex(formatRgbVal(converted_rgb["r"] - 130), formatRgbVal(converted_rgb["g"] - 130), formatRgbVal(converted_rgb["b"] - 130)))
+                                        .replaceAll("#029", rgbToHex(formatRgbVal(converted_rgb["r"] - 150), formatRgbVal(converted_rgb["g"] - 150), formatRgbVal(converted_rgb["b"] - 150)))
+                                        .replaceAll("#001b7a", rgbToHex(formatRgbVal(converted_rgb["r"] - 180), formatRgbVal(converted_rgb["g"] - 180), formatRgbVal(converted_rgb["b"] - 180)))
+                                        .replaceAll("#00145c", rgbToHex(formatRgbVal(converted_rgb["r"] - 200), formatRgbVal(converted_rgb["g"] - 200), formatRgbVal(converted_rgb["b"] - 200)))
+                                        .replaceAll("rgb(0, 52.7403773585, 83.44)", rgbToHex(formatRgbVal(converted_rgb["r"] - 90), formatRgbVal(converted_rgb["g"] - 90), formatRgbVal(converted_rgb["b"] - 90)))
+                                        .replaceAll("rgb(0, 65.9254716981, 104.3)", rgbToHex(formatRgbVal(converted_rgb["r"] - 80), formatRgbVal(converted_rgb["g"] - 80), formatRgbVal(converted_rgb["b"] - 80)))
+                                        .replaceAll("rgb(0, 58.3911320755, 92.38)", rgbToHex(formatRgbVal(converted_rgb["r"] - 70), formatRgbVal(converted_rgb["g"] - 70), formatRgbVal(converted_rgb["b"] - 70)))
+                                        .replaceAll("rgb(0, 79.1105660377, 125.16)", rgbToHex(formatRgbVal(converted_rgb["r"] - 50), formatRgbVal(converted_rgb["g"] - 50), formatRgbVal(converted_rgb["b"] - 50)))
+                                        .replaceAll("rgb(0, 90.4120754717, 143.04)", rgbToHex(formatRgbVal(converted_rgb["r"] - 30), formatRgbVal(converted_rgb["g"] - 30), formatRgbVal(converted_rgb["b"] - 30)))
+                                        .replaceAll("rgb(0, 103.5971698113, 163.9)", rgbToHex(formatRgbVal(converted_rgb["r"] - 25), formatRgbVal(converted_rgb["g"] - 25), formatRgbVal(converted_rgb["b"] - 25)))
+                                        .replaceAll("rgb(0, 116.7822641509, 184.76)", rgbToHex(formatRgbVal(converted_rgb["r"] - 20), formatRgbVal(converted_rgb["g"] - 20), formatRgbVal(converted_rgb["b"] - 20)))
+                                        .replaceAll("rgb(0, 129.9673584906, 205.62)", rgbToHex(formatRgbVal(converted_rgb["r"] - 10), formatRgbVal(converted_rgb["g"] - 10), formatRgbVal(converted_rgb["b"] - 10)))
+                                        .replaceAll("rgb(0, 141.2688679245, 223.5)", rgbToHex(formatRgbVal(converted_rgb["r"] + 10), formatRgbVal(converted_rgb["g"] + 10), formatRgbVal(converted_rgb["b"] + 10)));
                                     change_made = true;
                                 }
                                 return [change_made, converted_sheet];
                             }
                             function applyCSS(header) {
                                 if (header.nodeName.toLowerCase() == "style") {
+                                    if (header.getAttribute("processed2")) {
+                                        return;
+                                    }
                                     let target_sheet = "";
                                     if (header.sheet) {
-                                        target_sheet = sheetToString(header.sheet);
+                                        target_sheet = sheetToStringSpecific(header.sheet, targetColors);
                                     } else {
-                                        target_sheet = header.textContent;
+                                        return;
                                     }
                                     let base_color_res = applyBaseColoring(target_sheet);
                                     let change_made = base_color_res[0];
                                     let converted_sheet = base_color_res[1];
+                                    let uniqueId = "theme-" + Math.random().toString(36).substring(2, 9);
+                                    if (header.getAttribute("processed") && header.getAttribute("assigned")) {
+                                        uniqueId = header.getAttribute("assigned");
+                                    }
                                     if (change_made == true) {
-                                        header.textContent = converted_sheet;
+                                        header.setAttribute("processed", "true");
+                                        header.setAttribute("assigned", uniqueId);
+                                        let override;
+                                        if (document.getElementById("color-auth-" + uniqueId)) {
+                                            override = document.getElementById("color-auth-" + uniqueId);
+                                        } else {
+                                            override = document.createElement("style");
+                                        }
+                                        override.setAttribute("processed2", "true");
+                                        override.id = "color-auth-" + uniqueId;
+                                        override.textContent = converted_sheet;
+                                        if (header.parentNode) {
+                                            header.parentNode.insertBefore(override, header.nextSibling);
+                                        }
+                                        if (header.sheet) { header.sheet.disabled = false; }
                                     }
                                 } else if (header.nodeName.toLowerCase() == "svg" || header.nodeName.toLowerCase() == "button") {
                                     let att_name = "fill";
@@ -542,36 +583,50 @@ inject.js:
                                     applyToAttribute("stroke");
                                 }
                             }
-                            async function injectCSS() {
-                                var all_styles = document.querySelectorAll("style");
-                                await loopThroughArrayAsync(all_styles, async (_, header) => {
-                                    applyCSS(header);
-                                });
-                                all_styles = null;
-
-                                var all_buttons = document.querySelectorAll("button");
-                                var all_icons = document.querySelectorAll("svg");
-                                all_buttons = [...all_buttons, ...all_icons];
-                                await loopThroughArrayAsync(all_buttons, async (_, header) => {
-                                    applyCSS(header);
-                                });
-                                all_buttons = null;
-                                all_icons = null;
-
-                                if (settings["includeGraphInDashboard"] == true) {
-                                    var all_paths_svg = document.querySelectorAll("path");
-                                    var all_span = document.querySelectorAll("span");
-                                    var all_rect = document.querySelectorAll("rect");
-                                    var new_combined_list = [...all_span, ...all_paths_svg, ...all_rect];
-                                    await loopThroughArrayAsync(new_combined_list, async (_, header) => {
-                                        applyCSS(header);
+                            let query_names = "style, svg, button";
+                            if (settings["includeGraphInDashboard"] == true) {
+                                query_names = "style, svg, button, path, span, rect";
+                            }
+                            let observer = new MutationObserver((mutations) => {
+                                mutations.forEach(m => {
+                                    m.addedNodes.forEach(node => {
+                                        if (node.nodeType === Node.ELEMENT_NODE) {
+                                            if (node.matches(query_names)) { applyCSS(node); }
+                                            node.querySelectorAll(query_names).forEach(desc => applyCSS(desc));
+                                        }
                                     });
-                                    all_paths_svg = null;
-                                    all_span = null;
-                                    all_rect = null;
-                                    new_combined_list = null;
+                                    if (m.target instanceof Element && m.target.matches(query_names)) {
+                                        applyCSS(m.target);
+                                    }
+                                });
+                            });
+                            observer.observe(document.documentElement, {
+                                childList: true,
+                                subtree: true,
+                                characterData: true
+                            });
+                            async function injectCSS() {
+                                var all_elements = document.querySelectorAll(query_names);
+                                loopThroughArrayAsync([...all_elements], async (_, header) => {
+                                    applyCSS(header);
+                                });
+                                all_elements = null;
+                                watchForSilentCSSUpdates();
+                            }
+                            function watchForSilentCSSUpdates() {
+                                let elements = document.getElementsByTagName("style");
+                                for (let i = 0; i < elements.length; i++) {
+                                    let header = elements[i];
+                                    if (!(header.getAttribute("processed2")) && header.sheet && header.sheet.cssRules) {
+                                        let currentLength = header.sheet.cssRules.length;
+                                        let savedLength = parseInt(header.getAttribute("data-rule-count") || "0");
+                                        if (currentLength !== savedLength) {
+                                            header.setAttribute("data-rule-count", currentLength);
+                                            applyCSS(header);
+                                        }
+                                    }
                                 }
-                                timeout(() => { injectCSS(); }, amountOfSecondsBeforeLoop);
+                                requestAnimationFrame(watchForSilentCSSUpdates);
                             }
                             injectCSS();
                         }

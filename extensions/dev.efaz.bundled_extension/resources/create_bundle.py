@@ -62,6 +62,7 @@ for i in extensions_added:
 content_scripts = []
 content_css = []
 web_accessible_resources = []
+declarative_net_requests = []
 manifest_permissions = ["storage"]
 for a, v in mans.items():
     if v.get("content_scripts"):
@@ -87,6 +88,13 @@ for a, v in mans.items():
                 if e.find(f"{a}/") == -1: resourcess.append(f"{a}/{e}")
                 else: resourcess.append(f"{e}")
             web_accessible_resources = web_accessible_resources + resourcess
+    if v.get("declarative_net_request"):
+        for i in v.get("declarative_net_request").get("rule_resources", []):
+            declarative_net_requests.append({
+                "id": f"{a}_{i.get('id')}",
+                "enabled": i.get("enabled"),
+                "path": f"{a}/{i.get('path')}"
+            })
 for a, v in ses.items(): v["bundleAssociatedName"] = a
 for a, v in mans.items():
     if v.get("permissions"):
@@ -110,9 +118,13 @@ ma["web_accessible_resources"] = [
     }
 ]
 ma["permissions"] = manifest_permissions
+ma["declarative_net_request"] = {
+    "rule_resources": declarative_net_requests
+}
 printMainMessage(f"Manifest Permissions: {json.dumps(manifest_permissions)}")
 printMainMessage(f"Content Scripts/CSS: {json.dumps(content_scripts)} + {json.dumps(content_css)}")
 printMainMessage(f"Web Accessible Resources: {json.dumps(web_accessible_resources)}")
+printMainMessage(f"Declarative Net Requests: {json.dumps(declarative_net_requests)}")
 printMainMessage("Saving Settings JSON..")
 with open(os.path.join(extension_path, "settings.json"), "w") as f: json.dump(se, f, indent=4)
 printMainMessage("Saving Manifest JSON..")
@@ -148,7 +160,7 @@ if not (os.name == "nt"):
     printMainMessage("Creating Bundle ZIP File..")
     if os.path.exists(os.path.join(current_path_location, "zip", "chromeExtension.zip")): os.remove(os.path.join(current_path_location, "zip", "chromeExtension.zip"))
     a = subprocess.run(
-        f'zip -r ../zip/chromeExtension.zip ./ -x "*.git*" -x "*.DS_Store" -x "__MACOSX*" -x "__pycache*"',
+        f'zip -r ../zip/chromeExtension.zip ./ -x "*.git*" -x "*.DS_Store" -x "__MACOSX*" -x "__pycache*" -x "_metadata"',
         cwd=extension_path,
         shell=True,
     )

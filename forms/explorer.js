@@ -152,7 +152,7 @@ function view_main_menu() {
     let obj3 = document.getElementById("failed");
     let obj4 = document.getElementById("awaiting");
 
-    obj1.style = "display: block;";
+    obj1.style = "display: initial;";
     obj2.style = "display: none;";
     obj3.style = "display: none;";
     obj4.style = "display: none;";
@@ -169,7 +169,7 @@ function view_success_menu(mode, message) {
     let obj6 = document.getElementById("awaiting");
 
     obj1.style = "display: none;";
-    obj2.style = "display: block;";
+    obj2.style = "display: initial;";
     obj3.style = "display: none;";
     obj6.style = "display: none;";
 
@@ -188,7 +188,7 @@ function view_success_menu(mode, message) {
         if (response["response"]["showTryAgainOnSuccess"] == false) {
             obj5.style = "display: none;";
         } else {
-            obj5.style = "display: block;";
+            obj5.style = "display: initial;";
         };
     } else {
         obj4.innerHTML = "Thanks for submitting your form!";
@@ -203,7 +203,7 @@ function view_error_menu(text) {
 
     obj1.style = "display: none;";
     obj2.style = "display: none;";
-    obj3.style = "display: block;";
+    obj3.style = "display: initial;";
     obj5.style = "display: none;";
 
     let obj4 = document.getElementById("message1");
@@ -219,7 +219,7 @@ function view_awaiting_menu() {
     obj1.style = "display: none;";
     obj2.style = "display: none;";
     obj3.style = "display: none;";
-    obj4.style = "display: block;";
+    obj4.style = "display: initial;";
 }
 
 function add_html_to_main_menu(html_code) {
