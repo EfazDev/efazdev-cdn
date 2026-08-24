@@ -123,6 +123,9 @@ a > img {
     padding: 10px;
     border-radius: 8px;
 }
+.hljs {
+    background: #00000000 !important;
+}
 .copy-block-btn {
     position: absolute;
     top: 5px;
