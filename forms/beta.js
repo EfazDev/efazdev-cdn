@@ -327,7 +327,7 @@ EfazForms = {};
                         if (!(mode_response["type_of_api"] == "POST" || mode_response["type_of_api"] == "PUT" || mode_response["type_of_api"] == "PATCH")) {
                             mode_response["type_of_api"] = "POST";
                         };
-                        let include_credentials = "include" ? specific_settings["include_cookies"] : "omit";
+                        let include_credentials = specific_settings["include_cookies"] ? "include" : "omit";
                         const form_res = await fetch(new_api_url, {
                             "headers": {
                                 "accept": "application/json",
@@ -359,7 +359,7 @@ EfazForms = {};
                         values["current_form"] = system_json;
                         if (specific_settings["allow_second_form"]) {
                             if (form_json["form"]) {
-                                loadFormJSON(form_json["form"]);
+                                EfazForms.loadFormJSON(form_json["form"]);
                             } else {
                                 view_success_menu(selected_mode, form_json["message"]);
                                 EfazForms.on_success_form(values);
@@ -506,7 +506,7 @@ EfazForms = {};
                         try {
                             grecaptcha.ready(function () {
                                 grecaptcha.execute(google_captcha["siteKey"], { action: 'validate_captcha' }).then(function (token) {
-                                    ui_elements["question:" + google_captcha["jsonName"]].value = token; // Changed to .value
+                                    ui_elements["question:" + google_captcha["jsonName"]].value = token;
                                 });
                                 google_captcha_enabled = true;
                                 let footer = document.createElement("p");
@@ -532,11 +532,17 @@ EfazForms = {};
                             cloudflare_widget_id = turnstile.render('#' + cloudflare_captcha["jsonName"] + '_input', {
                                 sitekey: cloudflare_captcha["siteKey"],
                                 callback: function (token) {
-                                    ui_elements["question:" + cloudflare_captcha["jsonName"]].value = token; // Changed to .value
+                                    ui_elements["question:" + cloudflare_captcha["jsonName"]].value = token;
+                                    if (ui_elements.submit_button) {
+                                        ui_elements.submit_button.disabled = false;
+                                    }
                                 },
                                 'expired-callback': function () {
                                     turnstile.reset(cloudflare_widget_id);
                                     ui_elements["question:" + cloudflare_captcha["jsonName"]].value = "";
+                                    if (ui_elements.submit_button) {
+                                        ui_elements.submit_button.disabled = true;
+                                    }
                                     make_log(console.log, "Captcha expired and was automatically reset.");
                                 }
                             });
@@ -660,6 +666,10 @@ EfazForms = {};
             submitBtn.type = "button";
             submitBtn.id = "submit_button";
             submitBtn.className = "center";
+            submitBtn.disabled = true;
+            if (!cloudflare_captcha?.enabled) {
+                ui_elements.submit_button.disabled = false;
+            }
             let buttonText = "Send Form!";
             if (system_json["showCurrentMode"] && specific_settings["showModeInButtonText"]) {
                 buttonText = "Send " + selected_mode + "!";

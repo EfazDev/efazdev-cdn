@@ -35,7 +35,7 @@ body {
     justify-content: center;
     overflow: hidden;
 }
-div {
+div, form {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -234,6 +234,9 @@ span.gradient-border > button:hover {
 span.gradient-border > button {
     background: linear-gradient(to right, #232323 60%, #222 70%, #181818 80%), linear-gradient(to right, #ff4b00, #ffff00, #00ff00);
 }
+button:disabled {
+    filter: brightness(50%);
+}
 table,
 th,
 td {
@@ -251,7 +254,7 @@ br {
         padding-left: 0.5rem;
         padding-right: 0.5rem;
     }
-    div {
+    div, form {
         max-width: 100vw;
         gap: 1rem;
         margin-top: 1.2rem;
@@ -302,7 +305,7 @@ br {
         align-items: center;
     }
 
-    div {
+    div, form {
         width: 200%;
         max-width: 95vw;
     }
