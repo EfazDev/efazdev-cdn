@@ -215,9 +215,10 @@
                         "method": "POST",
                         "credentials": "include",
                         "headers": {
-                            "x-csrf-token": xcerf_token
+                            "x-csrf-token": xcerf_token,
+                            "Content-Type": "application/json"
                         },
-                        "body": "{\"c_captcha\": \"" + captcha_res[1] + "\"}"
+                        "body": JSON.stringify({ "c_captcha": captcha_res[1] })
                     });
                     window.location.reload();
                 }

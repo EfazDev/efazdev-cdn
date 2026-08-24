@@ -139,7 +139,7 @@
     async function create_session(itemId) {
         document.getElementById("main_menu").style = "display: none;";
         document.getElementById("holdOn").style = "";
-        await get_captcha(async function (_0x42e2f4) {
+        await get_captcha(async function (captcha_res) {
             const xcerf_res = await fetch("https://db.efaz.dev/api/auth/account-xcsrftoken", {
                 "method": "POST",
                 "credentials": "include"
@@ -151,9 +151,10 @@
                     "method": "POST",
                     "credentials": "include",
                     "headers": {
-                        "x-csrf-token": token
+                        "x-csrf-token": token,
+                        "Content-Type": "application/json"
                     },
-                    "body": `{"c_captcha": "${_0x42e2f4[0x1]}", "itemId": "${itemId}"}`
+                    "body": JSON.stringify({ "c_captcha": captcha_res[1], "itemId": itemId })
                 })
                 const session_json = await session_res.json();
                 if (session_json["success"] == true) {
