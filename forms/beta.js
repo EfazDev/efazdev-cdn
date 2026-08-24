@@ -56,6 +56,7 @@ EfazForms = {};
     // Cloudflare Captcha
     let cloudflare_captcha_enabled = false;
     let cloudflare_captcha = system_json["cloudflareCaptcha"];
+    let cloudflare_widget_id = null;
 
     // Cap Captcha
     let cap_captcha_enabled = false;
@@ -297,6 +298,9 @@ EfazForms = {};
                     let new_string_g = listOfEmptyRequiredVariables.map(val => val || "null").join(", ");
                     view_error_menu("The following questions were filled empty: " + new_string_g);
                     make_log(console.log, "The following questions were filled empty: " + new_string_g);
+                    if (cloudflare_captcha_enabled && cloudflare_widget_id !== null) {
+                        turnstile.reset(cloudflare_widget_id);
+                    }
                     return;
                 }
                 get_captcha(async (captcha_key) => {
@@ -343,9 +347,12 @@ EfazForms = {};
                             "credentials": include_credentials,
                         })
                         const form_json = await form_res.json();
-                        if (!res.ok) {
+                        if (!form_res.ok) {
                             view_error_menu(form_json["message"]);
                             make_log(console.log, "Unable to submit form: " + form_json["message"]);
+                            if (cloudflare_captcha_enabled && cloudflare_widget_id !== null) {
+                                turnstile.reset(cloudflare_widget_id);
+                            }
                             return;
                         }
                         values["fetch_response"] = form_json;
@@ -381,12 +388,7 @@ EfazForms = {};
                         callback_a(["Google", token]);
                     });
             } else if (cloudflare_captcha_enabled) {
-                return turnstile.render('#' + cloudflare_captcha["jsonName"] + '_input', {
-                    sitekey: cloudflare_captcha["siteKey"],
-                    callback: function (token) {
-                        callback_a(["Cloudflare", token]);
-                    },
-                });
+                return callback_a(["Cloudflare", ui_elements["question:" + cloudflare_captcha["jsonName"]].value]);
             } else if (cap_captcha_enabled) {
                 return cap_captcha_object.solve().then(solution => {
                     callback_a(["Cap", solution.token]);
@@ -421,9 +423,9 @@ EfazForms = {};
             title = system_json["title"];
             icon_url = system_json["icon_url"];
         }
-        let html_set = '<div id="main_menu">\n' +
+        let html_set = '<form id="main_menu" onsubmit="event.preventDefault();">\n' +
             '    <h1 id="title1">' + title + '</h1>\n' +
-            '</div>\n' +
+            '</form>\n' +
             '<div id="failed" style="display: none;">\n' +
             '    <h1 id="title2">Oops!</h1>\n' +
             '    <p id="message1">{error}</p>\n' +
@@ -479,12 +481,12 @@ EfazForms = {};
                     img.height = 64;
                     img.width = 64;
                 }
-                fragment.appendChild(img);
+                ui_elements.main_menu.insertBefore(img, ui_elements.title1);
             };
             if (specific_settings["add_html_slot1"]) {
                 let slot1 = document.createElement("div");
                 slot1.innerHTML = specific_settings["add_html_slot1"];
-                fragment.append(...slot1.children);
+                ui_elements.main_menu.insertBefore(slot1, ui_elements.title1);
             };
 
             let wait_till_end = []
@@ -527,11 +529,16 @@ EfazForms = {};
                     ui_elements["question:" + cloudflare_captcha["jsonName"]] = captchaInput;
                     wait_till_end.push(function () {
                         try {
-                            turnstile.render('#' + cloudflare_captcha["jsonName"] + '_input', {
+                            cloudflare_widget_id = turnstile.render('#' + cloudflare_captcha["jsonName"] + '_input', {
                                 sitekey: cloudflare_captcha["siteKey"],
                                 callback: function (token) {
                                     ui_elements["question:" + cloudflare_captcha["jsonName"]].value = token; // Changed to .value
                                 },
+                                'expired-callback': function () {
+                                    turnstile.reset(cloudflare_widget_id);
+                                    ui_elements["question:" + cloudflare_captcha["jsonName"]].value = "";
+                                    make_log(console.log, "Captcha expired and was automatically reset.");
+                                }
                             });
                             cloudflare_captcha_enabled = true;
                             make_log(console.log, "Cloudflare Captcha is ready to be used!");
