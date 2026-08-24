@@ -25,10 +25,7 @@
     window.addEventListener("load", async function () {
         try {
             const auth_res = await fetch("https://db.efaz.dev/api/auth/authenticated", {
-                "credentials": "include",
-                "headers": {
-                    "cookie": document.cookie
-                }
+                "credentials": "include"
             });
             const auth_json = await auth_res.json();
             if (auth_json.success == true) {
@@ -39,10 +36,7 @@
                 }
 
                 const efaz_chain_res = await fetch("https://db.efaz.dev/api/auth/user-has-efaz-chain", {
-                    "credentials": "include",
-                    "headers": {
-                        "cookie": document.cookie
-                    }
+                    "credentials": "include"
                 });
                 const efaz_chain_json = await efaz_chain_res.json();
                 if (efaz_chain_json["success"] == true) {
@@ -56,10 +50,7 @@
                 }
 
                 const roblox_account_res = await fetch("https://db.efaz.dev/api/auth/user-has-roblox-account", {
-                    "credentials": "include",
-                    "headers": {
-                        "cookie": document.cookie
-                    }
+                    "credentials": "include"
                 });
                 const roblox_account_json = await roblox_account_res.json();
                 if (roblox_account_json.success == true) {
@@ -75,10 +66,7 @@
                 }
 
                 const security_key_res = await fetch("https://db.efaz.dev/api/auth/user-has-security-key", {
-                    "credentials": "include",
-                    "headers": {
-                        "cookie": document.cookie
-                    }
+                    "credentials": "include"
                 });
                 const security_key_json = await security_key_res.json();
                 if (security_key_json.success == true) {
@@ -92,10 +80,7 @@
                 }
 
                 const email_res = await fetch("https://db.efaz.dev/api/auth/user-has-email-address", {
-                    "credentials": "include",
-                    "headers": {
-                        "cookie": document.cookie
-                    }
+                    "credentials": "include"
                 });
                 const email_json = await email_res.json();
                 if (email_json.success == true) {
@@ -109,10 +94,7 @@
                 }
 
                 const api_key_res = await fetch("https://db.efaz.dev/api/payment/api-key", {
-                    "credentials": "include",
-                    "headers": {
-                        "cookie": document.cookie
-                    }
+                    "credentials": "include"
                 });
                 const api_key_json = await api_key_res.json();
                 const api_key = api_key_json.api_key;
@@ -121,7 +103,6 @@
                 const owned_items_res = await fetch("https://db.efaz.dev/api/payment/owned", {
                     "credentials": "include",
                     "headers": {
-                        "cookie": document.cookie,
                         "X-EfazDev-Key": api_key
                     }
                 });
@@ -137,10 +118,7 @@
                         document.getElementById("paidOwnedItems").innerHTML = `Owned Items: ${items_owned.join(", ")}!`;
 
                         const downloadables_res = await fetch("https://db.efaz.dev/api/payment/downloadables", {
-                            "credentials": "include",
-                            "headers": {
-                                "cookie": document.cookie
-                            }
+                            "credentials": "include"
                         });
                         const downloadables_json = await downloadables_res.json();
                         if (downloadables_json.success == true) {
@@ -237,8 +215,7 @@
                         "method": "POST",
                         "credentials": "include",
                         "headers": {
-                            "x-csrf-token": xcerf_token,
-                            "cookie": document.cookie
+                            "x-csrf-token": xcerf_token
                         },
                         "body": "{\"c_captcha\": \"" + captcha_res[1] + "\"}"
                     });

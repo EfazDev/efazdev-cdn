@@ -44,10 +44,7 @@
                 }
                 
                 const efaz_chain_res = await fetch("https://db.efaz.dev/api/auth/user-has-efaz-chain", {
-                    "credentials": "include",
-                    "headers": {
-                        "cookie": document.cookie
-                    }
+                    "credentials": "include"
                 })
                 const efaz_chain_json = await efaz_chain_res.json();
                 if (efaz_chain_json["success"] == true) {
@@ -61,10 +58,7 @@
                 }
 
                 const store_items_res = await fetch("https://db.efaz.dev/api/payment/store", {
-                    "credentials": "include",
-                    "headers": {
-                        "cookie": document.cookie
-                    }
+                    "credentials": "include"
                 })
                 const store_items_json = await store_items_res.json();
                 if (store_items_json["success"] == true) {
@@ -157,8 +151,7 @@
                     "method": "POST",
                     "credentials": "include",
                     "headers": {
-                        "x-csrf-token": token,
-                        "cookie": document.cookie
+                        "x-csrf-token": token
                     },
                     "body": `{"c_captcha": "${_0x42e2f4[0x1]}", "itemId": "${itemId}"}`
                 })
