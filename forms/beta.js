@@ -145,9 +145,9 @@ EfazForms = {};
                 ui_elements.message2.innerHTML = "Thanks for submitting your form!";
             };
             if (!response["response"]["showTryAgainOnSuccess"]) {
-                ui_elements.reloadButton.style = "display: none;";
+                ui_elements.reload_button.style = "display: none;";
             } else {
-                ui_elements.reloadButton.style = "display: initial;";
+                ui_elements.reload_button.style = "display: initial;";
             };
         } else {
             ui_elements.message2.innerHTML = "Thanks for submitting your form!";
