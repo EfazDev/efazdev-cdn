@@ -6,7 +6,7 @@ Assist Copy Blocks
 window.addEventListener("load", () => {
     let found_copy_blocks = document.querySelectorAll(".copy-block");
     loopThroughArrayAsync(Array.from(found_copy_blocks), (i, copy_block) => {
-        let copy_block_text = copy_block.querySelector("#copy-block-content").innerText
+        let copy_block_text = copy_block.querySelector(".copy-block-content").innerText
         let new_btn = document.createElement("button")
         new_btn.innerHTML = "<img id='img' src='https://cdn.efaz.dev/svg/clipboard.svg'>"
         new_btn.setAttribute("class", "copy-block-btn")
