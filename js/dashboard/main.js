@@ -237,7 +237,7 @@
                         "method": "POST",
                         "credentials": "include",
                         "headers": {
-                            "X-Csrf-Token": xcerf_token,
+                            "x-csrf-token": xcerf_token,
                             "cookie": document.cookie
                         },
                         "body": "{\"c_captcha\": \"" + captcha_res[1] + "\"}"
