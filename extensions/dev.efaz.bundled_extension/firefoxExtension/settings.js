@@ -10,15 +10,14 @@ settings.js:
 var innerBody, innerHead;
 
 async function loopThroughArrayAsync(array, callback) {
+    if (!array || typeof array !== "object") return;
+    let promises = [];
     if (Array.isArray(array)) {
-        for (let a = 0; a < array.length; a++) {
-            await callback(a, array[a]);
-        }
-    } else if (array && typeof array === "object") {
-        for (const a in array) {
-            if (Object.hasOwn(array, a)) { await callback(a, array[a]); }
-        }
+        promises = array.map((value, index) => callback(index, value));
+    } else {
+        promises = Object.entries(array).map(([key, value]) => callback(key, value));
     }
+    await Promise.allSettled(promises);
 }
 
 function loopThroughArray(array, callback) {

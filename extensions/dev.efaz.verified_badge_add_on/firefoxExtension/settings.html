@@ -25,7 +25,30 @@
         <h3 id="reviewDetails">------ __MSG_settingsReviewDetails__ ------</h3>
         <button id="reset_user_cache" class="center">__MSG_dev_efaz_verified_badge_add_on_resetCache1__</button>
         <button id="reset_group_cache" class="center">__MSG_dev_efaz_verified_badge_add_on_resetCache2__</button>
-        <button id="custom_approved_badges_by_user" class="center">__MSG_dev_efaz_verified_badge_add_on_setApproved__</button><br><br>
+        <div id="approved_users" style="margin-top: 15px; border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 16px; background: #181818;">
+            <h3 style="margin-top: 0;">Manage Approved Users</h3>
+            <p style="font-size: 12px; color: #bbb; margin-top: 0; line-height: 1.4;">
+                <em>Tip: Go to the person's Roblox profile that you want to add and copy the User ID from the URL or link (ex: https://www.roblox.com/users/<strong style="color: #ff0000;">1078332491</strong>/profile).</em>
+            </p>
+            <div style="display: flex !important; flex-direction: column !important; gap: 10px; margin-bottom: 15px; margin-left: 0; margin-right: 0; width: 100%;">
+                <div style="display: flex !important; flex-direction: row !important; gap: 10px; align-items: center; margin: 0; width: 100%;">
+                    <input type="number" id="approved_user_id" placeholder="Enter User ID" style="flex-grow: 1; margin: 0;">
+                    <input type="color" id="approved_user_color" value="#0066ff" title="Custom Hex Color" style="height: 32px; width: 40px; padding: 0; cursor: pointer; margin: 0; flex-shrink: 0;">
+                </div>
+                <div style="display: flex !important; flex-direction: row !important; gap: 10px; margin: 0; width: 100%;">
+                    <span class="gradient-border" style="flex: 1; display: flex !important; margin: 0;">
+                        <button id="add_user_btn" style="width: 100%; margin: 0; box-sizing: border-box;">Add User</button>
+                    </span>
+                    <span class="gradient-border" style="flex: 1; display: flex !important; margin: 0;">
+                        <button id="clear_all_users_btn" style="width: 100%; margin: 0; box-sizing: border-box;">Clear All</button>
+                    </span>
+                </div>
+            </div>
+            <div id="approved_user_list" style="max-height: 250px; overflow-y: auto; margin: 0; width: 100%;"></div>
+            <div style="display: flex !important; justify-content: center !important; margin: 0; margin-top: 15px; width: 100%;">
+                <button id="custom_approved_badges_by_user" class="center">__MSG_dev_efaz_verified_badge_add_on_setApproved__</button>
+            </div>
+        </div>
         <span class="gradient-border"><button type='submit' id="submitbutton" class="center">__MSG_settingsSaveBtn__</button></span><br><br>
         <em>__MSG_settingsMadeBy__</em>
         <ul>

@@ -1,11 +1,10 @@
-window.onload = function () {
-    const _0xb09bd = window.location.search;
-    const _0x2ce395 = new URLSearchParams(_0xb09bd);
-    const _0x378a4d = _0x2ce395.get('error');
-    var _0xda615c = document.getElementById("error_message");
-    if (_0x378a4d) {
-        _0xda615c.innerHTML = atob(_0x378a4d);
+window.addEventListener("load", function () {
+    const url_search_params = new URLSearchParams(window.location.search);
+    const error = url_search_params.get('error');
+    const err_mes_dom = document.getElementById("error_message");
+    if (error) {
+        err_mes_dom.innerHTML = atob(error);
     } else {
-        _0xda615c.innerHTML = "No error was given.";
+        err_mes_dom.innerHTML = "No error was given.";
     }
-};
+});

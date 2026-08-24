@@ -23,14 +23,12 @@ function genVIcon(close, orgMargin, orgX, orgY, margin, sizeX, sizeY) {
     return close;
 }
 async function loopThroughArrayAsync(array, callback) {
-    if (Array.isArray(array)) {
-        for (let a = 0; a < array.length; a++) {
-            await callback(a, array[a]);
-        }
-    } else if (array && typeof array === "object") {
-        for (const a of Object.keys(array)) {
-            await callback(a, array[a]);
-        }
+   if (!array || typeof array !== "object") return;
+    const entries = Array.isArray(array) ? array.map((value, index) => [index, value]) : Object.entries(array);
+    for (let i = 0; i < entries.length; i += 10) {
+        const batch = entries.slice(i, i + 10);
+        const promises = batch.map(([key, value]) => callback(key, value));
+        await Promise.allSettled(promises);
     }
 }
 function loopThroughArray(array, callback) {
@@ -45,11 +43,10 @@ function loopThroughArray(array, callback) {
     }
 }
 function getTran(id) {
-    if (!(chrome.i18n.getMessage(storage_key.replaceAll(".", "_") + "_" + id) == "")) {
-        return chrome.i18n.getMessage(storage_key.replaceAll(".", "_") + "_" + id);
-    } else if (!(chrome.i18n.getMessage(id.replaceAll(".", "_")) == "")) {
-        return chrome.i18n.getMessage(id.replaceAll(".", "_"));
-    }
+    const name = storage_key?.replaceAll(".", "_") || "";
+    const nameScoped = chrome.i18n.getMessage(`${name}_${id}`);
+    if (nameScoped) return nameScoped;
+    return chrome.i18n.getMessage(id.replaceAll(".", "_"));
 }
 function applyChangesToHTML(json, user_checkmark_color) {
     /* All of these HTML variables are extracted from the Roblox Website and modified to be functioned like the actual badge. */
@@ -505,12 +502,15 @@ async function start() {
                     ".text-name.text-overflow",
                     ".creator-name.text-link",
                     ".groups-list-item",
-                    ".MuiLink-underlineHover.web-blox-css-mui-94v26k",
+                    "a.web-blox-css-mui-1iptdx1",
                     ".text-name.name",
                     ".list-item.member.ng-scope",
                     ".list-item > a.group-search-name-link",
+                    ".group-forums-user-display-avatar-username-link",
                     ".text-label-medium.content-emphasis.ng-binding.ng-scope",
                     ".avatar-card-name.text-lead.text-overflow.ng-binding.ng-scope",
+                    ".avatar-card-name.text-lead.text-overflow.ng-binding",
+                    ".profile-carousel > div > .css-1jynqc0-carouselContainer > div > div > div > .base-tile > a",
                     ".user-list-container > .flex-col > .w-auto > .user-item-clickable",
                     ".creator-name.text-link",
                     ".avatar-name.text-overflow.ng-binding",
@@ -822,7 +822,7 @@ async function start() {
                                     });
                                 }
                             }
-                            if (usr_con.matches(".MuiLink-underlineHover.web-blox-css-mui-94v26k")) {
+                            if (usr_con.matches("a.web-blox-css-mui-1iptdx1")) {
                                 await userInfoHelper(usr_con.href).then(async ([owner_user_id, owner_data]) => {
                                     if (owner_data && usr_con.innerHTML.includes(owner_data["display_name"])) {
                                         let group_name_verified_html = owner_data["group_name_verified_html"];
@@ -866,6 +866,16 @@ async function start() {
                                         }
                                     });
                                 }
+                            } else if (usr_con.matches(".group-forums-user-display-avatar-username-link")) {
+                                if (usr_con.href) {
+                                    await userInfoHelper(usr_con.href).then(async ([_, user_inf]) => {
+                                        let sel = usr_con.querySelector(".group-forums-user-display-avatar-username-link-username");
+                                        if (user_inf && sel) {
+                                            if (vIconPlaced(usr_con, true)) { return; }
+                                            addOutsideElementInsideAfter(sel, " " + genVIcon(user_inf["name_side_html"], 2, 12, 12, 0, 12, 12));
+                                        }
+                                    });
+                                }
                             } else if (usr_con.matches(".list-item.member.ng-scope")) {
                                 if (usr_con.children[0] && usr_con.children[0].children[0]) {
                                     await userInfoHelper(usr_con.children[0].children[0].href).then(async ([_, user_inf]) => {
@@ -884,7 +894,7 @@ async function start() {
                                         }
                                     });
                                 }
-                            } else if (usr_con.matches(".avatar-card-name.text-lead.text-overflow.ng-binding.ng-scope")) {
+                            } else if (usr_con.matches(".avatar-card-name.text-lead.text-overflow.ng-binding.ng-scope") || usr_con.matches(".avatar-card-name.text-lead.text-overflow.ng-binding")) {
                                 await userInfoHelper(usr_con.href).then(async ([_, user_inf]) => {
                                     if (user_inf && usr_con.innerHTML.includes(user_inf["display_name"])) {
                                         if (vIconPlaced(usr_con.parentElement, true)) { return; }
@@ -903,6 +913,18 @@ async function start() {
                                     if (user_data && card_name) {
                                         if (vIconPlaced(card_name, true)) { return; }
                                         addOutsideElementInsideAfter(card_name, genVIcon(user_data["name_side_html"], 2, 12, 12, 4, 16, 16));
+                                    }
+                                }
+                            });
+                        }
+                    } else if (usr_con.matches(".profile-carousel > div > .css-1jynqc0-carouselContainer > div > div > div > .base-tile > a")) {
+                        if (usr_con.href && getIfLinkIsGroup(usr_con.href)) {
+                            await groupInfoHelper(usr_con.href).then(async ([info, user_data, _]) => {
+                                if (info["accepted"] == true) {
+                                    let card_name = usr_con.querySelector(".padding-top-medium");
+                                    if (user_data && card_name) {
+                                        if (vIconPlaced(card_name, true)) { return; }
+                                        addOutsideElementInsideAfter(card_name, genVIcon(user_data["profile3_html"].replaceAll("--icon-size-large", "--icon-size-small"), 2, 12, 12, 4, 12, 12));
                                     }
                                 }
                             });

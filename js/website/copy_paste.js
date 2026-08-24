@@ -1,4 +1,7 @@
-/* Assist Copy Blocks */
+/* 
+EfazDev Website 🍊
+Assist Copy Blocks 
+*/
 
 window.addEventListener("load", () => {
     let found_copy_blocks = document.querySelectorAll(".copy-block");

@@ -28,22 +28,20 @@ inject.js:
         }
     }
     async function loopThroughArrayAsync(array, callback) {
+        if (!array || typeof array !== "object") return;
+        let promises = [];
         if (Array.isArray(array)) {
-            for (let a = 0; a < array.length; a++) {
-                await callback(a, array[a]);
-            }
-        } else if (array && typeof array === "object") {
-            for (const a of Object.keys(array)) {
-                await callback(a, array[a]);
-            }
+            promises = array.map((value, index) => callback(index, value));
+        } else {
+            promises = Object.entries(array).map(([key, value]) => callback(key, value));
         }
+        await Promise.allSettled(promises);
     }
     function getTran(id) {
-        if (!(chrome.i18n.getMessage(storage_key.replaceAll(".", "_") + "_" + id) == "")) {
-            return chrome.i18n.getMessage(storage_key.replaceAll(".", "_") + "_" + id);
-        } else if (!(chrome.i18n.getMessage(id.replaceAll(".", "_")) == "")) {
-            return chrome.i18n.getMessage(id.replaceAll(".", "_"));
-        }
+        const name = storage_key?.replaceAll(".", "_") || "";
+        const nameScoped = chrome.i18n.getMessage(`${name}_${id}`);
+        if (nameScoped) return nameScoped;
+        return chrome.i18n.getMessage(id.replaceAll(".", "_"));
     }
 
     async function getSettings(storage_key, callback) {

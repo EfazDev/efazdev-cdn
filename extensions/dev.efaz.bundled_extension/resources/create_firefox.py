@@ -57,7 +57,7 @@ for i in os.listdir(extensions_folder):
             with open(os.path.join(extensions_folder, i, "firefoxExtension", "settings.html"), "r") as f: set_html = f.read()
             set_html = re.sub(r'html\s*\{\s*width\s*:\s*[^;]+;\s*height\s*:\s*[^;]+;\s*\}', "", set_html, flags=re.IGNORECASE)
             with open(os.path.join(extensions_folder, i, "firefoxExtension", "settings.html"), "w") as f: f.write(set_html)
-            shutil.copy(os.path.join(current_path_location, "resources", "firefox_builder_main.js" if i == "dev.efaz.remove_builder_font" or i == "dev.efaz.bundled_extension" else "firefox_main.js"), os.path.join(extensions_folder, i, "firefoxExtension", "main.js"))
+            shutil.copy(os.path.join(current_path_location, "resources", "firefox_main.js"), os.path.join(extensions_folder, i, "firefoxExtension", "main.js"))
             if i == "dev.efaz.bundled_extension":
                 for res in os.listdir(os.path.join(extensions_folder, i, "firefoxExtension")):
                     if os.path.isdir(os.path.join(extensions_folder, i, "firefoxExtension", res)) and not (res == "_locales"):

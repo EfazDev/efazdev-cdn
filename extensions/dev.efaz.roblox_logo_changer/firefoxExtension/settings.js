@@ -9,19 +9,18 @@ settings.js:
 
 */
 
-var storage = chrome.storage.sync;
-var system_settings = {};
+let storage = chrome.storage.sync;
+let system_settings = {};
 
 async function loopThroughArrayAsync(array, callback) {
+    if (!array || typeof array !== "object") return;
+    let promises = [];
     if (Array.isArray(array)) {
-        for (let a = 0; a < array.length; a++) {
-            await callback(a, array[a]);
-        }
-    } else if (array && typeof array === "object") {
-        for (const a of Object.keys(array)) {
-            await callback(a, array[a]);
-        }
+        promises = array.map((value, index) => callback(index, value));
+    } else {
+        promises = Object.entries(array).map(([key, value]) => callback(key, value));
     }
+    await Promise.allSettled(promises);
 }
 
 function loopThroughArray(array, callback) {
@@ -37,412 +36,281 @@ function loopThroughArray(array, callback) {
 }
 
 async function getImageFromInput(input) {
-    var files = input.files[0];
-    if (files) {
-        return new Promise((resolve, reject) => {
-            var fileReader = new FileReader();
-            fileReader.readAsDataURL(files);
-            fileReader.onload = function (event) {
-                const img = new Image();
-                img.src = event.target.result;
-                img.onload = function () {
-                    const canvas = document.createElement("canvas");
-                    const ctx = canvas.getContext("2d");
-                    const originalWidth = img.width; const originalHeight = img.height;
-                    const aspectRatio = originalWidth / originalHeight;
+    const file = input.files[0];
+    if (!file) return null;
 
-                    let targetWidth = system_settings["customExportPhotoRes"] || 300;
-                    let targetHeight = (system_settings["customExportPhotoRes"] || 300) / aspectRatio;
-                    if (targetHeight > (system_settings["customExportPhotoRes"] || 300)) { targetHeight = (system_settings["customExportPhotoRes"] || 300); targetWidth = (system_settings["customExportPhotoRes"] || 300) * aspectRatio; }
-                    canvas.width = targetWidth;
-                    canvas.height = targetHeight;
-
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    if (system_settings["customExportFileType"]) { resolve(canvas.toDataURL(system_settings["customExportFileType"], 0.8)); } else { resolve(canvas.toDataURL("image/jpeg", 0.8)); }
-                };
-                img.onerror = reject;
-            };
-        });
-    } else {
-        return new Promise((resolve, reject) => {
-            resolve(null);
-        });
-    }
-}
-
-async function saveData() {
-    storage.get([system_settings["name"]], async function (items) {
-        if (!(items[system_settings["name"]])) {
-            items[system_settings["name"]] = {};
-        }
-        await loopThroughArrayAsync(system_settings["settings"], async (key, val) => {
-            if (val["type"] == "checkbox") {
-                items[system_settings["name"]][key] = document.getElementById(key).checked;
-            } else if (val["type"] == "file") {
-                try {
-                    var res_file = await getImageFromInput(document.getElementById(key));
-                    if (res_file) {
-                        items[system_settings["name"]][key] = res_file;
-                        items[system_settings["name"]][key + "_filename"] = document.getElementById(key).files[0].name;
-                    } else if (document.getElementById(key).getAttribute("file_url")) {
-                        items[system_settings["name"]][key] = document.getElementById(key).getAttribute("file_url");
-                    } else {
-                        items[system_settings["name"]][key + "_filename"] = null;
-                    }
-                } catch (err) {
-                    console.warn("Unable to save image!" + err.toString());
+    return new Promise((resolve, reject) => {
+        const fileReader = new FileReader();
+        fileReader.onload = (event) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement("canvas");
+                const ctx = canvas.getContext("2d");
+                const aspectRatio = img.width / img.height;
+                const maxRes = system_settings.customExportPhotoRes || 300;
+                let targetWidth = maxRes;
+                let targetHeight = maxRes / aspectRatio;
+                if (targetHeight > maxRes) {
+                    targetHeight = maxRes;
+                    targetWidth = maxRes * aspectRatio;
                 }
-            } else {
-                items[system_settings["name"]][key] = document.getElementById(key).value;
-            }
-        });
-        await storage.set(items, () => {
-            alert(chrome.i18n.getMessage("settingsSavedData"));
-        });
+                canvas.width = targetWidth;
+                canvas.height = targetHeight;
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                const fileType = system_settings.customExportFileType || "image/jpeg";
+                resolve(canvas.toDataURL(fileType, 0.8));
+            };
+            img.onerror = reject;
+            img.src = event.target.result;
+        };
+        fileReader.onerror = reject;
+        fileReader.readAsDataURL(file);
     });
 }
 
-function compareVersions(version1, version2) {
-    if (!version1 || !version2) { return 0; };
-    const parts1 = version1.split('.').map(Number);
-    const parts2 = version2.split('.').map(Number);
+async function saveData() {
+    storage.get([system_settings.name], async (items) => {
+        const config = items[system_settings.name] || {};
+        for (const [key, val] of Object.entries(system_settings.settings)) {
+            const el = document.getElementById(key);
+            if (!el) continue;
+            if (val.type === "checkbox") {
+                config[key] = el.checked;
+            } else if (val.type === "file") {
+                try {
+                    const res_file = await getImageFromInput(el);
+                    if (res_file) {
+                        config[key] = res_file;
+                        config[`${key}_filename`] = el.files[0].name;
+                    } else if (el.getAttribute("file_url")) {
+                        config[key] = el.getAttribute("file_url");
+                    } else {
+                        config[`${key}_filename`] = null;
+                    }
+                } catch (err) {
+                    console.warn("Unable to save image!", err);
+                }
+            } else {
+                config[key] = el.value;
+            }
+        }
+        items[system_settings.name] = config;
+        storage.set(items, () => alert(chrome.i18n.getMessage("settingsSavedData")));
+    });
+}
 
+function compareVersions(v1, v2) {
+    if (!v1 || !v2) return 0;
+    const parts1 = v1.split(".").map(Number);
+    const parts2 = v2.split(".").map(Number);
     const maxLength = Math.max(parts1.length, parts2.length);
-
     for (let i = 0; i < maxLength; i++) {
         const num1 = parts1[i] || 0;
         const num2 = parts2[i] || 0;
-
-        if (num1 > num2) {
-            return 1;
-        } else if (num1 < num2) {
-            return -1;
-        }
+        if (num1 > num2) return 1;
+        if (num1 < num2) return -1;
     }
-
     return 0;
 }
 
-async function localizeAll(s) {
-    if (s) {
-        await loopThroughArrayAsync(s, (i, v) => {
-            if (typeof (v) == "string") {
-                var q = v.replace(/__MSG_(\w+)__/g, function (match, v1) {
-                    return v1 ? chrome.i18n.getMessage(v1) : "";
-                });
-                if (v != q) { s[i] = q; }
-            }
-        });
-        return s;
-    } else {
-        let objs = document.getElementsByTagName("html");
-        loopThroughArray(objs, (_, obj) => {
-            var valStrH = obj.innerHTML.toString();
-            var valNewH = valStrH.replace(/__MSG_(\w+)__/g, function (match, v1) {
-                return v1 ? chrome.i18n.getMessage(v1) : "";
-            });
-            if (valNewH != valStrH) { obj.innerHTML = valNewH; }
-        });
+function getTran(id) {
+    const name = system_settings.name?.replaceAll(".", "_") || "";
+    const nameScoped = chrome.i18n.getMessage(`${name}_${id}`);
+    if (nameScoped) return nameScoped;
+    return chrome.i18n.getMessage(id.replaceAll(".", "_"));
+}
+
+async function localizeAll(data) {
+    const replacer = (_, v1) => v1 ? chrome.i18n.getMessage(v1) : "";
+    if (data) {
+        if (Array.isArray(data)) {
+            return data.map(v => typeof v === "string" ? v.replace(/__MSG_(\w+)__/g, replacer) : v);
+        }
+        return data;
+    }
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+    let node;
+    while ((node = walker.nextNode())) {
+        const text = node.nodeValue;
+        if (text && text.includes("__MSG_")) {
+            node.nodeValue = text.replace(/__MSG_(\w+)__/g, replacer);
+        }
     }
 }
 
 async function loadChanges() {
     await localizeAll();
-    fetch("settings.json").then(setting_res => {
-        return setting_res.json();
-    }).then(async (settings) => {
-        system_settings = settings;
-        if (system_settings["typeOfStorage"]) {
-            storage = chrome.storage[system_settings["typeOfStorage"]];
-        }
-        function getTran(id) {
-            if (!(chrome.i18n.getMessage(system_settings["name"].replaceAll(".", "_") + "_" + id) == "")) {
-                return chrome.i18n.getMessage(system_settings["name"].replaceAll(".", "_") + "_" + id);
-            } else if (!(chrome.i18n.getMessage(id.replaceAll(".", "_")) == "")) {
-                return chrome.i18n.getMessage(id.replaceAll(".", "_"));
-            }
-        }
-        storage.get([system_settings["name"]], function (items) {
-            if (Object.keys(system_settings["settings"]).length == 1) {
-                document.getElementById("extensionSettings").remove();
-            } else {
-                loopThroughArrayAsync(system_settings["settings"], async (key, val) => {
-                    if (document.getElementById(key) == null) {
-                        var gene_lis = "";
-                        if (val["extraArguments"]) {
-                            await loopThroughArrayAsync(val["extraArguments"], async (i, v) => {
-                                gene_lis = `${gene_lis} ${i}="${v}"`;
+    try {
+        const setting_res = await fetch("settings.json");
+        system_settings = await setting_res.json();
+    } catch (e) {
+        console.error("Failed to load settings.json", e);
+        return;
+    }
+    if (system_settings.typeOfStorage) {
+        storage = chrome.storage[system_settings.typeOfStorage];
+    }
+    storage.get([system_settings["name"]], function (items) {
+        const storedConfig = items[system_settings.name] || {};
+        const settingsKeys = Object.entries(system_settings.settings);
+        if (settingsKeys.length === 1 && document.getElementById("extensionSettings")) {
+            document.getElementById("extensionSettings").remove();
+        } else {
+            const beforeElement = document.getElementById("reviewDetails");
+            for (const [key, val] of settingsKeys) {
+                if (!document.getElementById(key)) {
+                    let extraArgs = val.extraArguments 
+                        ? Object.entries(val.extraArguments).map(([i, v]) => ` ${i}="${v}"`).join('') 
+                        : "";
+                    let html = "";
+                    const isHidden = val.hidden === true && !window.location.href.includes("resize=true");
+                    const displayStyle = isHidden ? 'style="display: none;"' : '';
+                    html += `<label ${displayStyle} for="${key}" id="${key}_label">${getTran(key + "_mes")}: `;
+                    if (!isHidden && val.alternateFileInput && val.type === "file") {
+                        html += `<input type="${val.type}" style="display: none;" id="${key}" name="${key}"${extraArgs}>`;
+                        html += `<button id="${key}_triggerButton">${getTran("settingsNoFileSelected")}</button>`;
+                    } else {
+                        html += `<input type="${val.type}" id="${key}" name="${key}"${extraArgs}>`;
+                    }
+                    if (!isHidden && val.reset) {
+                        html += ` <button id="reset_${key}">${getTran("settingsReset")}</button>`;
+                    }
+                    html += `</label><br>`;
+                    if (beforeElement) beforeElement.insertAdjacentHTML('beforebegin', html);
+                }
+                const main_selection = document.getElementById(key);
+                if (!main_selection) continue;
+                let selected = storedConfig[key] ?? getTran(key + "_default") ?? val.default;
+                if (val.type === "checkbox") {
+                    main_selection.checked = selected;
+                } else if (val.type === "file") {
+                    main_selection.setAttribute("file_url", selected);
+                } else {
+                    main_selection.value = selected;
+                }
+                main_selection.addEventListener("change", () => {
+                    for (const [depKey, depVal] of Object.entries(system_settings.settings)) {
+                        if (depVal?.neededSettings) {
+                            const label = document.getElementById(`${depKey}_label`);
+                            if (!label) continue;
+                            const shouldHide = depVal.neededSettings.some(neededKey => {
+                                const k = document.getElementById(neededKey);
+                                if (!k) return false;
+                                const type = system_settings.settings[neededKey].type;
+                                const isFilled = type === "checkbox" ? k.checked : type === "file" ? k.getAttribute("file_url") : k.value;
+                                return !isFilled;
                             });
-                        }
-                        var generated_html_element = `<label for="${key}" id="${key}_label">${getTran(key + "_mes")}: <input type="${val["type"]}" id="${key}" name="${key}"${gene_lis}>`;
-                        var beforeElement = document.getElementById("reviewDetails");
-                        if (val["hidden"] == true && !(window.location.href.includes("resize=true"))) {
-                            generated_html_element = `<label style="display: none;" for="${key}" id="${key}_label">${getTran(key + "_mes")}: <input type="${val["type"]}" id="${key}" name="${key}"${gene_lis}>`;
-                        } else {
-                            if (val["alternateFileInput"] == true && val["type"] == "file") {
-                                generated_html_element = `<label for="${key}" id="${key}_label">${getTran(key + "_mes")}: <input type="${val["type"]}" style="display: none;" id="${key}" name="${key}"${gene_lis}><button id="${key}_triggerButton">${getTran("settingsNoFileSelected")}</button>`;
-                            }
-                            if (val["reset"] == true) {
-                                generated_html_element = `${generated_html_element} <button id="reset_${key}">${getTran("settingsReset")}</button>`;
-                            } else {
-                                generated_html_element = `${generated_html_element}`;
-                            }
-                        }
-                        generated_html_element = `${generated_html_element}<br></label>`;
-                        beforeElement.outerHTML = `${generated_html_element}${document.getElementById("reviewDetails").outerHTML}`;
-                    }
-                    var selected = val["default"];
-                    if (!(getTran(key + "_default") == null)) {
-                        selected = (getTran(key + "_default"));
-                    }
-                    if (items[system_settings["name"]]) {
-                        if (!(typeof (items[system_settings["name"]][key]) == "undefined")) {
-                            selected = items[system_settings["name"]][key];
-                        }
-                    }
-                    if (!(typeof (selected) == "undefined")) {
-                        if (document.getElementById(key)) {
-                            var main_selection = document.getElementById(key);
-                            if (val["type"] == "checkbox") {
-                                main_selection.checked = selected;
-                            } else if (val["type"] == "file") {
-                                main_selection.setAttribute("file_url", selected);
-                            } else {
-                                main_selection.value = selected;
-                            }
-                        }
-                    }
-                    var main_selection = document.getElementById(key);
-                    if (val["neededSettings"]) {
-                        loopThroughArray(val["neededSettings"], (i, v) => {
-                            let k = document.getElementById(v);
-                            let can_hide = false;
-                            if (k) {
-                                let filled = false;
-                                if (system_settings["settings"][v]["type"] == "checkbox") {
-                                    filled = k.checked;
-                                } else if (system_settings["settings"][v]["type"] == "file") {
-                                    filled = k.getAttribute("file_url");
-                                } else {
-                                    filled = k.value;
-                                }
-                                if (!(filled)) {
-                                    can_hide = true;
-                                }
-                            }
-                            if (can_hide == true) {
-                                if (!(val["neededSettings"].length == 0)) {
-                                    document.getElementById(key + "_label").style = "display: none;";
-                                }
-                            }
-                        });
-                    }
-                    main_selection.addEventListener("change", () => {
-                        loopThroughArrayAsync(system_settings["settings"], async (i, v) => {
-                            if (v && v["neededSettings"]) {
-                                let q = document.getElementById(i + "_label");
-                                if (q) {
-                                    let can_hide = false;
-                                    await loopThroughArrayAsync(v["neededSettings"], async (q, e) => {
-                                        var k = document.getElementById(e);
-                                        if (k) {
-                                            let filled = false;
-                                            if (system_settings["settings"][e]["type"] == "checkbox") {
-                                                filled = k.checked;
-                                            } else if (system_settings["settings"][e]["type"] == "file") {
-                                                filled = k.getAttribute("file_url");
-                                            } else {
-                                                filled = k.value;
-                                            }
-                                            if (!(filled)) {
-                                                can_hide = true;
-                                            }
-                                        }
-                                    });
-                                    if (can_hide == true) {
-                                        q.style = "display: none;";
-                                    } else {
-                                        q.style = "";
-                                    }
-                                }
-                            }
-                        });
-                    });
-                    if (val["alternateFileInput"] == true && val["type"] == "file") {
-                        if (document.getElementById(`${key}_triggerButton`)) {
-                            let button = document.getElementById(`${key}_triggerButton`);
-                            button.addEventListener("click", () => {
-                                main_selection.click();
-                            });
-                            main_selection.addEventListener("change", () => {
-                                if (main_selection.files.length > 0) {
-                                    button.textContent = main_selection.files[0].name;
-                                } else {
-                                    button.textContent = getTran("settingsNoFileSelected");
-                                }
-                            });
-                            if (items[system_settings["name"]] && items[system_settings["name"]][key + "_filename"]) {
-                                button.textContent = items[system_settings["name"]][key + "_filename"];
-                            }
-                        }
-                    }
-                    if (val["reset"] == true) {
-                        if (document.getElementById(`reset_${key}`)) {
-                            let button = document.getElementById(`reset_${key}`);
-                            button.addEventListener("click", () => {
-                                var main_selection = document.getElementById(key);
-                                if (val["type"] == "checkbox") {
-                                    main_selection.checked = val["default"];
-                                } else if (val["type"] == "file") {
-                                    if (!(items[system_settings["name"]])) { items[system_settings["name"]] = {}; }
-                                    items[system_settings["name"]][key + "_filename"] = null;
-                                    main_selection.value = val["default"];
-                                    main_selection.setAttribute("file_url", val["default"]);
-                                    main_selection.dispatchEvent(new Event("change"));
-                                } else {
-                                    if (!(getTran(key + "_default") == null)) {
-                                        main_selection.value = (getTran(key + "_default"));
-                                    } else {
-                                        main_selection.value = val["default"];
-                                    }
-                                }
-                            });
+                            label.style.display = shouldHide ? "none" : "";
                         }
                     }
                 });
-            }
-        });
-        const submitButton = document.getElementById("submitbutton");
-        submitButton.addEventListener("click", saveData);
-
-        /* Fulfill basic manifest details */
-        var man_json = await localizeAll(chrome.runtime.getManifest());
-        var extension_name = man_json["name"];
-        var extension_version = man_json["version"];
-        var extension_icon = man_json["icons"]["32"];
-
-        document.getElementById("extens_name").innerHTML = `${getTran("settingsExName")} ${extension_name} ${`<img src="${extension_icon}" height="16" width="16" style="vertical-align: middle;">`}`;
-        document.getElementById("extens_vers").innerText = `v${extension_version}`;
-        document.getElementById("window_title").innerText = `${extension_name} ${getTran("settings")}`;
-
-        if (navigator.onLine == false) {
-            /* User is offline */
-            document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | ${getTran("settingsNetworkOffline")}`;
-            document.getElementById("css").innerText = `${document.getElementById("css").innerText}
-            body {
-                font-family: arial !important;
-                color: white;
-                overflow: hidden;
-                background-color: #000000;
-            }
-            `;
-        }
-
-        if (system_settings["browserMode"] == "chrome") {
-            if (system_settings["chromeWebstoreLinkEnabled"] == true) {
-                if (chrome.runtime.id == system_settings["uploadedChromeExtensionID"]) {
-                    /* User is using the Chrome Web Store */
-                    document.getElementById("extensionLink").href = `https://chromewebstore.google.com/detail/extension/${chrome.runtime.id}`;
-                } else if (system_settings["uploadedChromeExtensionID"]) {
-                    /* User used an extracted zip file of the extension instead of using the Chrome Web Store */
-                    document.getElementById("extensionLink").href = `https://chromewebstore.google.com/detail/extension/${system_settings["uploadedChromeExtensionID"]}`;
-                    document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | ${getTran("settingsUnpacked")}`;
-                }
-                document.getElementById("extensionLink").style = "";
-            } else {
-                document.getElementById("extensionLink").remove();
-            }
-        } else if (system_settings["browserMode"] == "firefox") {
-            if (system_settings["firefoxWebstoreLinkEnabled"] == true) {
-                if (chrome.runtime.id == system_settings["uploadedFirefoxExtensionID"]) {
-                    /* User is using the Firefox Add-on Store */
-                    document.getElementById("extensionLink").href = `https://addons.mozilla.org/en-US/firefox/addon/${chrome.runtime.id}`;
-                } else if (system_settings["uploadedChromeExtensionID"]) {
-                    /* User used an extracted zip file of the extension instead of using the Firefox Add-on Store */
-                    document.getElementById("extensionLink").href = `https://addons.mozilla.org/en-US/firefox/addon/${system_settings["uploadedFirefoxExtensionID"]}`;
-                    document.getElementById("extens_vers").innerText = `${document.getElementById("extens_vers").innerText} | ${getTran("settingsUnpacked")}`;
-                }
-                document.getElementById("extensionLink").children[0].src = "https://cdn.efaz.dev/png/firefox_addons.png";
-                document.getElementById("extensionLink").children[0].title = getTran("firefoxAddons");
-                document.getElementById("extensionLink").style = "";
-            } else {
-                document.getElementById("extensionLink").remove();
-            }
-        }
-
-        if (settings["scanForManifestUpdates"] == true) {
-            if (navigator.onLine == true) {
-                /* Update check */
-                fetch(system_settings["onlineManifestFile"]).then(r => {
-                    if (r.ok) {
-                        return r.json();
-                    }
-                }).then(j => {
-                    if (j) {
-                        if (settings["isVersionServer"] == true) {
-                            var compared = compareVersions(man_json["version"], j[settings["name"]]);
-                            if (j[settings["name"]] == man_json["version"]) {
-                                /* User is running the latest non-beta version. */
-                                console.log("This user is currently at the latest version!");
-                            } else if (compared == -1) {
-                                /* User has an update available */
-                                document.getElementById("extens_vers").innerHTML = `${document.getElementById("extens_vers").innerHTML} | <button id="openChromeExtensionSettings">${getTran("settingsUpdateAvailable")} v${j[settings["name"]]}!</button>`;
-                                document.getElementById("openChromeExtensionSettings").addEventListener("click", () => {
-                                    if (system_settings["browserMode"] == "chrome") {
-                                        if (system_settings["chromeWebstoreLinkEnabled"] == true && !(chrome.runtime.id == system_settings["uploadedChromeExtensionID"])) {
-                                            chrome.tabs.create({ url: `https://chromewebstore.google.com/detail/extension/${system_settings["uploadedChromeExtensionID"]}` });
-                                        } else {
-                                            chrome.tabs.create({ url: "chrome://extensions/" });
-                                        }
-                                    } else if (system_settings["browserMode"] == "firefox") {
-                                        if (system_settings["firefoxWebstoreLinkEnabled"] == true && !(chrome.runtime.id == system_settings["uploadedFirefoxExtensionID"])) {
-                                            chrome.tabs.create({ url: `https://addons.mozilla.org/en-US/firefox/addon/${system_settings["uploadedFirefoxExtensionID"]}` });
-                                        } else {
-                                            chrome.tabs.create({ url: "about:debugging#/runtime/this-firefox" });
-                                        }
-                                    }
-                                });
-                                console.log(`New version found! v${man_json["version"]} > v${j[settings["name"]]}`);
-                            } else {
-                                /* User is running beta version of the extension */
-                                document.getElementById("extens_vers").innerText = `v${extension_version} ${getTran("settingsBeta")}`;
-                                console.log(`User is in beta version of the extension!`);
-                            }
-                        } else {
-                            var compared = compareVersions(man_json["version"], j["version"]);
-                            if (j["version"] == man_json["version"]) {
-                                /* User is running the latest non-beta version. */
-                                console.log("This user is currently at the latest version!");
-                            } else if (compared == -1) {
-                                /* User has an update available */
-                                document.getElementById("extens_vers").innerHTML = `${document.getElementById("extens_vers").innerHTML} | <button id="openChromeExtensionSettings">${getTran("settingsUpdateAvailable")} v${j["version"]}!</button>`;
-                                document.getElementById("openChromeExtensionSettings").addEventListener("click", () => {
-                                    if (system_settings["browserMode"] == "chrome") {
-                                        if (system_settings["chromeWebstoreLinkEnabled"] == true && !(chrome.runtime.id == system_settings["uploadedChromeExtensionID"])) {
-                                            chrome.tabs.create({ url: `https://chromewebstore.google.com/detail/extension/${system_settings["uploadedChromeExtensionID"]}` });
-                                        } else {
-                                            chrome.tabs.create({ url: "chrome://extensions/" });
-                                        }
-                                    } else if (system_settings["browserMode"] == "firefox") {
-                                        if (system_settings["firefoxWebstoreLinkEnabled"] == true && !(chrome.runtime.id == system_settings["uploadedFirefoxExtensionID"])) {
-                                            chrome.tabs.create({ url: `https://addons.mozilla.org/en-US/firefox/addon/${system_settings["uploadedFirefoxExtensionID"]}` });
-                                        } else {
-                                            chrome.tabs.create({ url: "about:debugging#/runtime/this-firefox" });
-                                        }
-                                    }
-                                });
-                                console.log(`New version found! v${man_json["version"]} > v${j["version"]}`);
-                            } else {
-                                /* User is running beta version of the extension */
-                                document.getElementById("extens_vers").innerText = `v${extension_version} ${getTran("settingsBeta")}`;
-                                console.log(`User is in beta version of the extension!`);
-                            }
+                if (val.alternateFileInput && val.type === "file") {
+                    const button = document.getElementById(`${key}_triggerButton`);
+                    if (button) {
+                        button.addEventListener("click", () => main_selection.click());
+                        main_selection.addEventListener("change", () => {
+                            button.textContent = main_selection.files.length > 0 ? main_selection.files[0].name : getTran("settingsNoFileSelected");
+                        });
+                        if (storedConfig[`${key}_filename`]) {
+                            button.textContent = storedConfig[`${key}_filename`];
                         }
                     }
-                });
+                }
+                if (val.reset) {
+                    const resetBtn = document.getElementById(`reset_${key}`);
+                    if (resetBtn) {
+                        resetBtn.addEventListener("click", () => {
+                            if (val.type === "checkbox") {
+                                main_selection.checked = val.default;
+                            } else if (val.type === "file") {
+                                storedConfig[`${key}_filename`] = null;
+                                main_selection.value = val.default;
+                                main_selection.setAttribute("file_url", val.default);
+                                main_selection.dispatchEvent(new Event("change"));
+                            } else {
+                                main_selection.value = getTran(key + "_default") ?? val.default;
+                            }
+                        });
+                    }
+                }
+            }
+            if (settingsKeys.length > 0) {
+                document.getElementById(settingsKeys[0][0])?.dispatchEvent(new Event("change"));
             }
         }
     });
+    document.getElementById("submitbutton")?.addEventListener("click", saveData);
+
+    /* Fulfill basic manifest details */
+    const man_json = chrome.runtime.getManifest();
+    const extension_name = chrome.i18n.getMessage("name") || man_json.name;
+    const extension_version = man_json.version;
+    const extension_icon = man_json.icons?.["32"] || "";
+    localizeAll(man_json);
+
+    const extensNameEl = document.getElementById("extens_name");
+    if (extensNameEl) extensNameEl.innerHTML = `${getTran("settingsExName")} ${extension_name} <img src="${extension_icon}" height="16" width="16" style="vertical-align: middle;">`;
+    const extensVersEl = document.getElementById("extens_vers");
+    if (extensVersEl) extensVersEl.innerText = `v${extension_version}`;
+    const windowTitleEl = document.getElementById("window_title");
+    if (windowTitleEl) windowTitleEl.innerText = `${extension_name} ${getTran("settings")}`;
+
+    if (!navigator.onLine) {
+        if (extensVersEl) extensVersEl.innerText += ` | ${getTran("settingsNetworkOffline")}`;
+        const cssEl = document.getElementById("css");
+        if (cssEl) {
+            cssEl.innerText += `\nbody { font-family: arial !important; color: white; overflow: hidden; background-color: #000000; }`;
+        }
+    }
+
+    const extLinkEl = document.getElementById("extensionLink");
+    if (extLinkEl) {
+        const isChrome = system_settings.browserMode === "chrome";
+        const isFirefox = system_settings.browserMode === "firefox";
+        if (isChrome && system_settings.chromeWebstoreLinkEnabled) {
+            const idToUse = (chrome.runtime.id === system_settings.uploadedChromeExtensionID) ? chrome.runtime.id : system_settings.uploadedChromeExtensionID;
+            extLinkEl.href = `https://chromewebstore.google.com/detail/extension/${idToUse}`;
+            extLinkEl.style.display = "";
+            if (idToUse !== chrome.runtime.id && extensVersEl) extensVersEl.innerText += ` | ${getTran("settingsUnpacked")}`;
+        } else if (isFirefox && system_settings.firefoxWebstoreLinkEnabled) {
+            const idToUse = (chrome.runtime.id === system_settings.uploadedFirefoxExtensionID) ? chrome.runtime.id : system_settings.uploadedFirefoxExtensionID;
+            extLinkEl.href = `https://addons.mozilla.org/en-US/firefox/addon/${idToUse}`;
+            extLinkEl.children[0].src = "https://cdn.efaz.dev/png/firefox_addons.png";
+            extLinkEl.children[0].title = getTran("firefoxAddons");
+            extLinkEl.style.display = "";
+            if (idToUse !== chrome.runtime.id && extensVersEl) extensVersEl.innerText += ` | ${getTran("settingsUnpacked")}`;
+        } else {
+            extLinkEl.remove();
+        }
+    }
+
+    if (system_settings.scanForManifestUpdates && navigator.onLine) {
+        try {
+            const r = await fetch(system_settings.onlineManifestFile);
+            if (r.ok) {
+                const j = await r.json();
+                const targetVersion = system_settings.isVersionServer ? j[system_settings.name] : j.version;
+                const compared = compareVersions(extension_version, targetVersion);
+                if (compared === -1 && extensVersEl) {
+                    extensVersEl.innerHTML += ` | <button id="openChromeExtensionSettings">${getTran("settingsUpdateAvailable")} v${targetVersion}!</button>`;
+                    document.getElementById("openChromeExtensionSettings").addEventListener("click", () => {
+                        const mode = system_settings.browserMode;
+                        if (mode === "chrome") {
+                            const url = (system_settings.chromeWebstoreLinkEnabled && chrome.runtime.id !== system_settings.uploadedChromeExtensionID) ? `https://chromewebstore.google.com/detail/extension/${system_settings.uploadedChromeExtensionID}` : "chrome://extensions/";
+                            chrome.tabs.create({ url });
+                        } else if (mode === "firefox") {
+                            const url = (system_settings.firefoxWebstoreLinkEnabled && chrome.runtime.id !== system_settings.uploadedFirefoxExtensionID) ? `https://addons.mozilla.org/en-US/firefox/addon/${system_settings.uploadedFirefoxExtensionID}` : "about:debugging#/runtime/this-firefox";
+                            chrome.tabs.create({ url });
+                        }
+                    });
+                } else if (compared === 1 && extensVersEl) {
+                    extensVersEl.innerText += ` ${getTran("settingsBeta")}`;
+                }
+            }
+        } catch (e) {
+            console.warn("Update check failed", e);
+        }
+    }
 }
 
 window.onload = loadChanges;

@@ -1,3 +1,8 @@
+/* 
+EfazDev Website 🍊
+Chrome Extension Pages
+*/
+
 document.addEventListener("DOMContentLoaded", async () => {
     let extension_name = window.extension_name;
     let extension_id = window.extension_id;

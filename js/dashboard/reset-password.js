@@ -1,29 +1,26 @@
-function on_form_loaded(_0x215750) {
-    var data = "<p class=\"footer\">Resetting your Password means you agree to Efaz's <a href=\"https://efaz.dev/tos\">Terms of Service</a> and <a href=\"https://efaz.dev/privacy\">Privacy Policy</a>.</p>";
-    let temp_div = document.createElement("div");
+EfazForms.on_form_loaded = async function (_) {
+    const data = "<p class=\"footer\">Resetting your Password means you agree to Efaz's <a href=\"https://efaz.dev/tos\">Terms of Service</a> and <a href=\"https://efaz.dev/privacy\">Privacy Policy</a>.</p>";
+    const temp_div = document.createElement("div");
     temp_div.innerHTML = data;
     document.getElementById("main_menu").appendChild(temp_div.children[0]);
 }
-async function get_xcsrf(_0x41bd1a) {
-    return fetch("https://db.efaz.dev/api/auth/account-xcsrftoken", {
-        'credentials': "include",
-        'method': "POST"
-    }).then(_0x335601 => {
-        return _0x335601.json().then(_0x2e289b => {
-            return _0x2e289b.success == true ? _0x2e289b.token : '';
-        });
+EfazForms.get_xcsrf = async function (_) {
+    const res = await fetch("https://db.efaz.dev/api/auth/xcsrftoken", {
+        method: "POST",
+        credentials: "include"
     });
+    const data = await res.json();
+    return data.success == true ? data.token : "";
 }
-window.onload = function () {
-    fetch("https://db.efaz.dev/api/auth/authenticated", {
-        'credentials': "include"
-    }).then(_0x5ee1bd => {
-        _0x5ee1bd.json().then(_0x4d2b4b => {
-            if (_0x4d2b4b.success == false) {
-                loadFormJSONfromURL("https://db.efaz.dev/forms/dev.efaz.forms.reset-password");
-            } else {
-                window.location.replace('/');
-            }
-        });
+async function main() {
+    const res = await fetch("https://db.efaz.dev/api/auth/authenticated", {
+        "credentials": "include"
     });
-};
+    const data = await res.json();
+    if (data.success == false) {
+        await EfazForms.loadFormJSONfromURLByAsync("https://db.efaz.dev/forms/dev.efaz.forms.reset-password");
+    } else {
+        window.location.replace("https://db.efaz.dev/login");
+    }
+}
+main();
