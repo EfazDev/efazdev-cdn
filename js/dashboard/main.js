@@ -122,7 +122,7 @@
                     "credentials": "include",
                     "headers": {
                         "cookie": document.cookie,
-                        "X-EfazDev-Key": private_api_key
+                        "X-EfazDev-Key": api_key
                     }
                 });
                 const owned_items_json = await owned_items_res.json();
@@ -168,6 +168,7 @@
                 window.location.replace("https://db.efaz.dev/login");
             }
         } catch (err) {
+            console.error(err);
             window.location.replace("https://db.efaz.dev/servererror");
         }
     });

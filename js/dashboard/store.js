@@ -113,6 +113,7 @@
                 window.location.replace("https://db.efaz.dev/login");
             }
         } catch (err) {
+            console.error(err);
             window.location.replace("https://db.efaz.dev/servererror");
         }
     });
