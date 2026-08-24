@@ -709,7 +709,7 @@ EfazForms = {};
             last_loaded_json = system_json;
             make_log(console.log, "Successfully created form!");
             try {
-                on_form_loaded(system_json);
+                EfazForms.on_form_loaded(system_json);
             } catch (err) {
                 make_log(console.warn, "Unable to run on_form_loaded event due to an error: " + err.stack);
             }
