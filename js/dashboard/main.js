@@ -228,14 +228,6 @@
             await get_captcha(async function (captcha_res) {
                 const xcerf_res = await fetch("https://db.efaz.dev/api/auth/account-xcsrftoken", {
                     "method": "POST",
-                    "headers": {
-                        "accept": "application/json",
-                        "accept-language": "en-US,en;q=0.9",
-                        "content-type": "application/json",
-                        "sec-fetch-dest": "empty",
-                        "sec-fetch-mode": "cors",
-                        "sec-fetch-site": "same-origin",
-                    },
                     "credentials": "include"
                 });
                 const xcerf_json = await xcerf_res.json();
@@ -246,12 +238,6 @@
                         "credentials": "include",
                         "headers": {
                             "X-Csrf-Token": xcerf_token,
-                            "accept": "application/json",
-                            "accept-language": "en-US,en;q=0.9",
-                            "content-type": "application/json",
-                            "sec-fetch-dest": "empty",
-                            "sec-fetch-mode": "cors",
-                            "sec-fetch-site": "same-origin",
                             "cookie": document.cookie
                         },
                         "body": "{\"c_captcha\": \"" + captcha_res[1] + "\"}"
