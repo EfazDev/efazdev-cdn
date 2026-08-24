@@ -21,6 +21,20 @@ EfazForms.on_success_form = async function (res) {
         }
     }
 };
+EfazForms.on_form_loaded = function(_) {
+    var data = `<p class="footer" style="font-size: 0.9rem;">Creating an account means you agree to Efaz's <a href="https://efaz.dev/tos">Terms of Service</a> and <a href="https://efaz.dev/privacy">Privacy Policy</a>. Login via Roblox is provided via Roblox's 0Auth Applications. By pressing the button, you'll be redirected to Roblox's website.</p>`
+    let temp_div = document.createElement("div");
+    temp_div.innerHTML = data;
+    document.getElementById("main_menu").appendChild(temp_div.children[0]);
+    var send_btn = document.getElementById("submit_button");
+    let gradient_span = document.createElement("span");
+    gradient_span.setAttribute("class", "gradient-border");
+    send_btn.parentNode.insertBefore(gradient_span, send_btn);
+    gradient_span.appendChild(send_btn);
+}
+function redirect_to_roblox() {
+    window.location.replace("https://db.efaz.dev/roblox-login")
+}
 window.addEventListener("load", async function () {
     if (url_search_params.get('success') == 'true') {
         const ticket = url_search_params.get("ticket");
