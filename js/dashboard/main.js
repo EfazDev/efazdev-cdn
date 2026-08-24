@@ -186,7 +186,7 @@
         ["report_system", "hide_reporting", true, "Reporting System"],
         ["paid_projects", "hide_paid", true, "Paid Projects"]
     ];
-    function hide_group(group_name) {
+    window.hide_group = function(group_name) {
         for (a_e_q = 0x0; a_e_q < listArray.length; a_e_q++) {
             let group_inf = listArray[a_e_q];
             document.getElementById(group_inf[0x0]).style = "display: none;";
@@ -275,7 +275,7 @@
             document.getElementById("logOutMessage").innerHTML = "Are you sure you want to logout now?";
             document.getElementById("log_out").innerHTML = "Log out!";
         }
-        hide_group("main");
+        window.hide_group("main");
     }
     window.logOut = logOut;
     window.confirmLogOut = confirmLogOut;

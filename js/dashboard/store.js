@@ -117,7 +117,7 @@
             window.location.replace("https://db.efaz.dev/servererror");
         }
     });
-    function hide_group(group_name) {
+    window.hide_group = function(group_name) {
         for (a_e_q = 0x0; a_e_q < listArray.length; a_e_q++) {
             let group_inf = listArray[a_e_q];
             document.getElementById(group_inf[0x0]).style = "display: none;";
