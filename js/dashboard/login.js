@@ -52,7 +52,7 @@
             }
             const curCaptcha = captcha_element.value;
             const payload = {
-                ...asseResp,
+                passkey_response: asseResp,
                 challenge_ticket: challenge_ticket,
                 c_captcha: curCaptcha
             };
