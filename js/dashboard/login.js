@@ -1,6 +1,7 @@
 (() => {
     const url_search_params = new URLSearchParams(window.location.search);
     const redirect_url = url_search_params.get("redirect_url");
+    const { startAuthentication } = SimpleWebAuthnBrowser;
     EfazForms.get_xcsrf = async function (_) {
         const res = await fetch("https://db.efaz.dev/api/auth/xcsrftoken", {
             method: "POST",

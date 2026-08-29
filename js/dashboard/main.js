@@ -1,5 +1,6 @@
 (function () {
     let currentLogOutMode = "";
+    const { startRegistration } = SimpleWebAuthnBrowser;
     const task = function () {
         class Task {
             #key;
