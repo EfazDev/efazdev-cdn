@@ -187,7 +187,7 @@
             if (widgetId !== null) {
                 turnstile.reset(widgetId);
             } else {
-                await turnstile.render("#invis", {
+                widgetId = await turnstile.render("#invis", {
                     sitekey: "0x4AAAAAAAL7YK_aJBt5iMM6",
                     callback: function (token) {
                         if (currentCaptchaCallback) {
