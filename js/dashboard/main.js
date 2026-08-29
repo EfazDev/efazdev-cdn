@@ -78,6 +78,7 @@
                 } else {
                     window.location.replace("https://db.efaz.dev/login");
                 }
+                await window.loadPasskeys();
 
                 const email_res = await fetch("https://db.efaz.dev/api/auth/user-has-email-address", {
                     "credentials": "include"
@@ -187,6 +188,94 @@
             });
         } else {
             return callback_a(["None", ""]);
+        }
+    }
+    window.loadPasskeys = async function() {
+        const listElement = document.getElementById("passkeyList");
+        try {
+            const res = await fetch("https://db.efaz.dev/api/auth/get-passkeys", { credentials: "include" });
+            const json = await res.json();
+            if (json.success && json.passkeys && json.passkeys.length > 0) {
+                listElement.innerHTML = "";
+                json.passkeys.forEach(device => {
+                    const shorted = device.credentialID.slice(-5);
+                    const li = document.createElement("li");
+                    li.style.marginBottom = "10px";
+                    li.innerHTML = `
+                        <span>Passkey [...${shorted}]</span> 
+                        <button onclick="window.removePasskey('${device.credentialID}')" style="height: 0; margin-left: 10px; color: red;">Remove</button>
+                    `;
+                    listElement.appendChild(li);
+                });
+            } else {
+                listElement.innerHTML = "<li>No passkeys registered.</li>";
+            }
+        } catch (err) {
+            console.error("Failed to load passkeys:", err);
+            listElement.innerHTML = "<li>Error loading passkeys.</li>";
+        }
+    }
+    window.generatePasskey = async function() {
+        try {
+            const resp = await fetch("https://db.efaz.dev/api/auth/generate-passkey-options");
+            const options = await resp.json();
+            const attResp = await startRegistration({ optionsJSON: options });
+            await get_captcha(async function (captcha_res) {
+                const xcsrf_res = await fetch("https://db.efaz.dev/api/auth/account-xcsrftoken", {
+                    method: "POST",
+                    credentials: "include"
+                });
+                const xcsrf_json = await xcsrf_res.json();
+                const csrfToken = xcsrf_json.success ? xcsrf_json.token : "";
+                attResp["c_captcha"] = captcha_res[1];
+                const verificationResp = await fetch("https://db.efaz.dev/api/auth/verify-passkey-registration", {
+                    method: "POST",
+                    headers: { 
+                        "Content-Type": "application/json",
+                        "x-csrf-token": csrfToken
+                    },
+                    body: JSON.stringify(attResp),
+                });
+                const verificationJSON = await verificationResp.json();
+                if (verificationJSON.success) {
+                    await window.loadPasskeys();
+                } else {
+                    alert("Passkey registration failed: " + verificationJSON.message);
+                }
+            }, task_key);
+        } catch (error) {
+            console.error(error);
+            alert('Error: ' + error.message);
+        }
+    }
+    window.removePasskey = async function(credentialID) {
+        if (!confirm("Are you sure you want to remove this passkey?")) return;
+        try {
+            await get_captcha(async function (captcha_res) {
+                const xcsrf_res = await fetch("https://db.efaz.dev/api/auth/account-xcsrftoken", {
+                    method: "POST",
+                    credentials: "include"
+                });
+                const xcsrf_json = await xcsrf_res.json();
+                const csrfToken = xcsrf_json.success ? xcsrf_json.token : "";
+                const res = await fetch(`https://db.efaz.dev/api/auth/delete-passkey/${credentialID}`, {
+                    method: "DELETE",
+                    headers: { 
+                        "Content-Type": "application/json",
+                        "x-csrf-token": csrfToken 
+                    },
+                    body: JSON.stringify({ "c_captcha": captcha_res[1] }),
+                    credentials: "include"
+                });
+                const json = await res.json();
+                if (json.success) {
+                    await window.loadPasskeys();
+                } else {
+                    alert("Failed to remove passkey.");
+                }
+            }, task_key);
+        } catch (error) {
+            console.error("Error removing passkey:", error);
         }
     }
     async function confirmLogOut(confirmed) {
