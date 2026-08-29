@@ -65,7 +65,7 @@
                 body: JSON.stringify(payload),
             });
             const verificationJSON = await verificationResp.json();
-            if (verificationJSON.verified) {
+            if (verificationJSON.success) {
                 markedLoggedIn();
             } else {
                 turnstile.reset(captcha_element);
