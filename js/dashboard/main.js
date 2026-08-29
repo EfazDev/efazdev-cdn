@@ -1,5 +1,7 @@
 (function () {
     let currentLogOutMode = "";
+    let widgetId = null;
+    let currentCaptchaCallback = null;
     const { startRegistration } = SimpleWebAuthnBrowser;
     const task = function () {
         class Task {
@@ -181,12 +183,19 @@
     }
     async function get_captcha(callback_a, token) {
         if (task.validateToken(token)) {
-            await turnstile.render(`#invis`, {
-                sitekey: "0x4AAAAAAAL7YK_aJBt5iMM6",
-                callback: function (token) {
-                    callback_a(["Cloudflare", token]);
-                },
-            });
+            currentCaptchaCallback = callback_a;
+            if (widgetId !== null) {
+                turnstile.reset(widgetId);
+            } else {
+                await turnstile.render(container, {
+                    sitekey: "0x4AAAAAAAL7YK_aJBt5iMM6",
+                    callback: function (token) {
+                        if (currentCaptchaCallback) {
+                            currentCaptchaCallback(["Cloudflare", token]);
+                        }
+                    },
+                });
+            }
         } else {
             return callback_a(["None", ""]);
         }
