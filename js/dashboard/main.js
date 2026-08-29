@@ -212,7 +212,7 @@
                     const li = document.createElement("li");
                     li.style.marginBottom = "10px";
                     li.innerHTML = `
-                        <span>Passkey [...${shorted}]</span> 
+                        <span>Passkey [***${shorted}]</span> 
                         <button onclick="window.removePasskey('${device.credentialID}')" style="height: 0; margin-left: 10px; color: red;">Remove</button>
                     `;
                     listElement.appendChild(li);
