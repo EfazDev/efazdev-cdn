@@ -40,19 +40,25 @@
     async function triggerPasskeyAuthentication() {
         try {
             const resp = await fetch("https://db.efaz.dev/api/auth/generate-passkey-auth-options");
-            const options = await resp.json();
+            const jsonResp = await resp.json();
+            const options = jsonResp.options;
+            const challenge_ticket = jsonResp.challenge_ticket;
             const asseResp = await startAuthentication({ optionsJSON: options });
             const csrfToken = await EfazForms.get_xcsrf();
             const captcha_element = document.getElementById("c_captcha_input");
             const curCaptcha = captcha_element.value;
-            asseResp["c_captcha"] = curCaptcha;
+            const payload = {
+                ...asseResp,
+                challenge_ticket: challenge_ticket,
+                c_captcha: curCaptcha
+            };
             const verificationResp = await fetch("https://db.efaz.dev/api/auth/login", {
                 method: "POST",
                 headers: { 
                     "Content-Type": "application/json",
                     "x-csrf-token": csrfToken
                 },
-                body: JSON.stringify(asseResp),
+                body: JSON.stringify(payload),
             });
             const verificationJSON = await verificationResp.json();
             if (verificationJSON.verified) {
