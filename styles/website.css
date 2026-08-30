@@ -192,9 +192,23 @@ div > p {
 .portrait-toggle, .portrait-buttons, .portrait-buttons > button, .portrait-wrapper, .portrait-title, .portrait-title-link, .portrait-title-link > img, .portrait-ui {
     display: none;
 }
+.topbar-ui {
+    opacity: 1;
+    visibility: visible;
+    max-height: 120px;
+    overflow: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease, max-height 0.3s ease;
+}
 
 @media (max-width: 650px) {
-    .topbar-buttons, .topbar-ui.portrait-menu-enabled {
+    .topbar-ui.portrait-menu-enabled {
+        opacity: 0;
+        visibility: hidden;
+        max-height: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease, visibility 0s linear 0.3s, max-height 0.3s ease;
+    }
+    .topbar-buttons {
         display: none;
     }
     
