@@ -122,6 +122,15 @@ EfazForms = {};
         ui_elements.success.style.display = "none";
         ui_elements.failed.style.display = "none";
         ui_elements.awaiting.style.display = "none";
+        if (cloudflare_captcha_enabled && cloudflare_widget_id !== null) {
+            turnstile.reset(cloudflare_widget_id);
+            if (ui_elements["question:" + cloudflare_captcha["jsonName"]]) {
+                ui_elements["question:" + cloudflare_captcha["jsonName"]].value = "";
+            }
+            if (ui_elements.submit_button) {
+                ui_elements.submit_button.disabled = true;
+            }
+        }
     }
 
     function returnFromMessageAndClear() {
@@ -300,6 +309,10 @@ EfazForms = {};
                     make_log(console.log, "The following questions were filled empty: " + new_string_g);
                     if (cloudflare_captcha_enabled && cloudflare_widget_id !== null) {
                         turnstile.reset(cloudflare_widget_id);
+                        ui_elements["question:" + cloudflare_captcha["jsonName"]].value = "";
+                        if (ui_elements.submit_button) {
+                            ui_elements.submit_button.disabled = true;
+                        }
                     }
                     return;
                 }
@@ -351,6 +364,10 @@ EfazForms = {};
                             make_log(console.log, "Unable to submit form: " + form_json["message"]);
                             if (cloudflare_captcha_enabled && cloudflare_widget_id !== null) {
                                 turnstile.reset(cloudflare_widget_id);
+                                ui_elements["question:" + cloudflare_captcha["jsonName"]].value = "";
+                                if (ui_elements.submit_button) {
+                                    ui_elements.submit_button.disabled = true;
+                                }
                             }
                             return;
                         }
@@ -667,7 +684,7 @@ EfazForms = {};
             submitBtn.className = "center";
             submitBtn.disabled = true;
             if (!cloudflare_captcha?.enabled) {
-                ui_elements.submit_button.disabled = false;
+                submitBtn.disabled = false;
             }
             let buttonText = "Send Form!";
             if (system_json["showCurrentMode"] && specific_settings["showModeInButtonText"]) {
