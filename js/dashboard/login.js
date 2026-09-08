@@ -1,7 +1,6 @@
 (() => {
     const url_search_params = new URLSearchParams(window.location.search);
     const redirect_url = url_search_params.get("redirect_url");
-    const { startAuthentication } = SimpleWebAuthnBrowser;
     EfazForms.get_xcsrf = async function (_) {
         const res = await fetch("https://db.efaz.dev/api/auth/xcsrftoken", {
             method: "POST",
@@ -39,7 +38,7 @@
     }
     async function triggerPasskeyAuthentication() {
         try {
-
+            const { startAuthentication } = SimpleWebAuthnBrowser;
             const resp = await fetch("https://db.efaz.dev/api/auth/generate-passkey-auth-options");
             const jsonResp = await resp.json();
             const options = jsonResp.options;
@@ -86,25 +85,7 @@
         document.getElementById("main_menu").innerHTML = "<h1 id=\"title1\">Oops!</h1><p id=\"error_message\">" + reason + "</p><button class=\"center\" onclick='window.location.replace(\"https://db.efaz.dev\")'>Return back to the home page</button>";
     }
     window.addEventListener("load", async function () {
-        if (url_search_params.get("success") == "true") {
-            const ticket = url_search_params.get("ticket");
-            if (ticket) {
-                const ticket_res = await fetch("https://db.efaz.dev/api/auth/redeem-roblox-login-ticket?ticket=" + ticket, {
-                    "credentials": "include"
-                });
-                const ticket_data = await ticket_res.json();
-                if (ticket_data.success == true) {
-                    const ticket_data_data = ticket_data.data;
-                    const ticket_cookie = ticket_data_data.cookie;
-                    document.cookie = ticket_cookie;
-                    markedLoggedIn();
-                } else {
-                    markedFailedLogin(ticket_data.message);
-                }
-            } else {
-                markedFailedLogin("Login Ticket is not found.");
-            }
-        } else if (url_search_params.get("success") == "false") {
+        if (url_search_params.get("success") == "false") {
             const login_fail_reason = url_search_params.get("reason");
             const reasons_table = {
                 "UserIDInvalid": "Roblox failed to authenticate your User ID! Login has failed.",

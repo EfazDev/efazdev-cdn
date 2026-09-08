@@ -2,7 +2,6 @@
     let currentLogOutMode = "";
     let widgetId = null;
     let currentCaptchaCallback = null;
-    const { startRegistration } = SimpleWebAuthnBrowser;
     const task = function () {
         class Task {
             #key;
@@ -227,6 +226,7 @@
     }
     window.generatePasskey = async function() {
         try {
+            const { startRegistration } = SimpleWebAuthnBrowser;
             const resp = await fetch("https://db.efaz.dev/api/auth/generate-passkey-options");
             const options = await resp.json();
             const attResp = await startRegistration({ optionsJSON: options });
