@@ -286,7 +286,7 @@ EfazForms = {};
                 let queryString = params.toString();
                 if (queryString) new_api_url += `?${queryString}`;
 
-                for (const question in questions) {
+                for (const question of questions) {
                     if (question["required"]) {
                         if (getIfResponseIsEmpty(new_formated_values[question["jsonName"]])) {
                             if (mode_response["formatted"]) {
@@ -329,7 +329,7 @@ EfazForms = {};
                     let content_type = "application/json"
                     if (system_json["formDataEnabled"]) {
                         sending_data = new FormData();
-                        for (const key in new_formated_values) {
+                        for (const key of new_formated_values) {
                             sending_data.append(key, new_formated_values[key]);
                         }
                         content_type = "multipart/form-data";
