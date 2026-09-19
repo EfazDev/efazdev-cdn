@@ -110,20 +110,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Compile HTML
     const topbar = generateHTMLDom(`
         <div class="topbar-ui">
-            <div class="topbar" style="
-    width: 100%;
-    max-height: 50px;
-    background: #ffff005f;
-">
-                <div class="wrapper">
-                    <div class="topbar-wrapper">
-                        <a rel="noopener noreferrer" class="link topbar-title-link" href="https://www.efaz.dev/">
-                            
-                            <p class="topbar-title">⚠️ New Terms of Service and Privacy Policy Takes Affect on September 12th, 2026! ⚠️</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
             <div class="topbar">
                 <div class="wrapper">
                     <div class="topbar-wrapper">
